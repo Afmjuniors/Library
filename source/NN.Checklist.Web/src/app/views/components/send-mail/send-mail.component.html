@@ -1,0 +1,25 @@
+
+<div class="kt-portlet">
+	<div class="kt-portlet__body p-t-0" style="overflow: hidden;" >
+		<div class="row form-group">
+			<div class="col-lg-12 text-center">
+				<h5 *ngIf="sending">{{ "SENDING_EMAIL" | translate}}</h5>
+				<h5 *ngIf="sent">{{ "EMAIL_SENT" | translate}}</h5>
+				<h5 *ngIf="error">{{ "ERROR_SENDING" | translate}}</h5>
+			</div>
+		</div>
+		<div class="row form-group">
+			<div class="col-lg-4"></div>
+			<div class="col-lg-4 text-center">
+				<div class="wrapper">
+					<div class="inner">
+						<mat-icon *ngIf="error" class="error">report_problem_outline</mat-icon>
+						<mat-icon *ngIf="sent" class="check">check_circle_outline</mat-icon>
+						<mat-spinner *ngIf="sending" ></mat-spinner>
+					</div>
+				</div>
+			</div>
+			<div class="col-lg-4"></div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,21 @@
+th.mat-header-cell,
+td.mat-cell {
+  text-align: center;
+  border: 1px solid #ccc;
+  padding: 0 !important;
+  min-width: 100px;
+  max-width: 100px;
+}
+
+th.mat-header-cell:first-child,
+td.mat-cell:first-child{
+  min-width: 50px;
+  max-width: 50px;
+}
+
+.similar-cell-width{
+    min-width: 100px;
+    max-width: 100px;
+    width: 100px; /*solution as per your req it fix the table cell widht*/
+
+ }

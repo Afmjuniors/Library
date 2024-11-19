@@ -1,0 +1,123 @@
+<div ngbDropdown placement="bottom-right" *ngIf="user$ | async as _user" class="kt-header__topbar-item kt-header__topbar-item--user">
+	<div ngbDropdownToggle class="kt-header__topbar-wrapper">
+		<span class="kt-header__topbar-username kt-hidden-mobile">{{_user.userAD}}</span>
+	</div>
+	<div ngbDropdownMenu class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-top-unround dropdown-menu-xl">
+		<!--begin: Head -->
+		<div class="kt-user-card kt-user-card--skin-dark kt-notification-item-padding-x" style="background-image: url(./assets/media/misc/bg-azul.png)">
+			<div class="kt-user-card__name">
+				{{_user.userAD.toUpperCase() }}
+			</div>
+		</div>
+
+		<!--end: Head -->
+		<ul ktTabClickEvent class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-{{ type }} kt-notification-item-padding-x" role="tablist">
+			<li class="nav-item">
+				<a (click)="tab.select('tab-id-1')" class="nav-link active show" data-toggle="tab" href="javascript:;" role="tab" aria-selected="true">{{ "UseProfile" | translate }}</a>
+			</li>
+			<li class="nav-item">
+				<a (click)="tab.select('tab-id-2')" class="nav-link" data-toggle="tab" href="javascript:;" role="tab" aria-selected="false">{{ "PHONES" | translate }}</a>
+			</li>
+			<li class="nav-item">
+				<a (click)="tab.select('tab-id-3')" class="nav-link" data-toggle="tab" href="javascript:;" role="tab" aria-selected="false">{{ "MENU.AREAS" | translate }}</a>
+			</li>
+			<li class="nav-item">
+				<a (click)="tab.select('tab-id-4')" class="nav-link" data-toggle="tab" href="javascript:;" role="tab" aria-selected="false">{{ "AVAILABILITIES" | translate }}</a>
+			</li>
+		</ul>
+
+		<ngb-tabset #tab="ngbTabset">
+			<ngb-tab id="tab-id-1">
+				<ng-template ngbTabContent>
+					<div perfectScrollbar [ngStyle]="{'max-height': '85vh', 'position': 'relative'}" class="kt-notification-v2">
+						<a href="javascript:;" class="kt-notification-v2__item"  style="max-height: 231px;">
+							<div class="kt-notification-v2__item-icon">
+								<i class="flaticon2-calendar-3 kt-font-success"></i>
+							</div>
+							<div class="kt-notification-v2__itek-wrapper">
+								<div *ngFor="let item of _user.adGroups">
+									<div class="kt-notification-v2__item-title">
+										{{item.name}}
+									</div>
+									<div class="kt-notification-v2__item-desc" *ngIf="item.administrator">
+										{{ "ADMINISTRATOR" | translate }}
+									</div>
+									<div class="kt-notification-v2__item-desc" *ngIf="item.maintenance">
+										{{ "MAINTENANCE" | translate }}
+									</div>
+									<div class="kt-notification-v2__item-desc" *ngIf="item.impactAnalyst">
+										{{ "MENU.PERFORM_ANALYSIS" | translate }}
+									</div>
+									<div class="kt-notification-v2__item-desc" *ngIf="item.qaAnalyst">
+										{{ "QA_ANALYSIS" | translate }}
+									</div>
+								</div>
+							</div>
+						</a>
+					</div>
+				</ng-template>
+			</ngb-tab>
+			<ngb-tab id="tab-id-2">
+				<ng-template ngbTabContent>
+					<div perfectScrollbar [ngStyle]="{'max-height': '85vh', 'position': 'relative'}" class="kt-notification-v2">
+						<a href="javascript:;" class="kt-notification-v2__item" style="max-height: 231px;">
+							<div class="kt-notification-v2__item-icon">
+								<i class="flaticon2-phone kt-font-warning" (click)="viewDetailsPhones()"></i>
+							</div>
+							<div class="kt-notification-v2__itek-wrapper">
+								<div *ngFor="let item of phones">
+									<div class="kt-notification-v2__item-desc">
+										{{item}}
+									</div>
+								</div>
+							</div>
+						</a>
+					</div>
+				</ng-template>
+			</ngb-tab>
+			<ngb-tab id="tab-id-3">
+				<ng-template ngbTabContent>
+					<div perfectScrollbar [ngStyle]="{'max-height': '85vh', 'position': 'relative'}" class="kt-notification-v2">
+						<a href="javascript:;" class="kt-notification-v2__item" style="max-height: 231px;">
+							<div class="kt-notification-v2__item-icon">
+								<i class="flaticon-layer kt-font-danger"></i>
+							</div>
+							<div class="kt-notification-v2__itek-wrapper"  style="max-height: 231px;">
+								<div *ngFor="let item of adGroupAreas">
+									<div class="kt-notification-v2__item-title">
+										{{item.groupName}}
+									</div>
+									<div *ngFor="let it of item.adGroupUserAreas">
+										<div class="kt-notification-v2__item-desc">
+											{{it.area.name}}-{{it.area.description}}
+										</div>
+									</div>
+									<div *ngIf="item.adGroupUserAreas == null" class="kt-notification-v2__item-desc">
+										{{ "NO_AREAS" | translate }}
+									</div>
+								</div>
+							</div>
+						</a>
+					</div>
+				</ng-template>
+			</ngb-tab>
+			<ngb-tab id="tab-id-4">
+				<ng-template ngbTabContent>
+					<div perfectScrollbar [ngStyle]="{'max-height': '85vh', 'position': 'relative'}" class="kt-notification-v2">
+						<div class="text-center">
+							<div class="kt-user-card__badge">
+								<span class="btn btn-primary btn-sm btn-bold btn-font-md" (click)="viewDetails()" >{{ 'AVAILABILITIES' | translate }}</span>
+							</div>
+						</div>
+					</div>
+				</ng-template>
+			</ngb-tab>
+		</ngb-tabset>
+		<!--begin: Navigation -->
+		<div class="kt-notification">
+			<div class="kt-notification__custom">
+				<a href="javascript:;" (click)="logout()" class="btn btn-outline-brand btn-upper btn-sm btn-bold">{{ 'EXIT' | translate }} </a>
+			</div>
+		</div>
+	</div>
+</div>

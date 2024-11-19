@@ -1,0 +1,321 @@
+<div class="my-container">
+	<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '0px' }"></ngx-loading>
+</div>
+<kt-portlet>
+	<kt-portlet-header [title]="'AUTH.PARAMETER_TITLE.PARAMETROS' | translate" [class]="'kt-portlet__head--lg'">
+	</kt-portlet-header>
+
+	<!-- end::Header -->
+
+	<kt-portlet-body>
+		<kt-alert *ngIf="error" type="warn" [duration]="3000" [showCloseButton]="true" (close)="onAlertClose($event)">
+			{{errorMessage}}
+		</kt-alert>
+
+		<div class="row">
+			<div class="col-lg-12" style="padding-bottom: 10px;">
+				<mat-accordion>
+					<mat-expansion-panel [expanded]="panelStateDomain" (opened)="panelStateDomain = true"
+						(closed)="panelStateDomain = false">
+						<mat-expansion-panel-header>
+							<mat-panel-title>
+								{{'AUTH.PARAMETER_TITLE.DOMAIN_TITLE' | translate}}
+							</mat-panel-title>
+						</mat-expansion-panel-header>
+						<div class="row">
+							<div class="col-lg-5">
+								<mat-form-field class="full-width">
+									<input [disabled]="!btnEditDomainStatus" type="text" matInput
+										placeholder="{{'AUTH.PARAMETER.DOMAIN_ADDRESS' | translate}}"
+										[(ngModel)]="domainParameter.domainAddress" />
+								</mat-form-field>
+							</div>
+						</div>
+
+						<div class="row">
+							<div class="col-lg-5">
+								<mat-form-field class="full-width">
+									<input [disabled]="!btnEditDomainStatus" type="password" matInput
+										placeholder="{{'AUTH.PARAMETER.DOMAIN_PASSWORD' | translate}}"
+										[(ngModel)]="domainParameter.adminPassword" />
+								</mat-form-field>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-7">
+								<h5>{{ "COMMENTS" | translate }}*</h5>
+								<div class="textarea-wrapper">
+									<textarea [disabled]="!btnEditDomainStatus" class="input" appearance="outline" style="width: 100%;" pInputTextArea
+										[(ngModel)]="commentsDomain" (ngModelChange)="valueChangeDomain(commentsDomain.length)"
+										maxlength="8000"></textarea>
+									<span class="remaning">{{remainingTextDomain}}</span>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-1">
+								<button [disabled]="!btnEditDomainStatus" mat-button style="height: 50px;"
+									mat-raised-button (click)="signDomain()" matTooltip="Salvar parâmetros"
+									color="primary" type="button">
+									<span class="material-icons">
+										save
+									</span>
+									<span>Salvar</span>
+								</button>
+							</div>
+							<div class="col-lg-1">
+								<button [disabled]="btnEditDomainStatus" mat-button (click)="DomainParameter_Edit()"
+									style="height: 50px;" mat-raised-button matTooltip="Editar parâmetros"
+									color="default" type="button">
+									<span class="material-icons">
+										edit
+									</span>
+									<span>Editar</span>
+								</button>
+							</div>
+						</div>
+					</mat-expansion-panel>
+				</mat-accordion>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12" style="padding-bottom: 10px;">
+				<mat-accordion>
+					<mat-expansion-panel [expanded]="panelStateDB" (opened)="panelStateDB = true"
+						(closed)="panelStateDB = false">
+						<mat-expansion-panel-header>
+							<mat-panel-title>
+								{{'AUTH.PARAMETER_TITLE.DB_TITLE' | translate}}
+							</mat-panel-title>
+						</mat-expansion-panel-header>
+						<div class="row">
+							<div class="col-lg-5">
+								<mat-form-field class="full-width">
+									<input [disabled]="!btnEditDBStatus" matInput
+										placeholder="{{'AUTH.PARAMETER.SQL_STRING' | translate}}"
+										[(ngModel)]="dbParameter.connectionStringSqlServer" />
+								</mat-form-field>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-5">
+								<mat-form-field class="full-width">
+									<input [disabled]="!btnEditDBStatus" matInput
+										placeholder="{{'AUTH.PARAMETER.SQL_SCHEMA' | translate}}"
+										[(ngModel)]="dbParameter.sqlServerSchema" />
+								</mat-form-field>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-7">
+								<h5>{{ "COMMENTS" | translate }}*</h5>
+								<div class="textarea-wrapper">
+									<textarea [disabled]="!btnEditDBStatus" class="input" appearance="outline" style="width: 100%;" pInputTextArea
+										[(ngModel)]="commentsDB" (ngModelChange)="valueChangeDB(commentsDB.length)"
+										maxlength="8000"></textarea>
+									<span class="remaning">{{remainingTextDB}}</span>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-1">
+								<button [disabled]="!btnEditDBStatus" mat-button (click)="signDB()"
+									style="height: 50px;" mat-raised-button matTooltip="Salvar parâmetros"
+									color="primary" type="button">
+									<span class="material-icons">
+										save
+									</span>
+									<span>Salvar</span>
+								</button>
+							</div>
+							<div class="col-lg-1">
+								<button [disabled]="btnEditDBStatus" mat-button (click)="DBParameter_Edit()"
+									style="height: 50px;" mat-raised-button matTooltip="Editar parâmetros"
+									color="default" type="button">
+									<span class="material-icons">
+										edit
+									</span>
+									<span>Editar</span>
+								</button>
+							</div>
+						</div>
+					</mat-expansion-panel>
+				</mat-accordion>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12" style="padding-bottom: 10px;">
+				<mat-accordion>
+					<mat-expansion-panel [expanded]="panelStatePolicy" (opened)="panelStatePolicy = true"
+						(closed)="panelStatePolicy = false">
+						<mat-expansion-panel-header>
+							<mat-panel-title>
+								{{'AUTH.PARAMETER_TITLE.POLICY_TITLE' | translate}}
+							</mat-panel-title>
+						</mat-expansion-panel-header>
+						<div class="row">
+							<div class="col-lg-5">
+								<mat-form-field class="full-width">
+									<input [disabled]="!btnEditPolicyStatus" matInput
+										placeholder="{{ 'AUTH.PARAMETER.INACTIVITY_TIME' | translate}}"
+										[(ngModel)]="policyParameter.inactivityTimeLimit" />
+								</mat-form-field>
+							</div>
+
+						</div>
+						<div class="row">
+							<div class="col-lg-5">
+								<mat-form-field class="full-width">
+									<input [disabled]="!btnEditPolicyStatus" matInput
+										placeholder="{{ 'AUTH.PARAMETER.RESEND_TIME' | translate}}"
+										[(ngModel)]="policyParameter.timeResendAlarmsNotification" />
+								</mat-form-field>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-5">
+								<mat-form-field class="full-width">
+									<input [disabled]="!btnEditPolicyStatus" matInput
+										placeholder="{{ 'AUTH.PARAMETER.MAXIMUM_RESEND_TIME' | translate}}"
+										[(ngModel)]="policyParameter.maximumNotificationResendTime" />
+								</mat-form-field>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-5">
+								<mat-form-field class="full-width">
+									<input [disabled]="!btnEditPolicyStatus" matInput
+										placeholder="{{ 'AUTH.PARAMETER.NOTIFICATION_EXPIRATION' | translate}}"
+										[(ngModel)]="policyParameter.messageNotificationExpirationTime" />
+								</mat-form-field>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-7">
+								<h5>{{ "COMMENTS" | translate }}*</h5>
+								<div class="textarea-wrapper">
+									<textarea [disabled]="!btnEditPolicyStatus" class="input" appearance="outline" style="width: 100%;" pInputTextArea
+										[(ngModel)]="commentsPolicy" (ngModelChange)="valueChangePolicy(commentsPolicy.length)"
+										maxlength="8000"></textarea>
+									<span class="remaning">{{remainingTextPolicy}}</span>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-1">
+								<button [disabled]="!btnEditPolicyStatus" mat-button (click)="signPolicy()"
+									style="height: 50px;" mat-raised-button matTooltip="Salvar parâmetros"
+									color="primary" type="button">
+									<span class="material-icons">
+										save
+									</span>
+									<span>Salvar</span>
+								</button>
+							</div>
+							<div class="col-lg-1">
+								<button [disabled]="btnEditPolicyStatus" mat-button (click)="PolicyParameter_Edit()"
+									style="height: 50px;" mat-raised-button matTooltip="Editar parâmetros"
+									color="default" type="button">
+									<span class="material-icons">
+										edit
+									</span>
+									<span>Editar</span>
+								</button>
+							</div>
+						</div>
+					</mat-expansion-panel>
+				</mat-accordion>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-12" style="padding-bottom: 10px;">
+				<mat-accordion>
+					<mat-expansion-panel [expanded]="panelStateMail" (opened)="panelStateMail = true"
+						(closed)="panelStateMail = false">
+						<mat-expansion-panel-header>
+							<mat-panel-title>
+								{{'AUTH.PARAMETER_TITLE.MAIL_TITLE' | translate}}
+							</mat-panel-title>
+						</mat-expansion-panel-header>
+						<div class="row">
+							<div class="col-lg-5">
+								<mat-form-field class="full-width">
+									<input [disabled]="!btnEditMailStatus" matInput
+										placeholder="{{'AUTH.PARAMETER.SMTP_SERVER' | translate}}"
+										[(ngModel)]="mailParameter.smtpServer" />
+								</mat-form-field>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-5">
+								<mat-form-field class="full-width">
+									<input [disabled]="!btnEditMailStatus" matInput
+										placeholder="{{'AUTH.PARAMETER.SMTP_PORT' | translate}}"
+										[(ngModel)]="mailParameter.smtpPort" />
+								</mat-form-field>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-5">
+								<mat-form-field class="full-width">
+									<input [disabled]="!btnEditMailStatus" matInput
+										placeholder="{{'AUTH.PARAMETER.SMTP_FROM_ADDRESS' | translate}}"
+										[(ngModel)]="mailParameter.smtpFromAddress" />
+								</mat-form-field>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-5">
+								<mat-form-field class="full-width">
+									<input [disabled]="!btnEditMailStatus" matInput
+										placeholder="{{'AUTH.PARAMETER.SMTP_PASSWORD' | translate}}" type="password"
+										[(ngModel)]="mailParameter.smtpPassword" />
+								</mat-form-field>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-5">
+								<mat-checkbox [disabled]="!btnEditMailStatus"
+									[(ngModel)]="mailParameter.smtpEnabledSSL">{{'AUTH.PARAMETER.SMTP_ENABLED_SSL' |
+									translate}}</mat-checkbox>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-7">
+								<h5>{{ "COMMENTS" | translate }}*</h5>
+								<div class="textarea-wrapper">
+									<textarea [disabled]="!btnEditMailStatus" class="input" appearance="outline" style="width: 100%;" pInputTextArea
+										[(ngModel)]="commentsMail" (ngModelChange)="valueChangeMail(commentsMail.length)"
+										maxlength="8000"></textarea>
+									<span class="remaning">{{remainingTextMail}}</span>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-lg-1">
+								<button [disabled]="!btnEditMailStatus" mat-button (click)="signMail()"
+									style="height: 50px;" mat-raised-button matTooltip="Salvar parâmetros"
+									color="primary" type="button">
+									<span class="material-icons">
+										save
+									</span>
+									<span>Salvar</span>
+								</button>
+							</div>
+							<div class="col-lg-1">
+								<button [disabled]="btnEditMailStatus" mat-button (click)="MailParameter_Edit()"
+									style="height: 50px;" mat-raised-button matTooltip="Editar parâmetros"
+									color="default" type="button">
+									<span class="material-icons">
+										edit
+									</span>
+									<span>Editar</span>
+								</button>
+							</div>
+						</div>
+					</mat-expansion-panel>
+				</mat-accordion>
+			</div>
+		</div>
+	</kt-portlet-body>
+</kt-portlet>

@@ -1,0 +1,18 @@
+<!-- BEGIN: Left Aside -->
+<div ktOffcanvas [options]="menuCanvasOptions" class="kt-aside kt-aside--fixed kt-grid__item kt-grid kt-grid--desktop kt-grid--hor-desktop" id="kt_aside">
+	<!-- begin:: Brand -->
+	<div id="new_index_fixed">
+		<kt-brand></kt-brand>
+	</div>
+	<!-- end:: Brand -->
+
+	<!-- BEGIN: Aside Menu -->
+	<div class="kt-aside-menu-wrapper kt-grid__item kt-grid__item--fluid" id="kt_aside_menu_wrapper">
+		<div #asideMenu ktMenu [options]="menuOptions" id="kt_aside_menu" class="kt-aside-menu kt-aside-menu--dropdown"
+			[ngClass]="htmlClassService.getClasses('aside_menu', true)">
+		</div>
+	</div>
+	<input type="text" id="timer_" [(ngModel)]="timeout" readonly style="text-align: center; border: 0; color: lightgray">
+	<!-- END: Aside Menu -->
+</div>
+<!-- END: Left Aside -->

@@ -1,0 +1,28 @@
+<div class="my-container">
+	<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '0px' }"></ngx-loading>
+</div>
+<div class="kt-portlet">
+	<div class="kt-portlet__head kt-portlet__head__custom">
+		<div class="kt-portlet__head-label">
+			<h3 class="kt-portlet__head-title">{{ "USER_EDIT" | translate }}</h3>
+		</div>
+	</div>
+
+	<div class="kt-form">
+		<div class="kt-portlet__body p-t-0">
+			<div class="row">
+				<div class="col-lg-10">
+					<h2>{{user.initials}}</h2>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-lg-6">
+					<apta-user-availability (loading)="showLoading($event)" [userId]="user.userId"></apta-user-availability>
+				</div>
+				<div class="col-lg-6">
+					<apta-user-unavailability (loading)="showLoading($event)" [userId]="user.userId"></apta-user-unavailability>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

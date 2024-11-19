@@ -1,0 +1,56 @@
+<div class="card">
+	<div class="row">
+		<div class="col-lg-12 text-center">
+			<h5>{{ "UNAVAILABILITY" | translate }}</h5>
+		</div>
+	</div>
+	<hr>
+	<div class="row">
+		<div class="col-lg-5">
+			<mat-form-field class="example-full-width">
+				<mat-label>{{ 'MENU.START_DATE' | translate }}</mat-label>
+				<input matInput [ngxMatDatetimePicker]="picker"
+					placeholder="{{ 'MENU.START_DATE' | translate }}"
+					[(ngModel)]="unavailability.startDate" disabled="false">
+				<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+				<ngx-mat-datetime-picker #picker [showSpinners]="showSpinners"
+					[showSeconds]="showSeconds" [stepHour]="stepHour"
+					[stepMinute]="stepMinute" [stepSecond]="stepSecond" [touchUi]="touchUi"
+					[enableMeridian]="enableMeridian">
+				</ngx-mat-datetime-picker>
+			</mat-form-field>
+		</div>
+		<div class="col-lg-5">
+			<mat-form-field class="example-full-width">
+				<mat-label>{{ 'MENU.END_DATE' | translate }}</mat-label>
+				<input matInput [ngxMatDatetimePicker]="picker1"
+					placeholder="{{ 'MENU.END_DATE' | translate }}"
+					[(ngModel)]="unavailability.endDate" disabled="false">
+				<mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+				<ngx-mat-datetime-picker #picker1 [showSpinners]="showSpinners"
+					[showSeconds]="showSeconds" [stepHour]="stepHour"
+					[stepMinute]="stepMinute" [stepSecond]="stepSecond" [touchUi]="touchUi"
+					[enableMeridian]="enableMeridian">
+				</ngx-mat-datetime-picker>
+			</mat-form-field>
+		</div>
+		<div class="col-lg-1">
+			<button mat-raised-button (click)="addUnavailability()" color="primary" type="button">
+				<span>
+					+
+				</span>
+			</button>
+		</div>
+	</div>
+	<div class="row" *ngFor="let item of unavailabilities" >
+		<div class="col-lg-5"> {{item.startDate | date:'yyyy-MM-dd HH:mm:ss'}} </div>
+		<div class="col-lg-5"> {{item.endDate | date:'yyyy-MM-dd HH:mm:ss'}} </div>
+		<div class="col-lg-1">
+			<span style="margin-top: 0px !important;" class="material-icons mt-3 userIcon view" (click)="removeUnavailability(item)">
+				delete
+			</span>
+		</div>
+	</div>
+</div>
+
+

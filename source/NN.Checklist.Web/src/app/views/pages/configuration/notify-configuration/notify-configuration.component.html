@@ -1,0 +1,35 @@
+<div class="my-container">
+	<!-- <ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '0px' }"></ngx-loading> -->
+</div>
+<div class="kt-portlet" style="margin-top: 0px;">
+	<div class="kt-portlet__head kt-portlet__head__custom">
+		<div class="kt-portlet__head-label">
+			<h3 class="kt-portlet__head-title">{{ "SEND_NOTIFICATIONS" | translate}}</h3>
+		</div>
+	</div>
+
+	<div class="kt-portlet__body p-t-0">
+
+		<div class="row row-line" *ngFor="let type of typesOccurrencesRecords; let index = index">
+			<div class="col-lg-9">
+				{{ 'SEND_NOTIFICATIONS_OF_TAG' | translate }} {{type.tag}} - {{type.description}}?
+			</div>
+			<div class="col-lg-2 text-right">
+				<button *ngIf="type.sended == null && !type.sending" mat-flat-button color="primary" (click)="sendMessages(type.typeOccurrenceRecordId, index)">{{ 'NOTIFY' | translate }}</button>
+				<mat-spinner matTooltip="{{ 'SENDING' | translate }}" [diameter]="15" *ngIf="type.sending"></mat-spinner>
+				<mat-icon matTooltip="{{ 'SENDED' | translate }}" *ngIf="type.sended" style="color: rgb(9, 149, 12);">done</mat-icon>
+				<mat-icon matTooltip="{{ 'AUTH.GENERAL.CANCEL' | translate }}" *ngIf="type.sended == false" style="color: rgb(155, 0, 0);">close</mat-icon>
+			</div>
+			<div class="col-lg-1">
+				<!-- <button mat-stroked-button color="warn" *ngIf="type.sended == null && !type.sending" (click)="cancelNotifications(index)" >{{ 'NO' | translate }}</button>			 -->
+				<button (click)="cancelNotifications(index)" *ngIf="type.sended == null && !type.sending"
+					 type="button" mat-raised-button cdkFocusInitial>
+					{{ "AUTH.GENERAL.CANCEL" | translate }}
+				</button>
+			</div>
+		</div>
+
+
+	</div>
+</div>
+

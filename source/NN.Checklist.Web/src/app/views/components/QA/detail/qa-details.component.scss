@@ -1,0 +1,49 @@
+.signature{
+    padding: 20px;
+}
+.lock {
+    font-size: 30px !important;
+}
+.userIcon{
+    font-size: 30px!important;
+}
+
+.box {
+    min-height: 100px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    padding: 10px;
+}
+
+.dialog-responsive {
+    width: 40%;
+    padding: 0 !important;
+}
+
+@media only screen and (max-width: 760px) {
+    .dialog-responsive {
+        width: 100%;
+    }
+}
+
+.comments
+{
+    min-height: 150px;
+}
+
+
+label{
+	color: rgb(0, 25, 101);
+	font-weight: 600;
+}
+
+h5{
+	color: rgb(0, 25, 101);
+}
+
+.card {
+    border: solid 1px rgb(0, 25, 101);
+    border-radius: 10px;
+    padding: 8px;
+	margin-bottom: 15px;
+}
+

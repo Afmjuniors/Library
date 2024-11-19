@@ -1,0 +1,20 @@
+mat-icon{
+	font-size: 90px !important;
+}
+
+.error{
+	color: red;
+}
+.check{
+	color: rgb(91, 139, 72);
+}
+
+.wrapper {
+	display: grid;
+	place-items: center;
+	max-width: fit-content;
+}
+.inner {
+	color: white;
+	padding: 12px;
+}

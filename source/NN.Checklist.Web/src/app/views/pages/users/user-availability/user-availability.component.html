@@ -1,0 +1,74 @@
+<div class="card">
+	<div class="row">
+		<div class="col-lg-12 text-center">
+			<h5>{{ "AVAILABILITY" | translate }}</h5>
+		</div>
+	</div>
+	<hr>
+	<div class="row">
+		<div class="col-lg-4">
+			<mat-form-field class="full-width">
+				<mat-select placeholder="Day" [(ngModel)]="availability.weekDay">
+					<mat-option value="1">{{ "SUNDAY" | translate }}</mat-option>
+					<mat-option value="2">{{ "MONDAY" | translate }}</mat-option>
+					<mat-option value="3">{{ "TUESDAY" | translate }}</mat-option>
+					<mat-option value="4">{{ "WEDNESDAY" | translate }}</mat-option>
+					<mat-option value="5">{{ "THURSDAY" | translate }}</mat-option>
+					<mat-option value="6">{{ "FRIDAY" | translate }}</mat-option>
+					<mat-option value="7">{{ "SATURDAY" | translate }}</mat-option>
+				</mat-select>
+			</mat-form-field>
+		</div>
+		<div class="col-lg-3">
+			<mat-form-field class="full-width">
+				<mat-label>{{ "START" | translate }}</mat-label>
+				<input type="text" maxlength="5" minlength="5" matInput autocomplete="off" [(ngModel)]="availability.startTime">
+			</mat-form-field>
+		</div>
+		<div class="col-lg-3">
+			<mat-form-field class="full-width">
+				<mat-label>{{ "END" | translate }}</mat-label>
+				<input type="text" maxlength="5" minlength="5" matInput autocomplete="off" [(ngModel)]="availability.endTime">
+			</mat-form-field>
+		</div>
+		<div class="col-lg-1">
+			<button mat-raised-button (click)="addAvailability()" color="primary" type="button">
+				<span>
+					+
+				</span>
+			</button>
+		</div>
+	</div>
+
+	<div class="row" *ngFor="let item of availabilities" >
+		<div class="col-lg-5">
+			<label *ngIf="item.weekDay == 1">{{ "SUNDAY" | translate }}</label>
+			<label *ngIf="item.weekDay == 2">{{ "MONDAY" | translate }}</label>
+			<label *ngIf="item.weekDay == 3">{{ "TUESDAY" | translate }}</label>
+			<label *ngIf="item.weekDay == 4">{{ "WEDNESDAY" | translate }}</label>
+			<label *ngIf="item.weekDay == 5">{{ "THURSDAY" | translate }}</label>
+			<label *ngIf="item.weekDay == 6">{{ "FRIDAY" | translate }}</label>
+			<label *ngIf="item.weekDay == 7">{{ "SATURDAY" | translate }}</label>
+		</div>
+		<div class="col-lg-3">
+
+			<mat-form-field class="example-full-width">
+				<mat-label>{{ "START" | translate }}</mat-label>
+				<input type="text" matInput [(ngModel)]="item.startTime">
+			</mat-form-field>
+		</div>
+		<div class="col-lg-3">
+			<mat-form-field class="example-full-width">
+				<mat-label>{{ "END" | translate }}</mat-label>
+				<input type="text" matInput [(ngModel)]="item.endTime">
+			</mat-form-field>
+		</div>
+		<div class="col-lg-1">
+			<span class="material-icons mt-3 userIcon view" (click)="removeAvailability(item)">
+				delete
+			</span>
+		</div>
+	</div>
+</div>
+
+

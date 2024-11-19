@@ -1,0 +1,239 @@
+<div class="my-container">
+	<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '0px' }"></ngx-loading>
+</div>
+<kt-portlet>
+	<!-- PORTLET LOADING | Binded to TABLE Datasource -->
+	<!-- See prop => '~/core/_crud/models/data-sources/_base.datasource.ts' (loading$) -->
+	<kt-portlet-header [title]="title" [class]="'kt-portlet__head--lg'">
+	</kt-portlet-header>
+
+	<!-- end::Header -->
+
+	<kt-portlet-body>
+		<kt-alert *ngIf="error" type="warn" [duration]="5000" [showCloseButton]="true">
+			{{mensagemErro}}
+		</kt-alert>
+
+		<div class="row">
+			<div class="col-lg-12" style="padding-bottom: 10px;">
+				<mat-accordion>
+					<mat-expansion-panel>
+						<mat-expansion-panel-header>
+							<mat-panel-title>
+								{{ 'MENU.FILTERS' | translate }}
+							</mat-panel-title>
+						</mat-expansion-panel-header>
+
+						<div class="row">
+							<div class="col-lg-10">
+								<div class="row">
+									<div class="col-md-3">
+										<mat-form-field class="example-full-width">
+											<mat-label>{{ 'MENU.START_DATE' | translate }}</mat-label>
+											<input matInput [ngxMatDatetimePicker]="picker"
+												placeholder="{{ 'MENU.START_DATE' | translate }}"
+												[(ngModel)]="filter.startDate" disabled="false">
+											<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+											<ngx-mat-datetime-picker #picker [showSpinners]="showSpinners"
+												[showSeconds]="showSeconds" [stepHour]="stepHour"
+												[stepMinute]="stepMinute" [stepSecond]="stepSecond" [touchUi]="touchUi"
+												[enableMeridian]="enableMeridian">
+											</ngx-mat-datetime-picker>
+										</mat-form-field>
+									</div>
+									<div class="col-md-3">
+										<mat-form-field class="example-full-width">
+											<mat-label>{{ 'MENU.END_DATE' | translate }}</mat-label>
+											<input matInput [ngxMatDatetimePicker]="picker1"
+												placeholder="{{ 'MENU.END_DATE' | translate }}"
+												[(ngModel)]="filter.endDate" disabled="false">
+											<mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+											<ngx-mat-datetime-picker #picker1 [showSpinners]="showSpinners"
+												[showSeconds]="showSeconds" [stepHour]="stepHour"
+												[stepMinute]="stepMinute" [stepSecond]="stepSecond" [touchUi]="touchUi"
+												[enableMeridian]="enableMeridian">
+											</ngx-mat-datetime-picker>
+										</mat-form-field>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-3">
+										<mat-form-field class="full-width">
+											<mat-select placeholder="{{ 'STAGE' | translate }}" [(ngModel)]="filter.statusName" class="full-width">
+												<mat-option *ngFor="let item of status" [value]="item">
+													{{item}}
+												</mat-option>
+											</mat-select>
+										</mat-form-field>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-3">
+										<mat-form-field class="full-width">
+											<mat-select [placeholder]="typeOccurrence" [(ngModel)]="filter.idType" class="full-width">
+												<mat-option *ngFor="let item of typesOccurrences" [value]="item.typeOccurrenceId">
+													{{item.description}}
+												</mat-option>
+											</mat-select>
+										</mat-form-field>
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-md-3">
+										<mat-form-field class="full-width">
+											<mat-select [placeholder]="process" [(ngModel)]="filter.process" (selectionChange)="changeProcess()" class="full-width">
+												<mat-option value="0"></mat-option>
+												<mat-option *ngFor="let item of processes" [value]="item.processId">
+													{{item.acronym}} - {{item.description}}
+												</mat-option>
+											</mat-select>
+										</mat-form-field>
+									</div>
+									<div class="col-md-3" *ngIf="filter.process > 0 && areas.length > 0">
+										<mat-form-field class="full-width">
+											<mat-select [placeholder]="area" [(ngModel)]="filter.area" class="full-width">
+												<mat-option value="0"></mat-option>
+												<mat-option *ngFor="let item of areas" [value]="item.areaId">
+													{{item.name}} - {{item.description}}
+												</mat-option>
+											</mat-select>
+										</mat-form-field>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-2">
+								<div class="row">
+									<div class="col-md-12" style="padding: 10px;">
+										<button mat-button (click)="applyFilter()" style="height: 50px; width: 100%;" mat-raised-button
+											color="primary" type="button">
+											<span>{{ 'MENU.FILTER' | translate }}</span>
+										</button>
+									</div>
+									<div class="col-md-12" style="padding: 10px;">
+										<button mat-button (click)="clearFilters()" style="height: 50px; width: 100%;" mat-raised-button
+											color="default" type="button">
+											<span>{{ 'MENU.CLEAR' | translate }}</span>
+										</button>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</mat-expansion-panel>
+				</mat-accordion>
+				<div class="row">
+					<div class="d-flex" style="min-width: 150px;">
+						<button mat-button style="height: 50px; width: 100%; padding: 10px; margin: 10px" mat-raised-button
+							color="primary" type="button" (click)="sendEmailCSV()" [disabled]="loadingCSV || !dataSource.hasItems">
+							<span>{{ 'MENU.SEND_XLS' | translate }}</span>
+						</button>
+					</div>
+					<div class="d-flex" style="min-width: 150px;">
+						<button mat-button style="height: 50px; width: 100%; padding: 10px; margin: 10px" mat-raised-button
+							color="primary" type="button" (click)="sendEmailPdf()" [disabled]="loadingPDF || !dataSource.hasItems">
+							<span>{{ 'MENU.SEND_PDF' | translate }}</span>
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="mat-table__wrapper">
+			<mat-table class="lmat-elevation-z8" #table [dataSource]="dataSource" matSort #sort1="matSort"
+				matSortActive="id" matSortDirection="asc" matSortDisableClear>
+
+				<ng-container matColumnDef="tag">
+					<mat-header-cell *matHeaderCellDef>{{ "MENU.ALARMS" | translate }}</mat-header-cell>
+					<mat-cell class="mouse" *matCellDef="let occurrence" (click)="viewDetails(occurrence)" >{{occurrence.alarm}}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="description">
+					<!-- ATTRIBUTE   for sorting | https://material.angular.io/components/sort/overview -->
+					<mat-header-cell *matHeaderCellDef style="justify-content: center;">{{ "MENU.DESCRIPTION" | translate }}</mat-header-cell>
+					<mat-cell class="mouse" *matCellDef="let occurrence" style="justify-content: center;" (click)="viewDetails(occurrence)">{{occurrence.description}}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="process">
+					<mat-header-cell *matHeaderCellDef>{{ "MENU.PROCESS" | translate }}</mat-header-cell>
+					<mat-cell class="mouse" *matCellDef="let occurrence" (click)="viewDetails(occurrence)">{{occurrence.process}}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="id">
+					<mat-header-cell *matHeaderCellDef >{{ "MENU.ID" | translate }}</mat-header-cell>
+					<mat-cell class="mouse" *matCellDef="let occurrence" (click)="viewDetails(occurrence)">{{occurrence.occurrenceRecordId}}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="area">
+					<mat-header-cell *matHeaderCellDef >{{ "MENU.AREA" | translate }}</mat-header-cell>
+					<mat-cell class="mouse" *matCellDef="let occurrence" (click)="viewDetails(occurrence)">{{occurrence.area}}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="impactedArea">
+					<mat-header-cell *matHeaderCellDef>{{ "MENU.IMPACTED_AREA" | translate }}</mat-header-cell>
+					<mat-cell class="mouse" *matCellDef="let occurrence" (click)="viewDetails(occurrence)">{{occurrence.impactedArea}}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="dateRecord">
+					<mat-header-cell *matHeaderCellDef >{{ "MENU.DATE" | translate }}</mat-header-cell>
+					<mat-cell class="mouse" *matCellDef="let occurrence" (click)="viewDetails(occurrence)">{{occurrence.dateRecord | date:'yyyy-MM-dd HH:mm:ss'}}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="dateStart">
+					<mat-header-cell *matHeaderCellDef >{{ "MENU.DATE_START" | translate }}</mat-header-cell>
+					<mat-cell class="mouse" *matCellDef="let occurrence" (click)="viewDetails(occurrence)">{{occurrence.startDate | date:'yyyy-MM-dd HH:mm:ss'}}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="dateEnd">
+					<mat-header-cell *matHeaderCellDef >{{ "MENU.DATE_END" | translate }}</mat-header-cell>
+					<mat-cell class="mouse" *matCellDef="let occurrence" (click)="viewDetails(occurrence)">{{occurrence.endDate | date:'yyyy-MM-dd HH:mm:ss'}}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="responsible">
+					<mat-header-cell *matHeaderCellDef >{{ "MENU.RESPONSIBLE" | translate }}</mat-header-cell>
+					<mat-cell class="mouse" *matCellDef="let occurrence"  (click)="viewDetails(occurrence)">{{occurrence.responsible}}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="status">
+					<mat-header-cell *matHeaderCellDef >{{ "STAGE" | translate }}</mat-header-cell>
+					<mat-cell class="mouse" *matCellDef="let occurrence" (click)="viewDetails(occurrence)">{{occurrence.status}}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="impact">
+					<mat-header-cell *matHeaderCellDef >{{ 'MENU.STATUS' | translate }}</mat-header-cell>
+					<mat-cell class="mouse" *matCellDef="let occurrence" (click)="viewDetails(occurrence)">{{occurrence.impact}}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="dateAnalysis">
+					<mat-header-cell *matHeaderCellDef >{{ "MENU.ANALYSIS_DATE" | translate }}</mat-header-cell>
+					<mat-cell class="mouse" *matCellDef="let occurrence" (click)="viewDetails(occurrence)">{{occurrence.analisysDate | date:'yyyy-MM-dd HH:mm:ss'}}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="messages_history">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>{{ "MESSAGES_HISTORY" | translate }}</mat-header-cell>
+					<mat-cell *matCellDef="let occurrence" style="justify-content: center;">
+						<button mat-icon-button color="primary" (click)="viewMessageHistory(occurrence.occurrenceRecordId)">
+							<mat-icon matTooltip="">visibility</mat-icon>
+						</button>
+					</mat-cell>
+				</ng-container>
+
+				<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+				<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+			</mat-table>
+
+			<div *ngIf="dataSource != null">
+				<div class="mat-table__message" *ngIf="!dataSource.hasItems">{{ "MENU.NO_RECORDS" | translate }}</div>
+			</div>
+			<!-- Message for empty data  -->
+			<div class="mat-table__message" *ngIf="dataSource.isPreloadTextViewed$ | async">{{ "MENU.PLEASE_WAIT" | translate }}</div>
+		</div>
+		<div class="mat-table__bottom">
+			<mat-spinner [color]="'primary'" [diameter]="20" *ngIf="dataSource.loading$ | async"></mat-spinner>
+			<mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" [length]="dataSource.paginatorTotal$ | async"
+				[showFirstLastButtons]="true">
+			</mat-paginator>
+		</div>
+	</kt-portlet-body>
+	<!-- end::Body -->
+</kt-portlet>

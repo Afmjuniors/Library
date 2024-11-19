@@ -1,0 +1,72 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Images\logo-nn.png" />
+    <None Remove="Images\logo-td.png" />
+    <None Remove="Images\LogoNN_G.png" />
+    <None Remove="Resources\en-US.json" />
+    <None Remove="Resources\pt-BR.json" />
+    <None Remove="Scripts\SqlServer\data.sql" />
+    <None Remove="Scripts\SqlServer\database.sql" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Images\logo-nn.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\LogoNN_G.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Images\logo-td.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\en-US.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\pt-BR.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\SqlServer\data.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Scripts\SqlServer\database.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore" Version="2.2.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.11" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="7.0.0" />
+    <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="7.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NN.Checklist.Domain.Services\NN.Checklist.Domain.Services.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="TDCore.Core">
+      <HintPath>..\..\binaries\TDCore.Core\Release\net8.0\TDCore.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="TDCore.Data">
+      <HintPath>..\..\binaries\TDCore.Data\Release\net8.0\TDCore.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="TDCore.DependencyInjection">
+      <HintPath>..\..\binaries\TDCore.DependencyInjection\Release\net8.0\TDCore.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="TDCore.Domain">
+      <HintPath>..\..\binaries\TDCore.Domain\Release\net8.0\TDCore.Domain.dll</HintPath>
+    </Reference>
+    <Reference Include="TDCore.Globalization">
+      <HintPath>..\..\binaries\TDCore.Globalization\Release\net8.0\TDCore.Globalization.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

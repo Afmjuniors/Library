@@ -1,0 +1,181 @@
+<div class="container">
+	<div class="row">
+
+		<div class="col-lg-12">
+			<h1 class="mt-3 ml-3" mat-dialog-title>
+				{{ "AUTH.QA_OVERVIEW.TITLE_APPROVAL" | translate }}
+			</h1>
+		</div>
+		<div class="col-lg-12">
+			<hr *ngIf="data.length == 1"/>
+			<div class="card" *ngIf="data.length == 1">
+				<h5>
+					{{ "AUTH.QA_OVERVIEW.DETAILS.REG_TITLE" | translate }}
+				</h5>
+				<div class="row">
+					<div class="col-lg-3">
+						<label>TAG</label><br />
+						<span>{{this.data[0].typeOccurrenceRecord.tag }}</span>
+					</div>
+					<div class="col-lg-3">
+						<label>{{ "AUTH.QA_OVERVIEW.DETAILS.TABLE.DESCRIPTION" | translate }}</label><br />
+						<span>{{this.data[0].typeOccurrenceRecord.description }}</span>
+					</div>
+					<div class="col-lg-2">
+						<label>Node</label><br />
+						<span>{{this.data[0].systemNode.name }}</span>
+					</div>
+					<div class="col-lg-2">
+						<label>{{ "AUTH.QA_OVERVIEW.DETAILS.TABLE.PROCESS" | translate }}</label><br />
+						<span>{{this.data[0].typeOccurrenceRecord.area.process.acronym}}</span>
+					</div>
+					<div class="col-lg-2">
+						<label>Area</label><br />
+						<span>{{this.data[0].typeOccurrenceRecord.area.description }}</span>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-3">
+						<label>{{ "AUTH.QA_OVERVIEW.DETAILS.TABLE.OK_DTH" | translate }}</label><br />
+						<span>{{(this.data[0].occurrenceRecordsApprovals != null ? this.data[0].occurrenceRecordsApprovals[0].dateTime : null) | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+					</div>
+					<div class="col-lg-3">
+						<label>{{ "AUTH.QA_OVERVIEW.DETAILS.TABLE.OLD_VALUE" | translate }}</label><br />
+						<span>{{this.data[0].beforeValue != '' ? this.data[0].beforeValue: ''}}</span>
+					</div>
+					<div class="col-lg-2">
+						<label>{{ "AUTH.QA_OVERVIEW.DETAILS.TABLE.NEW_VALUE" | translate }}</label><br />
+						<span>{{this.data[0].newValue != null ? this.data[0].newValue : ''}}</span>
+					</div>
+					<div class="col-lg-2">
+						<label>{{ "AUTH.QA_OVERVIEW.DETAILS.TABLE.UNIT" | translate }}</label><br />
+						<span>{{this.data[0].typeOccurrenceRecord.unit != null ? this.data[0].typeOccurrenceRecord.unit.description : '' }}</span>
+					</div>
+					<div class="col-lg-2">
+						<label>{{ "AUTH.QA_OVERVIEW.DETAILS.TABLE.RESPONSIBLE" | translate }}</label><br />
+						<span>{{this.data[0].responsible != null ? this.data[0].responsible:''}}</span>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-3">
+						<label>{{ "AUTH.QA_OVERVIEW.DETAILS.TABLE.ALM_DTH" | translate }}</label><br />
+						<span>{{this.data[0].dateTimeRecord | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+					</div>
+					<div class="col-lg-3">
+						<label>{{ "AUTH.QA_OVERVIEW.DETAILS.TABLE.ACK_DTH" | translate }}</label><br />
+						<span>{{this.data[0].dateTimeAck}}</span>
+					</div>
+					<div class="col-lg-3">
+						<label>{{ "AUTH.QA_OVERVIEW.DETAILS.TABLE.ACK_POR" | translate }}</label><br />
+						<span>{{this.data[0].ackUser}}</span>
+					</div>
+				</div>
+			</div>
+			<hr *ngIf="data.length == 1"/>
+			<div class="box" *ngIf="data.length == 1">
+				<h5>
+					{{ "AUTH.QA_OVERVIEW.DETAILS.ANALYSE_TITLE" | translate }}
+				</h5>
+				<div class="row">
+					<div class="col-lg-3">
+						<label>{{ "AUTH.QA_OVERVIEW.DETAILS.TABLE.ANALYSED_FOR" | translate }}</label><br />
+						<span>{{this.data[0].occurrenceRecordsAnalysis[0].signature.initials}}</span>
+					</div>
+					<div class="col-lg-3">
+						<label>{{ "AUTH.QA_OVERVIEW.DETAILS.TABLE.ANALYSED_DTH" | translate }}</label><br />
+						<span>{{this.data[0].occurrenceRecordsAnalysis[0].dateTime | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+					</div>
+					<div class="col-lg-3">
+						<label>{{ "AUTH.QA_OVERVIEW.DETAILS.TABLE.STATE" | translate }}</label><br />
+						<span>{{this.data[0].state.name}}</span>
+					</div>
+					<div class="col-lg-3">
+						<label>{{ "AUTH.QA_OVERVIEW.DETAILS.TABLE.IMPACT" | translate }}</label><br />
+						<span>{{this.data[0].occurrenceRecordsAnalysis[0].causesImpacts == true ? "Sim" : "Não"}}</span>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-lg-12">
+						<label>{{ "AUTH.QA_OVERVIEW.DETAILS.TABLE.IMPACT_DESC" | translate }}</label><br />
+						<span>{{this.data[0].occurrenceRecordsAnalysis[0].impactsDetails}}</span>
+					</div>
+				</div>
+			</div>
+			<hr />
+			<div class="card" *ngIf="data.length > 1">
+				<h5>
+					{{ "AUTH.QA_OVERVIEW.DETAILS.REG_TITLE" | translate }}
+				</h5>
+				<table class="table table-responsive w-100 d-block d-md-table">
+					<thead class="thead-light">
+					  <tr>
+						<th scope="col">TAG</th>
+						<th scope="col">{{ "AUTH.QA_OVERVIEW.DETAILS.TABLE.PROCESS" | translate }}</th>
+						<th scope="col">Area</th>
+						<th scope="col">{{ "AUTH.QA_OVERVIEW.DETAILS.TABLE.ANALYSED_FOR" | translate }}</th>
+						<th scope="col">{{ "AUTH.QA_OVERVIEW.DETAILS.TABLE.ANALYSED_DTH" | translate }}</th>
+						<th scope="col">{{ "AUTH.QA_OVERVIEW.DETAILS.TABLE.IMPACT" | translate }}</th>
+						<th scope="col">{{ "AUTH.QA_OVERVIEW.DETAILS.TABLE.DESCRIPTION" | translate }}</th>
+					  </tr>
+					</thead>
+					<tbody>
+					  <tr *ngFor="let item of data">
+						<td>{{item.typeOccurrenceRecord.tag }}</td>
+						<td>{{item.systemNode.name }}</td>
+						<td>{{item.typeOccurrenceRecord.area.processName}}</td>
+						<td>{{item.occurrenceRecordsAnalysis[0].signature.initials}}</td>
+						<td>{{item.occurrenceRecordsAnalysis[0].dateTime | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+						<td>{{item.occurrenceRecordsAnalysis[0].causesImpacts == true ? "Sim" : "Não"}}</td>
+						<td>{{item.typeOccurrenceRecord.description }}</td>
+					  </tr>
+					</tbody>
+				</table>
+			</div>
+			<hr *ngIf="data.length > 1"/>
+			<div class="card mb-3">
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="row">
+							<div class="col-lg-4">
+								<div class="col-lg-12">
+									<h5>{{ "AUTH.QA_OVERVIEW.DETAILS.ANALYSE_APPROVAL" | translate }}</h5>
+								</div>
+								<div class="col-lg-12">
+									<div>
+										<mat-radio-group
+											[(ngModel)]="analyseStatus">
+											<mat-radio-button [value]="true">
+												{{'AUTH.QA_OVERVIEW.DETAILS.CHECK_APPROVED' | translate}}
+											</mat-radio-button>
+											<mat-radio-button [value]="false">
+												{{'AUTH.QA_OVERVIEW.DETAILS.CHECK_REPROVED' | translate}}
+											</mat-radio-button>
+										</mat-radio-group>
+									</div>
+								</div>
+							</div>
+							<div class="col-lg-6">
+								<div class="col-lg-12">
+									<h5>{{'AUTH.QA_OVERVIEW.DETAILS.COMMENTS' | translate}}</h5>
+								</div>
+								<div class="col-lg-12">
+									<textarea class="w-100 comments" [(ngModel)]="description">
+									</textarea>
+								</div>
+							</div>
+							<div class="col-lg-2">
+								<div class="col-lg-12">
+									<h5>{{'AUTH.QA_OVERVIEW.DETAILS.OPTIONS' | translate}}</h5>
+								</div>
+								<button (click)="validateSignature()" mat-button style="height: 50px; width: 100%;" mat-raised-button
+									color="primary" type="button">
+									<span>{{ 'MENU.SIGN' | translate }}</span>
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

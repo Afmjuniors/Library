@@ -1,0 +1,538 @@
+<div class="my-container">
+	<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '0px' }"></ngx-loading>
+</div>
+<div class="kt-portlet">
+	<div class="kt-portlet__head kt-portlet__head__custom">
+		<div class="kt-portlet__head-label">
+			<h3 class="kt-portlet__head-title">{{ "RECORDS_CONFIGURATION" | translate}}</h3>
+		</div>
+	</div>
+
+	<div class="kt-portlet__body p-t-0">
+		<div class="row">
+			<div class="col-lg-12">
+				<h5>{{ 'AUTH.CONFIGURATION.SELECTED_REGISTERS' | translate }}</h5>
+			</div>
+		</div>
+
+		<div *ngFor="let item of selectedIds; let i = index" style="margin-bottom: 10px;" class="form-group">
+			<mat-accordion>
+				<mat-expansion-panel hideToggle>
+					<mat-expansion-panel-header>
+						<mat-panel-title>
+							{{item.tag}}
+						</mat-panel-title>
+						<mat-panel-description>
+							{{ "VIEW_DETAILS" | translate}}
+						</mat-panel-description>
+					</mat-expansion-panel-header>
+					<div class="row">
+						<div class="col-lg-1">
+							<span class="material-icons mt-3 userIcon view" (click)="removeTypeOccurrence(i)" >
+								delete
+							</span>
+						</div>
+						<div class="col-lg-5">
+							<mat-form-field class="full-width">
+								<mat-label>Tag*</mat-label>
+								<input matInput [(ngModel)]="item.tag">
+							</mat-form-field>
+						</div>
+						<div class="col-lg-3">
+							<mat-form-field class="full-width">
+								<mat-select placeholder="{{ 'MENU.PROCESS' | translate }}*" [(ngModel)]="item.area.processId"
+									(selectionChange)="loadListAreas($event.value, i)">
+									<mat-option *ngFor="let item of processes" [value]="item.processId">
+										{{item.acronym}} - {{item.description}}
+									</mat-option>
+								</mat-select>
+							</mat-form-field>
+						</div>
+						<div class="col-lg-3">
+							<mat-form-field class="full-width">
+								<mat-select placeholder="{{ 'MENU.AREA' | translate }}*" [(ngModel)]="item.areaId"
+									class="full-width">
+									<mat-option *ngFor="let area of item.areas" [value]="area.areaId">
+										{{area.name}} - {{area.description}}
+									</mat-option>
+								</mat-select>
+							</mat-form-field>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-6">
+							<mat-form-field class="full-width">
+								<mat-label>{{ 'MENU.DESCRIPTION' | translate }}*</mat-label>
+								<input matInput [(ngModel)]="item.description" class="full-width">
+							</mat-form-field>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-lg-3">
+							<mat-form-field class="full-width">
+								<mat-select placeholder="{{ 'MENU.UNIT' | translate }}" [(ngModel)]="item.unitId"
+									class="full-width">
+									<mat-option *ngFor="let unit of units" [value]="unit.unitId">
+										{{unit.acronym}} - {{unit.description}}
+									</mat-option>
+								</mat-select>
+							</mat-form-field>
+						</div>
+						<div class="col-lg-3">
+							<mat-checkbox [(ngModel)]="item.getExtremeValue">{{ "GET_EXTREME_VALUE" | translate }}</mat-checkbox>
+						</div>
+						<div class="col-lg-3" *ngIf="item.getExtremeValue == true">
+							<mat-form-field class="full-width">
+								<mat-label>{{ "COMPENSATION_VALUE" | translate }}*</mat-label>
+								<input matInput [(ngModel)]="item.compensationValue" autocomplete="off" class="full-width">
+							</mat-form-field>
+						</div>
+						<div class="col-lg-3" *ngIf="item.getExtremeValue == true">
+							<mat-form-field class="full-width">
+								<mat-label>{{ "DEVICE_TAG" | translate }}*</mat-label>
+								<input matInput [(ngModel)]="item.tagDevice" autocomplete="off" class="full-width">
+							</mat-form-field>
+						</div>
+					</div>
+
+					<div class="row">
+						<div class="col-lg-12 text-center">
+							<h5>{{ "IMPACTED_AREAS" | translate}}</h5>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-5" style="max-height: 250px; overflow-y: auto;">
+							<div class="mat-table__wrapper">
+								<div class="table-responsive">
+									<table class="table table-lista table-striped table-hover">
+
+										<thead>
+											<tr>
+												<th></th>
+												<th>{{ "MENU.NAME" | translate }}</th>
+												<th>{{ "MENU.DESCRIPTION" | translate }}</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr *ngFor="let area, let index of item.areas2">
+												<td>
+													<mat-checkbox [(ngModel)]="area.selected"></mat-checkbox>
+												</td>
+												<td>
+													{{area.name}}
+												</td>
+												<td>
+													{{area.description}}
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-1" style="padding-top: 5%;">
+							<div style="padding: 5%;">
+								<button mat-raised-button (click)="addImpactedArea(i)" color="primary" type="button">
+									<span>
+										>>
+									</span>
+								</button>
+							</div>
+							<div style="padding: 5%;">
+								<button mat-raised-button (click)="removeImpactedArea(i)" color="primary" type="button">
+									<span>
+										<<
+									</span>
+								</button>
+							</div>
+						</div>
+						<div class="col-lg-5" style="max-height: 250px; overflow-y: auto;">
+							<div class="mat-table__wrapper">
+								<div class="table-responsive">
+									<table class="table table-lista table-striped table-hover">
+
+										<thead>
+											<tr>
+												<th></th>
+												<th>{{ "MENU.NAME" | translate }}</th>
+												<th>{{ "MENU.DESCRIPTION" | translate }}</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr *ngFor="let impacted, let index of item.impactedAreas">
+												<td>
+													<mat-checkbox [(ngModel)]="impacted.area.selected"> </mat-checkbox>
+												</td>
+												<td>
+													{{impacted.area.name}}
+												</td>
+												<td>
+													{{impacted.area.description}}
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+
+					<div class="row" style="margin-top: 5%;">
+						<div class="col-lg-12 text-center">
+							<h5>{{ "RELEASE_AREAS" | translate}}</h5>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-3">
+							<mat-form-field class="full-width">
+								<mat-select placeholder="{{ 'MENU.PROCESS' | translate }}*" [(ngModel)]="item.processRelease"
+									(selectionChange)="loadListAreasRelease($event.value, i)">
+									<mat-option *ngFor="let item of processes" [value]="item.processId">
+										{{item.acronym}} - {{item.description}}
+									</mat-option>
+								</mat-select>
+							</mat-form-field>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-lg-5" style="max-height: 250px; overflow-y: auto;">
+							<div class="mat-table__wrapper">
+								<div class="table-responsive">
+									<table class="table table-lista table-striped table-hover">
+
+										<thead>
+											<tr>
+												<th></th>
+												<th>{{ "MENU.NAME" | translate }}</th>
+												<th>{{ "MENU.DESCRIPTION" | translate }}</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr *ngFor="let area, let index of item.releaseAreas2">
+												<td>
+													<mat-checkbox [(ngModel)]="area.selected"></mat-checkbox>
+												</td>
+												<td>
+													{{area.name}}
+												</td>
+												<td>
+													{{area.description}}
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-1" style="padding-top: 5%;">
+							<div style="padding: 5%;">
+								<button mat-raised-button (click)="addReleaseArea(i)" color="primary" type="button">
+									<span>
+										>>
+									</span>
+								</button>
+							</div>
+							<div style="padding: 5%;">
+								<button mat-raised-button (click)="removeReleaseArea(i)" color="primary" type="button">
+									<span>
+										<<
+									</span>
+								</button>
+							</div>
+						</div>
+						<div class="col-lg-5" style="max-height: 250px; overflow-y: auto;">
+							<div class="mat-table__wrapper">
+								<div class="table-responsive">
+									<table class="table table-lista table-striped table-hover">
+
+										<thead>
+											<tr>
+												<th></th>
+												<th>{{ "MENU.NAME" | translate }}</th>
+												<th>{{ "MENU.DESCRIPTION" | translate }}</th>
+											</tr>
+										</thead>
+										<tbody>
+											<tr *ngFor="let release, let index of item.releaseAreas">
+												<td>
+													<mat-checkbox [(ngModel)]="release.area.selected"> </mat-checkbox>
+												</td>
+												<td>
+													{{release.area.name}}
+												</td>
+												<td>
+													{{release.area.description}}
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+					</div>
+
+				</mat-expansion-panel>
+			</mat-accordion>
+		</div>
+
+		<div *ngIf="showImpactedAreas" style="margin-top: 15px;">
+			<div class="row form-group">
+				<div class="col-lg-12 text-center">
+					<h5>{{ "IMPACTED_AREAS" | translate}}</h5>
+				</div>
+			</div>
+
+			<div class="row form-group">
+				<div class="col-lg-5" style="max-height: 250px; overflow-y: auto;">
+					<div class="mat-table__wrapper">
+						<div class="table-responsive">
+							<table class="table table-lista table-striped table-hover">
+
+								<thead>
+									<tr>
+										<th></th>
+										<th>{{ "MENU.NAME" | translate }}</th>
+										<th>{{ "MENU.DESCRIPTION" | translate }}</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr *ngFor="let area, let index of impactedAreasGeneral">
+										<td>
+											<mat-checkbox [(ngModel)]="area.selected"></mat-checkbox>
+										</td>
+										<td>
+											{{area.name}}
+										</td>
+										<td>
+											{{area.description}}
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-1" style="padding-top: 5%;">
+					<div style="padding: 5%;">
+						<button mat-raised-button (click)="addImpactedArea(null)" color="primary" type="button">
+							<span>
+								>>
+							</span>
+						</button>
+					</div>
+					<div style="padding: 5%;">
+						<button mat-raised-button (click)="removeImpactedArea(null)" color="primary" type="button">
+							<span>
+								<<
+							</span>
+						</button>
+					</div>
+				</div>
+				<div class="col-lg-5" style="max-height: 250px; overflow-y: auto;">
+					<div class="mat-table__wrapper">
+						<div class="table-responsive">
+							<table class="table table-lista table-striped table-hover">
+
+								<thead>
+									<tr>
+										<th></th>
+										<th>{{ "MENU.NAME" | translate }}</th>
+										<th>{{ "MENU.DESCRIPTION" | translate }}</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr *ngFor="let impacted, let index of typeOccurrenceRecord.impactedAreas">
+										<td>
+											<mat-checkbox [(ngModel)]="impacted.area.selected"> </mat-checkbox>
+										</td>
+										<td>
+											{{impacted.area.name}}
+										</td>
+										<td>
+											{{impacted.area.description}}
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row form-group">
+				<div class="col-lg-12">
+					<mat-checkbox [(ngModel)]="removeAllImpactedAreas">
+						Alterar áreas impactadas de todos os registros selecionados?
+					</mat-checkbox>
+				</div>
+			</div>
+
+			<div class="row form-group" style="margin-top: 5%;">
+				<div class="col-lg-12 text-center">
+					<h5>{{ "RELEASE_AREAS" | translate}}</h5>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-lg-3">
+					<mat-form-field class="full-width">
+						<mat-select placeholder="{{ 'MENU.PROCESS' | translate }}*" [(ngModel)]="releaseProcessesGeneral"
+							(selectionChange)="loadListAreasRelease($event.value, null)">
+							<mat-option *ngFor="let item of processes" [value]="item.processId">
+								{{item.acronym}} - {{item.description}}
+							</mat-option>
+						</mat-select>
+					</mat-form-field>
+				</div>
+			</div>
+
+			<div class="row form-group">
+				<div class="col-lg-5" style="max-height: 250px; overflow-y: auto;">
+					<div class="mat-table__wrapper">
+						<div class="table-responsive">
+							<table class="table table-lista table-striped table-hover">
+
+								<thead>
+									<tr>
+										<th></th>
+										<th>{{ "MENU.NAME" | translate }}</th>
+										<th>{{ "MENU.DESCRIPTION" | translate }}</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr *ngFor="let area, let index of releaseAreasGeneral">
+										<td>
+											<mat-checkbox [(ngModel)]="area.selected"></mat-checkbox>
+										</td>
+										<td>
+											{{area.name}}
+										</td>
+										<td>
+											{{area.description}}
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-1" style="padding-top: 5%;">
+					<div style="padding: 5%;">
+						<button mat-raised-button (click)="addReleaseArea(null)" color="primary" type="button">
+							<span>
+								>>
+							</span>
+						</button>
+					</div>
+					<div style="padding: 5%;">
+						<button mat-raised-button (click)="removeReleaseArea(null)" color="primary" type="button">
+							<span>
+								<<
+							</span>
+						</button>
+					</div>
+				</div>
+				<div class="col-lg-5" style="max-height: 250px; overflow-y: auto;">
+					<div class="mat-table__wrapper">
+						<div class="table-responsive">
+							<table class="table table-lista table-striped table-hover">
+
+								<thead>
+									<tr>
+										<th></th>
+										<th>{{ "MENU.NAME" | translate }}</th>
+										<th>{{ "MENU.DESCRIPTION" | translate }}</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr *ngFor="let impacted, let index of typeOccurrenceRecord.releaseAreas">
+										<td>
+											<mat-checkbox [(ngModel)]="impacted.area.selected"> </mat-checkbox>
+										</td>
+										<td>
+											{{impacted.area.name}}
+										</td>
+										<td>
+											{{impacted.area.description}}
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</div>
+			</div>
+
+			<div class="row form-group">
+				<div class="col-lg-12">
+					<mat-checkbox [(ngModel)]="removeAllReleaseAreas">
+						{{ "CHANGE_RELEASE_AREAS_ALL_RECORDS" | translate }}
+					</mat-checkbox>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="row form-group">
+			<div class="col-lg-6">
+				<h5>{{ "APPROVAL" | translate}}</h5>
+				<mat-checkbox [(ngModel)]="typeOccurrenceRecord.assessmentNeeded" (change)="changeValue()">{{ "REQUIRES_APPROVAL" | translate}} </mat-checkbox>
+			</div>
+			<!-- <div class="col-lg-6">
+				<h5>{{ "DISABLE_RECORDS" | translate}}</h5>
+				<mat-checkbox [(ngModel)]="typeOccurrenceRecord.deactivated" >{{ "DISABLE" | translate}}</mat-checkbox>
+			</div> -->
+		</div>
+
+		<div class="row">
+			<div class="col-lg-12">
+				<h5>{{ "NOTIFICATIONS" | translate}}</h5>
+			</div>
+		</div>
+		<div class="row form-group">
+			<div class="col-lg-3">
+				<mat-checkbox [(ngModel)]="typeOccurrenceRecord.notify" [disabled]="typeOccurrenceRecord.assessmentNeeded == true">{{ "NOTIFY_USERS" | translate}} </mat-checkbox>
+			</div>
+		</div>
+
+		<div *ngIf="typeOccurrenceRecord.notify" class="row form-group">
+			<div class="col-lg-12">
+				<label>{{ "NOTIFICATION_TYPE" | translate}}</label>
+			</div>
+			<div class="col-lg-3">
+				<mat-checkbox [(ngModel)]="selectedVoice">{{ "TELEPHONE_CALL" | translate}} </mat-checkbox>
+			</div>
+			<div class="col-lg-3">
+				<mat-checkbox [(ngModel)]="selectedSms">{{ "TEXT_MESSAGE" | translate}} </mat-checkbox>
+			</div>
+			<div class="col-lg-3">
+				<mat-checkbox [(ngModel)]="selectedWhatsapp">WhatsApp </mat-checkbox>
+			</div>
+			<div class="col-lg-3">
+				<mat-checkbox [(ngModel)]="selectedEmail" [disabled]="true" >{{ "EMAIL" | translate}} </mat-checkbox>
+			</div>
+		</div>
+
+		<div class="col-lg-7">
+			<h5>{{ "COMMENTS" | translate }}*</h5>
+			<div class="textarea-wrapper">
+				<textarea class="input" appearance="outline" style="width: 100%;" pInputTextArea [(ngModel)]="comments" (ngModelChange)="valueChange(comments.length)" maxlength="8000"></textarea>
+				<span class="remaning">{{remainingText}}</span>
+			</div>
+		</div>
+
+		<div class="row form-group">
+			<div class="col-lg-10"></div>
+			<div class="col-lg-2 text-right">
+				<button mat-button  mat-raised-button (click)="sign()"
+					color="primary" type="button" >
+					<span>
+						{{ 'SAVE' | translate }}
+					</span>
+				</button>
+			</div>
+		</div>
+
+    </div>
+</div>

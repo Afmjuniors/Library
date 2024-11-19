@@ -1,0 +1,231 @@
+<div class="my-container">
+	<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '0px' }"></ngx-loading>
+</div>
+<div class="kt-portlet">
+	<div class="kt-portlet__head kt-portlet__head__custom">
+		<div class="kt-portlet__head-label">
+			<h3 class="kt-portlet__head-title">{{ "NEW_RECORD" | translate}}</h3>
+		</div>
+	</div>
+
+	<div class="kt-portlet__body p-t-0">
+
+		<div class="row">
+			<div class="col-lg-6">
+				<mat-form-field class="full-width">
+					<mat-label>Tag*</mat-label>
+					<input matInput autocomplete="off" [(ngModel)]="typeOccurrenceRecord.tag">
+				</mat-form-field>
+			</div>
+			<div class="col-lg-3">
+				<mat-form-field class="full-width">
+					<mat-select placeholder="{{ 'MENU.PROCESS' | translate }}*"
+						(selectionChange)="loadListAreas($event.value)">
+						<mat-option *ngFor="let item of processes" [value]="item.processId">
+							{{item.acronym}} - {{item.description}}
+						</mat-option>
+					</mat-select>
+				</mat-form-field>
+			</div>
+			<div class="col-lg-3">
+				<mat-form-field class="full-width">
+					<mat-select placeholder="{{ 'MENU.AREA' | translate }}*" [(ngModel)]="typeOccurrenceRecord.areaId"
+						class="full-width">
+						<mat-option *ngFor="let area of typeOccurrenceRecord.areas" [value]="area.areaId">
+							{{area.name}} - {{area.description}}
+						</mat-option>
+					</mat-select>
+				</mat-form-field>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-6">
+				<mat-form-field class="full-width">
+					<mat-label>{{ 'MENU.DESCRIPTION' | translate }}*</mat-label>
+					<input matInput [(ngModel)]="typeOccurrenceRecord.description" class="full-width">
+				</mat-form-field>
+			</div>
+			<div class="col-lg-3">
+				<mat-form-field class="full-width">
+					<mat-select placeholder="{{ 'MENU.TYPE' | translate }}*" [(ngModel)]="typeOccurrenceRecord.typeOccurrenceId" class="full-width">
+						<mat-option value="1">{{ "ALARM" | translate }}</mat-option>
+						<mat-option value="2">{{ "EVENT" | translate }}</mat-option>
+						<mat-option value="3">{{ "WARNING" | translate }}</mat-option>
+						<mat-option value="4">{{ "MENU.MESSAGE" | translate }}</mat-option>
+					</mat-select>
+				</mat-form-field>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-lg-3">
+				<mat-form-field class="full-width">
+					<mat-select placeholder="{{ 'MENU.UNIT' | translate }}" [(ngModel)]="typeOccurrenceRecord.unitId"
+						class="full-width">
+						<mat-option *ngFor="let unit of units" [value]="unit.unitId">
+							{{unit.acronym}} - {{unit.description}}
+						</mat-option>
+					</mat-select>
+				</mat-form-field>
+			</div>
+			<div class="col-lg-3">
+				<mat-checkbox [(ngModel)]="typeOccurrenceRecord.getExtremeValue">{{ "GET_EXTREME_VALUE" | translate }}</mat-checkbox>
+			</div>
+			<div class="col-lg-3" *ngIf="typeOccurrenceRecord.getExtremeValue == true">
+				<mat-form-field class="full-width">
+					<mat-label>{{ "COMPENSATION_VALUE" | translate }}*</mat-label>
+					<input matInput [(ngModel)]="typeOccurrenceRecord.compensationValue" autocomplete="off" class="full-width">
+				</mat-form-field>
+			</div>
+			<div class="col-lg-3" *ngIf="typeOccurrenceRecord.getExtremeValue == true">
+				<mat-form-field class="full-width">
+					<mat-label>{{ "DEVICE_TAG" | translate }}*</mat-label>
+					<input matInput [(ngModel)]="typeOccurrenceRecord.tagDevice" autocomplete="off" class="full-width">
+				</mat-form-field>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-lg-12 text-center">
+				<h5>{{ "IMPACTED_AREAS" | translate}}</h5>
+			</div>
+		</div>
+		<div class="row form-group">
+			<div class="col-lg-5" style="max-height: 250px; overflow-y: auto;">
+				<div class="mat-table__wrapper">
+					<div class="table-responsive">
+						<table class="table table-lista table-striped table-hover">
+
+							<thead>
+								<tr>
+									<th></th>
+									<th>{{ "MENU.NAME" | translate }}</th>
+									<th>{{ "MENU.DESCRIPTION" | translate }}</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let area, let index of impactedAreas">
+									<td>
+										<mat-checkbox [(ngModel)]="area.selected"></mat-checkbox>
+									</td>
+									<td>
+										{{area.name}}
+									</td>
+									<td>
+										{{area.description}}
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-lg-1" style="padding-top: 5%;">
+				<div style="padding: 5%;">
+					<button mat-raised-button (click)="addImpactedArea()" color="primary" type="button">
+						<span>
+							>>
+						</span>
+					</button>
+				</div>
+				<div style="padding: 5%;">
+					<button mat-raised-button (click)="removeImpactedArea()" color="primary" type="button">
+						<span>
+							<<
+						</span>
+					</button>
+				</div>
+			</div>
+
+			<div class="col-lg-5" style="max-height: 250px; overflow-y: auto;">
+				<div class="mat-table__wrapper">
+					<div class="table-responsive">
+						<table class="table table-lista table-striped table-hover">
+
+							<thead>
+								<tr>
+									<th></th>
+									<th>{{ "MENU.NAME" | translate }}</th>
+									<th>{{ "MENU.DESCRIPTION" | translate }}</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let impacted, let index of typeOccurrenceRecord.impactedAreas">
+									<td>
+										<mat-checkbox [(ngModel)]="impacted.area.selected"> </mat-checkbox>
+									</td>
+									<td>
+										{{impacted.area.name}}
+									</td>
+									<td>
+										{{impacted.area.description}}
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row form-group">
+			<div class="col-lg-6">
+				<h5>{{ "APPROVAL" | translate}}</h5>
+				<mat-checkbox [(ngModel)]="typeOccurrenceRecord.assessmentNeeded"  (change)="changeValue()">{{ "REQUIRES_APPROVAL" | translate}} </mat-checkbox>
+			</div>
+			<div class="col-lg-6">
+				<h5>{{ "DISABLE_RECORDS" | translate}}</h5>
+				<mat-checkbox [(ngModel)]="typeOccurrenceRecord.deactivated" >{{ "DISABLE" | translate}}</mat-checkbox>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-lg-12">
+				<h5>{{ "NOTIFICATIONS" | translate}}</h5>
+			</div>
+		</div>
+		<div class="row form-group">
+			<div class="col-lg-3">
+				<mat-checkbox [(ngModel)]="typeOccurrenceRecord.notify" [disabled]="typeOccurrenceRecord.assessmentNeeded == true">{{ "NOTIFY_USERS" | translate}} </mat-checkbox>
+			</div>
+		</div>
+
+		<div *ngIf="typeOccurrenceRecord.notify" class="row form-group">
+			<div class="col-lg-12">
+				<label>{{ "NOTIFICATION_TYPE" | translate}}</label>
+			</div>
+			<div class="col-lg-3">
+				<mat-checkbox [(ngModel)]="selectedVoice">{{ "TELEPHONE_CALL" | translate}} </mat-checkbox>
+			</div>
+			<div class="col-lg-3">
+				<mat-checkbox [(ngModel)]="selectedSms">{{ "TEXT_MESSAGE" | translate}} </mat-checkbox>
+			</div>
+			<div class="col-lg-3">
+				<mat-checkbox [(ngModel)]="selectedWhatsapp">WhatsApp </mat-checkbox>
+			</div>
+			<div class="col-lg-3">
+				<mat-checkbox [(ngModel)]="selectedEmail" [disabled]="true" >{{ "EMAIL" | translate}} </mat-checkbox>
+			</div>
+		</div>
+
+		<div class="col-lg-7">
+			<h5>{{ "COMMENTS" | translate }}*</h5>
+			<div class="textarea-wrapper">
+				<textarea class="input" appearance="outline" style="width: 100%;" pInputTextArea [(ngModel)]="comments" (ngModelChange)="valueChange(comments.length)" maxlength="8000"></textarea>
+				<span class="remaning">{{remainingText}}</span>
+			</div>
+		</div>
+
+		<div class="row form-group">
+			<div class="col-lg-10"></div>
+			<div class="col-lg-2 text-right">
+				<button mat-button  mat-raised-button (click)="sign()"
+					color="primary" type="button" >
+					<span>
+						{{ 'SAVE' | translate }}
+					</span>
+				</button>
+			</div>
+		</div>
+	</div>
+</div>

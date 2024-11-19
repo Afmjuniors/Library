@@ -1,0 +1,46 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Worker">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <UserSecretsId>dotnet-NN.Checklist.Collector-B58C61F4-E102-48E5-8268-022BD180387A</UserSecretsId>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Hosting.WindowsServices" Version="8.0.1" />
+    <PackageReference Include="Serilog" Version="2.12.0" />
+    <PackageReference Include="Serilog.Sinks.Console" Version="4.1.0" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\NN.Checklist.Common\NN.Checklist.Common.csproj" />
+    <ProjectReference Include="..\NN.Checklist.Domain.DTO\NN.Checklist.Domain.DTO.csproj" />
+    <ProjectReference Include="..\NN.Checklist.Domain.Repositories.Specifications\NN.Checklist.Domain.Repositories.Specifications.csproj" />
+    <ProjectReference Include="..\NN.Checklist.Domain.Repositories.TextFile\NN.Checklist.Domain.Repositories.TextFile.csproj" />
+    <ProjectReference Include="..\NN.Checklist.Domain.Repositories\NN.Checklist.Domain.Repositories.csproj" />
+    <ProjectReference Include="..\NN.Checklist.Domain.Services.Specifications\NN.Checklist.Domain.Services.Specifications.csproj" />
+    <ProjectReference Include="..\NN.Checklist.Domain.Services\NN.Checklist.Domain.Services.csproj" />
+    <ProjectReference Include="..\NN.Checklist.Domain\NN.Checklist.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="TDCore.Core">
+      <HintPath>..\..\binaries\TDCore.Core\Release\net8.0\TDCore.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="TDCore.Data">
+      <HintPath>..\..\binaries\TDCore.Data\Release\net8.0\TDCore.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="TDCore.DependencyInjection">
+      <HintPath>..\..\binaries\TDCore.DependencyInjection\Release\net8.0\TDCore.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="TDCore.Domain">
+      <HintPath>..\..\binaries\TDCore.Domain\Release\net8.0\TDCore.Domain.dll</HintPath>
+    </Reference>
+    <Reference Include="TDCore.Logging">
+      <HintPath>..\..\binaries\TDCore.Logging\Release\net8.0\TDCore.Logging.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

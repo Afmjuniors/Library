@@ -1,0 +1,153 @@
+<div class="my-container">
+	<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '0px' }"></ngx-loading>
+</div>
+<kt-portlet>
+	<!-- PORTLET LOADING | Binded to TABLE Datasource -->
+	<!-- See prop => '~/core/_crud/models/data-sources/_base.datasource.ts' (loading$) -->
+	<kt-portlet-header [title]="'MENU.AREAS' | translate " [class]="'kt-portlet__head--lg'">
+	</kt-portlet-header>
+
+	<!-- end::Header -->
+
+	<kt-portlet-body>
+		<kt-alert *ngIf="error" type="warn" [duration]="5000" [showCloseButton]="true">
+			{{errorMessage}}
+		</kt-alert>
+		<div class="row">
+			<div class="col-lg-12">
+				<div class="col-lg-3" style="float: left;">
+					<div class="kt-form kt-margin-b-30" >
+						<ng-container ktPortletTools>
+							<button (click)="addArea()" mat-raised-button
+								color="primary" type="button">
+								<span translate="MENU.NEW"></span>
+							</button>
+							<!-- Buttons (Material Angular) | See off.documenations 'https://material.angular.io/components/button/overview' -->
+							<!-- mat-raised-button | Rectangular contained button w/ elevation  -->
+						</ng-container>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-lg-12" style="padding-bottom: 10px;">
+				<mat-accordion>
+					<mat-expansion-panel>
+						<mat-expansion-panel-header>
+							<mat-panel-title>
+								{{ 'MENU.FILTERS' | translate }}
+
+							</mat-panel-title>
+						</mat-expansion-panel-header>
+
+						<div class="row">
+							<div class="col-md-10">
+								<div class="row">
+									<div class="col-md-3">
+										<mat-form-field class="full-width">
+											<mat-select placeholder="{{ 'MENU.PROCESS' | translate }}" [(ngModel)]="filter.processId"
+												class="full-width">
+												<mat-option value="0"></mat-option>
+												<mat-option *ngFor="let item of processes" [value]="item.processId">
+													{{item.acronym}} - {{item.description}}
+												</mat-option>
+											</mat-select>
+										</mat-form-field>
+									</div>
+									<div class="col-md-3">
+										<mat-form-field class="full-width">
+											<mat-label>{{ "MENU.NAME" | translate }}</mat-label>
+											<input type="text" matInput autocomplete="off" [(ngModel)]="filter.name">
+										</mat-form-field>
+									</div>
+									<div class="col-md-3">
+										<mat-form-field class="full-width">
+											<mat-label>{{ "MENU.DESCRIPTION" | translate }}</mat-label>
+											<input type="text" matInput autocomplete="off" [(ngModel)]="filter.description">
+										</mat-form-field>
+									</div>
+								</div>
+
+							</div>
+							<div class="col-md-2">
+								<div class="row">
+									<div class="col-md-12" style="padding: 10px;">
+										<button mat-button (click)="applyFilters()" style="height: 50px; width: 100%;"
+											mat-raised-button color="primary" type="button">
+											<span>{{ 'MENU.FILTER' | translate }}</span>
+										</button>
+									</div>
+									<div class="col-md-12" style="padding: 10px;">
+										<button mat-button (click)="limparFiltros()" style="height: 50px; width: 100%;"
+											mat-raised-button color="default" type="button">
+											<span>{{ 'MENU.CLEAR' | translate }}</span>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</mat-expansion-panel>
+				</mat-accordion>
+
+			</div>
+		</div>
+
+		<div class="mat-table__wrapper">
+			<mat-table class="lmat-elevation-z8" #table [dataSource]="dataSource" matSort #sort1="matSort"
+				matSortActive="id" matSortDirection="asc" matSortDisableClear>
+				<!-- Checkbox Column -->
+
+				<!-- Table with selection -->
+				<!-- https://run.stackblitz.com/api/angular/v1?file=app%2Ftable-selection-example.ts -->
+				<ng-container matColumnDef="name">
+					<mat-header-cell *matHeaderCellDef>{{ "MENU.AREAS" | translate }}</mat-header-cell>
+					<mat-cell *matCellDef="let area">{{area.name}}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="edit">
+					<mat-header-cell *matHeaderCellDef>{{ "MENU.ACTIONS" | translate }}</mat-header-cell>
+					<mat-cell *matCellDef="let area">
+						<button mat-icon-button color="primary" (click)="editArea(area)">
+							<mat-icon>create</mat-icon>
+						</button>
+					</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="description">
+					<!-- ATTRIBUTE mat-sort-header  for sorting | https://material.angular.io/components/sort/overview -->
+					<mat-header-cell *matHeaderCellDef mat-sort-header>{{ "MENU.DESCRIPTION" | translate }}
+					</mat-header-cell>
+					<mat-cell *matCellDef="let area">{{area.description}}</mat-cell>
+				</ng-container>
+				<ng-container matColumnDef="process">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>{{ "MENU.PROCESS" | translate }}</mat-header-cell>
+					<mat-cell *matCellDef="let area">{{area.process.description}}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="action">
+					<mat-header-cell *matHeaderCellDef mat-sort-header>{{ "PHONES" | translate }}</mat-header-cell>
+					<mat-cell *matCellDef="let area">
+						<button mat-icon-button color="primary" (click)="viewDetailsPhones(area)">
+							<mat-icon>phone</mat-icon>
+						</button>
+					</mat-cell>
+				</ng-container>
+
+				<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+				<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+			</mat-table>
+
+			<div class="mat-table__message" *ngIf="!dataSource.hasItems">{{ "MENU.NO_RECORDS" | translate }}</div>
+			<!-- Message for empty data  -->
+			<div class="mat-table__message" *ngIf="dataSource.isPreloadTextViewed$ | async">{{ "MENU.PLEASE_WAIT" | translate }}</div>
+		</div>
+		<div class="mat-table__bottom">
+			<mat-spinner [color]="'primary'" [diameter]="20" *ngIf="dataSource.loading$ | async"></mat-spinner>
+			<mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" [length]="dataSource.paginatorTotal$ | async"
+				[showFirstLastButtons]="true"></mat-paginator>
+		</div>
+	</kt-portlet-body>
+	<!-- end::Body -->
+</kt-portlet>

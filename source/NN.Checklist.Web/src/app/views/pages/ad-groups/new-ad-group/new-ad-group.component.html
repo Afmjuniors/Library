@@ -1,0 +1,98 @@
+<div class="my-container">
+	<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '0px' }"></ngx-loading>
+</div>
+<div class="kt-portlet">
+	<div class="kt-portlet__head kt-portlet__head__custom">
+		<div class="kt-portlet__head-label">
+			<h3 class="kt-portlet__head-title">{{ "ACCESS_PROFILES" | translate }}</h3>
+		</div>
+	</div>
+	<div class="kt-form" autocomplete="off">
+		<div class="kt-portlet__body p-t-0">
+			<div class="form-group kt-form__group d-block">
+				<div class="row">
+					<div class="col-lg-6">
+						<mat-form-field class="full-width">
+							<mat-label>{{ "MENU.NAME" | translate }}</mat-label>
+							<input type="text" matInput autocomplete="off" [(ngModel)]="adGroup.name">
+						</mat-form-field>
+					</div>
+				</div>
+
+				<div class="row form-group">
+					<div class="col-lg-3">
+						<mat-checkbox [(ngModel)]="adGroup.administrator">{{ "ADMINISTRATOR" | translate }}</mat-checkbox>
+					</div>
+					<div class="col-lg-3">
+						<mat-checkbox [(ngModel)]="adGroup.maintenance">{{ "MAINTENANCE" | translate }}</mat-checkbox>
+					</div>
+					<div class="col-lg-3">
+						<mat-checkbox [(ngModel)]="adGroup.impactAnalyst">{{ "MENU.IMPACT_ANALYSIS" | translate }}</mat-checkbox>
+					</div>
+					<div class="col-lg-3">
+						<mat-checkbox [(ngModel)]="adGroup.qaAnalyst">{{ "QA_ANALYSIS" | translate }}</mat-checkbox>
+					</div>
+				</div>
+
+				<div class="row form-group">
+					<div class="col-lg-6">
+						<mat-form-field class="full-width">
+							<mat-label>{{ "Permissions" | translate }}</mat-label>
+							<mat-select  [(ngModel)]="permission">
+								<mat-option *ngFor="let item of permissions" [value]="item">
+									{{item.description}}
+								</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+					<div class="col-lg-1">
+						<button (click)="addPermission()" mat-raised-button color="primary"
+							type="button">
+							<span>+</span>
+						</button>
+					</div>
+				</div>
+
+				<div class="row">
+					<mat-chip-list #chipList aria-label="Permissions" >
+						<mat-chip style="margin-left: 12px;" *ngFor="let permission of adGroup.permissions" [selectable]="selectable" [removable]="removable">
+							{{permission.description}}
+							&nbsp;&nbsp;&nbsp;
+							<mat-icon matChipRemove *ngIf="removable" (click)="remove(permission)" matTooltip="Remover">cancel</mat-icon>
+
+						</mat-chip>
+					</mat-chip-list>
+				</div>
+
+				<div class="row">
+					<div class="col-lg-12">
+						<h5>{{ "COMMENTS" | translate }}*</h5>
+						<div class="textarea-wrapper">
+							<textarea class="input" appearance="outline" style="width: 100%;" pInputTextArea
+								[(ngModel)]="comments" (ngModelChange)="valueChange(comments.length)"
+								maxlength="8000"></textarea>
+							<span class="remaning">{{remainingText}}</span>
+						</div>
+					</div>
+				</div>
+
+			</div>
+		</div>
+		<div class="kt-portlet__foot kt-portlet__foot--fit kt-portlet__no-border">
+			<div class="kt-form__actions kt-form__actions--solid">
+				<div class="row text-right">
+					<div class="col-lg-12">
+						<button  type="button" mat-raised-button cdkFocusInitial
+							matTooltip="Cancel changes"  (click)="closeModal()">
+							{{ 'AUTH.GENERAL.CANCEL' | translate }}
+						</button>&nbsp;
+						<button type="button" mat-raised-button color="primary"
+							matTooltip="Salvar" (click)="sign()">
+							{{ 'SAVE' | translate }}
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

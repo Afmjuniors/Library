@@ -1,0 +1,133 @@
+<div class="kt-portlet">
+	<div class="kt-portlet__head kt-portlet__head__custom">
+		<div class="kt-portlet__head-label">
+			<h3 class="kt-portlet__head-title">{{ "AUTH.QA_OVERVIEW.DETAILS.TITLE" | translate }}</h3>
+		</div>
+	</div>
+	<div class="kt-portlet__body p-t-0">
+		<div class="card">
+			<div class="row form-group">
+				<div class="col-lg-11">
+					<h5>{{ "OCCURRENCE_RECORD_DETAILS" | translate}}</h5>
+				</div>
+			</div>
+			<div class="row form-group">
+				<div class="col-lg-3">
+					<label>TAG</label><br />
+					<span>{{occurrenceDetails.alarm}} </span>
+				</div>
+				<div class="col-lg-3">
+					<label>{{ "MENU.DESCRIPTION" | translate }}</label><br />
+					<span>{{occurrenceDetails.description}} </span>
+				</div>
+				<div class="col-lg-3">
+					<label>Node</label><br />
+					<span>{{occurrenceDetails.node}}</span>
+				</div>
+			</div>
+			<div class="row form-group">
+				<div class="col-lg-3">
+					<label>{{ "MENU.PROCESS" | translate }}</label><br />
+					<span>{{occurrenceDetails.process}}</span>
+				</div>
+				<div class="col-lg-3">
+					<label>{{ "MENU.AREA" | translate }}</label><br />
+					<span>{{occurrenceDetails.area}}</span>
+				</div>
+				<div class="col-lg-3">
+					<label>{{ "MENU.START_DATE" | translate }} </label><br />
+					<span>{{occurrenceDetails.dateStart | date:'yyyy-MM-dd HH:mm:ss'}} </span>
+				</div>
+				<div class="col-lg-3">
+					<label>{{ "MENU.END_DATE" | translate }}</label><br />
+					<span>{{occurrenceDetails.dateEnd | date:'yyyy-MM-dd HH:mm:ss'}}</span>
+				</div>
+			</div>
+			<div class="row form-group">
+				<div class="col-lg-3">
+					<label>{{ "MENU.WORST_CASE" | translate }}</label><br />
+					<span>{{occurrenceDetails.extremeValue}}</span>
+				</div>
+				<div class="col-lg-3">
+					<label>{{ "MENU.UNIT" | translate }}</label><br />
+					<span>{{occurrenceDetails.unit}} </span>
+				</div>
+			</div>
+
+		</div>
+
+		<div class="card">
+			<div class="row form-group">
+				<div class="col-lg-12">
+					<h5>{{ "MENU.IMPACT_ANALYSIS" | translate }}</h5>
+				</div>
+			</div>
+			<div class="row form-group">
+				<div class="col-lg-3">
+					<label>{{ "MENU.RESPONSIBLE" | translate }}</label><br />
+					<span>{{occurrenceDetails.lastUserNameImpacts}}</span>
+				</div>
+				<div class="col-lg-3">
+					<label>{{ "MENU.DATE" | translate }}</label><br />
+					<span>{{occurrenceDetails.lastDateTimeImpacts | date:'yyyy-MM-dd HH:mm:ss'}} </span>
+				</div>
+				<div class="col-lg-3">
+					<label>{{ "AUTH.QA_OVERVIEW.TABLE.CAUSESIMPACTS" | translate }}</label><br />
+					<input type="checkbox" onclick="return false" [ngModel]="occurrenceDetails.lastCausesImpacts" />
+				</div>
+			</div>
+			<div class="row form-group">
+				<div class="col-lg-12">
+					<label>{{ "MENU.ANALYSIS" | translate }}</label><br />
+					<p>{{occurrenceDetails.lastImpactDetails}}</p>
+				</div>
+			</div>
+		</div>
+
+		<hr />
+		<div class="card mb-3">
+			<div class="row">
+				<div class="col-lg-12">
+					<label>{{ "MENU.SUBSCRIPTION_HISTORY" | translate }}</label>
+					<div class="table-responsive">
+						<table class="table table-lista table-striped table-hover">
+
+							<thead>
+								<tr>
+									<th>{{ "MENU.SIGNATURE_DATE" | translate }}</th>
+									<th>{{ "AUTH.QA_OVERVIEW.TABLE.TYPE" | translate }}</th>
+									<th>{{ "MENU.RESPONSIBLE" | translate }}</th>
+									<th>{{ "MENU.STATUS" | translate }}</th>
+									<th>{{ "MENU.ANALYSIS" | translate }}</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr *ngFor="let item of occurrenceFlux">
+									<td>
+										{{ item.dateTime | date:'yyyy-MM-dd HH:mm:ss'}}
+									</td>
+									<td>
+										{{item.type}}
+									</td>
+									<td>
+										{{item.initials}}
+									</td>
+									<td>
+										{{item.resultText}}
+									</td>
+									<td>
+										<span *ngIf="item.comments.length <= 20">
+											{{item.comments }}
+										</span>
+										<mat-icon class="view" *ngIf="item.comments.length > 20" (click)="viewSignatureDetails(item)">visibility</mat-icon>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,1256 @@
+[
+	{
+		"key": "TwilioApi",
+		"value": "https://api.twilio.com"
+	},
+	{
+		"key": "TwilioResource",
+		"value": "2010-04-01/Accounts/{0}"
+	},
+	{
+		"key": "LoginProcessStarted",
+		"value": "Login process started - User: {0}"
+	},
+	{
+		"key": "LoginADProcessStarted",
+		"value": "Login process using AD started."
+	},
+	{
+		"key": "LoginGenKeyProcessStarted",
+		"value": "Login process for generate a token started."
+	},
+	{
+		"key": "UserCreated",
+		"value": "New user created: '{0}' groups: '{1}'"
+	},
+	{
+		"key": "UserNotAllowed",
+		"value": "User not allowed: '{0}'"
+	},
+	{
+		"key": "InvalidUser",
+		"value": "Invalid User"
+	},
+	{
+		"key": "LoginFail",
+		"value": "Failed to authenticate. {0}"
+	},
+	{
+		"key": "LoginPermissionFail",
+		"value": "User does not have permission to access the system."
+	},
+	{
+		"key": "LoginSuccess",
+		"value": "Successfully logged in. User {0}"
+	},
+	{
+		"key": "LoginFailAdmin",
+		"value": "Administrator password is invalid."
+	},
+	{
+		"key": "LoginTokenGenerateFail",
+		"value": "Failed to generate Access Token!"
+	},
+	{
+		"key": "LanguageChangeError",
+		"value": "Failed to change language, user not found."
+	},
+	{
+		"key": "LanguageChangeSuccess",
+		"value": "Language change successfully"
+	},
+	{
+		"key": "InsertDBParameterSuccess",
+		"value": "Data base configuration parameters inserted successfully."
+	},
+	{
+		"key": "InsertDBParameterByUser",
+		"value": "Data base configuration parameters inserted by "
+	},
+	{
+		"key": "InsertDBParameterSuccess",
+		"value": "Data base configuration parameters inserted by "
+	},
+	{
+		"key": "InsertDomainParameterSuccess",
+		"value": "Domain configuration parameters inserted successfully."
+	},
+	{
+		"key": "InsertPolicyParameterSuccess",
+		"value": "Policy configuration parameters inserted successfully."
+	},
+	{
+		"key": "InsertPolicyParameterByUser",
+		"value": "Policy configuration parameters inserted by "
+	},
+	{
+		"key": "ParameterReturnSuccess",
+		"value": "Parameters obtained successfully"
+	},
+	{
+		"key": "ParameterReturnFail",
+		"value": "Failed to get Parameter"
+	},
+	{
+		"key": "InactivityTimeInvalid",
+		"value": "Time informed is invalid."
+	},
+	{
+		"key": "TimeResendAlarmsNotificationInvalid",
+		"value": "Notification resend time is invalid."
+	},
+	{
+		"key": "MessageNotificationExpirationTimeInvalid",
+		"value": "Message notification expiration time invalid."
+	},
+	{
+		"key": "ScreenUpdateTimeInvalid",
+		"value": "Screen update time invalid."
+	},
+	{
+		"key": "AdminUserInvalid",
+		"value": "Value admin username is invalid."
+	},
+	{
+		"key": "AdminPasswordInvalid",
+		"value": "Value admin password is invalid."
+	},
+	{
+		"key": "DomainNotProvided",
+		"value": "Domain not provided"
+	},
+	//Export Tabela alertas
+	{
+		"key": "ExportColumnTag",
+		"value": "Alarm TAG"
+	},
+	{
+		"key": "ExportColumnMessage",
+		"value": "Message"
+	},
+	{
+		"key": "ExportColumnStatus",
+		"value": "Status"
+	},
+	{
+		"key": "TagDevice",
+		"value": "Tag Equipamento"
+	},
+	{
+		"key": "ExportColumnProcess",
+		"value": "Process"
+	},
+	{
+		"key": "ExportColumnImpactedAreas",
+		"value": "Áreas Impactadas"
+	},
+	{
+		"key": "ExportColumnImpactedArea",
+		"value": "Impacted Area"
+	},
+	{
+		"key": "ExportColumnArea",
+		"value": "Area"
+	},
+	{
+		"key": "ExportColumnDthStart",
+		"value": "Start Date"
+	},
+	{
+		"key": "ExportColumnDthRecord",
+		"value": "Record Date"
+	},
+	{
+		"key": "ExportColumnDthAck",
+		"value": "Ack Date"
+	},
+	{
+		"key": "ExportColumnAckUser",
+		"value": "Ack User"
+	},
+	{
+		"key": "ExportColumnDthEnd",
+		"value": "End Date"
+	},
+	{
+		"key": "ExportColumnSystemNode",
+		"value": "System Node"
+	},
+	{
+		"key": "ExportColumnAlarmId",
+		"value": "Alarm Id"
+	},
+	{
+		"key": "ExportColumnCompensationValue",
+		"value": "Compensation Value"
+	},
+	{
+		"key": "ExportColumnExtremeValue",
+		"value": "Extreme Value"
+	},
+	{
+		"key": "ExportNotificationTypes",
+		"value": "Notification Types"
+	},
+	{
+		"key": "ExportColumnExtremeTimestamp",
+		"value": "Extreme Value Timestamp"
+	},
+	{
+		"key": "ExportColumnCategory",
+		"value": "Category"
+	},
+	{
+		"key": "ExportColumnTypeOccurrenceRecordId",
+		"value": "Type Occurrence Record Id"
+	},
+	{
+		"key": "ExportColumnDescription",
+		"value": "Description"
+	},
+	{
+		"key": "ExportColumnComment",
+		"value": "Comment"
+	},
+	{
+		"key": "ExportColumnResponsible",
+		"value": "Responsible"
+	},
+	{
+		"key": "ExportColumnTypeQuality",
+		"value": "Quality"
+	},
+	{
+		"key": "ExportColumnTypeSeverity",
+		"value": "Severity"
+	},
+	{
+		"key": "ExportColumnTypeOccurrenceRecordGroup",
+		"value": "Occurrence Record Group"
+	},
+	{
+		"key": "ExportColumnTypeState",
+		"value": "State"
+	},
+	{
+		"key": "ExportColumnTypeOccurrence",
+		"value": "Occurrence Type"
+	},
+	{
+		"key": "ExportColumnTypeUnit",
+		"value": "Unit"
+	},
+	{
+		"key": "ExportColumnTypeOldValue",
+		"value": "Old Value"
+	},
+	{
+		"key": "ExportColumnTypeNewValue",
+		"value": "New Value"
+	},
+	{
+		"key": "ExportColumnManuallyAdded",
+		"value": "Manual"
+	},
+	{
+		"key": "ExportColumnManuallyAddedResponsible",
+		"value": "Initials"
+	},
+	{
+		"key": "ExportColumnLastCondition",
+		"value": "Last Condition"
+	},
+	{
+		"key": "ExportColumnAnalisysDateTime",
+		"value": "Analisys Date Time"
+	},
+	{
+		"key": "ExportColumnAnalisysStage",
+		"value": "Analisys Stage"
+	},
+	{
+		"key": "ExportColumnAnalysisResult",
+		"value": "Result"
+	},
+	{
+		"key": "ExportColumnAssessmentNeeded",
+		"value": "Assessment Needed?"
+	},
+	{
+		"key": "ExportColumnNotify",
+		"value": "Notificar?"
+	},
+	{
+		"key": "ExportColumnFinishedAlarms",
+		"value": "Finished Alarms?"
+	},
+	//mail
+	{
+		"key": "SendExportedAlertMailBody",
+		"value": "{0}<br /><br />Novo Nordisk<br />"
+	},
+	{
+		"key": "SendExportedEventMailBody",
+		"value": "{0}<br /><br />Novo Nordisk<br />"
+	},
+	{
+		"key": "SendExportedAlertMailSubject",
+		"value": "[No-Reply] Scada Remote Monitoring - Report"
+	},
+	{
+		"key": "SendExportedEventMailSubject",
+		"value": "[No-Reply] Scada Remote Monitoring - Report"
+	}, ///Report
+	{
+		"key": "ReportFooter",
+		"value": "Report generated by: {0} on {1} Page {2} of {3}."
+	},
+	{
+		"key": "ReportTitleAlert",
+		"value": "Alarm occurrences"
+	},
+	{
+		"key": "ReportTitleTypesOccurrences",
+		"value": "Types Occurrences Records"
+	},
+	{
+		"key": "ImpactAnalysisReportTitle",
+		"value": "Impacts Analysis"
+	},
+	{
+		"key": "ReportTitleEvent",
+		"value": "Event occurrences"
+	},
+	{
+		"key": "ReportSubtitleAlert",
+		"value": "Alert occurrences based on search filters"
+	},
+	{
+		"key": "ReportSubtitleTypesOccurrences",
+		"value": "Types occurrences based on search filters"
+	},
+	{
+		"key": "ReportSubtitleEvent",
+		"value": "Event occurrences basaed on search filters"
+	},
+	{
+		"key": "ImportOccurrencesErrorNoDataFound",
+		"value": "Row {0}: no data found or data missing"
+	},
+	{
+		"key": "ImportOccurrencesErrorTagMissing",
+		"value": "Row {0}: Tag missing"
+	},
+	{
+		"key": "ImportOccurrencesErrorAssessmentNeededMissing",
+		"value": "Row {0}: Assessment Needed? missing"
+	},
+	{
+		"key": "ImportOccurrencesErrorAssessmentNeededInvalid",
+		"value": "Row {0}: Assessment Needed? invalid: '{1}'"
+	},
+	{
+		"key": "ImportOccurrencesErrorNotificationFrequencyMistake",
+		"value": "Row {0}: Notification Frequency invalid: '{1}'"
+	},
+	{
+		"key": "ImportOccurrencesErrorNotifyMissing",
+		"value": "Row {0}: Notify? missing"
+	},
+	{
+		"key": "ImportOccurrencesErrorNotifyInvalid",
+		"value": "Row {0}: Notify? invalid: '{1}'"
+	},
+	{
+		"key": "ImportOccurrencesErrorAreaNotIdentified",
+		"value": "Row {0}: Area not identified: '{1}'"
+	},
+	{
+		"key": "ImportOccurrencesErrorTypeOccurrenceLevelNotIdentified",
+		"value": "Row {0}: Type Occurrence Level not identified: '{1}'"
+	},
+	{
+		"key": "ImportOccurrencesError",
+		"value": "Row {0}: {1}"
+	},
+	{
+		"key": "DataDomainError",
+		"value": "Data Validation Error"
+	},
+	{
+		"key": "TypeOccurrenceRecord001",
+		"value": "Invalid id"
+	},
+	{
+		"key": "TypeOccurrenceRecord002",
+		"value": "Tag"
+	},
+	{
+		"key": "TypeOccurrenceRecord003",
+		"value": "Tag missing"
+	},
+	{
+		"key": "TypeOccurrenceRecord004",
+		"value": "Area"
+	},
+	{
+		"key": "TypeOccurrenceRecord005",
+		"value": "Area missing"
+	},
+	{
+		"key": "TypeOccurrenceRecord006",
+		"value": "Deactivation Date"
+	},
+	{
+		"key": "TypeOccurrenceRecord007",
+		"value": "Deactivation Date missing"
+	},
+	{
+		"key": "TypeOccurrenceRecord008",
+		"value": "Notification Frequency"
+	},
+	{
+		"key": "TypeOccurrenceRecord009",
+		"value": "Notification Frequency missing"
+	},
+	{
+		"key": "TypeOccurrenceRecord010",
+		"value": "Engineering Unit"
+	},
+	{
+		"key": "TypeOccurrenceRecord011",
+		"value": "An occurrence of type 'Event' must have an Engineering Unit"
+	},
+	{
+		"key": "TypeOccurrenceRecord012",
+		"value": "Datatype"
+	},
+	{
+		"key": "TypeOccurrenceRecord013",
+		"value": "An occurrence of type 'Event' must have an Datatype"
+	},
+	{
+		"key": "TypeOccurrenceRecord014",
+		"value": "Type Occurrence Level"
+	},
+	{
+		"key": "TypeOccurrenceRecord015",
+		"value": "Type Occurrence Level missing"
+	},
+	{
+		"key": "TypeOccurrenceRecord016",
+		"value": "Type Occurrence Record"
+	},
+	{
+		"key": "TypeOccurrenceRecord017",
+		"value": "Type Occurrence Record already exists with Tag, Level and Area provided"
+	},
+	{
+		"key": "ImportOccurrencesErrorProcessMissing",
+		"value": "Process name missing"
+	},
+	{
+		"key": "FailedToSign",
+		"value": "Signing failed, ocurrence not found"
+	},
+	{
+		"key": "SignedSuccess",
+		"value": "Successfully signed!"
+	},
+	{
+		"key": "FailedToSignNoIds",
+		"value": "Signing failed, there are no ids to approve."
+	},
+	{
+		"key": "FailedToSignDiffUser",
+		"value": "Unable to sign because the user entered is different from the one logged in."
+	},
+	{
+		"key": "Date",
+		"value": "Date"
+	},
+	{
+		"key": "CollectorService001",
+		"value": "Event for tag '{0}'"
+	},
+	{
+		"key": "OccurrenceRecord001",
+		"value": "Invalid Id"
+	},
+	{
+		"key": "OccurrenceRecord002",
+		"value": "Date Time Start"
+	},
+	{
+		"key": "OccurrenceRecord003",
+		"value": "Date Time Start missing"
+	},
+	{
+		"key": "OccurrenceRecord004",
+		"value": "System Node"
+	},
+	{
+		"key": "OccurrenceRecord005",
+		"value": "System Node missing"
+	},
+	{
+		"key": "OccurrenceRecord006",
+		"value": "Type of Occurrence Record"
+	},
+	{
+		"key": "OccurrenceRecord007",
+		"value": "Type of Occurrence Record missing"
+	},
+	{
+		"key": "OccurrenceRecord008",
+		"value": "Type of Event Category"
+	},
+	{
+		"key": "OccurrenceRecord009",
+		"value": "Type of Event Category missing"
+	},
+	{
+		"key": "OccurrenceRecord010",
+		"value": "Message"
+	},
+	{
+		"key": "OccurrenceRecord011",
+		"value": "Message missing"
+	},
+	{
+		"key": "OccurrenceRecord012",
+		"value": "State"
+	},
+	{
+		"key": "OccurrenceRecord013",
+		"value": "State missing"
+	},
+	{
+		"key": "OccurrenceRecord014",
+		"value": "Type of Quality"
+	},
+	{
+		"key": "OccurrenceRecord015",
+		"value": "Type of Quality missing"
+	},
+	{
+		"key": "OccurrenceRecord016",
+		"value": "Type of Severity"
+	},
+	{
+		"key": "OccurrenceRecord017",
+		"value": "Type of Severity missing"
+	},
+	{
+		"key": "OccurrenceRecord018",
+		"value": "Before Value"
+	},
+	{
+		"key": "OccurrenceRecord019",
+		"value": "Before Value missing"
+	},
+	{
+		"key": "OccurrenceRecord020",
+		"value": "New Value"
+	},
+	{
+		"key": "OccurrenceRecord021",
+		"value": "New Value missing"
+	},
+	{
+		"key": "OccurrenceRecord022",
+		"value": "Date/Time Ack"
+	},
+	{
+		"key": "OccurrenceRecord023",
+		"value": "Date/Time Ack must be after the Date/Time Start"
+	},
+	{
+		"key": "OccurrenceRecord024",
+		"value": "Date/Time Ack"
+	},
+	{
+		"key": "OccurrenceRecord025",
+		"value": "Date/Time Ack must be before the Date/Time End"
+	},
+	{
+		"key": "OccurrenceRecord026",
+		"value": "Date/Time End"
+	},
+	{
+		"key": "OccurrenceRecord027",
+		"value": "Date/Time End must be after the Date/Time Start"
+	},
+	{
+		"key": "MessageQueued0001",
+		"value": "Id"
+	},
+	{
+		"key": "MessageQueued0002",
+		"value": "Id missing"
+	},
+	{
+		"key": "MessageQueued0003",
+		"value": "User or Area"
+	},
+	{
+		"key": "MessageQueued0004",
+		"value": "User or Area missing"
+	},
+	{
+		"key": "MessageQueued0005",
+		"value": "Number"
+	},
+	{
+		"key": "MessageQueued0006",
+		"value": "Number missing"
+	},
+	{
+		"key": "MessageQueued0007",
+		"value": "Text"
+	},
+	{
+		"key": "MessageQueued0008",
+		"value": "Text missing"
+	},
+	{
+		"key": "SendMessages001",
+		"value": "Invalid message queued file: {0}"
+	},
+	{
+		"key": "MessagingParameter001",
+		"value": "Message queue path changed from '{0}' to '{1}'"
+	},
+	{
+		"key": "ExportApprovedDate",
+		"value": "Approved Date"
+	},
+	{
+		"key": "ExportResponsible",
+		"value": "Responsible"
+	},
+	{
+		"key": "ExportApprobationState",
+		"value": "Approbation State"
+	},
+	{
+		"key": "ExportQAApprovedTitle",
+		"value": "QA Approbation Report"
+	},
+	{
+		"key": "ANALISYS_STATUS_WAITING_END_OCCURRENCE",
+		"value": "Waiting Occurrence Finish"
+	},
+	{
+		"key": "ANALISYS_STATUS_WAITING_IMPACTS",
+		"value": "Pending Impact Analysis"
+	},
+	{
+		"key": "ANALISYS_STATUS_CAUSES_IMPACTS",
+		"value": "Finished Impact Analysis"
+	},
+	{
+		"key": "ANALISYS_STATUS_DOESNT_CAUSES_IMPACTS",
+		"value": "Finished Impact Analysis"
+	},
+	{
+		"key": "ANALISYS_HAS_IMPACTS",
+		"value": "Has Impacts"
+	},
+	{
+		"key": "ANALISYS_NO_IMPACTS",
+		"value": "No Impacts"
+	},
+	{
+		"key": "ANALISYS_FINISHED",
+		"value": "QA: Analysis Finished"
+	},
+	{
+		"key": "ANALISYS_STATUS_APPROVED",
+		"value": "QA: Analysis Approved"
+	},
+	{
+		"key": "ANALISYS_STATUS_REPROVED",
+		"value": "QA: Analysis Reproved"
+	},
+	{
+		"key": "ANALISYS_STATUS_REPROVED_REVIEW",
+		"value": "Review Impact Analysis"
+	},
+	{
+		"key": "FINISHED_IMPACT_ANALYSIS",
+		"value": "Finished Impact Analisys"
+	},
+	{
+		"key": "FINISHED_QA_ANALYSIS",
+		"value": "Finished QA Analisys"
+	},
+	{
+		"key": "ANALISYS_IMPACTS_NAME",
+		"value": "Impact Analysis"
+	},
+	{
+		"key": "ANALISYS_QA_NAME",
+		"value": "QA Analysis"
+	},
+	{
+		"key": "HasImpacts",
+		"value": "Has Impacts"
+	},
+	{
+		"key": "HasntImpacts",
+		"value": "No Impacts"
+	},
+	{
+		"key": "Approved",
+		"value": "Approved"
+	},
+	{
+		"key": "Reproved",
+		"value": "Reproved"
+	},
+	{
+		"key": "ReprovedReview",
+		"value": "Reproved - Review"
+	},
+	{
+		"key": "SearchingParameters",
+		"value": "Searching Parameters"
+	},
+	{
+		"key": "Process",
+		"value": "Process"
+	},
+	{
+		"key": "Area",
+		"value": "Area"
+	},
+	{
+		"key": "StartDate",
+		"value": "Start Date"
+	},
+	{
+		"key": "EndDate",
+		"value": "End Date"
+	},
+	{
+		"key": "TypeOccurrence",
+		"value": "Type Occurrence"
+	},
+	{
+		"key": "Stage",
+		"value": "Analysis Stage"
+	},
+	{
+		"key": "AlarmMailText",
+		"value": "Id: {0} | Process: {1} | Area: {2}</br>Tag: {3}</br>Message: {4}</br>Start Date: {5}</br>End Date: {6}</br>"
+	},
+	{
+		"key": "AlarmMailSubject1",
+		"value": "{0} There is no users for area {1}/{2}"
+	},
+	{
+		"key": "AlarmMailSubject2",
+		"value": "{0} New alarm occurrence: {1}"
+	},
+	{
+		"key": "InsertRegisterGroup_Empty",
+		"value": "Description is empty"
+	},
+	{
+		"key": "InsertRegisterGroup_Success",
+		"value": "Group '{0}' created succesfuly"
+	},
+	{
+		"key": "InsertRegisterGroup_Exist",
+		"value": "The group name '{0}' already is used, you have to edit that."
+	},
+	{
+		"key": "DeleteRegisterGroup",
+		"value": "Group '{0}' deleted"
+	},
+	{
+		"key": "AlarmSMSText",
+		"value": "{0}[Alert{1}]Tag:{2}|Message:{3}|Start:{4}"
+	},
+	{
+		"key": "AlarmVoiceText",
+		"value": "{0} Alarm occurrence alert at process {1} area {2}: {3}"
+	},
+	{
+		"key": "AlarmWhatsAppText",
+		"value": "There is an occurrence at process {0} on area {1} from Tag: {2} with this message: {3}\r\nOccurrence Start: {4} \r\nOccurrence End: {5}\r\nPlease check it out."
+	},
+	{
+		"key": "NewTypeOccurrenceRecordSubject",
+		"value": "{0} New Type of Occurrence Record {1} - {2} [{3}]. "
+	},
+	{
+		"key": "NewTypeOccurrenceRecordText",
+		"value": "A new Type of Occurrence Record was created for event '{0}'  process {1} area {2} tag [{3}]. Proceed to Scada Remote Monitoring to set it up."
+	},
+	{
+		"key": "NewTypeOccurrenceRecordWhatsAppText",
+		"value": "A new Type of Occurrence Record was created for occurrence '{0}'  process {1} area {2} tag [{3}]. Set it up at Scada Remote Monitoring."
+	},
+	{
+		"key": "NewTypeOccurrenceRecordNotFoundSubject",
+		"value": "Type of Occurrence Record automatically created {0} [{1}]. "
+	},
+	{
+		"key": "NewTypeOccurrenceNotFoundRecordText",
+		"value": "A Type of Occurrence Record for tag [{0}] wasn�t found and was automatically created. Process {1}, message: '{2}'."
+	},
+	{
+		"key": "UndefinedArea",
+		"value": "Undefined area"
+	},
+	{
+		"key": "SearchedRecordsImpactAnalysis",
+		"value": " Searched records for impact analysis"
+	},
+	{
+		"key": "SearchedAlarms",
+		"value": " Searched for alarms"
+	},
+	{
+		"key": "SearchedEvents",
+		"value": " Searched for events"
+	},
+	{
+		"key": "SearchedQA",
+		"value": " Searched records for QA analysis"
+	},
+	{
+		"key": "ViewDetails",
+		"value": " View record details "
+	},
+	{
+		"key": "CollectedAlarms",
+		"value": "Collected alarms: {0} {1}"
+	},
+	{
+		"key": "CollectedEvents",
+		"value": "Collected events: {0} {1}"
+	},
+	{
+		"key": "EmptyTagSubject",
+		"value": "An empty tag alarm was fired"
+	},
+	{
+		"key": "EmptyTagText",
+		"value": "An empty tag alarm was fired. The collected data are: {0}"
+	},
+	{
+		"key": "CollectorRecordMessageSent",
+		"value": "{0}: {1} messages sent by {1} to {2}"
+	},
+	{
+		"key": "QANotificationEmailSubject",
+		"value": "Impact analysis finished for ocurrence [#{0}]"
+	},
+	{
+		"key": "QANotificationEmailText",
+		"value": "Impact Analyst {0} has finished impact analysis for ocurrence [#{1}]. You can proceed with QA Analysis for this occurrence."
+	},
+	{
+		"key": "NoQANotificationEmailSubject",
+		"value": "No QA for impacted area - ocurrence [#{0}]"
+	},
+	{
+		"key": "NoQANotificationEmailText",
+		"value": "Impact Analyst {0} has finished impact analysis for ocurrence [#{1}], but there's none QA for the areas: '{2}'."
+	},
+	{
+		"key": "QANotificationEmailRecord",
+		"value": "{0} mail sent to notify QA."
+	},
+	{
+		"key": "QANotificationSMSText",
+		"value": "Impact Analyst {0} has finished impact analysis for ocurrence [#{1}]"
+	},
+	{
+		"key": "QANotificationSMSRecord",
+		"value": "{0} SMS sent to notify QA."
+	},
+	{
+		"key": "QANotificationVoiceText",
+		"value": "Impact Analyst {0} has finished impact analysis for ocurrence #{1}. "
+	},
+	{
+		"key": "QANotificationVoiceRecord",
+		"value": "{0} Voice Call sent to notify QA."
+	},
+	{
+		"key": "QANotificationWhatsAppRecord",
+		"value": "{0} WhatsApp sent to notify QA."
+	},
+	{
+		"key": "IAApprovedNotificationEmailSubject",
+		"value": "QA analyst {0} approved your impact analysis for ocurrence [#{1}]"
+	},
+	{
+		"key": "IAApprovedNotificationEmailText",
+		"value": "QA Analyst {0} has finished analysis for ocurrence [#{1}]. Your impact analysis was Approved."
+	},
+	{
+		"key": "IAReprovedNotificationEmailSubject",
+		"value": "QA analyst {0} reproved your impact analysis for ocurrence [#{1}]"
+	},
+	{
+		"key": "IAReprovedNotificationEmailText",
+		"value": "QA Analyst {0} has finished analysis for ocurrence [#{1}]. Your impact analysis was Reproved."
+	},
+	{
+		"key": "IANotificationEmailRecord",
+		"value": "Mail sent to notify Impact Analyst."
+	},
+	{
+		"key": "IAApprovedNotificationSMSText",
+		"value": "QA Analyst {0} has approved your analysis for ocurrence [#{1}]"
+	},
+	{
+		"key": "IAReprovedNotificationSMSText",
+		"value": "QA Analyst {0} has reproved your analysis for ocurrence [#{1}]"
+	},
+	{
+		"key": "IANotificationSMSRecord",
+		"value": "SMS sent to notify Impact Analyst."
+	},
+	{
+		"key": "IAApprovedNotificationVoiceText",
+		"value": "QA Analyst {0} has approved your impact analysis for ocurrence #{1}. "
+	},
+	{
+		"key": "IAReprovedNotificationVoiceText",
+		"value": "QA Analyst {0} has reproved your impact analysis for ocurrence #{1}. "
+	},
+	{
+		"key": "IANotificationVoiceRecord",
+		"value": "Voice Call sent to notify Impact Analyst."
+	},
+	{
+		"key": "IANotificationWhatsAppRecord",
+		"value": "WhatsApp sent to notify Impact Analyst."
+	},
+	{
+		"key": "Critical",
+		"value": "Critical"
+	},
+	{
+		"key": "MissingTypeOccurrenceRecord",
+		"value": "Type of Occurrence Record not provided"
+	},
+	{
+		"key": "ImpactAnalisysExecuted",
+		"value": "Impact analisys executed for occurrence #{0} Tag: {1} Start Date: {2} by user {3}"
+	},
+	{
+		"key": "QAAnalisysExecutedApproved",
+		"value": "Occurrence #{0} Tag: {1} Start Date: {2} was approved by QA {3}"
+	},
+	{
+		"key": "QAAnalisysExecutedReproved",
+		"value": "Occurrence #{0} Tag: {1} Start Date: {2} was reproved by QA {3}"
+	},
+	{
+		"key": "QAAnalisysExecutedReprovedReview",
+		"value": "QA {0} reproved for review occurrence_record_id #{1}"
+	},
+	{
+		"key": "ImpactedAreasNotInformed",
+		"value": "Impacted areas must be informed."
+	},
+	{
+		"key": "MailParametersCreated",
+		"value": "Mail parameters created: SMTP Server: '{0}' SMTP Port: '{1}' From Address: '{2}' Password: created '{3}' Enabled SSL: '{4}'"
+	},
+	{
+		"key": "MailParametersChanged",
+		"value": "Mail parameters changed: SMTP Server: '{0}' to '{1}' SMTP Port: '{2}' to '{3}' From Address: '{4}' to '{5}' Password: '{6}' Enabled SSL: '{7}' to '{8}'"
+	},
+	{
+		"key": "MessagingParametersCreated",
+		"value": "Messaging parameters created: location: '{0}' "
+	},
+	{
+		"key": "MessagingParametersChanged",
+		"value": "Messaging parameters changed: location: '{0}' to '{1}' "
+	},
+	{
+		"key": "PolicyParametersCreated",
+		"value": "Policy parameters created: inactivity timeout: '{0}', notification resend time: '{1}', message notification expiration time: '{2}', maximum notification resending time: '{3}'"
+	},
+	{
+		"key": "PolicyParametersChanged",
+		"value": "Policy parameters changed: inactivity timeout: from '{0}' to '{1}', notification resend time: from '{2}' to '{3}', message notification expiration time: from '{4}' to '{5}', maximum notification resending time: from '{6}' to '{7}' "
+	},
+	{
+		"key": "DBParametersCreated",
+		"value": "Domain parameters created: AD Address: '{0}' Admin Password: '{1}'"
+	},
+	{
+		"key": "DBParametersChanged",
+		"value": "Domain parameters changed: AD Address: '{0}' to '{1}' Admin Password changed? '{2}'"
+	},
+	{
+		"key": "DBParametersCreated",
+		"value": "DB parameters created: ConnectionString: '{0}' Schema: '{1}'"
+	},
+	{
+		"key": "DBParametersChanged",
+		"value": "DB parameters changed: ConnectionString: '{0}' to '{1}' Schema: '{2}' to '{3}'"
+	},
+	{
+		"key": "DatabaseCommunicationError",
+		"value": "SRM lost communication with Sql Server at {0}"
+	},
+	{
+		"key": "DatabaseCommunicationErrorAlarm",
+		"value": "Lost communication with Sql Server"
+	},
+	{
+		"key": "DatabaseCommunicationBack",
+		"value": "SRM restablished communication with Sql Server at {0}"
+	},
+	{
+		"key": "TwilioCommunicationError",
+		"value": "Twilio communication error"
+	},
+	{
+		"key": "HistorianAlarmsCommunicationError",
+		"value": "Historian alarms communication error on process {0}"
+	},
+	{
+		"key": "HistorianEventsCommunicationError",
+		"value": "Database events communication error on process {0}"
+	},
+	{
+		"key": "SqlAlarmsCommunicationError",
+		"value": "Database alarms communication error on process {0}"
+	},
+	{
+		"key": "UserAvailability001",
+		"value": "Start Time"
+	},
+	{
+		"key": "UserAvailability002",
+		"value": "Start Time format: HH:MM"
+	},
+	{
+		"key": "UserAvailability003",
+		"value": "End Time"
+	},
+	{
+		"key": "UserAvailability004",
+		"value": "End Time format: HH:MM"
+	},
+	{
+		"key": "UserAvailability005",
+		"value": "Invalid hour: 0 to 23"
+	},
+	{
+		"key": "UserAvailability006",
+		"value": "Invalid minute: 0 to 59"
+	},
+	{
+		"key": "OccurrenceForImpactAnalysisSubject",
+		"value": "{0}[New task] Occurrence #{1} has ended and it's waiting your analysis"
+	},
+	{
+		"key": "OccurrenceForImpactAnalysisText",
+		"value": "Occurrence #{0}, process {1} area {2} tag {3} message {4}, has ended at {5} and is available for your analysis."
+	},
+	{
+		"key": "AdGroup001",
+		"value": "Invalid profile"
+	},
+	{
+		"key": "AdGroup002",
+		"value": "Permissions"
+	},
+	{
+		"key": "AdGroup003",
+		"value": "Must add, at least, one permission"
+	},
+	{
+		"key": "AdGroup004",
+		"value": "This profile can´t be removed"
+	},
+	{
+		"key": "SRMArea",
+		"value": "Maintenance"
+	},
+	{
+		"key": "CollectorMessageError",
+		"value": "Fail to send notification: {0}"
+	},
+	{
+		"key": "CollectorMessageToIAError",
+		"value": "Fail to send notification to impacts analysts: {0}"
+	},
+	{
+		"key": "PdfDateSignature",
+		"value": "Date/Time Analysis"
+	},
+	{
+		"key": "PdfType",
+		"value": "Stage"
+	},
+	{
+		"key": "PdfInitials",
+		"value": "Initials"
+	},
+	{
+		"key": "PdfStage",
+		"value": "Result"
+	},
+	{
+		"key": "PdfComments",
+		"value": "Comments"
+	},
+	{
+		"key": "AnalysisHistory",
+		"value": "Analysis History"
+	},
+	{
+		"key": "NewOccurrenceRecord",
+		"value": "New occurrence record created: {0}"
+	},
+	{
+		"key": "UpdatedOccurrenceRecord",
+		"value": "Updated occurrence record: {0}"
+	},
+	{
+		"key": "NewTypeOccurrenceRecord",
+		"value": "New type occurrence record created: '{0}' Impacted areas: '{1}' Notifications channels: '{2}'"
+	},
+	{
+		"key": "UpdatedTypeOccurrenceRecord",
+		"value": "Updated type occurrence record: '{0}' Impacted areas: '{1}' to '{2}' Notifications channels: '{3}' to '{4}'"
+	},
+	{
+		"key": "NewAdGroup",
+		"value": "New AD group created: '{0}' Permissions: '{1}' "
+	},
+	{
+		"key": "UpdatedAdGroup",
+		"value": "Updated AD group: '{0}' Permissions: '{1}' to '{2}'"
+	},
+	{
+		"key": "RemovedAdGroup",
+		"value": "Remover AD group: '{0}'"
+	},
+	{
+		"key": "NewAdGroupUserArea",
+		"value": "New area added for the user AD group: {0} "
+	},
+	{
+		"key": "AdGroupUserAreaExists",
+		"value": "Area already registered for the user's access profile "
+	},
+	{
+		"key": "RemovedAdGroupUserArea",
+		"value": "Area removed for the user AD group: {0} "
+	},
+	{
+		"key": "NewUserAvailability",
+		"value": "New availability added for the user: {0} "
+	},
+	{
+		"key": "RemovedUserAvailability",
+		"value": "Availability removed for the user: {0} "
+	},
+	{
+		"key": "UpdatedUserAvailability",
+		"value": "Availability updated for the user: {0} "
+	},
+	{
+		"key": "NewUserUnavailability",
+		"value": "New unavailability added for the user: {0} "
+	},
+	{
+		"key": "RemovedUserUnavailability",
+		"value": "Unavailability removed for the user: {0} "
+	},
+	{
+		"key": "NewUserPhone",
+		"value": "New phone added for the user: {0} "
+	},
+	{
+		"key": "RemovedUserPhone",
+		"value": "Phone removed for the user: {0} "
+	},
+	{
+		"key": "UserPhoneExists",
+		"value": "This phone has already been registered for this user"
+	},
+	{
+		"key": "UserActivated",
+		"value": "User '{0}' activated"
+	},
+	{
+		"key": "UserDeactivated",
+		"value": "User '{0}' deactivated"
+	},
+	{
+		"key": "NewArea",
+		"value": "Area created: '{0}' Phones: '{1}'"
+	},
+	{
+		"key": "UpdatedArea",
+		"value": "Area updated: '{0}'"
+	},
+	{
+		"key": "NewAreaPhone",
+		"value": "Area phone created: '{0}' '{1}' "
+	},
+	{
+		"key": "RemovedAreaPhone",
+		"value": "Area phone removed: '{0}' "
+	},
+	{
+		"key": "AreaPhoneExists",
+		"value": "This phone has already been registered for this area"
+	},
+	{
+		"key": "MailText",
+		"value": "Attached is the file exported by the system Scada Remote Monitoring."
+	},
+	{
+		"key": "ImpactedAreas",
+		"value": "Impacted Areas"
+	},
+	{
+		"key": "ReleaseAreas",
+		"value": "Release Areas"
+	},
+	{
+		"key": "Notifications",
+		"value": "Notifications"
+	},
+	{
+		"key": "ObjectChanged",
+		"value": "'{0}' changed from: '{1}' to: '{2}'"
+	},
+	{
+		"key": "Changes",
+		"value": "changes"
+	},
+	{
+		"key": "Event",
+		"value": "Event"
+	},
+	{
+		"key": "Alarm",
+		"value": "Alarm"
+	},
+	{
+		"key": "Yes",
+		"value": "Yes"
+	},
+	{
+		"key": "No",
+		"value": "No"
+	}
+]
