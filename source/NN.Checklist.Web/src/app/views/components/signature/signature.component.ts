@@ -15,7 +15,7 @@ import { Signature } from '../../../core/auth/_models/signature.model';
 import { User } from '../../../core/auth/_models/user.model';
 
 @Component({
-	selector: 'apta-signature',
+	selector: 'td-signature',
 	templateUrl: './signature.component.html',
 	styleUrls: ['./signature.component.scss'],
 	providers: [SignatureService]

@@ -10,7 +10,7 @@ import { AdGroupUser } from '../../../../core/auth/_models/adGroupUser.model';
 import { AdGroupUserArea } from '../../../../core/auth/_models/adGroupUserArea.model';
 
 @Component({
-	selector: 'apta-user-area',
+	selector: 'td-user-area',
 	templateUrl: './user-area.component.html',
 	styleUrls: ['./user-area.component.scss']
 })

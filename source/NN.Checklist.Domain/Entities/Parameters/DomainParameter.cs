@@ -34,15 +34,15 @@ namespace NN.Checklist.Domain.Entities.Parameters
         /// Created by: wazc Programa Novo 2022-09-08 
         /// </summary>
 
-        public DomainParameter(AuthenticatedUserDTO user, string address, string username, string pass, string comments)
+        public DomainParameter(AuthenticatedUserDTO user, string address, string adminUsername, string adminPassword, string comments)
         {
             var globalization = ObjectFactory.GetSingleton<IGlobalizationService>();
 
             var actual = Get().Result;
 
             DomainAddress = address;
-            AdminUsername = username;
-            AdminPassword = pass;
+            AdminUsername = adminUsername;
+            AdminPassword = adminPassword;
 
             if (Validate(user, false).Result)
             {
@@ -50,11 +50,11 @@ namespace NN.Checklist.Domain.Entities.Parameters
                 {
                     Insert().Wait();
 
-                    var msg = globalization.GetString(globalization.DefaultLanguage, "DomainParametersCreated", new string[] { address, username, pass != null && pass.Trim().Length > 0 ? "created" : "not created" }).Result;
+                    var msg = globalization.GetString(globalization.DefaultLanguage, "DomainParametersCreated", new string[] { address, adminUsername, adminPassword != null && adminPassword.Trim().Length > 0 ? "created" : "not created" }).Result;
 
                     if (actual != null)
                     {
-                        msg = globalization.GetString(globalization.DefaultLanguage, "DomainParametersChanged", new string[] { actual.DomainAddress, address, actual.AdminPassword != pass ? "yes" : "no" }).Result;
+                        msg = globalization.GetString(globalization.DefaultLanguage, "DomainParametersChanged", new string[] { actual.DomainAddress, address, actual.AdminPassword != adminPassword ? "yes" : "no" }).Result;
                     }
 
                     if (user != null)

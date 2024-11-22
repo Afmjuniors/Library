@@ -49,7 +49,7 @@ namespace NN.Checklist.Domain.Services
                     User userDb = null;
                     string language = null;
 
-                    if (user.Username.Trim().ToLower() == "admin")
+                    if (user.Username.Trim().ToLower() == domain.AdminUsername.Trim().ToLower())
                     {
                         return await AuthenticateAdmin(user, privateKey);
                     }
@@ -212,7 +212,7 @@ namespace NN.Checklist.Domain.Services
 
             if(domainConfig == null)
             {
-                domainConfig = new DomainParameter() { AdminUsername = username, AdminPassword = "Novo@123", DomainAddress = "Não configurado" };
+                domainConfig = new DomainParameter() { AdminUsername = username, AdminPassword = password, DomainAddress = "Não configurado" };
             }
             
 

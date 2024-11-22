@@ -49,19 +49,25 @@ namespace NN.Checklist.Domain.Services
             globalizationService.DefaultLanguage = "pt-BR";
 
             var sql = DBParameter.Repository.Get();
+            var domain = DomainParameter.Repository.Get();
 
 #if DEBUG
-
-
             if (sql == null)
             {
                 sql = new DBParameter(null, "Server=localhost;Database=checklist;User Id=sa;Password=zedasilva;", "checklist", "Configuração inicial");
+            }
+
+            if (domain == null)
+            {
+                domain = new DomainParameter(null, "TDD.Domain", "admin", "Novo@123", "Configuração inicial");
             }
 #else
             if (sql == null)
             {
                 sql = new DBParameter(null, "", "");
             }
+
+
 #endif
             string tag = "Checklist";
 

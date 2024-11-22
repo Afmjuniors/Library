@@ -8,8 +8,6 @@ import { PartialsModule } from '../partials/partials.module';
 // Pages
 import { CoreModule } from '../../core/core.module';
 import { InicioModule } from './inicio/inicio.module';
-import { AlarmsModule } from './alarms/alarms.module';
-import { EventsModule } from './events/events.module';
 import { AuthNoticeComponent} from '../pages/auth/auth-notice/auth-notice.component';
 // import { FotoColaboradorReduzidaComponent } from '../components/foto-colaborador-reduzida/foto-colaborador-reduzida.component';
 
@@ -60,8 +58,6 @@ const maskConfig: Partial<IConfig> = {
         PartialsModule,
         InicioModule,
         ParameterModule,
-		AlarmsModule,
-		EventsModule,
         MatCardModule,
         MatFormFieldModule,
         NgxMaskModule.forRoot(maskConfig),

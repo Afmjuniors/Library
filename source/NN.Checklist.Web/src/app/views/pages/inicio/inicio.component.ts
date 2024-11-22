@@ -18,7 +18,7 @@ import { IdleService } from '../../../core/_base/layout/services/idle.service';
 
 
 @Component({
-	selector: 'apta-inicio',
+	selector: 'td-inicio',
 	templateUrl: './inicio.component.html',
 	styleUrls: ['./inicio.component.scss'],
 	changeDetection: ChangeDetectionStrategy.OnPush

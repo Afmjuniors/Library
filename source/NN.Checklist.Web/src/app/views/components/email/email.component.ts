@@ -12,7 +12,7 @@ import { TranslateService } from '@ngx-translate/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 
 @Component({
-	selector: 'apta-email',
+	selector: 'td-email',
 	templateUrl: './email.component.html',
 	styleUrls: ['./email.component.scss'],
 })

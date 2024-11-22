@@ -25,7 +25,6 @@ import { AuditTrailDataSource } from '../../../core/auth/_data-sources/audit-tra
 import { AuditTrailFilter } from '../../../core/auth/_models/auditTrailFilter.model';
 import { SystemFunctionality } from '../../../core/auth/_models/systemFunctionality.model';
 import { IdleService } from '../../../core/_base/layout/services/idle.service';
-import { ViewAnalysisComponent } from '../../components/view-analysis/view-analysis.component';
 import { ViewTextComponent } from '../../components/view-text/view-text.component';
 
 const DATE_TIME_FORMAT = {
@@ -43,7 +42,7 @@ const DATE_TIME_FORMAT = {
 };
 
 @Component({
-	selector: 'apta-audit-trail',
+	selector: 'td-audit-trail',
 	templateUrl: './audit-trail.component.html',
 	styleUrls: ['./audit-trail.component.scss'],
 	providers: [

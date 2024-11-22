@@ -32,54 +32,9 @@ const routes: Routes = [
 				loadChildren: () => import('./views/pages/ad-groups/ad-groups.module').then(m => m.AdGroupsModule)
 			},
 			{
-				path: 'alarms',
-				canActivate: [AuthGuard],
-				loadChildren: () => import('./views/pages/alarms/alarms.module').then(m => m.AlarmsModule)
-			},
-			{
-				path: 'events',
-				canActivate: [AuthGuard],
-				loadChildren: () => import('./views/pages/events/events.module').then(m => m.EventsModule)
-			},
-			{
 				path: 'audit-trail',
 				canActivate: [AuthGuard],
 				loadChildren: () => import('./views/pages/audit-trail/audit-trail.module').then(m => m.AuditTrailModule)
-			},
-			{
-				path: 'impact-analysis-overview',
-				canActivate: [AuthGuard],
-				loadChildren: () => import('./views/pages/impact-analysis-overview/impact-analysis-overview.module').then(m => m.ImpactAnalysisOverviewModule)
-			},
-			{
-				path: 'perform-impact-analysis',
-				canActivate: [AuthGuard],
-				loadChildren: () => import('./views/pages/perform-impact-analysis/perform-impact-analysis.module').then(m => m.PerformImpactAnalysisModule)
-			},
-			{
-				path: 'qa-overview',
-				canActivate: [AuthGuard],
-				loadChildren: () => import('./views/pages/QA/Overview/qa-overview.module').then(m => m.QAOverviewModule)
-			},
-			{
-				path: 'qa-analysis',
-				canActivate: [AuthGuard],
-				loadChildren: () => import('./views/pages/QA/Analysis/qa-analysis.module').then(m => m.QAAnalysisModule)
-			},
-			{
-				path: 'qa-report',
-				canActivate: [AuthGuard],
-				loadChildren: () => import('./views/pages/QA/Report/qa-report.module').then(m => m.QAReportModule)
-			},
-			{
-				path: 'batch',
-				canActivate: [AuthGuard],
-				loadChildren: () => import('./views/pages/batch/release/batch-release.module').then(m => m.BatchReleaseModule)
-			},
-			{
-				path: 'config',
-				canActivate: [AuthGuard],
-				loadChildren: () => import('./views/pages/configuration/configuration.module').then(m => m.ConfigurationModule)
 			},
 			{
 				path: 'users',
@@ -90,12 +45,7 @@ const routes: Routes = [
 				path: 'areas',
 				canActivate: [AuthGuard],
 				loadChildren: () => import('./views/pages/areas/areas.module').then(m => m.AreasModule)
-			},
-			{
-				path: 'diagnostic',
-				canActivate: [AuthGuard],
-				loadChildren: () => import('./views/pages/diagnostic/diagnostic.module').then(m => m.DiagnosticModule)
-			},
+			},			
 			{
 				path: 'error/403',
 				component: ErrorPageComponent,

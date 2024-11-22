@@ -28,7 +28,7 @@ import { IdleService } from './core/_base/layout/services/idle.service';
 })
 export class AppComponent implements OnInit, OnDestroy {
 	// Public properties
-	title = 'APTA';
+	title = 'TechDriven Digital';
 	loader: boolean;
 
 	InactivityTimeLimit: number = 60;

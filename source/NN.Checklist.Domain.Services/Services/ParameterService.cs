@@ -166,26 +166,6 @@ namespace NN.Checklist.Domain.Services
 
 
         /// <summary>
-        /// Name: "InsertMessagingParameter" 
-        /// Description: method inserts the message parameters.
-        /// Created by: wazc Programa Novo 2022-09-08 .
-        /// </summary>
-        public async Task<MessagingParameterDTO> InsertMessagingParameter(MessagingParameterDTO parameters, string comments, AuthenticatedUserDTO user)
-        {
-            try
-            {
-                var globalization = ObjectFactory.GetSingleton<IGlobalizationService>();
-                var messaging = new MessagingParameter(user, parameters.MessageQueuePath, comments);
-                return messaging.Transform<MessagingParameterDTO>();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-
-        /// <summary>
         /// Name: "InsertDomainParameter" 
         /// Description: method inserts the parameters domain.
         /// Created by: wazc Programa Novo 2022-09-08 .

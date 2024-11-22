@@ -28,7 +28,7 @@ namespace NN.Checklist.Domain.Configurations
         {
             try
             {
-                AddObject("AccessControlService", true, "NN.Checklist.Domain.Services.AccessControlService, NN.Checklist.Domain.Domain.Services");
+                AddObject("AccessControlService", true, "NN.Checklist.Domain.Services.AccessControlService, NN.Checklist.Domain.Services");
                 AddObject("PermissionService", true, "NN.Checklist.Domain.Services.PermissionService, NN.Checklist.Domain.Services");
                 AddObject("ParameterService", true, "NN.Checklist.Domain.Services.ParameterService, NN.Checklist.Domain.Services");
                 AddObject("ApplicationService", true, "NN.Checklist.Domain.Services.ApplicationService, NN.Checklist.Domain.Services");

@@ -21,7 +21,7 @@ import { IdleService } from '../../../core/_base/layout/services/idle.service';
 
 
 @Component({
-	selector: 'apta-areas',
+	selector: 'td-areas',
 	templateUrl: './areas.component.html',
 	styleUrls: ['./areas.component.scss']
 })

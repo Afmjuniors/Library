@@ -10,7 +10,7 @@ import { LayoutUtilsService } from './../../../../core/_base/crud';
 const CELLPHONE = '(00) 0 0000-0000';
 const LANDLINE = '(00) 0000-0000';
 @Component({
-	selector: 'apta-area-phones',
+	selector: 'td-area-phones',
 	templateUrl: './area-phones.component.html',
 	styleUrls: ['./area-phones.component.scss']
 })

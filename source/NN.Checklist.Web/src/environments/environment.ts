@@ -8,7 +8,7 @@ export const environment = {
 	authTokenKey: 'authce9d77b308c149d5992a80073637e4d5',
 	//NÃO ALTERAR A URL, ALTERAR NO BACKEND
 	//DO NOT CHANGE THE URL, CHANGE THE BACKEND
-	api: 'http://localhost:44310',
+	api: 'http://localhost:61674',
 };
 
 /*

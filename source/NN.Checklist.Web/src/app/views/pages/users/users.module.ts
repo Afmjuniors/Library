@@ -53,8 +53,6 @@ import { EmailComponent } from '../../components/email/email.component';
 import { ComponentsModule } from '../../components/components.module';
 import { UsersComponent } from './users.component';
 import { UserEditComponent } from './user-edit/user-edit.component';
-import { UserAvailabilityComponent } from './user-availability/user-availability.component';
-import { UserUnavailabilityComponent } from './user-unavailability/user-unavailability.component';
 import { UserPhonesComponent } from './user-phones/user-phones.component';
 import { UserAreaComponent } from './user-area/user-area.component';
 import { UserControlComponent } from './user-control/user-control.component';
