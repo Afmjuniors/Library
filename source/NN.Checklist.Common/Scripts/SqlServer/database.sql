@@ -2,6 +2,7 @@
 CREATE TABLE [AD_GROUPS](
 	[ad_group_id] [bigint] IDENTITY(1,1) NOT NULL,
 	[name] [varchar](150) NOT NULL,
+	[administrator] bit NOT NULL,
  CONSTRAINT [PK_AD_GROUPS_1] PRIMARY KEY CLUSTERED 
 (
 	[ad_group_id] ASC
@@ -176,7 +177,7 @@ ALTER TABLE dbo.USERS ADD language_id int NULL;
 ALTER TABLE dbo.USERS ADD CONSTRAINT FK_USERS_LANGUAGES FOREIGN KEY (language_id) REFERENCES dbo.LANGUAGES (language_id) ON UPDATE  NO ACTION ON DELETE  NO ACTION;
 
 CREATE TABLE [AD_GROUPS_USERS](
-	[ad_group_user_id] [bigint] NOT NULL,
+	[ad_group_user_id] [bigint] identity(1,1) NOT NULL,
 	[ad_group_id] [bigint] NOT NULL,
 	[user_id] [bigint] NULL,
 	 CONSTRAINT [PK_GROUPS_USERS] PRIMARY KEY CLUSTERED 

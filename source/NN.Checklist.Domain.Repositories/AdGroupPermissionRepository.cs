@@ -40,7 +40,7 @@ namespace NN.Checklist.Domain.Repositories
         /// Description: Method that gets all group permissions.
         /// Created by: wazc Programa Novo 2022-09-08 
         /// </summary>
-        public async Task<IList<AdGroupPermissionDTO>> GetAllGroupPermissions()
+        public async Task<IList<AdGroupPermissionDTO>> ListAllGroupPermissions()
         {
             var columns = new List<Column>();
             columns.Add(new Column() { AttributeName = "GroupName", Name = "GroupName", AttributeType = typeof(string) });

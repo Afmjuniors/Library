@@ -5,6 +5,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using NN.Checklist.Domain.Services;
+using NN.Checklist.Domain.Services.Specifications;
 using System.Text;
 using TDCore.Core.Logging;
 

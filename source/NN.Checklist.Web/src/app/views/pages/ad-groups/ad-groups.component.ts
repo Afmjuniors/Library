@@ -36,7 +36,7 @@ export class AdGroupsComponent extends BasePageComponent implements OnInit {
 
 	// Table fields
 	dataSource: AdGroupsDataSource;
-	displayedColumns = ['name', 'action', 'maintenance', 'administrator', 'impact_analysis', 'qaAnalyst' ];
+	displayedColumns = ['name', 'action', 'administrator' ];
 	@ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 	@ViewChild('sort1', { static: true }) sort: MatSort;
 

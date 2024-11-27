@@ -6,6 +6,7 @@ import { AppService, AuthService } from './../../../../core/auth/_services';
 import { LayoutUtilsService, MessageType } from './../../../../core/_base/crud';
 import { SignatureComponent } from '../../../../views/components/signature/signature.component';
 import { TranslateService } from '@ngx-translate/core';
+import { duration } from 'moment';
 
 @Component({
 	selector: 'kt-new-ad-group',
@@ -72,9 +73,6 @@ export class NewAdGroupComponent implements OnInit {
 
 		_AdGroup.adGroupId = this.adGroup.adGroupId;
 		_AdGroup.administrator = this.adGroup.administrator;
-		_AdGroup.impactAnalyst = this.adGroup.impactAnalyst;
-		_AdGroup.maintenance = this.adGroup.maintenance;
-		_AdGroup.qaAnalyst = this.adGroup.qaAnalyst;
 
 		return _AdGroup;
 	}
@@ -159,7 +157,7 @@ export class NewAdGroupComponent implements OnInit {
 	sign()
 	{
 		if(this.comments == null || this.comments.trim().length == 0){
-			this.layoutUtilsService.showActionNotification(this.translateService.instant("COMMENTS_NOT_PROVIDED"), 10000);
+			this.layoutUtilsService.showActionNotification(this.translateService.instant("COMMENTS_NOT_PROVIDED"), MessageType.Update,10000);
 			return;
 		}
 

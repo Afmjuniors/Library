@@ -28,8 +28,7 @@ namespace NN.Checklist.Domain.Services
     public class AccessControlService : ObjectBase, IAccessControlService
     {
         protected readonly ILog _logger = ObjectFactory.GetSingleton<ILog>();
-        protected readonly IPermissionService _permission = ObjectFactory.GetSingleton<IPermissionService>();
-
+        
         /// <summary>
         /// Name: "Authenticate" 
         /// Description: method receives "user" and "privateKey" as parameters to authenticate the user.
@@ -59,7 +58,43 @@ namespace NN.Checklist.Domain.Services
                         throw new Exception(await globalization.GetString(language, "DomainNotProvided"));
                     }
 
+#if DEBUG
+                    if (string.IsNullOrEmpty(user.Username))
+                    {
+                        //Loggin
+                        new SystemRecord(
+                            $"{await globalization.GetString("LoginFail")}",
+                            null,
+                            EnumSystemFunctionality.SystemsAccesses,
+                            null);
+
+                        throw new Exception(await globalization.GetString("LoginFail"));
+                    }
+                    else
+                    { 
+                        AutdUserDTO.FirstName = "Rafael";
+                        AutdUserDTO.LastName = "Leite";
+                        AutdUserDTO.DomainAdId = 1;
+                        AutdUserDTO.UserAD = "rzle";
+                        AutdUserDTO.Active = true;
+                        AutdUserDTO.MemberOf = new List<string>() { "nsrm_admin", "nsrm_manutencao", "nsrm_avaliador", "nsrm_qa" };
+                        var userGroups = "";
+                        var groups = (await AdGroup.Repository.ListAll()).ToList();
+
+                        var e = "";
+                        AutdUserDTO.MemberOf.ForEach(item =>
+                        {
+                            if (groups.Exists(x => x.Name.ToLower().Trim() == item.ToLower().Trim()))
+                            {
+                                userGroups += e + item;
+                                e = "/";
+                            }
+                        });
+
+#else
                     ActiveDirectoryUserDetail usuario = ActiveDirectoryHelper.GetUserByLoginName(domain.DomainAddress, user.Username, user.Password);
+
+
                     if (usuario == null)
                     {
                         //Loggin
@@ -92,13 +127,15 @@ namespace NN.Checklist.Domain.Services
                             }
                         });
 
+#endif
+
                         //Get user by initials
                         userDb = await User.Repository.GetByInitials(user.Username);
 
                         if (userDb == null && string.IsNullOrEmpty(userGroups))
                         {
                             new SystemRecord(
-                                await globalization.GetString("UserNotAllowed", new string[] { usuario.LoginName }),
+                                await globalization.GetString("UserNotAllowed", new string[] { AutdUserDTO.UserAD }),
                                 null,
                                 EnumSystemFunctionality.SystemsAccesses,
                                 null);
@@ -107,11 +144,11 @@ namespace NN.Checklist.Domain.Services
 
                         if (userDb == null && !string.IsNullOrEmpty(userGroups))
                         {
-                            userDb = new User(null, null, false, usuario.LoginName, 1);
+                            userDb = new User(null, null, false, AutdUserDTO.UserAD, 1);
 
                             //Loggin
                             new SystemRecord(
-                                await globalization.GetString("UserCreated", new string[] { usuario.LoginName, userGroups }),
+                                await globalization.GetString("UserCreated", new string[] { AutdUserDTO.UserAD, userGroups }),
                                 null,
                                 EnumSystemFunctionality.SystemsAccesses,
                                 userDb.UserId);
@@ -122,7 +159,7 @@ namespace NN.Checklist.Domain.Services
                             if(userDb.Deactivated == true)
                             {
                                 new SystemRecord(
-                                await globalization.GetString("UserNotAllowed", new string[] { usuario.LoginName }),
+                                await globalization.GetString("UserNotAllowed", new string[] { AutdUserDTO.UserAD }),
                                 null,
                                 EnumSystemFunctionality.SystemsAccesses,
                                 null);
@@ -132,7 +169,7 @@ namespace NN.Checklist.Domain.Services
 
                         var dbGroupsList = await ListGroupsByUserId(userDb.UserId);
                         
-                        foreach (var group in usuario.MemberOf)
+                        foreach (var group in AutdUserDTO.MemberOf)
                         {
                             if (dbGroupsList.Exists(x => group == x))
                             {
@@ -160,7 +197,7 @@ namespace NN.Checklist.Domain.Services
                         try
                         {
                             var objSecurity = TDCore.DependencyInjection.ObjectFactory.GetSingleton<ISecurityService>();
-                            AutdUserDTO.Token = objSecurity.GenerateToken(AutdUserDTO.UserId, null, AutdUserDTO.UserAD, (long)AutdUserDTO.DomainAdId);
+                            AutdUserDTO.Token = objSecurity.GenerateToken(AutdUserDTO.UserId, AutdUserDTO.UserAD, AutdUserDTO.Email, (long)AutdUserDTO.DomainAdId);
                         }
                         catch (Exception ex)
                         {
@@ -244,7 +281,7 @@ namespace NN.Checklist.Domain.Services
 
                     AutdUserDTO.UserProfile = user.Username;
                     var objSecurity = TDCore.DependencyInjection.ObjectFactory.GetSingleton<ISecurityService>();
-                    AutdUserDTO.Token = objSecurity.GenerateToken(AutdUserDTO.UserId, null, AutdUserDTO.UserAD, (long)AutdUserDTO.DomainAdId);
+                    AutdUserDTO.Token = objSecurity.GenerateToken(AutdUserDTO.UserId, AutdUserDTO.UserAD, AutdUserDTO.Email, (long)AutdUserDTO.DomainAdId);
 
                     return AutdUserDTO;
                 }
@@ -348,7 +385,9 @@ namespace NN.Checklist.Domain.Services
                 }
                 else
                 {
-                    var permissoes = await _permission.GetPermissions();
+                    var permissionService = ObjectFactory.GetSingleton<IPermissionService>();
+                    var permissoes = await permissionService.ListPermissions();
+
                     List<AdGroupPermissionDTO> permissionDTOs = permissoes.FindAll(x => autdUserDTO.MemberOf.Exists(y => y.ToLower() == x.GroupName.ToLower()));
                     var permissionsDB = await Permission.Repository.ListAll();
                     foreach (var per in permissionsDB)
@@ -434,7 +473,7 @@ namespace NN.Checklist.Domain.Services
             }
             else
             {
-                autdUserDTO = User.Repository.Get(idUser).Transform<AuthenticatedUserDTO>();
+                autdUserDTO = (await User.Repository.Get(idUser)).Transform<AuthenticatedUserDTO>();
                 var perm = new List<string>();
                 var phon = new List<string>();
                 var groups = new List<AdGroupDTO>();
@@ -649,12 +688,11 @@ namespace NN.Checklist.Domain.Services
         /// Description: method inserts the types of user groups.
         /// Created by: wazc Programa Novo 2022-09-08 .
         /// </summary>
-        public async Task<AdGroupDTO> InsertAdGroup(AuthenticatedUserDTO user, string name, bool administrator, bool maintenance, bool impactAnalyst, 
-            bool qaAnalyst, List<PermissionDTO> permissions, string comments)
+        public async Task<AdGroupDTO> InsertAdGroup(AuthenticatedUserDTO user, string name, bool administrator, List<PermissionDTO> permissions, string comments)
         {
             try
             {
-                var objAdGroup = new AdGroup(user, name, administrator, maintenance, impactAnalyst, qaAnalyst, permissions, comments);
+                var objAdGroup = new AdGroup(user, name, administrator, permissions, comments);
 
                 return objAdGroup.Transform<AdGroupDTO>();
             }
@@ -704,7 +742,7 @@ namespace NN.Checklist.Domain.Services
             try
             {
                 AdGroup objAdGroup = await AdGroup.Repository.Get(adGroup.AdGroupId);
-                await objAdGroup.Update(user, adGroup.Name, adGroup.Administrator, adGroup.Maintenance, adGroup.ImpactAnalyst, adGroup.QAAnalyst, adGroup.Permissions, comments);
+                await objAdGroup.Update(user, adGroup.Name, adGroup.Administrator, adGroup.Permissions, comments);
             }
             catch (Exception ex)
             {

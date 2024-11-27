@@ -19,7 +19,7 @@ namespace NN.Checklist.Domain.Repositories.Specifications
 
         #region User Code
 
-        Task<IList<AdGroupPermissionDTO>> GetAllGroupPermissions();
+        Task<IList<AdGroupPermissionDTO>> ListAllGroupPermissions();
         Task<IList<TEntity>> ListAdGroupPermissionsByIdAdGroup(long adGroupId);
 
         #endregion

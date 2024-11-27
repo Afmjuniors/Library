@@ -13,34 +13,28 @@ namespace NN.Checklist.Domain.Services
     {
         private static List<AdGroupPermissionDTO> _Permissions;
 
-
-        /// <summary>
-        /// Name: Initialize 
-        /// Description: initialize permission system, get from database all permissions groups
-        /// Created by: wazc Programa Novo 2022-09-08
-        /// </summary>
-        public async Task Initialize()
-        {
-            var par = DBParameter.Repository.Get();
-            if (par != null)
-            {
-                var allPermissions = await AdGroupPermission.Repository.GetAllGroupPermissions();
-                
-                if(allPermissions != null)
-                {
-                    _Permissions = allPermissions.ToList();
-                }
-            }
-        }
         /// <summary>
         /// Name: GetPermissions
         /// Description: Get permission list
         /// Created by: wazc Programa Novo 2022-09-08
         /// </summary>
-        public async Task<List<AdGroupPermissionDTO>> GetPermissions()
+        public async Task<List<AdGroupPermissionDTO>> ListPermissions()
         {
             if (_Permissions == null)
+            {
                 _Permissions = new List<AdGroupPermissionDTO>();
+
+                var par = DBParameter.Repository.Get();
+                if (par != null)
+                {
+                    var allPermissions = await AdGroupPermission.Repository.ListAllGroupPermissions();
+
+                    if (allPermissions != null)
+                    {
+                        _Permissions = allPermissions.ToList();
+                    }
+                }
+            }
 
             return _Permissions;
         }

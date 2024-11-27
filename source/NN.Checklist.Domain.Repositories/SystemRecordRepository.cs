@@ -35,7 +35,7 @@ namespace NN.Checklist.Domain.Repositories
             MapColumn("Id", "id");
             MapColumn("SystemFunctionalityId", "system_functionality_id");
             MapColumn("UserId", "user_id");
-            MapColumn("Comments", "comments");
+            MapColumn("Comments", "comments", 8000);
             MapRelationshipManyToOne("User", "UserId", "SYSTEMS_RECORDS", "user_id" );
 
         }

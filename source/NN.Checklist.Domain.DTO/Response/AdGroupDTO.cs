@@ -11,9 +11,6 @@ namespace NN.Checklist.Domain.DTO.Response
         public Int64 AdGroupId { get; set; }
         public String Name { get; set; }
         public bool Administrator { get; set; }
-        public bool Maintenance { get; set; }
-        public bool ImpactAnalyst { get; set; }
-        public bool QAAnalyst { get; set; }
         public List<PermissionDTO> Permissions { get; set; }
     }
 }

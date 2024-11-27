@@ -42,7 +42,7 @@ namespace NN.Checklist.Domain.Entities
         /// otherwise, it uses the validate method to validate and insert the permission in the database.
         /// Created by: wazc Programa Novo 2022-09-08 
         /// </summary>
-        public AdGroup(AuthenticatedUserDTO user, System.String name, bool administrator, bool maintenance, bool impactAnalyst, bool qaAnalyst, List<PermissionDTO> permissions, string comments)
+        public AdGroup(AuthenticatedUserDTO user, System.String name, bool administrator, List<PermissionDTO> permissions, string comments)
         {
             var globalization = ObjectFactory.GetSingleton<IGlobalizationService>();
 
@@ -56,9 +56,6 @@ namespace NN.Checklist.Domain.Entities
 
             Name = name;
             Administrator = administrator;
-            Maintenance = maintenance;
-            ImpactAnalyst = impactAnalyst;
-            QAAnalyst = qaAnalyst;
 
             if (permissions == null || permissions.Count == 0)
             {
@@ -106,15 +103,6 @@ namespace NN.Checklist.Domain.Entities
 
         [AttributeDescriptor("Administrator", true)]
         public bool Administrator { get; set; }
-
-        [AttributeDescriptor("Maintenance", true)]
-        public bool Maintenance { get; set; }
-
-        [AttributeDescriptor("Impact Analyst", true)]
-        public bool ImpactAnalyst { get; set; }
-
-        [AttributeDescriptor("QA Analyst", true)]
-        public bool QAAnalyst { get; set; }
 
         public IList<AdGroupPermission> Permissions { get => GetOneToManyData<AdGroupPermission>().Result; }
 
@@ -170,7 +158,7 @@ namespace NN.Checklist.Domain.Entities
         /// Description: Method that receives as a parameter user, name, administrator, maintenance, impact_analyst, qa_analyst, permissions, comments and update the user group.
         /// Created by: wazc Programa Novo 2022-09-08 
         /// </summary>
-        public async Task Update(AuthenticatedUserDTO user, string name, bool administrator, bool maintenance, bool impact_analyst, bool qa_analyst, List<PermissionDTO> permissions, string comments)
+        public async Task Update(AuthenticatedUserDTO user, string name, bool administrator, List<PermissionDTO> permissions, string comments)
         {
             try
             {
@@ -195,9 +183,6 @@ namespace NN.Checklist.Domain.Entities
 
                 Name = name;
                 Administrator = administrator;
-                Maintenance = maintenance;
-                ImpactAnalyst = impact_analyst;
-                QAAnalyst = qa_analyst;
 
                 if (permissions == null || permissions.Count == 0)
                 {

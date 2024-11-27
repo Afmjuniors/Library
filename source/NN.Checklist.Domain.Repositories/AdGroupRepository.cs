@@ -33,9 +33,6 @@ namespace NN.Checklist.Domain.Repositories
             MapPrimaryKey("AdGroupId", "ad_group_id",true,0);
             MapColumn("Name", "name", 150);
             MapColumn("Administrator", "administrator");
-            MapColumn("Maintenance", "maintenance");
-            MapColumn("ImpactAnalyst", "impact_analyst");
-            MapColumn("QAAnalyst", "qa_analyst");
             MapRelationshipOneToMany("Permissions", "AD_GROUPS_PERMISSIONS", "AD_GROUP_ID");
         }
 

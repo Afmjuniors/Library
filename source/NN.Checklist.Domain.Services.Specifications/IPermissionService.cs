@@ -12,7 +12,6 @@ namespace NN.Checklist.Domain.Services.Specifications
     [ObjectMap("PermissionService", true)]
     public interface IPermissionService
     {
-        Task Initialize();
-        Task<List<AdGroupPermissionDTO>> GetPermissions();
+        Task<List<AdGroupPermissionDTO>> ListPermissions();
     }
 }

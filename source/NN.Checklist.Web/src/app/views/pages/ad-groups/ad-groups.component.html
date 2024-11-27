@@ -82,32 +82,10 @@
 					<mat-cell *matCellDef="let adGroup">{{adGroup.name}}</mat-cell>
 				</ng-container>
 
-				<ng-container matColumnDef="maintenance">
-					<mat-header-cell *matHeaderCellDef>{{ "MAINTENANCE" | translate }}
-					</mat-header-cell>
-					<mat-cell *matCellDef="let adGroup">
-						<mat-checkbox disabled [(ngModel)]="adGroup.maintenance"></mat-checkbox>
-					</mat-cell>
-				</ng-container>
-
 				<ng-container matColumnDef="administrator">
 					<mat-header-cell *matHeaderCellDef>{{ "ADMINISTRATOR" | translate }}</mat-header-cell>
 					<mat-cell *matCellDef="let adGroup">
 						<mat-checkbox disabled [(ngModel)]="adGroup.administrator"></mat-checkbox>
-					</mat-cell>
-				</ng-container>
-
-				<ng-container matColumnDef="impact_analysis">
-					<mat-header-cell *matHeaderCellDef>{{ "MENU.IMPACT_ANALYSIS" | translate }}</mat-header-cell>
-					<mat-cell *matCellDef="let adGroup">
-						<mat-checkbox disabled [(ngModel)]="adGroup.impactAnalyst"></mat-checkbox>
-					</mat-cell>
-				</ng-container>
-
-				<ng-container matColumnDef="qaAnalyst">
-					<mat-header-cell *matHeaderCellDef>{{ "QA_ANALYSIS" | translate }}</mat-header-cell>
-					<mat-cell *matCellDef="let adGroup">
-						<mat-checkbox disabled [(ngModel)]="adGroup.qaAnalyst"></mat-checkbox>
 					</mat-cell>
 				</ng-container>
 

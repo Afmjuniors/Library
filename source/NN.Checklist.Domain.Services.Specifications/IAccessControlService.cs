@@ -28,7 +28,7 @@ namespace NN.Checklist.Domain.Services.Specifications
         Task<UserPhoneDTO> InsertUserPhone(AuthenticatedUserDTO user, int countryId, string number, long userId);
         Task<bool> RemoveUserPhone(AuthenticatedUserDTO user, long userPhoneId);
         Task ActivateUser(AuthenticatedUserDTO user, long userId, bool active);
-        Task<AdGroupDTO> InsertAdGroup(AuthenticatedUserDTO user, string name, bool administrator, bool maintenance, bool impactAnalyst, bool qaAnalyst, List<PermissionDTO> permissions, string comments);
+        Task<AdGroupDTO> InsertAdGroup(AuthenticatedUserDTO user, string name, bool administrator, List<PermissionDTO> permissions, string comments);
         Task<bool> RemoveAdGroup(AuthenticatedUserDTO user, long adGroupId, string comments);
         Task UpdateAdGroup(AuthenticatedUserDTO user, AdGroupDTO adGroup, string comments);
         Task<PageMessage<AdGroupDTO>> SearchAdGroups(AdGroupPageMessage data);

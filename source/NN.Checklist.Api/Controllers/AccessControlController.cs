@@ -282,7 +282,7 @@ namespace NN.Checklist.Api.Controllers
                 IAccessControlService service = ObjectFactory.GetSingleton<IAccessControlService>();
                 var user = await GetUserFromToken();
                 var obj = request.Data;
-                var adGroup = await service.InsertAdGroup(user, obj.Name, obj.Administrator, obj.Maintenance, obj.ImpactAnalyst, obj.QAAnalyst, obj.Permissions, request.Comments);
+                var adGroup = await service.InsertAdGroup(user, obj.Name, obj.Administrator, obj.Permissions, request.Comments);
                 
                 return Ok(adGroup);
             }

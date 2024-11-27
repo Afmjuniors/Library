@@ -17,29 +17,31 @@ namespace NN.Checklist.Domain.Entities
      
             var lst = new List<ItemMenuDTO>();
 
-            var records = GetMenuRecords(user);
+            var checklists = GetMenuChecklists(user);
+
+            if (checklists != null)
+            {
+                lst.AddRange(checklists);
+            }
+
+            var operations = GetMenuValidations(user);
                 
-            if (records != null)
+            if (operations != null)
             {
-                lst.AddRange(records);
+                lst.AddRange(operations);
             }
 
-            var impact = GetMenuAnalysisImpact(user);
-            if (impact != null)
+            if (user != null && user.Permissions != null && user.Permissions.Count > 0 && user.Permissions.Where(x => x.Tag == "AUDIT_TRAIL").Count() > 0)
             {
-                lst.AddRange(impact);
-            }
+                var audit = new ItemMenuDTO()
+                {
+                    Title = "Audit Trail",
+                    Alignment = "left",
+                    Page = "/audit-trail",
+                    Translate = "MENU.AUDIT_TRAIL"
+                };
 
-            var qa = GetMenuQaAnalysis(user);
-            if (qa != null)
-            {
-                lst.AddRange(qa);
-            }
-
-            var approval = GetMenuApprovalControl(user);
-            if (approval != null)
-            {
-                lst.AddRange(approval);
+                lst.Add(audit);
             }
 
             var setup = GetMenuSetup(user);
@@ -58,113 +60,22 @@ namespace NN.Checklist.Domain.Entities
         /// Description: Method that takes as a parameter user and checks the permissions and returns the submenu information of the records.
         /// Created by: wazc Programa Novo 2022-09-08 
         /// </summary>
-        public static List<ItemMenuDTO> GetMenuRecords(AuthenticatedUserDTO user)
+        public static List<ItemMenuDTO> GetMenuChecklists(AuthenticatedUserDTO user)
         {
             var listSub = new List<ItemMenuDTO>();
 
-            if (user != null && user.Permissions != null && user.Permissions.Count > 0 && user.Permissions.Where(x => x.Tag == "ALARMS").Count() > 0)
-            {
-                var alarms = new ItemMenuDTO()
-                {
-                    Title = "Alarmes",
-                    Alignment = "left",
-                    Page = "/alarms",
-                    Translate = "MENU.ALARMS"
-                };
-                listSub.Add(alarms);
-            }
-
-
-            if (user != null && user.Permissions != null && user.Permissions.Count > 0 && user.Permissions.Where(x => x.Tag == "EVENTS").Count() > 0)
-            {
-                var events = new ItemMenuDTO()
-                {
-                    Title = "Eventos",
-                    Alignment = "left",
-                    Page = "/events",
-                    Translate = "MENU.EVENTS"
-                };
-
-                listSub.Add(events);
-            }
-
-            if (user != null && user.Permissions != null && user.Permissions.Count > 0 && user.Permissions.Where(x => x.Tag == "AUDIT_TRAIL").Count() > 0)
-            {
-                var audit = new ItemMenuDTO()
-                {
-                    Title = "Audit Trail",
-                    Alignment = "left",
-                    Page = "/audit-trail",
-                    Translate = "MENU.AUDIT_TRAIL"
-                };
-
-                listSub.Add(audit);
-            }
-                        
-
-            if (listSub.Count > 0)
-            {
+            if (user != null && user.Permissions != null && user.Permissions.Count > 0 && user.Permissions.Where(x => x.Tag == "CHECKLISTS").Count() > 0)
+            {             
                 var ret = new List<ItemMenuDTO>();
 
                 var menuItem = new ItemMenuDTO()
                 {
                     Root = true,
-                    Title = "Registros",
-                    Alignment = "Left",
-                    Toggle = "click",
-                    Translate = "MENU.RECORDS",
-                    Submenu = listSub
-                };
-
-                ret.Add(menuItem);
-
-                return ret;
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Name: GetMenuAnalysisImpact
-        /// Description: Method that takes as a parameter user and checks the permissions and returns the information from the AnalysisImpact submenu.
-        /// Created by: wazc Programa Novo 2022-09-08 
-        /// </summary>
-        public static List<ItemMenuDTO> GetMenuAnalysisImpact(AuthenticatedUserDTO user)
-        {
-            var listSub = new List<ItemMenuDTO>();
-
-            if (user != null && user.Permissions != null && user.Permissions.Count > 0 && user.Permissions.Where(x => x.Tag == "IMPACT_ANALYSIS").Count() > 0)
-            {
-                var overview = new ItemMenuDTO()
-                {
-                    Title = "Overview",
+                    Title = "Operações",
                     Alignment = "left",
-                    Page = "/impact-analysis-overview",
-                    Translate = "MENU.OVERVIEW"
-                };
-
-
-                listSub.Add(overview);
-
-                var performAnalysis = new ItemMenuDTO()
-                {
-                    Title = "Realizar Análise",
-                    Alignment = "left",
-                    Page = "/perform-impact-analysis",
-                    Translate = "MENU.PERFORM_ANALYSIS"
-                };
-
-                listSub.Add(performAnalysis);
-
-                var ret = new List<ItemMenuDTO>();
-
-                var menuItem = new ItemMenuDTO()
-                {
-                    Title = "Análise Impacto",
-                    Root = true,
-                    Alignment = "Left",
                     Toggle = "click",
-                    Translate = "MENU.ANALYSIS_IMPACT",
-                    Submenu = listSub
+                    Translate = "MENU.CHECKLISTS",
+                    Page = "/checklists",
                 };
 
                 ret.Add(menuItem);
@@ -176,49 +87,33 @@ namespace NN.Checklist.Domain.Entities
         }
 
         /// <summary>
-        /// Name: GetMenuQaAnalysis
-        /// Description: Method that takes as a parameter user and checks the permissions and returns the information from the QaAnalysis submenu.
+        /// Name: GetMenuRecords
+        /// Description: Method that takes as a parameter user and checks the permissions and returns the submenu information of the records.
         /// Created by: wazc Programa Novo 2022-09-08 
         /// </summary>
-        public static List<ItemMenuDTO> GetMenuQaAnalysis(AuthenticatedUserDTO user)
+        public static List<ItemMenuDTO> GetMenuValidations(AuthenticatedUserDTO user)
         {
             var listSub = new List<ItemMenuDTO>();
 
-            if (user != null && user.Permissions != null && user.Permissions.Count > 0 && user.Permissions.Where(x => x.Tag == "QA_OVERVIEW").Count() > 0)
+            var a11Filling = GetMenuA11Filling(user);
+
+            if (a11Filling != null)
             {
-                var overview = new ItemMenuDTO()
-                {
-                    Title = "Overview",
-                    Alignment = "left",
-                    Page = "/qa-overview",
-                    Translate = "MENU.OVERVIEW"
-                };
-                listSub.Add(overview);
+                listSub.AddRange(a11Filling);
             }
 
-            if (user != null && user.Permissions != null && user.Permissions.Count > 0 && user.Permissions.Where(x => x.Tag == "QA_ANALYSIS").Count() > 0)
+            var a11Formulation = GetMenuA11Formulation(user);
+
+            if (a11Formulation != null)
             {
-                var performApproval = new ItemMenuDTO()
-                {
-                    Title = "Realizar Aprovação",
-                    Alignment = "left",
-                    Page = "/qa-analysis",
-                    Translate = "MENU.PERFORM_APPROVAL"
-                };
-                listSub.Add(performApproval);
+                listSub.AddRange(a11Formulation);
             }
 
-            if (user != null && user.Permissions != null && user.Permissions.Count > 0 && user.Permissions.Where(x => x.Tag == "QA_REPORT").Count() > 0)
-            {
-                var reportApprovals = new ItemMenuDTO()
-                {
-                    Title = "Relatório de Aprovações",
-                    Alignment = "left",
-                    Page = "/qa-report",
-                    Translate = "MENU.REPORT_APPROVALS"
-                };
+            var a12Release = GetMenuA12ReleaseANP(user);
 
-                listSub.Add(reportApprovals);
+            if (a12Release != null)
+            {
+                listSub.AddRange(a12Release);
             }
 
             if (listSub.Count > 0)
@@ -228,10 +123,10 @@ namespace NN.Checklist.Domain.Entities
                 var menuItem = new ItemMenuDTO()
                 {
                     Root = true,
-                    Title = "Análise QA",
-                    Alignment = "Left",
+                    Title = "Validações",
+                    Alignment = "left",
                     Toggle = "click",
-                    Translate = "MENU.QA_ANALYSIS",
+                    Translate = "MENU.VALIDATIONS",
                     Submenu = listSub
                 };
 
@@ -239,40 +134,53 @@ namespace NN.Checklist.Domain.Entities
 
                 return ret;
             }
-
             return null;
         }
 
+        
         /// <summary>
-        /// Name: GetMenuApprovalControl
-        /// Description: Method that takes as a parameter user and checks the permissions and returns the information from the ApprovalControl submenu.
+        /// Name: GetMenuRecords
+        /// Description: Method that takes as a parameter user and checks the permissions and returns the submenu information of the records.
         /// Created by: wazc Programa Novo 2022-09-08 
         /// </summary>
-        public static List<ItemMenuDTO> GetMenuApprovalControl(AuthenticatedUserDTO user)
+        public static List<ItemMenuDTO> GetMenuA11Filling(AuthenticatedUserDTO user)
         {
             var listSub = new List<ItemMenuDTO>();
 
-            if (user != null && user.Permissions != null && user.Permissions.Count > 0 && user.Permissions.Where(x => x.Tag == "BATCH_REVIEW").Count() > 0)
+            if (user != null && user.Permissions != null && user.Permissions.Count > 0 && user.Permissions.Where(x => x.Tag == "VALIDATIONS").Count() > 0)
             {
-                var batch = new ItemMenuDTO()
+                var materialConsumption = new ItemMenuDTO()
                 {
-                    Title = "Batch Release",
+                    Title = "Consumo de Material",
                     Alignment = "left",
-                    Page = "/batch",
-                    Translate = "MENU.BATCH_RELEASE"
+                    Page = "/material-consumption",
+                    Translate = "MENU.MATERIAL_CONSUMPTION"
                 };
-                listSub.Add(batch);
+                listSub.Add(materialConsumption);
+            }
 
-
+            if (user != null && user.Permissions != null && user.Permissions.Count > 0 && user.Permissions.Where(x => x.Tag == "VALIDATIONS").Count() > 0)
+            {
+                var servicesOrders = new ItemMenuDTO()
+                {
+                    Title = "Busca de Ordens de Serviços",
+                    Alignment = "left",
+                    Page = "/services-orders-search",
+                    Translate = "MENU.SERVICES_ORDERS_SEARCH"
+                };
+                listSub.Add(servicesOrders);
+            }
+            
+            if (listSub.Count > 0)
+            {
                 var ret = new List<ItemMenuDTO>();
 
                 var menuItem = new ItemMenuDTO()
                 {
-                    Root = true,
-                    Title = "Controle de Aprovação",
-                    Alignment = "Left",
+                    Title = "A11 Enchimento",
+                    Alignment = "right",
                     Toggle = "click",
-                    Translate = "MENU.APPROVAL_CONTROL",
+                    Translate = "MENU.A11FILLING",
                     Submenu = listSub
                 };
 
@@ -280,7 +188,112 @@ namespace NN.Checklist.Domain.Entities
 
                 return ret;
             }
+            return null;
+        }
 
+        /// <summary>
+        /// Name: GetMenuRecords
+        /// Description: Method that takes as a parameter user and checks the permissions and returns the submenu information of the records.
+        /// Created by: wazc Programa Novo 2022-09-08 
+        /// </summary>
+        public static List<ItemMenuDTO> GetMenuA11Formulation(AuthenticatedUserDTO user)
+        {
+            var listSub = new List<ItemMenuDTO>();
+
+            if (user != null && user.Permissions != null && user.Permissions.Count > 0 && user.Permissions.Where(x => x.Tag == "VALIDATIONS").Count() > 0)
+            {
+                var materialsStatus = new ItemMenuDTO()
+                {
+                    Title = "Status de Materiais",
+                    Alignment = "left",
+                    Page = "/materials-status",
+                    Translate = "MENU.MATERIALS_STATUS"
+                };
+                listSub.Add(materialsStatus);
+            }
+
+            if (listSub.Count > 0)
+            {
+                var ret = new List<ItemMenuDTO>();
+
+                var menuItem = new ItemMenuDTO()
+                {
+                    Title = "A11 Formulação",
+                    Alignment = "right",
+                    Toggle = "click",
+                    Translate = "MENU.A11FORMULATION",
+                    Submenu = listSub
+                };
+
+                ret.Add(menuItem);
+
+                return ret;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Name: GetMenuRecords
+        /// Description: Method that takes as a parameter user and checks the permissions and returns the submenu information of the records.
+        /// Created by: wazc Programa Novo 2022-09-08 
+        /// </summary>
+        public static List<ItemMenuDTO> GetMenuA12ReleaseANP(AuthenticatedUserDTO user)
+        {
+            var listSub = new List<ItemMenuDTO>();
+
+            if (user != null && user.Permissions != null && user.Permissions.Count > 0 && user.Permissions.Where(x => x.Tag == "VALIDATIONS").Count() > 0)
+            {
+                var analisysQC = new ItemMenuDTO()
+                {
+                    Title = "Resultados de Análise de QC",
+                    Alignment = "left",
+                    Page = "/analisys-qc",
+                    Translate = "MENU.ANALISYS_QC"
+                };
+                listSub.Add(analisysQC);
+            }
+
+            if (user != null && user.Permissions != null && user.Permissions.Count > 0 && user.Permissions.Where(x => x.Tag == "VALIDATIONS").Count() > 0)
+            {
+                var wfi = new ItemMenuDTO()
+                {
+                    Title = "WFI",
+                    Alignment = "left",
+                    Page = "/wfi",
+                    Translate = "MENU.WFI"
+                };
+                listSub.Add(wfi);
+            }
+
+            if (user != null && user.Permissions != null && user.Permissions.Count > 0 && user.Permissions.Where(x => x.Tag == "VALIDATIONS").Count() > 0)
+            {
+                var cpeReports = new ItemMenuDTO()
+                {
+                    Title = "Relatórios do CPE",
+                    Alignment = "left",
+                    Page = "/cpe-reports",
+                    Translate = "MENU.CPE_REPORTS"
+                };
+                listSub.Add(cpeReports);
+            }
+
+            if (listSub.Count > 0)
+            {
+                var ret = new List<ItemMenuDTO>();
+
+                var menuItem = new ItemMenuDTO()
+                {
+                    Title = "A12 Liberação - ANP",
+                    Alignment = "right",
+                    Toggle = "click",
+                    Translate = "MENU.A12RELEASE_ANP",
+                    Submenu = listSub
+                };
+
+                ret.Add(menuItem);
+
+                return ret;
+            }
             return null;
         }
 
@@ -304,16 +317,7 @@ namespace NN.Checklist.Domain.Entities
                     Translate = "MENU.PARAMETERS"
                 };
                 listSub.Add(parameters);
-                
-                var setup = new ItemMenuDTO()
-                {
-                    Title = "Grupos de Registros",
-                    Alignment = "left",
-                    Page = "/config",
-                    Translate = "MENU.CONFIGURE_RECORDS"
-                };
-                listSub.Add(setup);
-                
+               
                 var adGroups = new ItemMenuDTO()
                 {
                     Title = "Grupos de Ad",
@@ -324,18 +328,6 @@ namespace NN.Checklist.Domain.Entities
                 listSub.Add(adGroups);
 
 
-            }
-
-            if (user != null && user.Permissions != null && user.Permissions.Count > 0 && user.Permissions.Where(x => x.Tag == "DIAGNOSTIC").Count() > 0)
-            {
-                var users = new ItemMenuDTO()
-                {
-                    Title = "Diagnóstico",
-                    Alignment = "left",
-                    Page = "/diagnostic",
-                    Translate = "MENU.DIAGNOSTIC"
-                };
-                listSub.Add(users);
             }
 
             if (user != null && user.Permissions != null && user.Permissions.Count > 0 && user.Permissions.Where(x => x.Tag == "MANAGE_USERS").Count() > 0)
