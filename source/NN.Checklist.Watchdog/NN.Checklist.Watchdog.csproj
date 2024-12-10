@@ -15,6 +15,7 @@
     <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
   </ItemGroup>
 
+	
   <ItemGroup>
     <ProjectReference Include="..\NN.Checklist.Common\NN.Checklist.Common.csproj" />
     <ProjectReference Include="..\NN.Checklist.Domain.DTO\NN.Checklist.Domain.DTO.csproj" />
