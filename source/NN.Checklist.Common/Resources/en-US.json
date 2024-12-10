@@ -96,14 +96,6 @@
 		"value": "Time informed is invalid."
 	},
 	{
-		"key": "TimeResendAlarmsNotificationInvalid",
-		"value": "Notification resend time is invalid."
-	},
-	{
-		"key": "MessageNotificationExpirationTimeInvalid",
-		"value": "Message notification expiration time invalid."
-	},
-	{
 		"key": "ScreenUpdateTimeInvalid",
 		"value": "Screen update time invalid."
 	},

@@ -85,9 +85,6 @@ namespace NN.Checklist.Domain.Services
                 else
                 {
                     param.InactivityTimeLimit = par.InactivityTimeLimit;
-                    param.TimeResendAlarmsNotification = par.TimeResendAlarmsNotification;
-                    param.MessageNotificationExpirationTime = par.MessageNotificationExpirationTime;
-                    param.MaximumNotificationResendTime = par.MaximumNotificationResendTime;
                 }
 
                 return param;
@@ -198,7 +195,7 @@ namespace NN.Checklist.Domain.Services
             try
             {
                 var globalization = ObjectFactory.GetSingleton<IGlobalizationService>();
-                var response = new PolicyParameter(user, parameters.InactivityTimeLimit, comments, parameters.TimeResendAlarmsNotification, parameters.MessageNotificationExpirationTime, parameters.MaximumNotificationResendTime).Transform<PolicyParameterDTO>();                
+                var response = new PolicyParameter(user, parameters.InactivityTimeLimit, comments).Transform<PolicyParameterDTO>();                
 
                 return response;
             }

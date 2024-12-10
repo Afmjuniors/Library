@@ -9,8 +9,6 @@ namespace NN.Checklist.Domain.DTO.Request.Parameter
     public class PolicyParameterDTO
     {
         public long InactivityTimeLimit { get; set; }
-        public long TimeResendAlarmsNotification { get; set; }
-        public long MessageNotificationExpirationTime { get; set; }
-        public long MaximumNotificationResendTime { get; set; }
+
     }
 }
