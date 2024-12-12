@@ -16,9 +16,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BasePageComponent } from '../BasePage.component';
 import { TranslateService } from '@ngx-translate/core';
 import { AppService, ParameterService } from '../../../core/auth/_services';
-import { MAT_MOMENT_DATE_FORMATS, MomentDateAdapter, MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular/material-moment-adapter';
 import { EmailComponent } from '../../components/email/email.component';
-import {DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE} from '@angular/material/core';
 import { NgxMatDateAdapter, NgxMatDateFormats, NGX_MAT_DATE_FORMATS } from '@angular-material-components/datetime-picker';
 import { NGX_MAT_MOMENT_DATE_ADAPTER_OPTIONS } from '@angular-material-components/moment-adapter';
 import { AuditTrailDataSource } from '../../../core/auth/_data-sources/audit-trail.datasource';
@@ -208,13 +206,7 @@ export class AuditTrailComponent extends BasePageComponent implements OnInit {
 			if(res != "" && res != undefined && res != null)
 			{
 				this.layoutUtilsService.showActionNotification(this.translate.instant("WAITGENERATION"), MessageType.Create);
-				this.app.ExportOccurrenceCSV(this.filter).subscribe(x => {
-					this.csvFile = x;
-				},
-				error =>
-				{
-					this.layoutUtilsService.showErrorNotification(error.message, MessageType.Create);
-				});
+				
 			}
 		});
 	}
@@ -222,17 +214,7 @@ export class AuditTrailComponent extends BasePageComponent implements OnInit {
 	exportCSV() {
 		this.idleService.restartTimer();
 		this.loadingCSV = true;
-		this.app.ExportOccurrenceCSV(this.filter).subscribe(
-			response => {
-				this.download(response);
-				this.loadingCSV = false;
-				this.detector.detectChanges();
-			},
-			error => {
-				this.loadingCSV = false;
-				this.layoutUtilsService.showErrorNotification(error.message, MessageType.Create);
-			}
-		);
+		
 	}
 
 	download(item: string) {

@@ -23,6 +23,7 @@ export class UsersDataSource extends BaseDataSource {
 		this.isPreloadTextViewed$ = this.loadingSubject.asObservable();
 		this.load(this.defaultPageNumber, this.defaultPageSize, this.filter);
 	}
+	
 
 	load(pageNumber: number, pageSize: number, filtro: User): void
 	{

@@ -34,7 +34,7 @@ namespace NN.Checklist.Domain.Entities.Parameters
         /// Updated by: wazc CR0838177 2023-09-01
         /// Description: inclusion of notification resend time parameters, notification expiry time and maximum resend time.
         /// </summary>
-        public PolicyParameter(AuthenticatedUserDTO user, long inactivityTimeLimit, string comments, long timeResendAlarmsNotification, long messageNotificationExpirationTime, long maximumNotificationResendTime)
+        public PolicyParameter(AuthenticatedUserDTO user, long inactivityTimeLimit, string comments)
         {
             var globalization = ObjectFactory.GetSingleton<IGlobalizationService>();
             long? userId = null;
@@ -49,9 +49,6 @@ namespace NN.Checklist.Domain.Entities.Parameters
             var actual = Get().Result;
 
             InactivityTimeLimit = inactivityTimeLimit;
-            TimeResendAlarmsNotification = timeResendAlarmsNotification;
-            MessageNotificationExpirationTime = messageNotificationExpirationTime;
-            MaximumNotificationResendTime = maximumNotificationResendTime;
 
             if (Validate(true).Result)
             {
@@ -62,11 +59,11 @@ namespace NN.Checklist.Domain.Entities.Parameters
                     tran.Complete();
                 }
 
-                var msg = globalization.GetString(globalization.DefaultLanguage, "PolicyParametersCreated", new string[] { inactivityTimeLimit.ToString(), timeResendAlarmsNotification.ToString(), messageNotificationExpirationTime.ToString(), maximumNotificationResendTime.ToString() }).Result ;
+                var msg = globalization.GetString(globalization.DefaultLanguage, "PolicyParametersCreated", new string[] { inactivityTimeLimit.ToString()}).Result ;
 
                 if (actual != null)
                 {
-                    msg = globalization.GetString(globalization.DefaultLanguage, "PolicyParametersChanged", new string[] { actual.InactivityTimeLimit.ToString(), inactivityTimeLimit.ToString(), actual.TimeResendAlarmsNotification.ToString(), timeResendAlarmsNotification.ToString(), actual.MessageNotificationExpirationTime.ToString(), messageNotificationExpirationTime.ToString(), actual.MaximumNotificationResendTime.ToString(), maximumNotificationResendTime.ToString() }).Result;
+                    msg = globalization.GetString(globalization.DefaultLanguage, "PolicyParametersChanged", new string[] { actual.InactivityTimeLimit.ToString(), inactivityTimeLimit.ToString() }).Result;
                 }
 
                 if (user != null)
@@ -80,9 +77,6 @@ namespace NN.Checklist.Domain.Entities.Parameters
 
         #region Attributes
         public long InactivityTimeLimit { get; set; }
-        public long TimeResendAlarmsNotification { get; set; }
-        public long MessageNotificationExpirationTime { get; set; }
-        public long MaximumNotificationResendTime { get; set; }
 
         #endregion
 
@@ -109,15 +103,6 @@ namespace NN.Checklist.Domain.Entities.Parameters
                     erros.Add(new DomainError("InactivityTimeLimit", await globalization.GetString("InactivityTimeInvalid")));
                 }
 
-                if(TimeResendAlarmsNotification < 1 || TimeResendAlarmsNotification > 14400)
-                {
-                    erros.Add(new DomainError("TimeResendAlarmsNotification", await globalization.GetString("TimeResendAlarmsNotificationInvalid")));
-                }
-
-                if(MessageNotificationExpirationTime < 0 || MessageNotificationExpirationTime > 1440)
-                {
-                    erros.Add(new DomainError("MessageNotificationExpirationTime", await globalization.GetString("MessageNotificationExpirationTimeInvalid")));
-                }
 
                 if (erros.Count > 0)
                 {

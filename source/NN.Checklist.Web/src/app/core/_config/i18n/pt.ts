@@ -24,7 +24,8 @@ export const locale = {
 			A12RELEASE_ANP: 'A12 Liberação - ANP',
 			ANALISYS_QC: 'Resultados de Análises do QC',
 			WFI: 'WFI',
-			CPE_REPORTS: 'Relatórios do CPE'
+			CPE_REPORTS: 'Relatórios do CPE',
+			ACCESS_PROFILES: "Perfis de Acesso"
 		},
 		AUTH: {
 			GENERAL: {
@@ -68,7 +69,7 @@ export const locale = {
 				USERNAME: 'Iniciais'
 			},
 			VALIDATION: {
-				INVALID: '{{name}} nãe é válido',
+				INVALID: '{{name}} não é válido',
 				REQUIRED: '{{name}} é necessário',
 				MIN_LENGTH: '{{name}} tamanho mínimo é {{min}}',
 				AGREEMENT_REQUIRED: 'A aceitação dos termos e condições é obrigatória',
@@ -104,7 +105,7 @@ export const locale = {
 				SMTP_ENABLED_SSL: "SSL habilitado"
 			},
 			PARAMETER_INPUT: {
-				DOMAIN_INVALID: "Dominio informado é invalido",
+				DOMAIN_INVALID: "Domínio informado é invalido",
 				ADMIN_INVALID: "Usuário informado é invalido",
 				PASSWORD_INVALID: "Senha informada é invalida",
 				SQL_STRING: "String de conexão informada é invalida",
@@ -128,12 +129,12 @@ export const locale = {
 				USER_ERROR: "Usuário invalido.",
 				PASS_ERROR: "Password invalido."
 			},
-			EMAIL:{
+			EMAIL: {
 				EMAIL_INVALID: "Informe um email valido.",
 				EMAIL_TITLE: "Email de Destino",
 				SEND_MAIL: "Enviar email",
 			},
-			QA_OVERVIEW:{
+			QA_OVERVIEW: {
 				TITLE: "Análise QA - Visão Geral",
 				DTH_START: "Data inicial",
 				DTH_END: "Data final",
@@ -160,7 +161,7 @@ export const locale = {
 					CAUSESIMPACTS: "Houve Impacto?",
 					DETAILS: "Detalhes",
 					APPROVED: "Aprovado?",
-					REPORT:"Relatório"
+					REPORT: "Relatório"
 				},
 				DETAILS: {
 					TITLE: "QA - Detalhes da análise",
@@ -181,7 +182,7 @@ export const locale = {
 						NEW_VALUE: "Valor novo",
 						UNIT: "Unidade",
 						RESPONSIBLE: "Resp.",
-						ANALYSED_FOR: "Análisado por",
+						ANALYSED_FOR: "Analisado por",
 						ANALYSED_DTH: "Data/hora análise",
 						STATE: "Estado",
 						IMPACT: "Houve impacto?",
@@ -207,14 +208,14 @@ export const locale = {
 					ALARM: "Alarme",
 					DESCRIPTION: "Descrição",
 					PROCESS: "Processo",
-					AREA: "Area",
+					AREA: "Área",
 					DTH_APPROVED: "Data/Hora Avaliação",
 					DTH_START: "Data/Hora Início",
 					DTH_END: "Data/Hora Término",
 					RESPONSIBLE: "Responsável",
 					STATE: "Estágio de Avaliação"
 				},
-				REPORT:{
+				REPORT: {
 					TITLE: "Relatório de aprovação",
 					REPORT_DTH: "Relatório gerado em",
 					START_DATE: "Data inicial",
@@ -223,8 +224,8 @@ export const locale = {
 			},
 			BATCH: {
 				TITLE: "Liberação de lotes",
-				NEXT_MONTH: "Proximo mês",
-				PREVIOUS_MONTH: "Mes anterior",
+				NEXT_MONTH: "Próximo  mês",
+				PREVIOUS_MONTH: "Mês anterior",
 				TODAY: "Hoje",
 				PENDING_ANALYZE: "Análise Pendente",
 				ANALYZE_APPROVED: "Análise Aprovada",
@@ -235,7 +236,7 @@ export const locale = {
 				CURRENT_REGISTERS: "Tipos de Registros de Ocorrências",
 				TYPE_OCCURRENCES_RECORDS_SELECTED: "Tipos de Registros de Ocorrências Selecionados",
 				CREATE_GROUP: "Criar um grupo",
-				CREATE_GROUP_DEFINITION: "Difinição de um grupo de registros.",
+				CREATE_GROUP_DEFINITION: "Definição de um grupo de registros.",
 				SELECTED_REGISTERS: "Registros selecionados",
 				INFORMATION: "Informações",
 				ID_GROUP: "ID Grupo",
@@ -254,6 +255,30 @@ export const locale = {
 				FMS_EVENTS: "FMS - FMS - Eventos"
 			}
 		},
+		AUDIT_TRAIL: {
+			FUNCTIONALITY: "Funcionalidade do Sistema",
+			SYSTEM_RECORD_ID: "Id Registro do Sistema",
+			DATE: "Data do Registro",
+			DESCRIPTION: "Descrição",
+			RELATED_ID: "Id Relacionado",
+		},
+		FILTERS: {
+			FILTERS: "Filtros",
+			CLEAR: "Limpar",
+			FILTER: "Filtrar",
+			KEYWORD: "Palavra-chave",
+			START_DATE: "Data inicial",
+			END_DATE: "Data final",
+			NAME: "Nome"
+
+		},
+		AD_GROUPS: {
+			NEW: "Novo"
+
+		},
+		"PLEASE_WAIT": "Aguarde",
+		"NO_RECORDS": "Sem Registro",
+		"NAME": "Nome",
 		"Actions": "Ações",
 		"ACTION": "Ação",
 		"DESTINY": "Destino",
@@ -349,8 +374,8 @@ export const locale = {
 		"AD_GROUP": 'Perfil de Usuário',
 		"USER_CONTROL": 'Controle de Usuário',
 		"USER": 'Controle de Usuário',
-		"ACTIVATE_USER": 'Deseja ativar o usuario',
-		"DEACTIVATE_USER": 'Deseja desativar o usuario',
+		"ACTIVATE_USER": 'Deseja ativar o usuário',
+		"DEACTIVATE_USER": 'Deseja desativar o usuário',
 		"EDIT_AREA_PHONES": 'Editar Telefones da Área',
 		"ALARM": 'Alarme',
 		"EVENT": 'Evento',
@@ -371,7 +396,6 @@ export const locale = {
 		"NEW_VALUE": "Novo valor",
 		"OLD_VALUE": "Valor antigo",
 		"BEFORE_VALUE": "Valor anterior",
-		"ACCESS_PROFILES": "Perfis de Acesso",
 		"VISUALIZE": "Visualizar",
 		"MISSING_TYPE_OCCURRENCE_RECORD": "Tipo de registro de ocorrência não informado",
 		"DEVICE_TAG": "Tag do Dispositivo",

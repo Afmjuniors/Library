@@ -62,7 +62,7 @@ export class RemoveAdGroupComponent implements OnInit {
 	{
 		if (this.comments == null || this.comments.trim().length == 0)
 		{
-			this.layoutUtilsService.showActionNotification(this.translateService.instant("COMMENTS_NOT_PROVIDED"), 10000);
+			this.layoutUtilsService.showActionNotification(this.translateService.instant("COMMENTS_NOT_PROVIDED"), null,10000);
 			return;
 		}
 

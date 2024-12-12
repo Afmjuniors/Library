@@ -47,15 +47,10 @@ import {
 import { CdkTableModule } from '@angular/cdk/table';
 import { NgxMatDatetimePickerModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
-import { ParameterService } from '../../../core/auth/_services/parameter.service';
 import { NgxMaskModule, IConfig } from 'ngx-mask'
-import { EmailComponent } from '../../components/email/email.component';
 import { ComponentsModule } from '../../components/components.module';
 import { UsersComponent } from './users.component';
-import { UserEditComponent } from './user-edit/user-edit.component';
-import { UserPhonesComponent } from './user-phones/user-phones.component';
-import { UserAreaComponent } from './user-area/user-area.component';
-import { UserControlComponent } from './user-control/user-control.component';
+
 
 const routes: Routes = [
 	{

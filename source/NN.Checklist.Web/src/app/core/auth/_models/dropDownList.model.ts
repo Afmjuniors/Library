@@ -1,4 +1,3 @@
-import { BaseModel } from '../../_base/crud';
 //rotas.model.ts
 export class DropDownList {
 

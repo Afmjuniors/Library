@@ -19,21 +19,7 @@ namespace NN.Checklist.Domain.Services.Specifications
         Task<List<CountryDTO>> ListCountries();
         #endregion
 
-        #region Process
-        Task<List<ProcessDTO>> ListProcesses();
-        #endregion
-
-        #region Area
-        Task<List<AreaDTO>> ListAreas();
-        Task<List<AreaDTO>> ListAreasByProcess(long processId);
-        Task<PageMessage<AreaDTO>> SearchAreas(AreaPageMessage data);
-        Task<AreaDTO> InsertArea(AreaDTO area, string comments, AuthenticatedUserDTO user);
-        Task UpdateArea(AuthenticatedUserDTO user, AreaDTO area, string comments);
-
-        #endregion
-
         #region User
-        Task<List<UserDTO>> ListUsersByArea(long idArea);
         #endregion
 
         #region AdGroups

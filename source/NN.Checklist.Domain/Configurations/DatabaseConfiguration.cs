@@ -44,12 +44,10 @@ namespace NN.Checklist.Domain.Configurations
                 AddObject(CreateRepository("AdGroupPermissionRepository", "NN.Checklist.Domain.Repositories.AdGroupPermissionRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
                 AddObject(CreateRepository("AdGroupRepository", "NN.Checklist.Domain.Repositories.AdGroupRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));                    
                 AddObject(CreateRepository("AdGroupUserRepository", "NN.Checklist.Domain.Repositories.AdGroupUserRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));                    
-                AddObject(CreateRepository("AreaRepository", "NN.Checklist.Domain.Repositories.AreaRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
                 AddObject(CreateRepository("CountryRepository", "NN.Checklist.Domain.Repositories.CountryRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
                 AddObject(CreateRepository("DatatypeRepository", "NN.Checklist.Domain.Repositories.DatatypeRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
                 AddObject(CreateRepository("LanguageRepository", "NN.Checklist.Domain.Repositories.LanguageRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
                 AddObject(CreateRepository("PermissionRepository", "NN.Checklist.Domain.Repositories.PermissionRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
-                AddObject(CreateRepository("ProcessRepository", "NN.Checklist.Domain.Repositories.ProcessRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
                 AddObject(CreateRepository("SystemRecordRepository", "NN.Checklist.Domain.Repositories.SystemRecordRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
                 AddObject(CreateRepository("UserPhoneRepository", "NN.Checklist.Domain.Repositories.UserPhoneRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
                 AddObject(CreateRepository("UserRepository", "NN.Checklist.Domain.Repositories.UserRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));

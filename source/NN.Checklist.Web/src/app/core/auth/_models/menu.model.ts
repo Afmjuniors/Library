@@ -1,5 +1,5 @@
 import { BaseModel } from '../../_base/crud';
-import { ItemMenu } from './ItemMenu.model';
+import { ItemMenu } from './itemMenu.model';
 
 export class Menu extends BaseModel {
     self: string;

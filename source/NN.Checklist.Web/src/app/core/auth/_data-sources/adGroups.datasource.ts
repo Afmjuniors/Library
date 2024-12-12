@@ -10,7 +10,6 @@ import { BaseDataSource, QueryResultsModel, QueryParamsModel } from '../../_base
 import { AppState } from '../../reducers';
 // Selectirs
 import { AppService } from '../_services/app.service';
-import { Area } from '../_models/area.model';
 
 
 export class AdGroupsDataSource extends BaseDataSource {

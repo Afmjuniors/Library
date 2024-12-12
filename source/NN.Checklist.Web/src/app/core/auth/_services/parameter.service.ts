@@ -6,7 +6,6 @@ import { environment } from '../../../../environments/environment';
 import { DomainParameter } from '../_models/_parameter/DomainParameter.models';
 import { DBParameter } from '../_models/_parameter/DBParameter.model';
 import { PolicyParameter } from '../_models/_parameter/PolicyParameter.models';
-import { ResponseBase } from '../_models/ResponseBase.model';
 import { MailParameter } from '../_models/_parameter/MailParameter.model';
 
 const URL_BASE = environment.api;

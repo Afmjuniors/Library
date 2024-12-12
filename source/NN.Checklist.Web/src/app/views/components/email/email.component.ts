@@ -1,15 +1,10 @@
-import { Component, OnInit, ViewChild, ChangeDetectorRef, Inject } from '@angular/core';
-import { Observable, merge } from 'rxjs';
-import { Permission, AuthService } from '../../../core/auth';
-import { MatPaginator, MatSort, MatDialog } from '@angular/material';
-import { LayoutUtilsService, MessageType, QueryParamsModel } from '../../../core/_base/crud';
-import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
-import { Store } from '@ngrx/store';
-import { AppState } from '../../../core/reducers';
-import { Router } from '@angular/router';
+import { Component, OnInit} from '@angular/core';
+
+import {  MatDialog } from '@angular/material';
+
 
 import { TranslateService } from '@ngx-translate/core';
-import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
 	selector: 'td-email',
