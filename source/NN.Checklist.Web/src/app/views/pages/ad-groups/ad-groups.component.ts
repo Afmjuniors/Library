@@ -18,7 +18,6 @@ import { distinctUntilChanged, finalize, skip, takeUntil, tap } from 'rxjs/opera
 import { NewAdGroupComponent } from './new-ad-group/new-ad-group.component';
 import { RemoveAdGroupComponent } from './remove-ad-group/remove-ad-group.component';
 import { IdleService } from './../../../core/_base/layout/services/idle.service';
-import { SignatureComponent } from '../../components/signature/signature.component';
 
 @Component({
 	selector: 'kt-ad-groups',

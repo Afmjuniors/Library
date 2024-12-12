@@ -1,12 +1,9 @@
-import { Component, OnInit, ViewChild, ChangeDetectorRef, Inject } from '@angular/core';
-import { Observable, merge } from 'rxjs';
-import { Permission, AuthService, currentUser } from '../../../core/auth';
-import { MatPaginator, MatSort, MatDialog } from '@angular/material';
-import { LayoutUtilsService, MessageType, QueryParamsModel } from '../../../core/_base/crud';
-import { FormGroup, FormBuilder, FormControl, Validators } from '@angular/forms';
+import { Component, OnInit,   Inject } from '@angular/core';
+import {   currentUser } from '../../../core/auth';
+import {   MatDialog } from '@angular/material';
+import { LayoutUtilsService } from '../../../core/_base/crud';
 import { select, Store } from '@ngrx/store';
 import { AppState } from '../../../core/reducers';
-import { Router } from '@angular/router';
 
 import { TranslateService } from '@ngx-translate/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';

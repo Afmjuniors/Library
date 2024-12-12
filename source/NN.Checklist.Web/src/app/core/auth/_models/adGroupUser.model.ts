@@ -1,5 +1,4 @@
 import { BaseModel } from '../../_base/crud';
-import { AdGroupUserArea } from './adGroupUserArea.model';
 
 export class AdGroupUser extends BaseModel {
 
@@ -7,7 +6,6 @@ export class AdGroupUser extends BaseModel {
     adGroupUserId: number;
     adGroupId: number;
     userId: number;
-	adGroupUserAreas: AdGroupUserArea[];
 
 
     clear(): void {
@@ -15,6 +13,5 @@ export class AdGroupUser extends BaseModel {
 		this.adGroupUserId = 0;
 		this.adGroupId = 0;
 		this.userId = 0;
-		this.adGroupUserAreas = [];
     }
 }

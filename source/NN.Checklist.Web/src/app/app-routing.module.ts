@@ -40,12 +40,7 @@ const routes: Routes = [
 				path: 'users',
 				canActivate: [AuthGuard],
 				loadChildren: () => import('./views/pages/users/users.module').then(m => m.UsersModule)
-			},
-			{
-				path: 'areas',
-				canActivate: [AuthGuard],
-				loadChildren: () => import('./views/pages/areas/areas.module').then(m => m.AreasModule)
-			},			
+			},	
 			{
 				path: 'error/403',
 				component: ErrorPageComponent,

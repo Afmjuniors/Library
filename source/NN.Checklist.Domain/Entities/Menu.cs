@@ -323,7 +323,7 @@ namespace NN.Checklist.Domain.Entities
                     Title = "Grupos de Ad",
                     Alignment = "left",
                     Page = "/ad-groups",
-                    Translate = "ACCESS_PROFILES"
+                    Translate = "MENU.ACCESS_PROFILES"
                 };
                 listSub.Add(adGroups);
 
@@ -341,18 +341,7 @@ namespace NN.Checklist.Domain.Entities
                 };
                 listSub.Add(users);
             }
-
-            if (user != null && user.Permissions != null && user.Permissions.Count > 0 && user.Permissions.Where(x => x.Tag == "MANAGE_AREAS").Count() > 0)
-            {
-                var users = new ItemMenuDTO()
-                {
-                    Title = "Lista de Áreas",
-                    Alignment = "left",
-                    Page = "/areas",
-                    Translate = "MENU.AREAS"
-                };
-                listSub.Add(users);
-            }            
+      
 
             if (listSub.Count > 0)
             {

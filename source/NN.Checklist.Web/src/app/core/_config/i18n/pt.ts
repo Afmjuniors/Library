@@ -24,7 +24,8 @@ export const locale = {
 			A12RELEASE_ANP: 'A12 Liberação - ANP',
 			ANALISYS_QC: 'Resultados de Análises do QC',
 			WFI: 'WFI',
-			CPE_REPORTS: 'Relatórios do CPE'
+			CPE_REPORTS: 'Relatórios do CPE',
+			ACCESS_PROFILES: "Perfis de Acesso"
 		},
 		AUTH: {
 			GENERAL: {
@@ -128,12 +129,12 @@ export const locale = {
 				USER_ERROR: "Usuário invalido.",
 				PASS_ERROR: "Password invalido."
 			},
-			EMAIL:{
+			EMAIL: {
 				EMAIL_INVALID: "Informe um email valido.",
 				EMAIL_TITLE: "Email de Destino",
 				SEND_MAIL: "Enviar email",
 			},
-			QA_OVERVIEW:{
+			QA_OVERVIEW: {
 				TITLE: "Análise QA - Visão Geral",
 				DTH_START: "Data inicial",
 				DTH_END: "Data final",
@@ -160,7 +161,7 @@ export const locale = {
 					CAUSESIMPACTS: "Houve Impacto?",
 					DETAILS: "Detalhes",
 					APPROVED: "Aprovado?",
-					REPORT:"Relatório"
+					REPORT: "Relatório"
 				},
 				DETAILS: {
 					TITLE: "QA - Detalhes da análise",
@@ -214,7 +215,7 @@ export const locale = {
 					RESPONSIBLE: "Responsável",
 					STATE: "Estágio de Avaliação"
 				},
-				REPORT:{
+				REPORT: {
 					TITLE: "Relatório de aprovação",
 					REPORT_DTH: "Relatório gerado em",
 					START_DATE: "Data inicial",
@@ -254,6 +255,30 @@ export const locale = {
 				FMS_EVENTS: "FMS - FMS - Eventos"
 			}
 		},
+		AUDIT_TRAIL: {
+			FUNCTIONALITY: "Funcionalidade do Sistema",
+			SYSTEM_RECORD_ID: "Id Registro do Sistema",
+			DATE: "Data do Registro",
+			DESCRIPTION: "Descrição",
+			RELATED_ID: "Id Relacionado",
+		},
+		FILTERS: {
+			FILTERS: "Filtros",
+			CLEAR: "Limpar",
+			FILTER: "Filtrar",
+			KEYWORD: "Palavra-chave",
+			START_DATE: "Data inicial",
+			END_DATE: "Data final",
+			NAME: "Nome"
+
+		},
+		AD_GROUPS:{
+			NEW:"Novo"
+
+		},
+		"PLEASE_WAIT":"Aguarde",
+		"NO_RECORDS": "Sem Registro",
+		"NAME": "Nome",
 		"Actions": "Ações",
 		"ACTION": "Ação",
 		"DESTINY": "Destino",
@@ -371,7 +396,6 @@ export const locale = {
 		"NEW_VALUE": "Novo valor",
 		"OLD_VALUE": "Valor antigo",
 		"BEFORE_VALUE": "Valor anterior",
-		"ACCESS_PROFILES": "Perfis de Acesso",
 		"VISUALIZE": "Visualizar",
 		"MISSING_TYPE_OCCURRENCE_RECORD": "Tipo de registro de ocorrência não informado",
 		"DEVICE_TAG": "Tag do Dispositivo",

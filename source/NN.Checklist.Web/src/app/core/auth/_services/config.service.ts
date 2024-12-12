@@ -3,9 +3,8 @@ import { HttpClient, HttpHeaders, HttpRequest } from '@angular/common/http';
 import { Observable, of } from 'rxjs';
 import { environment } from '../../../../environments/environment';
 import { QueryResultsModel } from '../../_base/crud';
-import { OccurrenceRecord } from '../_models/occurenceRecord.model';
-import { ExportStatus } from '../_models/ExportStatus.model';
 import { CreatedGroupRegister } from '../_models/_config/created-group-register.model';
+
 
 
 const URL_BASE = environment.api;

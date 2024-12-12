@@ -20,7 +20,7 @@
 					<mat-expansion-panel>
 						<mat-expansion-panel-header>
 							<mat-panel-title>
-								{{ 'MENU.FILTERS' | translate }}
+								{{ 'FILTERS.FILTERS' | translate }}
 
 							</mat-panel-title>
 						</mat-expansion-panel-header>
@@ -35,13 +35,13 @@
 							<div class="col-md-2" style="padding: 10px;">
 								<button mat-button (click)="applyFilters()" style="height: 50px; width: 100%;"
 									mat-raised-button color="primary" type="button">
-									<span>{{ 'MENU.FILTER' | translate }}</span>
+									<span>{{ 'FILTERS.FILTER' | translate }}</span>
 								</button>
 							</div>
 							<div class="col-md-2" style="padding: 10px;">
 								<button mat-button (click)="clear()" style="height: 50px; width: 100%;"
 									mat-raised-button color="default" type="button">
-									<span>{{ 'MENU.CLEAR' | translate }}</span>
+									<span>{{ 'FILTERS.CLEAR' | translate }}</span>
 								</button>
 							</div>
 						</div>
@@ -57,32 +57,6 @@
 
 				<!-- Table with selection -->
 				<!-- https://run.stackblitz.com/api/angular/v1?file=app%2Ftable-selection-example.ts -->
-				<ng-container matColumnDef="edit">
-					<mat-header-cell *matHeaderCellDef>{{ "AVAILABILITY" | translate }}</mat-header-cell>
-					<mat-cell *matCellDef="let user">
-						<button mat-icon-button color="primary" (click)="viewDetails(user)">
-							<mat-icon>create</mat-icon>
-						</button>
-					</mat-cell>
-				</ng-container>
-
-				<ng-container matColumnDef="areas">
-					<mat-header-cell *matHeaderCellDef>{{ 'MENU.AREA' | translate }}</mat-header-cell>
-					<mat-cell *matCellDef="let user">
-						<button mat-icon-button color="primary" (click)="viewDetailsAreas(user)">
-							<mat-icon>map</mat-icon>
-						</button>
-					</mat-cell>
-				</ng-container>
-
-				<ng-container matColumnDef="phones">
-					<mat-header-cell *matHeaderCellDef>{{ "PHONES" | translate }}</mat-header-cell>
-					<mat-cell *matCellDef="let user">
-						<button mat-icon-button color="primary" (click)="viewDetailsPhones(user)">
-							<mat-icon>phone</mat-icon>
-						</button>
-					</mat-cell>
-				</ng-container>
 
 				<ng-container matColumnDef="initials">
 					<mat-header-cell *matHeaderCellDef>{{ "INITIALS" | translate }}</mat-header-cell>
@@ -114,10 +88,10 @@
 			</mat-table>
 
 			<div *ngIf="dataSource != null">
-				<div class="mat-table__message" *ngIf="!dataSource.hasItems">{{ "MENU.NO_RECORDS" | translate }}</div>
+				<div class="mat-table__message" *ngIf="!dataSource.hasItems">{{ "NO_RECORDS" | translate }}</div>
 			</div>
 			<!-- Message for empty data  -->
-			<div class="mat-table__message" *ngIf="dataSource.isPreloadTextViewed$ | async">{{ "MENU.PLEASE_WAIT" |
+			<div class="mat-table__message" *ngIf="dataSource.isPreloadTextViewed$ | async">{{ "PLEASE_WAIT" |
 				translate }}</div>
 		</div>
 		<div class="mat-table__bottom">

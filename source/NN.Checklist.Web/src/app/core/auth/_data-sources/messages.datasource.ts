@@ -9,7 +9,6 @@ import { BaseDataSource, QueryResultsModel, QueryParamsModel } from '../../_base
 import { AppState } from '../../reducers';
 // Selectirs
 import { AppService } from '../_services/app.service';
-import { OccurrenceRecordFilter } from '../_models/occurrenceRecordFilter.model';
 import { MessageFilter } from '../_models/messageFilter.model';
 
 
@@ -33,14 +32,6 @@ export class MessagesDataSource extends BaseDataSource {
 			filter2 = filter;
 		}
 
-		this.appService.searchMessagesByOccurrence(pageNumber + 1, pageSize, filter2).subscribe((response: QueryResultsModel) => {
-			this.paginatorTotalSubject.next(response.rowsCount);
-			this.entitySubject.next(response.entities);
-			if(response.entities == null)
-			{
-				this.hasItems = false;
-			}
-			this.loadingSubject.next(false);
-		});
+		
 	}
 }

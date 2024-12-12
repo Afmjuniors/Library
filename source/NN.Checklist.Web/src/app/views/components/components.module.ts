@@ -40,18 +40,11 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
 import {MatStepperModule} from '@angular/material/stepper';
 import {CdkStepperModule} from '@angular/cdk/stepper';
-import {
-	usersReducer,
-	UserEffects
-} from '../../core/auth';
-import { from } from 'rxjs';
 import { SignatureComponent } from './signature/signature.component';
 import { EmailComponent } from './email/email.component';
 import { SendMailComponent } from './send-mail/send-mail.component';
 import { PdfViewComponent } from './pdf-view/pdf-view.component';
 import { UserEditComponent } from '../pages/users/user-edit/user-edit.component';
-import { UserPhonesComponent } from '../pages/users/user-phones/user-phones.component';
-import { UserAreaComponent } from '../pages/users/user-area/user-area.component';
 import { UserControlComponent } from '../pages/users/user-control/user-control.component';
 import { NgxMatDatetimePickerModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
@@ -133,8 +126,6 @@ const maskConfig: Partial<IConfig> = {
 		ViewTextComponent,
 		PdfViewComponent,
 		UserEditComponent,
-		UserPhonesComponent,
-		UserAreaComponent,
 		UserControlComponent,
 	],
 	declarations: [
@@ -144,8 +135,6 @@ const maskConfig: Partial<IConfig> = {
 		ViewTextComponent,
 		PdfViewComponent,
 		UserEditComponent,
-		UserPhonesComponent,
-		UserAreaComponent,
 		UserControlComponent,
 		PhoneMaskPipe
 	],

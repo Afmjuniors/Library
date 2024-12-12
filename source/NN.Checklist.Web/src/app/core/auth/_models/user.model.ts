@@ -22,7 +22,6 @@ export class User extends BaseModel {
     permissions: Permission[];
 	menu: Menu;
 	initials: string;
-	phonesNumbers: string[];
 	adGroupsUser: AdGroupUser[];
 
     clear(): void {
@@ -41,7 +40,6 @@ export class User extends BaseModel {
 		this.cultureInfo = "";
 		this.permissions = [];
 		this.initials = "";
-		this.phonesNumbers = [];
 		this.adGroupsUser = [];
     }
 }

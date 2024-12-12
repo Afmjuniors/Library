@@ -1,7 +1,4 @@
-import { User } from './user.model';
 import { BaseModel } from '../../_base/crud';
-import { Area } from './area.model';
-import { OccurrenceRecord } from './occurenceRecord.model';
 
 export class MessageStatus extends BaseModel {
 

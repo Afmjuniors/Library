@@ -1,4 +1,3 @@
-import { UserAreaComponent } from './user-area/user-area.component';
 import { SelectionModel } from '@angular/cdk/collections';
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -15,7 +14,6 @@ import { AppState } from '../../../core/reducers';
 import { LayoutUtilsService, MessageType, QueryResultsModel } from '../../../core/_base/crud';
 import { BasePageComponent } from '../BasePage.component';
 import { UserEditComponent } from './user-edit/user-edit.component';
-import { UserPhonesComponent } from './user-phones/user-phones.component';
 import { UserControlComponent } from './user-control/user-control.component';
 
 import { IdleService } from '../../../core/_base/layout/services/idle.service';
@@ -35,7 +33,7 @@ export class UsersComponent extends BasePageComponent implements OnInit {
 
 	// Table fields
 	dataSource: UsersDataSource;
-	displayedColumns = ['initials', 'edit', 'phones','areas', 'status', 'active'];
+	displayedColumns = ['initials',  'status', 'active'];
 	@ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 	@ViewChild('sort1', { static: true }) sort: MatSort;
 
@@ -170,23 +168,7 @@ export class UsersComponent extends BasePageComponent implements OnInit {
 		});
 	}
 
-	viewDetailsPhones(user){
-		this.idleService.restartTimer();
-		const dialogRef = this.dialog.open(UserPhonesComponent, {width:'30%', data: { user: user } });
-		dialogRef.afterClosed().subscribe(res => {
-			this.idleService.restartTimer();
-			this.applyFilters();
-		});
-	}
 
-	viewDetailsAreas(user){
-		this.idleService.restartTimer();
-		const dialogRef = this.dialog.open(UserAreaComponent, {width:'80%', data: { user: user } });
-		dialogRef.afterClosed().subscribe(res => {
-			this.idleService.restartTimer();
-			this.applyFilters();
-		});
-	}
 
 	controlUser(user){
 		this.idleService.restartTimer();

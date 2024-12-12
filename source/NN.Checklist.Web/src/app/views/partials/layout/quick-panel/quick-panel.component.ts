@@ -2,8 +2,6 @@
 import { Component, OnInit } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { currentUser } from '../../../../core/auth';
-import { UserReload, UserRequested } from '../../../../core/auth/_actions/auth.actions';
 import { User } from '../../../../core/auth/_models/user.model';
 import { AppState } from '../../../../core/reducers';
 // Layout

@@ -13,7 +13,6 @@ import { currentUser, Logout, User, UserRequested } from '../../../../../core/au
 import { DomSanitizer } from '@angular/platform-browser';
 import { MatDialog } from '@angular/material';
 import { UserEditComponent } from '../../../../pages/users/user-edit/user-edit.component';
-import { UserPhonesComponent } from '../../../../pages/users/user-phones/user-phones.component';
 import { AppService } from './../../../../../core/auth/_services';
 import { AdGroupUser } from './../../../../../core/auth/_models/adGroupUser.model';
 
@@ -64,10 +63,6 @@ export class UserProfileComponent implements OnInit {
 		this.user$.subscribe(obj => {
 			if (obj) {
 				this.user = obj;
-				if(this.user.phonesNumbers){
-					this.phones = this.user.phonesNumbers;
-				}
-
 				if(this.user.adGroupsUser){
 					this.adGroupAreas = this.user.adGroupsUser;
 				}
@@ -98,21 +93,6 @@ export class UserProfileComponent implements OnInit {
 		});
 	}
 
-	viewDetailsPhones(){
-		const dialogRef = this.dialog.open(UserPhonesComponent, {width:'30%', data: { user: this.user } });
-		dialogRef.afterClosed().subscribe(res => {
-			this.listUserPhones();
-		});
-	}
 
-	listUserPhones(){
-		if(this.user.userId > 0){
-			this.phones = [];
-			this.app.listPhonesNumbersByUser(this.user.userId).subscribe(res =>{
-				for (let index = 0; index < res.length; index++) {
-					this.phones.push(res[index].country.prefixNumber + res[index].number);
-				}
-			})
-		}
-	}
+	
 }
