@@ -21,7 +21,7 @@ export const locale = {
 			SERVICES_ORDERS_SEARCH: 'Services orders search',
 			A11FORMULATION: 'A11 Formulation',
 			MATERIALS_STATUS: 'Material Status',
-			A12RELEASE_ANP: 'A12 Realease - ANP',
+			A12RELEASE_ANP: 'A12 Release - ANP',
 			ANALISYS_QC: 'QC Analisys',
 			WFI: 'WFI',
 			CPE_REPORTS: 'CPE Reports',
