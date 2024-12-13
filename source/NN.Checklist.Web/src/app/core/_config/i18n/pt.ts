@@ -25,7 +25,8 @@ export const locale = {
 			ANALISYS_QC: 'Resultados de Análises do QC',
 			WFI: 'WFI',
 			CPE_REPORTS: 'Relatórios do CPE',
-			ACCESS_PROFILES: "Perfis de Acesso"
+			ACCESS_PROFILES: "Perfis de Acesso",
+			
 		},
 		AUTH: {
 			GENERAL: {
@@ -269,11 +270,24 @@ export const locale = {
 			KEYWORD: "Palavra-chave",
 			START_DATE: "Data inicial",
 			END_DATE: "Data final",
-			NAME: "Nome"
+			NAME: "Nome",
+			VERSIONS:"Versão",
+			CHECKLIST:"Checklist"
 
 		},
 		AD_GROUPS: {
 			NEW: "Novo"
+
+		},
+		CHECKLISTS:{
+			NEW:"Novo",
+			ACTIONS:"Ações",
+			CHECKLIST:"Checklist",
+			BATCH:"Lote",
+			BATCH_DATE:"Data do Lote",
+			IS_BATCH_RELEASED:"Lote liberado?",
+			DELETE:"Deletar",
+			EDIT:"Editar"
 
 		},
 		"PLEASE_WAIT": "Aguarde",

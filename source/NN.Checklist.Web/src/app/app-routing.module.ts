@@ -42,6 +42,11 @@ const routes: Routes = [
 				loadChildren: () => import('./views/pages/users/users.module').then(m => m.UsersModule)
 			},	
 			{
+				path: 'checklists',
+				canActivate: [AuthGuard],
+				loadChildren: () => import('./views/pages/checklists/checklists.module').then(m => m.ChecklistsModule)
+			},	
+			{
 				path: 'error/403',
 				component: ErrorPageComponent,
 				data: {
