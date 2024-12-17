@@ -19,6 +19,8 @@ namespace NN.Checklist.Domain.Common
         [EnumStringValue("Permissions")]
         Permissions = 4,
         [EnumStringValue("General Registrations")]
-        GeneralRegistrations = 5
+        GeneralRegistrations = 5,
+        [EnumStringValue("Checklists")]
+        Checklists = 6
     }
 }

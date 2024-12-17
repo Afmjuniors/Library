@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NN.Checklist.Domain.Common;
 
 namespace NN.Checklist.Domain.Services.Specifications
 {
@@ -21,5 +22,8 @@ namespace NN.Checklist.Domain.Services.Specifications
 
         Task<List<SystemFunctionalityDTO>> ListSystemFunctionalities();
 
+        Task AddRecord(string description, long? id, EnumSystemFunctionality systemFunctionality, long userId, string comments);
+
+        Task AddRecord(string description, long? id, EnumSystemFunctionality systemFunctionality, long? userId);
     }
 }
