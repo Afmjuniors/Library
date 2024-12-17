@@ -46,25 +46,7 @@
 						<input type="text" matInput autocomplete="off" [(ngModel)]="filter.description">
 					</mat-form-field>
 				</div>
-				<div class="col-md-3">
-					<mat-form-field class="example-full-width">
-						<mat-label>{{ 'FILTERS.START_DATE' | translate }}</mat-label>
-						<input matInput [ngxMatDatetimePicker]="picker"
-							placeholder="{{ 'MENU.START_DATE' | translate }}" [(ngModel)]="filter.startDate"
-							disabled="false">
-						<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-						<ngx-mat-datetime-picker #picker [showSpinners]="showSpinners" [showSeconds]="showSeconds"
-							[stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond"
-							[touchUi]="touchUi" [enableMeridian]="enableMeridian">
-						</ngx-mat-datetime-picker>
-					</mat-form-field>
-				</div>
-				<div class="col-md-3">
-					<mat-form-field class="full-width">
-						<mat-label>{{ "MENU.DESCRIPTION" | translate }}</mat-label>
-						<input type="text" matInput autocomplete="off" [(ngModel)]="filter.description">
-					</mat-form-field>
-				</div>
+
 
 			</div>
 		</div>
