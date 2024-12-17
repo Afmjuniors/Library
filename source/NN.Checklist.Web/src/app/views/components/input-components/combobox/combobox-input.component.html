@@ -1,0 +1,13 @@
+
+<div class="combobox-input">
+    <mat-form-field class="full-width">
+        <mat-select placeholder="{{ label }}"
+        disabled="isDisable"
+            [(ngModel)]="component.combobox"  class="full-width">
+            <mat-option value="0"></mat-option>
+            <mat-option *ngFor="let item of processes" [value]="item.fieldChecklistTemplateId">
+                {{item.acronym}} - {{item.description}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>

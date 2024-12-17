@@ -1,0 +1,87 @@
+<div class="kt-portlet">
+	<div class="kt-portlet__head kt-portlet__head__custom">
+		<div class="kt-portlet__head-label">
+			<h3 class="kt-portlet__head-title">{{"NEW_CHECKLIST" | translate }}</h3>
+		</div>
+	</div>
+	<div class="kt-form" autocomplete="off">
+		<div class="kt-portlet__body p-t-0">
+			<div class="form-group kt-form__group d-block">
+				<div class="col-md-3">
+					<mat-form-field class="full-width">
+						<mat-select placeholder="{{ 'NEW_CHECKLIST.CHECKLIST' | translate }}"
+							[(ngModel)]="filter.process" (selectionChange)="changeProcess()" class="full-width">
+							<mat-option value="0"></mat-option>
+							<mat-option *ngFor="let item of processes" [value]="item.processId">
+								{{item.acronym}} - {{item.description}}
+							</mat-option>
+						</mat-select>
+					</mat-form-field>
+				</div>
+				<div class="col-md-3" *ngIf="filter.process > 0 && areas.length > 0">
+					<mat-form-field class="full-width">
+						<mat-select placeholder="{{ 'NEW_CHECKLIST.VERSION' | translate }}" [(ngModel)]="filter.area"
+							class="full-width">
+							<mat-option value="0"></mat-option>
+							<mat-option *ngFor="let item of areas" [value]="item.areaId">
+								{{item.name}} - {{item.description}}
+							</mat-option>
+						</mat-select>
+					</mat-form-field>
+				</div>
+				<div class="col-md-3">
+					<mat-form-field class="full-width">
+						<mat-select placeholder="{{ 'NEW_CHECKLIST.CHECKLIST' | translate }}"
+							[(ngModel)]="filter.process" (selectionChange)="changeProcess()" class="full-width">
+							<mat-option value="0"></mat-option>
+							<mat-option *ngFor="let item of processes" [value]="item.processId">
+								{{item.acronym}} - {{item.description}}
+							</mat-option>
+						</mat-select>
+					</mat-form-field>
+				</div>
+				<div class="col-md-3">
+					<mat-form-field class="full-width">
+						<mat-label>{{ "MENU.DESCRIPTION" | translate }}</mat-label>
+						<input type="text" matInput autocomplete="off" [(ngModel)]="filter.description">
+					</mat-form-field>
+				</div>
+				<div class="col-md-3">
+					<mat-form-field class="example-full-width">
+						<mat-label>{{ 'FILTERS.START_DATE' | translate }}</mat-label>
+						<input matInput [ngxMatDatetimePicker]="picker"
+							placeholder="{{ 'MENU.START_DATE' | translate }}" [(ngModel)]="filter.startDate"
+							disabled="false">
+						<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+						<ngx-mat-datetime-picker #picker [showSpinners]="showSpinners" [showSeconds]="showSeconds"
+							[stepHour]="stepHour" [stepMinute]="stepMinute" [stepSecond]="stepSecond"
+							[touchUi]="touchUi" [enableMeridian]="enableMeridian">
+						</ngx-mat-datetime-picker>
+					</mat-form-field>
+				</div>
+				<div class="col-md-3">
+					<mat-form-field class="full-width">
+						<mat-label>{{ "MENU.DESCRIPTION" | translate }}</mat-label>
+						<input type="text" matInput autocomplete="off" [(ngModel)]="filter.description">
+					</mat-form-field>
+				</div>
+
+			</div>
+		</div>
+		<div class="kt-portlet__foot kt-portlet__foot--fit kt-portlet__no-border">
+			<div class="kt-form__actions kt-form__actions--solid">
+				<div class="row text-right">
+					<div class="col-lg-12">
+						<button type="button" mat-raised-button cdkFocusInitial matTooltip="Cancel changes"
+							(click)="closeModal()">
+							{{ 'AUTH.GENERAL.CANCEL' | translate }}
+						</button>&nbsp;
+						<button type="button" mat-raised-button color="primary" (click)="sign()">
+							{{ 'SAVE' | translate }}
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

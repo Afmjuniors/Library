@@ -53,6 +53,7 @@ import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { ViewTextComponent } from './view-text/view-text.component';
 import { PhoneMaskPipe } from './phone-mask/phone-mask.pipe';
 import { NgxMaskModule, IConfig } from 'ngx-mask'
+import { NewChecklistForm } from './new-checklist-form/newChecklistForm.component';
 
 const maskConfig: Partial<IConfig> = {
     validation: false,
@@ -126,6 +127,7 @@ const maskConfig: Partial<IConfig> = {
 		ViewTextComponent,
 		PdfViewComponent,
 		UserEditComponent,
+		NewChecklistForm,
 		UserControlComponent,
 	],
 	declarations: [
@@ -136,6 +138,7 @@ const maskConfig: Partial<IConfig> = {
 		PdfViewComponent,
 		UserEditComponent,
 		UserControlComponent,
+		NewChecklistForm,
 		PhoneMaskPipe
 	],
 	exports:[

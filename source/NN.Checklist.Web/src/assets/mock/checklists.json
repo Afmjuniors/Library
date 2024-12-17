@@ -1,0 +1,24 @@
+[
+    {
+        "checklistTemplateId":1,
+        "name":"Checklist A12 AP – ANP",
+        "description":"Approval for next process"
+
+    },    {
+        "checklistTemplateId":2,
+        "name":"Checklist A12 AP– FSA",
+        "description":"Bulk De STJ, CH e CL recebidos em MOC"
+
+    },    {
+        "checklistTemplateId":3,
+        "name":"Checklist A12 Bulk",
+        "description":"ANP: Approval for next process"
+
+    },    {
+        "checklistTemplateId":4,
+        "name":"Checklist A12 AP – FSA",
+        "description":"usando DBR"
+
+    }
+
+]
