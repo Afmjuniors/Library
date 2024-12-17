@@ -8,7 +8,9 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using TDCore.Core;
+using TDCore.Core.Logging;
 using TDCore.Data.Paging;
+using TDCore.DependencyInjection;
 
 namespace NN.Checklist.Domain.Services
 {
@@ -41,6 +43,32 @@ namespace NN.Checklist.Domain.Services
             }
 
             return list;
+        }
+
+        public async Task AddRecord(string description, long? id, EnumSystemFunctionality systemFunctionality, long userId, string comments)
+        {
+            if (SystemRecord.Repository != null)
+            {
+                new SystemRecord(description, id, systemFunctionality, userId, comments);
+            }
+            else
+            {
+                var logger = ObjectFactory.GetSingleton<ILog>();
+                logger.Log(LogType.Information, "AuditTrail", description);
+            }
+        }
+
+        public async Task AddRecord(string description, long? id, EnumSystemFunctionality systemFunctionality, long? userId)
+        {
+            if (SystemRecord.Repository != null)
+            {
+                new SystemRecord(description, id, systemFunctionality, userId);
+            }
+            else
+            {
+                var logger = ObjectFactory.GetSingleton<ILog>();
+                logger.Log(LogType.Information, "AuditTrail", description);
+            }
         }
 
     }
