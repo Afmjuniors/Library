@@ -1,34 +1,27 @@
-
-import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 
 @Component({
-    selector: 'kt-text-input',
-    templateUrl: './text-input.component.html',
-    styleUrls: ['./text-input.component.scss']
+  selector: 'kt-text-input',
+  templateUrl: './text-input.component.html',
+  styleUrls: ['./text-input.component.scss']
 })
 export class TextInputComponent implements OnInit {
-    label: string = "";
-    placeholder:string = "";
-    isDisable: boolean = false;
-    mask:string="";
+  @Input() component: TextInputComponent;
+  placeholder: string;
+  mask: string = '';
+  isDisable: boolean;
+  name: string;
+  id: string;
 
 
-    constructor(
-        public dialogRef: MatDialogRef<TextInputComponent>,
-        @Inject(MAT_DIALOG_DATA)
-        public data: any,
-        public dialog: MatDialog
-    ) { }
 
-    ngOnInit() {
-        if(this.data.label){
-            this.label = this.data.label;
-        }
-        if(this.data.placeholder){
-            this.placeholder = this.data.placeholder;
-        }
-    }
+  ngOnInit() {
+console.log(this.component);
+     this.placeholder = this.component.placeholder;
+     this.mask = this.component.mask;
+     this.isDisable = this.component.isDisable;
+     this.id = this.component.id;
 
+
+  }
 }
-

@@ -1,7 +1,7 @@
 import { State } from '../../../core/auth/_models/state.model';
 import { TypeSeverity } from '../../../core/auth/_models/typeSeverity.model';
 import { SystemNode } from '../../../core/auth/_models/systemNode.model';
-import { ChangeDetectorRef, Component, Inject, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, Inject, Injector, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA, ProgressSpinnerMode, ThemePalette } from '@angular/material';
 import { AppService } from '../../../core/auth/_services';
@@ -13,6 +13,10 @@ import { SignatureComponent } from '../signature/signature.component';
 import { Checklist } from '../../../core/auth/_models/checklist.model';
 import { TypeComponent } from '../../../core/auth/_models/typeComponent.model';
 import { ChecklistFilter } from '../../../core/auth/_models/checklistFilter.model';
+import { ComboboxInputComponent } from '../input-components/combobox/combobox-input.component';
+import { DatePickerInputComponent } from '../input-components/date/datepicker-input.component';
+import { NumberInputComponent } from '../input-components/number/number-input.component';
+import { TextInputComponent } from '../input-components/text/text-input.component';
 
 const DATE_TIME_FORMAT = {
 	parse: {
@@ -66,6 +70,7 @@ export class NewChecklistForm implements OnInit {
 	public title:string;
 	public checklistDropDown:string;
 	public versions:string;
+	myInjector: Injector;
 
 	constructor(
 		public dialogRef: MatDialogRef<NewChecklistForm>,
@@ -86,9 +91,66 @@ export class NewChecklistForm implements OnInit {
 		this.title  = this.translate.instant("MENU.CHECKLIST");
 		this.checklistDropDown  = this.translate.instant("FILTERS.CHECKLIST");
 		this.versions  = this.translate.instant("FILTERS.VERSIONS");
-		this.loadListSystemNodes();
-		this.loadListStates();
+		
 	}
+	
+
+	createInjector(componentItem: any): Injector {
+		return Injector.create({
+			providers: [
+				{ provide: 'componente', useValue: componentItem.componente },
+				{ provide: 'label', useValue: componentItem.label },
+				{ provide: 'placeholder', useValue: componentItem.placeholder || '' },
+				{ provide: 'mask', useValue: componentItem.mask || '' },
+				{ provide: 'isDisable', useValue: componentItem.isDisable || false },
+				{ provide: 'name', useValue: componentItem.label || false },
+				{ provide: 'id', useValue: componentItem.label || false },
+
+			  ],
+			})
+	}
+	public  getComponent(item: any) {
+		return item ;
+	  }
+
+	
+	
+	public items = [
+		{
+		  title: 'Text Inputs',
+		  combo: [
+			{
+			  componente: TextInputComponent,
+			  label: 'Nome Completo',
+			  placeholder: 'Digite seu nome completo',
+			  mask: '',
+			  isDisable: false,
+			  id: 'nameInput',
+			  name: 'nameInput'
+			},
+			{
+			  componente: TextInputComponent,
+			  label: 'CPF',
+			  placeholder: 'Digite seu CPF',
+			  mask: '000.000.000-00',
+			  isDisable: false,
+			  id: 'cpfInput',
+			  name: 'cpfInput'
+			},
+			{
+			  componente: TextInputComponent,
+			  label: 'E-mail',
+			  placeholder: 'Digite seu e-mail',
+			  mask: '',
+			  isDisable: true, // Campo desativado para teste
+			  id: 'emailInput',
+			  name: 'emailInput'
+			}
+		  ]
+		},
+		
+	  ];
+	  
 
 	loadListStates() {
 		this.app.listStates().subscribe(x => {

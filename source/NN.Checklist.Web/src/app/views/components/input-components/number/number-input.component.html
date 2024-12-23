@@ -1,6 +1,18 @@
-<div class="number-input">
-    <mat-form-field class="full-width">
+<div class="container">
+    <div class="number-input">
+      <mat-form-field class="full-width">
         <mat-label>{{ label }}</mat-label>
-        <input type="number" placeholder="{{placeholder}}" matInput autocomplete="off" mask="{{mask}}" disabled="isDisable" [(ngModel)]="component.number">
-    </mat-form-field>
-</div>
+        <input
+          type="number"
+          matInput
+          [placeholder]="placeholder"
+          [mask]="mask"
+          [disabled]="isDisable"
+          [(ngModel)]="component.text"
+          [name]="name"
+          [id]="id"
+          autocomplete="off"
+        />
+      </mat-form-field>
+    </div>
+  </div>

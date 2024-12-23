@@ -26,6 +26,7 @@ import { IdleService } from '../../../core/_base/layout/services/idle.service';
 import { ChecklistDataSource } from '../../../core/auth/_data-sources/checklist.datasource';
 import { Checklist } from '../../../core/auth/_models/checklist.model';
 import { ChecklistFilter } from '../../../core/auth/_models/checklistFilter.model';
+import { NewChecklistForm } from '../../components/new-checklist-form/newChecklistForm.component';
 
 const DATE_TIME_FORMAT = {
 	parse: {
@@ -354,7 +355,7 @@ export class ChecklistComponent extends BasePageComponent implements OnInit {
 	// }
 
 	newChecklist(){
-		const dialogRef = this.dialog.open(Checklist, {width:'60%', data: { type: 1 } });
+		const dialogRef = this.dialog.open(NewChecklistForm, {width:'60%', data: { type: 1 } });
 		dialogRef.afterClosed().subscribe(res => {
 			this.loading = true;
 			this.loadChecklist();

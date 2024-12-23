@@ -7,17 +7,15 @@
 	<div class="kt-form" autocomplete="off">
 		<div class="kt-portlet__body p-t-0">
 			<div class="form-group kt-form__group d-block">
-				<div class="col-md-3">
-					<mat-form-field class="full-width">
-						<mat-select placeholder="{{ 'NEW_CHECKLIST.CHECKLIST' | translate }}"
-							[(ngModel)]="filter.process" (selectionChange)="changeProcess()" class="full-width">
-							<mat-option value="0"></mat-option>
-							<mat-option *ngFor="let item of processes" [value]="item.processId">
-								{{item.acronym}} - {{item.description}}
-							</mat-option>
-						</mat-select>
-					</mat-form-field>
+
+				<div *ngFor="let item of items" class="combo-container">
+					<h2>{{ item.title }}</h2>
+
+					<div *ngFor="let componentItem of item.combo" class="component-wrapper">
+						<ng-container *ngComponentOutlet="componentItem" ></ng-container>
+					</div>
 				</div>
+
 				<div class="col-md-3" *ngIf="filter.process > 0 && areas.length > 0">
 					<mat-form-field class="full-width">
 						<mat-select placeholder="{{ 'NEW_CHECKLIST.VERSION' | translate }}" [(ngModel)]="filter.area"

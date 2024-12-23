@@ -1,6 +1,4 @@
-
-import { Component, Inject, OnInit } from '@angular/core';
-import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { Component, Inject, Input, OnInit } from '@angular/core';
 
 @Component({
     selector: 'kt-combobox-input',
@@ -8,31 +6,21 @@ import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
     styleUrls: ['./combobox-input.component.scss']
 })
 export class ComboboxInputComponent implements OnInit {
-    label: string = "";
-    options: OptionsClass[];
-    isDisable: boolean = false;
-
+    @Input() label: string = 'Select an option'; // Rótulo do combobox
+    @Input() options: Array<{ acronym: string; description: string }> = []; // Lista de opções
+    @Input() isDisable: boolean = false; // Habilitar/desabilitar combobox
+    selectedOption: string | null = null; // Valor selecionado no combobox
 
     constructor(
-        public dialogRef: MatDialogRef<ComboboxInputComponent>,
-        @Inject(MAT_DIALOG_DATA)
-        public data: any,
-        public dialog: MatDialog
-    ) { }
+
+    ) {}
 
     ngOnInit() {
-        if(this.data.label){
-            this.label = this.data.label;
-        }
-        if(this.data.options){
-            this.options = this.data.options;
-        }
-    }
 
+    }
 }
 
-class OptionsClass{
-    fieldChecklistTemplateId:number;
-    name:string;
-
+export class OptionsClass {
+    fieldChecklistTemplateId: number;
+    name: string;
 }

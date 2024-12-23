@@ -54,6 +54,10 @@ import { ViewTextComponent } from './view-text/view-text.component';
 import { PhoneMaskPipe } from './phone-mask/phone-mask.pipe';
 import { NgxMaskModule, IConfig } from 'ngx-mask'
 import { NewChecklistForm } from './new-checklist-form/newChecklistForm.component';
+import { ComboboxInputComponent } from './input-components/combobox/combobox-input.component';
+import { DatePickerInputComponent } from './input-components/date/datepicker-input.component';
+import { NumberInputComponent } from './input-components/number/number-input.component';
+import { TextInputComponent } from './input-components/text/text-input.component';
 
 const maskConfig: Partial<IConfig> = {
     validation: false,
@@ -129,6 +133,12 @@ const maskConfig: Partial<IConfig> = {
 		UserEditComponent,
 		NewChecklistForm,
 		UserControlComponent,
+		ComboboxInputComponent,
+		DatePickerInputComponent,
+		NumberInputComponent,
+		TextInputComponent
+
+
 	],
 	declarations: [
 		SignatureComponent,
@@ -139,7 +149,11 @@ const maskConfig: Partial<IConfig> = {
 		UserEditComponent,
 		UserControlComponent,
 		NewChecklistForm,
-		PhoneMaskPipe
+		PhoneMaskPipe,
+		ComboboxInputComponent,
+		DatePickerInputComponent,
+		NumberInputComponent,
+		TextInputComponent
 	],
 	exports:[
 		PhoneMaskPipe
