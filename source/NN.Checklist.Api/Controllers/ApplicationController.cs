@@ -23,7 +23,7 @@ namespace NN.Checklist.Api.Controllers
         /// <summary>
         /// Name: "ApplicationController" 
         /// Description: is a constructor that takes ILogger as a parameter.
-        /// Created by: wazc Programa Novo 2022-09-08 
+        /// Created by: [CREATED_BY] 
         /// </summary>
         public ApplicationController(ILogger<ApplicationController> logger) : base(logger) { }
 
@@ -31,7 +31,7 @@ namespace NN.Checklist.Api.Controllers
         /// <summary>
         /// Name: "Download" 
         /// Description: method, if it returns 200OK, the method will download the file specified in the route
-        /// Created by: wazc Programa Novo 2022-09-08 
+        /// Created by: [CREATED_BY] 
         /// </summary>        
 
         [HttpGet("Download")]
@@ -65,7 +65,7 @@ namespace NN.Checklist.Api.Controllers
         /// <summary>
         /// Name: "GetContentType" 
         /// Description: method gets the content type by the "path" parameter that is passed by the method.
-        /// Created by: wazc Programa Novo 2022-09-08 
+        /// Created by: [CREATED_BY] 
         /// </summary>
         private string GetContentType(string path)
         {
@@ -86,7 +86,7 @@ namespace NN.Checklist.Api.Controllers
         /// <summary>
         /// Name: "ListCountries" 
         /// Description: method returns a list of countries.
-        /// Created by: wazc Programa Novo 2022-09-08 
+        /// Created by: [CREATED_BY] 
         /// </summary>
         [HttpGet("ListCountries")]
         [Authorize()]
@@ -117,7 +117,7 @@ namespace NN.Checklist.Api.Controllers
         /// <summary>
         /// Name: "ListAdGroups" 
         /// Description: method returns a list of ad groups fetched by the "IApplicationService" service.
-        /// Created by: wazc Programa Novo 2022-09-08 .
+        /// Created by: [CREATED_BY] .
         /// </summary>
 
         [HttpGet("ListAdGroups")]

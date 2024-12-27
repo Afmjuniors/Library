@@ -11,13 +11,13 @@ import { MatPaginatorModule, MatStepperModule } from '@angular/material';
 import { NgxLoadingModule } from 'ngx-loading';
 // Translate
 import { TranslateModule } from '@ngx-translate/core';
-import { PartialsModule } from '../../partials/partials.module';
+import { PartialsModule } from '../../../partials/partials.module';
 // Services
-import { HttpUtilsService, TypesUtilsService, InterceptService, LayoutUtilsService} from '../../../core/_base/crud';
+import { HttpUtilsService, TypesUtilsService, InterceptService, LayoutUtilsService} from '../../../../core/_base/crud';
 // Shared
-import { ActionNotificationComponent } from '../../partials/content/crud';
+import { ActionNotificationComponent } from '../../../partials/content/crud';
 // Components
-import { ChecklistComponent } from './checklists.component';
+import { CreateChecklistComponent } from './create-checklist.component';
 // Material
 import {
 	MatInputModule,
@@ -48,15 +48,15 @@ import {
 import { CdkTableModule } from '@angular/cdk/table';
 import { NgxMatDatetimePickerModule, NgxMatTimepickerModule } from '@angular-material-components/datetime-picker';
 import { NgxMatMomentModule } from '@angular-material-components/moment-adapter';
-import { ParameterService } from '../../../core/auth/_services/parameter.service';
+import { ParameterService } from '../../../../core/auth/_services/parameter.service';
 import { NgxMaskModule, IConfig } from 'ngx-mask'
-import { EmailComponent } from '../../components/email/email.component';
-import { ComponentsModule } from '../../components/components.module';
+import { EmailComponent } from '../../../components/email/email.component';
+import { ComponentsModule } from '../../../components/components.module';
 
 const routes: Routes = [
 	{
 		path: '',
-		component: ChecklistComponent,
+		component: CreateChecklistComponent,
 	}
 ];
 
@@ -134,7 +134,7 @@ const maskConfig: Partial<IConfig> = {
 		EmailComponent
 	],
 	declarations: [
-		ChecklistComponent,
+		CreateChecklistComponent,
 	]
 })
 export class ChecklistsModule {}

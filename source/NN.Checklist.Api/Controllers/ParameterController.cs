@@ -19,14 +19,14 @@ namespace NN.Checklist.Api.Controllers
         /// <summary>
         /// Name: "ParameterController" 
         /// Description: class constructor.
-        /// Created by: wazc Programa Novo 2022-09-08 
+        /// Created by: [CREATED_BY] 
         /// </summary>        
         public ParameterController(ILogger<ParameterController> logger) : base(logger) { }
 
         /// <summary>
         /// Name: "GetDbParameter" 
         /// Description: method returns the parameters of the "DBParameterDTO" database.
-        /// Created by: wazc Programa Novo 2022-09-08 
+        /// Created by: [CREATED_BY] 
         /// </summary>        
         [HttpGet("GetDbParameter")]
         [Authorize()]
@@ -50,7 +50,7 @@ namespace NN.Checklist.Api.Controllers
         /// <summary>
         /// Name: "GetDomainParameter" 
         /// Description: method gets the values of the administrator and the domain.
-        /// Created by: wazc Programa Novo 2022-09-08 
+        /// Created by: [CREATED_BY] 
         /// </summary>
         
         [HttpGet("GetDomainParameter")]
@@ -74,7 +74,7 @@ namespace NN.Checklist.Api.Controllers
         /// <summary>
         /// Name: "GetPolicyParameter" 
         /// Description: method gets the user's idle time.
-        /// Created by: wazc Programa Novo 2022-09-08 
+        /// Created by: [CREATED_BY] 
         /// </summary>
 
         [HttpGet("GetPolicyParameter")]
@@ -98,7 +98,7 @@ namespace NN.Checklist.Api.Controllers
         /// <summary>
         /// Name: "GetMailParameter" 
         /// Description: method gets the email connection parameters.
-        /// Created by: wazc Programa Novo 2022-09-08 
+        /// Created by: [CREATED_BY] 
         /// </summary>
 
         [HttpGet("GetMailParameter")]
@@ -124,7 +124,7 @@ namespace NN.Checklist.Api.Controllers
         /// <summary>
         /// Name: "InsertMailParameter" 
         /// Description: method inserts the data of "MailParameterDTO" with a comment.
-        /// Created by: wazc Programa Novo 2022-09-08 
+        /// Created by: [CREATED_BY] 
         /// </summary>
         [HttpPost("InsertMailParameter")]
         [Authorize()]
@@ -149,7 +149,7 @@ namespace NN.Checklist.Api.Controllers
         /// <summary>
         /// Name: "InsertDbParameter"
         /// Description: method inserts the database connection parameters.
-        /// Created by/: wazc Programa Novo 2022-09-08 
+        /// Created by/: [CREATED_BY] 
         /// </summary>
         [HttpPost("InsertDbParameter")]
         [Authorize()]
@@ -173,7 +173,7 @@ namespace NN.Checklist.Api.Controllers
         /// <summary>
         /// Name: "InsertDomainParameter" 
         /// Description: method inserts the values of "DomainParameterDTO" and adds a comment.
-        /// Created by: wazc Programa Novo 2022-09-08 
+        /// Created by: [CREATED_BY] 
         /// </summary>
         [HttpPost("InsertDomainParameter")]
         [Authorize()]
@@ -197,7 +197,7 @@ namespace NN.Checklist.Api.Controllers
         /// <summary>
         /// Name: "InsertPolicyParameter" 
         /// Description: method inserts an inactivity policy and adds a comment.
-        /// Created by: wazc Programa Novo 2022-09-08 
+        /// Created by: [CREATED_BY] 
         /// </summary>       
 
         [HttpPost("InsertPolicyParameter")]

@@ -6,6 +6,7 @@ import { QueryResultsModel } from '../../_base/crud';
 import { AdGroup } from '../_models/adGroup.model';
 import { AdGroupUser } from '../_models/adGroupUser.model';
 import { WatchdogAlarm } from '../_models/watchdogAlarm.model';
+import { Checklist } from '../_models/checklist.model';
 
 const URL_BASE = environment.api;
 
@@ -211,5 +212,83 @@ export class AppService {
 		let header = new HttpHeaders({ 'Authorization': 'Bearer ' + userToken });
 		return this.http.get<WatchdogAlarm>(URL_BASE + `/Application/CheckStatusConnections`, { headers: header });
 	}
+
+	//CheckList **********
+	//TODO: Change type
+
+
+	getChecklist(): Observable<any> {
+		const userToken = localStorage.getItem(environment.authTokenKey);
+		let header = new HttpHeaders({ 'Authorization': 'Bearer ' + userToken });
+		return this.http.get<any>(URL_BASE + `/Checklist/GetChecklist`, { headers: header });
+	}
+	getChecklistVersions(checklistId: number): Observable<any> {
+		const userToken = localStorage.getItem(environment.authTokenKey);
+		let header = new HttpHeaders({ 'Authorization': 'Bearer ' + userToken });
+		return this.http.get<any>(URL_BASE + `/Checklist/GetChecklistVersions?checklist=${checklistId}`, { headers: header });
+	}	
+	getChecklistVersionTemplate(versionId: number): Observable<any> {
+		const userToken = localStorage.getItem(environment.authTokenKey);
+		let header = new HttpHeaders({ 'Authorization': 'Bearer ' + userToken });
+		return this.http.get<any>(URL_BASE + `/Checklist/GetChecklistVersionTemplate?versionId=${versionId}`, { headers: header });
+	}
+	createNewChecklist(obj: Checklist, comments: string): Observable<any> {
+		let data = {
+			data: obj,
+			comments: comments
+		}
+		const userToken = localStorage.getItem(environment.authTokenKey);
+		let header = new HttpHeaders({ 'Authorization': 'Bearer ' + userToken });
+		return this.http.post<any>(URL_BASE + '/Checklist/CreateNewChecklist', data, { headers: header });
+	}
+	createNewChecklistVersion(obj: Checklist, comments: string): Observable<any> {
+		let data = {
+			data: obj,
+			comments: comments
+		}
+		const userToken = localStorage.getItem(environment.authTokenKey);
+		let header = new HttpHeaders({ 'Authorization': 'Bearer ' + userToken });
+		return this.http.post<any>(URL_BASE + '/Checklist/CreateNewChecklistVersion', data, { headers: header });
+	}
+	newCheckList(obj: any): Observable<any> {
+		let data = {
+			data: obj,
+		}
+		const userToken = localStorage.getItem(environment.authTokenKey);
+		let header = new HttpHeaders({ 'Authorization': 'Bearer ' + userToken });
+		return this.http.post<any>(URL_BASE + '/Checklist/NewCheckList', data, { headers: header });
+	}
+	updateCheckList(obj: any): Observable<any> {
+		let data = {
+			data: obj,
+		}
+		const userToken = localStorage.getItem(environment.authTokenKey);
+		let header = new HttpHeaders({ 'Authorization': 'Bearer ' + userToken });
+		return this.http.post<any>(URL_BASE + '/Checklist/UpdateCheckList', data, { headers: header });
+	}
+
+	removeCheckList(obj: Checklist, comments: string): Observable<boolean> {
+		let data = {
+			data: obj,
+			comments: comments
+		}
+		const userToken = localStorage.getItem(environment.authTokenKey);
+		let header = new HttpHeaders({ 'Authorization': 'Bearer ' + userToken });
+		return this.http.post<any>(URL_BASE + '/Checklist/RemoveCheckList', data, { headers: header });
+	}
+
+	getAllChecklists(page, quantidade, filtros): Observable<QueryResultsModel> {
+		var data = {
+			pageNumber: page,
+			pageSize: quantidade,
+			filter: filtros
+		}
+		const userToken = localStorage.getItem(environment.authTokenKey);
+		let header = new HttpHeaders({ 'Authorization': 'Bearer ' + userToken });
+		return this.http.post<any>(URL_BASE + '/Checklist/SearchChecklists', data, { headers: header });
+	}
+
+
+
 
 }

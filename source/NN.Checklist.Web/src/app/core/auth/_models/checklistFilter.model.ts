@@ -4,13 +4,15 @@ export class ChecklistFilter extends BaseModel {
 
 	startDate: Date;
 	endDate: Date;
-	checklistTemplateID: number;
+	checklistId:number;
+	checklistTemplateId: number;
 	versionChecklistTemplateId: number;
 
     clear(): void {
 		this.startDate = null;
 		this.endDate = null;
-		this.checklistTemplateID = 0;
+		this.checklistId = 0;
+		this.checklistTemplateId = 0;
 		this.versionChecklistTemplateId = 0;
 
     }

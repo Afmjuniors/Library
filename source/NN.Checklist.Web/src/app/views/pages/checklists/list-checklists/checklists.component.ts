@@ -6,27 +6,27 @@ import { Observable, Subscription, merge, fromEvent, of, Subject, timer } from '
 // NGRX
 import { Store, select } from '@ngrx/store';
 // AppState
-import { AppState } from '../../../core/reducers';
+import { AppState } from '../../../../core/reducers';
 // Auth
-import { Permission, currentUserPermissions, checkHasUserPermission, User, AuthService, Logout } from '../../../core/auth';
+import { Permission, currentUserPermissions, checkHasUserPermission, User, AuthService, Logout } from '../../../../core/auth';
 import { MatPaginator, MatSort, MatDialog, MatTableDataSource } from '@angular/material';
 import { SelectionModel } from '@angular/cdk/collections';
 import { debounceTime, distinctUntilChanged, tap, take, delay, skip, takeUntil, finalize } from 'rxjs/operators';
-import { QueryParamsModel, LayoutUtilsService, MessageType, QueryResultsModel } from '../../../core/_base/crud';
+import { QueryParamsModel, LayoutUtilsService, MessageType, QueryResultsModel } from '../../../../core/_base/crud';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { ColaboradorFiltro } from '../../../core/auth/_models/ColaboradorFiltro.model';
-import { BasePageComponent } from '../BasePage.component';
+import { ColaboradorFiltro } from '../../../../core/auth/_models/ColaboradorFiltro.model';
+import { BasePageComponent } from '../../BasePage.component';
 import { TranslateService } from '@ngx-translate/core';
-import { AppService, ParameterService } from '../../../core/auth/_services';
-import { EmailComponent } from '../../components/email/email.component';
+import { AppService, ParameterService } from '../../../../core/auth/_services';
+import { EmailComponent } from '../../../components/email/email.component';
 import { NGX_MAT_DATE_FORMATS } from '@angular-material-components/datetime-picker';
-import { PdfViewComponent } from '../../components/pdf-view/pdf-view.component';
+import { PdfViewComponent } from '../../../components/pdf-view/pdf-view.component';
 
-import { IdleService } from '../../../core/_base/layout/services/idle.service';
-import { ChecklistDataSource } from '../../../core/auth/_data-sources/checklist.datasource';
-import { Checklist } from '../../../core/auth/_models/checklist.model';
-import { ChecklistFilter } from '../../../core/auth/_models/checklistFilter.model';
-import { NewChecklistForm } from '../../components/new-checklist-form/newChecklistForm.component';
+import { IdleService } from '../../../../core/_base/layout/services/idle.service';
+import { ChecklistDataSource } from '../../../../core/auth/_data-sources/checklist.datasource';
+import { Checklist } from '../../../../core/auth/_models/checklist.model';
+import { ChecklistFilter } from '../../../../core/auth/_models/checklistFilter.model';
+import { NewChecklistForm } from '../../../components/new-checklist-form/newChecklistForm.component';
 
 const DATE_TIME_FORMAT = {
 	parse: {

@@ -62,6 +62,7 @@ import { TextInputComponent } from './input-components/text/text-input.component
 const maskConfig: Partial<IConfig> = {
     validation: false,
 };
+
 @NgModule({
 	imports: [
 		CommonModule,
@@ -156,7 +157,8 @@ const maskConfig: Partial<IConfig> = {
 		TextInputComponent
 	],
 	exports:[
-		PhoneMaskPipe
+		PhoneMaskPipe,
+		ComboboxInputComponent
 	]
 })
 export class ComponentsModule { }

@@ -6,45 +6,150 @@
 	</div>
 	<div class="kt-form" autocomplete="off">
 		<div class="kt-portlet__body p-t-0">
-			<div class="form-group kt-form__group d-block">
 
-				<div *ngFor="let item of items" class="combo-container">
-					<h2>{{ item.title }}</h2>
+			<div class="col-md-3">
+				<mat-form-field class="full-width">
+					<mat-select placeholder="{{ 'NEW_CHECKLIST.VERSION' | translate }}" [(ngModel)]="filter.checklistTemplateId"
+						class="full-width">
+						<mat-option value="0"></mat-option>
+						<mat-option *ngFor="let itemCl of checklists" [value]="itemCl.checkilistId">
+							{{itemCl.accrom}} - {{itemCl.description}}
+						</mat-option>
+					</mat-select>
+				</mat-form-field>
+			</div>
+			
 
-					<div *ngFor="let componentItem of item.combo" class="component-wrapper">
-						<ng-container *ngComponentOutlet="componentItem" ></ng-container>
+
+			<div *ngIf=" filter.checklistTemplateId>0" class="form-group kt-form__group d-block">		
+				<h2>{{ item.title + " - " + item.version }}</h2>
+
+
+					<div class="kt-divider"></div>
+
+					<h3>{{item.header.length>0?"CHECKLIST.HEADER" :""}}</h3>
+
+					<div *ngFor="let itemHeader of item.header" class="combo-container">
+						<div style="border: none;" *ngIf=" itemHeader.idTipoComponente == 1">
+							<custom-text-input 
+							[label]="itemHeader.label"
+							[placeholder]="itemHeader.placeholder"
+							[mask]="itemHeader.mask"
+							[isDisable]="itemHeader.isDisable"
+							[name]="itemHeader.name"
+							[id]="itemHeader.id"
+							[initialValue] = "itemHeader.initialValue"
+							[(ngModel)]="itemHeader.value"
+							></custom-text-input>
+						</div>
+						<div style="border: none;" *ngIf=" itemHeader.idTipoComponente == 2">
+							<custom-number-input 
+							[label]="itemHeader.label"
+							[placeholder]="itemHeader.placeholder"
+							[mask]="itemHeader.mask"
+							[isDisable]="itemHeader.isDisable"
+							[name]="itemHeader.name"
+							[id]="itemHeader.id"
+							[(ngModel)]="itemHeader.value"
+							></custom-number-input>
+						</div>
+						<div style="border: none;" *ngIf=" itemHeader.idTipoComponente == 4">
+							<custom-combobox-input 
+							[label]="itemHeader.label" 
+							[options]="itemHeader.options" 
+							[isDisable]="itemHeader.isDisable" 
+							[name]="itemHeader.name"
+							[id]="itemHeader.id"
+							[(ngModel)]="itemHeader.value"
+							></custom-combobox-input>
+
+						</div>
+						<div style="border: none;" *ngIf=" itemHeader.idTipoComponente == 3">
+							<custom-datepicker-input 
+							[label]="itemHeader.label" 
+							[isDisable]="itemHeader.isDisable" 
+							[name]="itemHeader.name"
+							[id]="itemHeader.id"							
+							[placeholder]="itemHeader.placeholder"
+							[showSpinners]="itemHeader.showSpinners" 
+							[showSeconds]="itemHeader.showSeconds" 
+							[stepHour]="itemHeader.stepHour"
+							[stepMinute]="itemHeader.stepMinute"
+							[stepSecond]="itemHeader.stepSecond"
+							[touchUi]="itemHeader.touchUi"
+							[enableMeridian]="itemHeader.enableMeridian"	
+							[(ngModel)]="itemHeader.value"							
+							></custom-datepicker-input>
+						</div> 
+					
+
 					</div>
-				</div>
 
-				<div class="col-md-3" *ngIf="filter.process > 0 && areas.length > 0">
-					<mat-form-field class="full-width">
-						<mat-select placeholder="{{ 'NEW_CHECKLIST.VERSION' | translate }}" [(ngModel)]="filter.area"
-							class="full-width">
-							<mat-option value="0"></mat-option>
-							<mat-option *ngFor="let item of areas" [value]="item.areaId">
-								{{item.name}} - {{item.description}}
-							</mat-option>
-						</mat-select>
-					</mat-form-field>
-				</div>
-				<div class="col-md-3">
-					<mat-form-field class="full-width">
-						<mat-select placeholder="{{ 'NEW_CHECKLIST.CHECKLIST' | translate }}"
-							[(ngModel)]="filter.process" (selectionChange)="changeProcess()" class="full-width">
-							<mat-option value="0"></mat-option>
-							<mat-option *ngFor="let item of processes" [value]="item.processId">
-								{{item.acronym}} - {{item.description}}
-							</mat-option>
-						</mat-select>
-					</mat-form-field>
-				</div>
-				<div class="col-md-3">
-					<mat-form-field class="full-width">
-						<mat-label>{{ "MENU.DESCRIPTION" | translate }}</mat-label>
-						<input type="text" matInput autocomplete="off" [(ngModel)]="filter.description">
-					</mat-form-field>
-				</div>
+					<div *ngFor="let blockItem of item.blocks" class="component-wrapper">
+						<div class="kt-divider"></div>
 
+
+						<div *ngFor="let componentItem of blockItem.items" class="component-wrapper ">
+
+							<div style="border: none;" *ngIf=" componentItem.idTipoComponente == 1">
+								<custom-text-input 
+								[label]="componentItem.label"
+								[placeholder]="componentItem.placeholder"
+								[mask]="componentItem.mask"
+								[isDisable]="checkDisble(blockItem, componentItem)"
+								[name]="componentItem.name"
+								[id]="componentItem.id"
+								[(ngModel)]="componentItem.value"
+								></custom-text-input>
+							</div>
+							<div style="border: none;" *ngIf=" componentItem.idTipoComponente == 2">
+								<custom-number-input 
+								[label]="componentItem.label"
+								[placeholder]="componentItem.placeholder"
+								[mask]="componentItem.mask"
+								[isDisable]="checkDisble(blockItem, componentItem)"
+								[name]="componentItem.name"
+								[id]="componentItem.id"
+								[(ngModel)]="componentItem.value"
+								></custom-number-input>
+							</div>
+							<div style="border: none;" *ngIf=" componentItem.idTipoComponente == 4">
+								<custom-combobox-input 
+								[label]="componentItem.label" 
+								[options]="componentItem.options" 
+								[isDisable]="checkDisble(blockItem, componentItem)" 
+								[name]="componentItem.name"
+								[id]="componentItem.id"
+								[(ngModel)]="componentItem.value"
+								></custom-combobox-input>
+	
+							</div>
+							<div style="border: none;" *ngIf=" componentItem.idTipoComponente == 3">
+								<custom-datepicker-input 
+								[label]="componentItem.label" 
+								[isDisable]="checkDisble(blockItem, componentItem)" 
+								[name]="componentItem.name"
+								[id]="componentItem.id"
+								[(ngModel)]="componentItem.value"							
+								[placeholder]="componentItem.placeholder"
+								[showSpinners]="componentItem.showSpinners" 
+								[showSeconds]="componentItem.showSeconds" 
+								[stepHour]="componentItem.stepHour"
+								[stepMinute]="componentItem.stepMinute"
+								[stepSecond]="componentItem.stepSecond"
+								[touchUi]="componentItem.touchUi"
+								[enableMeridian]="componentItem.enableMeridian"								
+								></custom-datepicker-input>
+							</div> 
+						
+	
+						</div>
+					
+
+					</div>
+				
+
+				
 
 			</div>
 		</div>
@@ -58,6 +163,9 @@
 						</button>&nbsp;
 						<button type="button" mat-raised-button color="primary" (click)="sign()">
 							{{ 'SAVE' | translate }}
+						</button>
+						<button type="button" mat-raised-button color="primary" (click)="saveInformation()">
+							{{ 'CONSOLE' | translate }}
 						</button>
 					</div>
 				</div>

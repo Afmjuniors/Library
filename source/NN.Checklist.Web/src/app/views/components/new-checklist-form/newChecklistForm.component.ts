@@ -67,9 +67,9 @@ export class NewChecklistForm implements OnInit {
 	public stepSecond = 1;
 	public date2: moment.Moment;
 
-	public title:string;
-	public checklistDropDown:string;
-	public versions:string;
+	public title: string;
+	public checklistDropDown: string;
+	public versions: string;
 	myInjector: Injector;
 
 	constructor(
@@ -88,69 +88,166 @@ export class NewChecklistForm implements OnInit {
 		if (this.data != null) {
 			this.typeId = this.data.type;
 		}
-		this.title  = this.translate.instant("MENU.CHECKLIST");
-		this.checklistDropDown  = this.translate.instant("FILTERS.CHECKLIST");
-		this.versions  = this.translate.instant("FILTERS.VERSIONS");
-		
+		this.title = this.translate.instant("MENU.CHECKLIST");
+		this.checklistDropDown = this.translate.instant("FILTERS.CHECKLIST");
+		this.versions = this.translate.instant("FILTERS.VERSIONS");
+
 	}
-	
 
-	createInjector(componentItem: any): Injector {
-		return Injector.create({
-			providers: [
-				{ provide: 'componente', useValue: componentItem.componente },
-				{ provide: 'label', useValue: componentItem.label },
-				{ provide: 'placeholder', useValue: componentItem.placeholder || '' },
-				{ provide: 'mask', useValue: componentItem.mask || '' },
-				{ provide: 'isDisable', useValue: componentItem.isDisable || false },
-				{ provide: 'name', useValue: componentItem.label || false },
-				{ provide: 'id', useValue: componentItem.label || false },
 
-			  ],
-			})
+
+
+	public checkDisble(block: any, item: any): boolean {
+		const blockDependeble = this.item.blocks.find(x => x.blockId == block['dependebleblockId']);
+
+
+		if (blockDependeble != undefined && !blockDependeble.isCompleted) {
+			return false;
+		} else {
+			return item.isDisable;
+		}
+
 	}
-	public  getComponent(item: any) {
-		return item ;
-	  }
 
-	
-	
-	public items = [
+	saveInformation(){
+		console.log(this.item);
+
+	}
+
+
+	public item =
 		{
-		  title: 'Text Inputs',
-		  combo: [
-			{
-			  componente: TextInputComponent,
-			  label: 'Nome Completo',
-			  placeholder: 'Digite seu nome completo',
-			  mask: '',
-			  isDisable: false,
-			  id: 'nameInput',
-			  name: 'nameInput'
-			},
-			{
-			  componente: TextInputComponent,
-			  label: 'CPF',
-			  placeholder: 'Digite seu CPF',
-			  mask: '000.000.000-00',
-			  isDisable: false,
-			  id: 'cpfInput',
-			  name: 'cpfInput'
-			},
-			{
-			  componente: TextInputComponent,
-			  label: 'E-mail',
-			  placeholder: 'Digite seu e-mail',
-			  mask: '',
-			  isDisable: true, // Campo desativado para teste
-			  id: 'emailInput',
-			  name: 'emailInput'
-			}
-		  ]
+			title: 'Text Inputs',
+			version: "V1",
+
+			header: [
+				{
+					idTipoComponente: 1,
+					label: 'Label que eu quiser',
+					placeholder: 'Digite um número...Na vdd texto',
+					isDisable: false,
+					name: 'inputNumber1',
+					id: 'inputNumber1',
+					initialValue:"testeaki",
+					value:"testeaki"
+
+				}
+			],
+			blocks: [
+				{
+					dependebleblockId: null,
+					isCompleted: false,
+					blockId: 1,
+					items: [
+						{
+							idTipoComponente: 4,
+							label: 'Seleção de Opção',
+							placeholder: 'Escolha uma opção...',
+							options: [
+								{ acronym: 'A', description: 'Opção A' },
+								{ acronym: 'B', description: 'Opção B' },
+							],
+							isDisable: false,
+							name: 'combo1',
+							id: 'combo1',
+							value:""
+						},
+						{
+							idTipoComponente: 3,
+							label: 'Data picker',
+							placeholder: 'Digite um número...',
+							isDisable: false,
+							name: 'inputNumber1',
+							id: 'inputNumber1',
+								value:""
+						},
+						{
+							idTipoComponente: 1,
+							label: 'Texto input',
+							placeholder: 'Digite um número...',
+							isDisable: false,
+							name: 'inputNumber1',
+							id: 'inputNumber1',
+								value:""
+						},
+						{
+							idTipoComponente: 2,
+							label: 'Número de Itens',
+							placeholder: 'Digite um número...',
+							isDisable: false,
+							name: 'inputNumber1',
+							id: 'inputNumber1',
+								value:""
+						},
+					]
+				},
+				{
+					dependebleblockId: null,
+					isCompleted: false,
+					blockId: 1,
+					items: [
+						{
+							idTipoComponente: 4,
+							label: 'Seleção de Opção',
+							placeholder: 'Escolha uma opção...',
+							options: [
+								{ acronym: 'A', description: 'Opção A' },
+								{ acronym: 'B', description: 'Opção B' },
+							],
+							isDisable: false,
+							name: 'combo1',
+							id: 'combo1',
+								value:""
+						},
+						{
+							idTipoComponente: 3,
+							label: 'Data picker',
+							placeholder: 'Digite um número...',
+							isDisable: false,
+							name: 'inputNumber1',
+							id: 'inputNumber1',
+								value:""
+						},
+						{
+							idTipoComponente: 1,
+							label: 'Texto input',
+							placeholder: 'Digite um número...',
+							isDisable: false,
+							name: 'inputNumber1',
+							id: 'inputNumber1',
+								value:""
+						},
+						{
+							idTipoComponente: 2,
+							label: 'Número de Itens',
+							placeholder: 'Digite um número...',
+							isDisable: false,
+							name: 'inputNumber1',
+							id: 'inputNumber1',
+								value:""
+						},
+					]
+				}
+			]
+
+
+
+		};
+
+
+	public checklists = [
+		{
+			checkilistId: 1,
+			accrom: "CheckList 1",
+			description: "teste1"
 		},
-		
-	  ];
-	  
+		{
+			checkilistId: 2,
+			accrom: "CheckList 2",
+			description: "teste2"
+		}
+	];
+
 
 	loadListStates() {
 		this.app.listStates().subscribe(x => {
@@ -181,8 +278,7 @@ export class NewChecklistForm implements OnInit {
 		this.remainingText = 8000 - value;
 	}
 
-	sign()
-	{
+	sign() {
 		if (!this.validate()) {
 			return;
 		}
@@ -197,11 +293,11 @@ export class NewChecklistForm implements OnInit {
 			width: '400px',
 			data: true
 		}).afterClosed()
-		.subscribe(x => {
-			if(x != '' && x != undefined){
-				this.save();
-			}
-		});
+			.subscribe(x => {
+				if (x != '' && x != undefined) {
+					this.save();
+				}
+			});
 	}
 
 	save() {
@@ -232,5 +328,5 @@ export class NewChecklistForm implements OnInit {
 		this.dialog.closeAll();
 	}
 
-	
+
 }

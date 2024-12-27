@@ -5,6 +5,8 @@ using NN.Checklist.Domain.Entities;
 using NN.Checklist.Domain.Repositories.Specifications;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
+using NN.Checklist.Domain.DTO;
 
 #region Cabeçalho
 
@@ -35,7 +37,6 @@ namespace NN.Checklist.Domain.Repositories
         #region User Code
 
         
-
         #endregion
 
     }

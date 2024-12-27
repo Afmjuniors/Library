@@ -3,14 +3,16 @@ import { Component, Inject, Input, OnInit, Output } from '@angular/core';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
-    selector: 'custom-datepicker-input',
-    templateUrl: './datepicker-input.component.html',
-    styleUrls: ['./datepicker-input.component.scss']
+    selector: 'custom-input',
+    templateUrl: './custom-input.component.html',
+    styleUrls: ['./custom-input.component.scss']
 })
 export class DatePickerInputComponent implements OnInit {
     @Input() public label: string = 'Select Date'; // Rótulo do campo
     @Input() public name: string ; // Rótulo do campo
     @Input() public id: string ; // Rótulo do campo
+
+    @Input() public options: Array<{ acronym: string; description: string }> = [];
 
     @Input() public placeholder: string = 'Choose a date'; // Placeholder
     @Input() public isDisable: boolean = false; // Desabilitar input
@@ -22,7 +24,7 @@ export class DatePickerInputComponent implements OnInit {
     @Input() public touchUi: boolean = false; // Modo touch-friendly
     @Input() public enableMeridian: boolean = false; // Exibir formato AM/PM
 
-    @Output() public  component: { value: Date | null } = { value: null };
+    @Output() public  component: { datePicker: Date | null } = { datePicker: null };
 
 
     constructor(

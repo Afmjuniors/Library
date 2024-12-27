@@ -97,6 +97,10 @@
 		}
 	}
 
+	.kt-divider{
+		border-bottom: 1px solid kt-get($kt-portlet, border-color);
+	}
+
 	// Head sizing
 	&.kt-portlet--head-sm {
 		.kt-portlet__head {

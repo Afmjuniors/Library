@@ -35,6 +35,8 @@ namespace NN.Checklist.Domain.Configurations
                 AddObject("MailService", true, "NN.Checklist.Domain.Services.MailService, NN.Checklist.Domain.Services");
                 AddObject("CryptoService", true, "NN.Checklist.Domain.Services.CryptoService, NN.Checklist.Domain.Services");
                 AddObject("CollectorService", true, "NN.Checklist.Domain.Services.CollectorService, NN.Checklist.Domain.Services");
+                AddObject("ChecklistService", true, "NN.Checklist.Domain.Services.ChecklistService, NN.Checklist.Domain.Services");
+
 
                 var globalizationService = new TDCore.DependencyInjection.Object();
                 globalizationService.ObjectID = "GlobalizationService";

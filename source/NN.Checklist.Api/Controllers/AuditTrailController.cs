@@ -21,7 +21,7 @@ namespace NN.Checklist.Api.Controllers
         /// <summary>
         /// Name: "AuditTrailController" 
         /// Description: is a constructor that takes logger as a parameter.
-        /// Created by: wazc Programa Novo 2022-09-08 
+        /// Created by: [CREATED_BY] 
         /// </summary>
         public AuditTrailController(ILogger<AuditTrailController> logger) : base(logger) { }
 
@@ -29,7 +29,7 @@ namespace NN.Checklist.Api.Controllers
         /// <summary>
         /// Name: "Search" 
         /// Description: method filters the AuditTrail by passing the "AuthenticatedUserDTO" and "SystemRecordPageMessage" parameters.
-        /// Created by: wazc Programa Novo 2022-09-08 
+        /// Created by: [CREATED_BY] 
         /// </summary>
         [HttpPost("Search")]
         [Authorize]
@@ -78,7 +78,7 @@ namespace NN.Checklist.Api.Controllers
         /// <summary>
         /// Name: "ListSystemsFunctionalities" 
         /// Description: method returns a list of system functionalities by the "IAuditTrailService" service.
-        /// Created by: wazc Programa Novo 2022-09-08 
+        /// Created by: [CREATED_BY] 
         /// </summary>
 
         [HttpGet("ListSystemsFunctionalities")]

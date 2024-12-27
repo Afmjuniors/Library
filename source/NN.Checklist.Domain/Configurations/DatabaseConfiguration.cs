@@ -7,6 +7,7 @@ using System.Configuration;
 using System.Reflection;
 using NN.Checklist.Domain.Common;
 using NN.Checklist.Domain.Entities.Parameters;
+using NN.Checklist.Domain.Repositories.Specifications;
 
 namespace NN.Checklist.Domain.Configurations
 {
@@ -51,6 +52,30 @@ namespace NN.Checklist.Domain.Configurations
                 AddObject(CreateRepository("SystemRecordRepository", "NN.Checklist.Domain.Repositories.SystemRecordRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
                 AddObject(CreateRepository("UserPhoneRepository", "NN.Checklist.Domain.Repositories.UserPhoneRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
                 AddObject(CreateRepository("UserRepository", "NN.Checklist.Domain.Repositories.UserRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
+
+
+
+
+
+                AddObject(CreateRepository("BlockVersionChecklistTemplateRepository", "NN.Checklist.Domain.Repositories.BlockVersionChecklistTemplateRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
+                AddObject(CreateRepository("CancelledItemVersionChecklistTemplateRepository", "NN.Checklist.Domain.Repositories.CancelledItemVersionChecklistTemplateRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
+                AddObject(CreateRepository("ChecklistRepository", "NN.Checklist.Domain.Repositories.ChecklistRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
+                AddObject(CreateRepository("ChecklistTemplateRepository", "NN.Checklist.Domain.Repositories.ChecklistTemplateRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
+                AddObject(CreateRepository("CommentCheclistRepository", "NN.Checklist.Domain.Repositories.CommentCheclistRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
+                AddObject(CreateRepository("DependencyBlockVersionChecklistTemplateRepository", "NN.Checklist.Domain.Repositories.DependencyBlockVersionChecklistTemplateRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
+                AddObject(CreateRepository("DependencyItemVersionChecklistTemplateRepository", "NN.Checklist.Domain.Repositories.DependencyItemVersionChecklistTemplateRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
+                AddObject(CreateRepository("FieldChecklistRepository", "NN.Checklist.Domain.Repositories.FieldChecklistRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
+                AddObject(CreateRepository("FieldVersionChecklistTemplateRepository", "NN.Checklist.Domain.Repositories.FieldVersionChecklistTemplateRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
+                AddObject(CreateRepository("ItemChecklistRepository", "NN.Checklist.Domain.Repositories.ItemChecklistRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
+                AddObject(CreateRepository("ItemVersionChecklistTemplateRepository", "NN.Checklist.Domain.Repositories.ItemVersionChecklistTemplateRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
+                AddObject(CreateRepository("OptionFieldVersionChecklistTemplateRepository", "NN.Checklist.Domain.Repositories.OptionFieldVersionChecklistTemplateRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
+                AddObject(CreateRepository("OptionItemChecklistRepository", "NN.Checklist.Domain.Repositories.OptionItemChecklistRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
+                AddObject(CreateRepository("OptionItemVersionChecklistTemplateRepository", "NN.Checklist.Domain.Repositories.OptionItemVersionChecklistTemplateRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
+                AddObject(CreateRepository("VersionChecklistTemplateRepository", "NN.Checklist.Domain.Repositories.VersionChecklistTemplateRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
+
+
+
+
 
             }
             catch (Exception ex)

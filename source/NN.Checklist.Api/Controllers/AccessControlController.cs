@@ -24,7 +24,7 @@ namespace NN.Checklist.Api.Controllers
         /// <summary>
         /// Name: AccessControlController 
         /// Description: is a constructor that has a method called authenticate passing as a parameter the user to perform the authentication.
-        /// Created by: wazc Programa Novo 2022-09-08
+        /// Created by:[CREATED_BY]
         /// </summary>
 
         public AccessControlController(ILogger<AccessControlController> logger) : base(logger) { }
@@ -33,7 +33,7 @@ namespace NN.Checklist.Api.Controllers
         /// <summary>
         /// Name: "Authenticate" 
         /// Description: method authenticates the user with the private key by loading the menu.
-        /// Created by: wazc Programa Novo 2022-09-08 
+        /// Created by:[CREATED_BY] 
         /// </summary>
         [HttpPost("Authenticate")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -62,7 +62,7 @@ namespace NN.Checklist.Api.Controllers
         /// <summary>
         /// Name: GetUserByToken
         /// Description: It's a method that get user by token and if found it would return the logged in user.
-        /// Created by: wazc Programa Novo 2022-09-08
+        /// Created by:[CREATED_BY]
         /// </summary>
 
         [HttpGet("GetUserByToken")]
@@ -88,7 +88,7 @@ namespace NN.Checklist.Api.Controllers
         /// <summary>
         /// Name: "GetMenu" 
         /// Description: method loads the menu if the user is logged in.
-        /// Created by: wazc Programa Novo 2022-09-08 
+        /// Created by:[CREATED_BY] 
         /// </summary>
 
         [HttpGet("GetMenu")]
@@ -113,7 +113,7 @@ namespace NN.Checklist.Api.Controllers
         /// <summary>
         /// Name: "LanguageUpdate" 
         /// Description: replaces the previous language with the parameter "LanguageDTO".
-        /// Created by: wazc Programa Novo 2022-09-08 
+        /// Created by:[CREATED_BY] 
         /// </summary>
         [HttpPut("UpdateLanguage")]
         [Authorize()]
@@ -140,7 +140,7 @@ namespace NN.Checklist.Api.Controllers
         /// <summary>
         /// Name: "SignatureValidation" 
         /// Description: method receives "Signature DTO" as a parameter to validate the signature. In case of failure, an exception will be thrown.
-        /// Created by: wazc Programa Novo 2022-09-08 
+        /// Created by:[CREATED_BY] 
         /// </summary>
 
         [HttpPost("SignatureValidation")]
@@ -178,7 +178,7 @@ namespace NN.Checklist.Api.Controllers
         /// <summary>
         /// Name: "ReadSignature" 
         /// Description: receives as a parameter "signature" passing through the "ObjectFactory's" "ReadSignature" method and being decrypted.
-        /// Created by: wazc Programa Novo 2022-09-08 
+        /// Created by:[CREATED_BY] 
         /// </summary>
         
         [HttpGet("ReadSignature")]
@@ -204,7 +204,7 @@ namespace NN.Checklist.Api.Controllers
         /// <summary>
         /// Name: "ListPermissions" 
         /// Description: method returns asy permissions fetched by "IAccessControlService".".
-        /// Created by: wazc Programa Novo 2022-09-08 
+        /// Created by:[CREATED_BY] 
         /// </summary>
         [HttpGet("ListPermissions")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -229,7 +229,7 @@ namespace NN.Checklist.Api.Controllers
         /// <summary>
         /// Name: "SearchUsers" 
         /// Description: method expects a request to perform a user search, with the "QueryParamsDTO" parameter.
-        /// Created by: wazc Programa Novo 2022-09-08 
+        /// Created by:[CREATED_BY] 
         /// </summary>
         [HttpPost("SearchUsers")]
         [Authorize()]
@@ -268,7 +268,7 @@ namespace NN.Checklist.Api.Controllers
         /// <summary>
         /// Name: "InsertAdGroup" 
         /// Description: method makes a post-type request inserting the groups." 
-        /// Created by: wazc Programa Novo 2022-09-08
+        /// Created by:[CREATED_BY]
         /// </summary>        
         
         [HttpPost("InsertAdGroup")]
@@ -295,7 +295,7 @@ namespace NN.Checklist.Api.Controllers
         /// <summary>
         /// Name: "RemoveAdGroup" 
         /// Description: method removes the group that was added to the user.
-        /// Created by: wazc Programa Novo 2022-09-08
+        /// Created by:[CREATED_BY]
         /// </summary>
         [HttpPost("RemoveAdGroup")]
         [Authorize()]
@@ -321,7 +321,7 @@ namespace NN.Checklist.Api.Controllers
         /// <summary>
         /// Name: "SearchAdGroups" 
         /// Description: method waits for a request to perform a group search, "queryParams" is to perform the AdGroups pagination.
-        /// Created by: wazc Programa Novo 2022-09-08
+        /// Created by:[CREATED_BY]
         /// </summary>
         [HttpPost("SearchAdGroups")]
         [Authorize()]
@@ -363,7 +363,7 @@ namespace NN.Checklist.Api.Controllers
         /// <summary>
         /// Name: "ListAdGroupsByUser" 
         /// Description: method returns a list of Groups by user ID.
-        /// Created by: wazc Programa Novo 2022-09-08
+        /// Created by:[CREATED_BY]
         /// </summary>
         [HttpGet("ListAdGroupsByUser/{userId}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -388,7 +388,7 @@ namespace NN.Checklist.Api.Controllers
         /// <summary>
         /// Name: "ActivateUser" 
         /// Description: method makes a request to activate the user passing "UserDTO" as parameter.
-        /// Created by: wazc Programa Novo 2022-09-08
+        /// Created by:[CREATED_BY]
         /// </summary>
         [HttpPost("ActivateUser")]
         [Authorize()]
@@ -413,7 +413,7 @@ namespace NN.Checklist.Api.Controllers
         /// <summary>
         /// Name: "GetAdGroup" 
         /// Description: method searches the ad group by Id.
-        /// Created by: wazc Programa Novo 2022-09-08
+        /// Created by:[CREATED_BY]
         /// </summary>
         [HttpGet("GetAdGroup/{id}")]
         [Authorize]
@@ -438,7 +438,7 @@ namespace NN.Checklist.Api.Controllers
         /// <summary>
         /// Name: "UpdateAdGroup" 
         /// Description: method updates the ad group when a request is made.
-        /// Created by: wazc Programa Novo 2022-09-08
+        /// Created by:[CREATED_BY]
         /// </summary>
         [HttpPost("UpdateAdGroup")]
         [Authorize]

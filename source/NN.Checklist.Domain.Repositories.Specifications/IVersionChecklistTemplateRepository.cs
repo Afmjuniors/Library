@@ -1,4 +1,6 @@
 
+using NN.Checklist.Domain.DTO;
+using System.Threading.Tasks;
 using TDCore.Core;
 using TDCore.Domain;
 
@@ -15,9 +17,9 @@ namespace NN.Checklist.Domain.Repositories.Specifications
     public interface IVersionChecklistTemplateRepository<TEntity, TKey> : IRepositoryBase<TEntity, TKey> where TEntity : class
     {
 
-    #region User Code
-                
-    
+        #region User Code
+
+       public Task<VersionChecklistTemplateDTO> GetLatestVersionFromChecklistId(long checklistId);
 
     #endregion
 

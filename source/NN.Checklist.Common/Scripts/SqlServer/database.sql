@@ -310,7 +310,7 @@ CREATE TABLE [ITEMS_VERSIONS_CHECKLISTS_TEMPLATES](
 	[position] [int] NOT NULL,
 	[title] [varchar](500) NOT NULL,
 	[item_type_id] [int] NOT NULL,
-	[block_version_checklist_template_id] [bigint] NULL,
+	[block_version_checklist_template_id] [bigint] NOT NULL,
 	[option_field_version_checklist_template_id] [bigint] NULL,
 	[options_title] [varchar](500) NULL,
  CONSTRAINT [PK_ITEMS_VERSIONS_CHECKLISTS_TEMPLATES] PRIMARY KEY CLUSTERED 

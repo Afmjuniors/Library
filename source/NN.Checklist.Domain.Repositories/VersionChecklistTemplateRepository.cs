@@ -5,6 +5,11 @@ using NN.Checklist.Domain.Entities;
 using NN.Checklist.Domain.Repositories.Specifications;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
+using NN.Checklist.Domain.DTO;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Data;
 
 #region Cabeçalho
 
@@ -33,6 +38,25 @@ namespace NN.Checklist.Domain.Repositories
         }
 
         #region User Code
+
+        public async Task<VersionChecklistTemplateDTO> GetLatestVersionFromChecklistId( long checklistId)
+        {
+            try { 
+            var pars = new List<SqlParameter>();
+            var sql = @"SELECT TOP 1 * " +
+                @" FROM VERSIONS_CHECKLISTS_TEMPLATES vct where checklist_template_id = @pChecklistId order by timestamp_creation DESC";
+
+                SqlParameter param = new SqlParameter("pChecklistId", System.Data.SqlDbType.BigInt);
+            param.Value = checklistId;
+            pars.Add(param);
+
+            return await Get<VersionChecklistTemplateDTO>(sql, pars);
+            }catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
 
         
 

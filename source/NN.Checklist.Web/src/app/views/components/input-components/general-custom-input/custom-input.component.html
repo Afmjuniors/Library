@@ -1,0 +1,27 @@
+<div class="contanier">
+
+    <div style="border: none;" *ngIf=" componentItem.idTipoComponente == 1">
+        <custom-combobox-input [label]="componentItem.label" [options]="componentItem.options"
+            [isDisable]="componentItem.isDisable" [name]="componentItem.name"
+            [id]="componentItem.id"></custom-combobox-input>
+
+    </div>
+    <div style="border: none;" *ngIf=" componentItem.idTipoComponente == 2">
+        <custom-datepicker-input [label]="componentItem.label" [isDisable]="componentItem.isDisable"
+            [name]="componentItem.name" [id]="componentItem.id" [placeholder]="componentItem.placeholder"
+            [showSpinners]="componentItem.showSpinners" [showSeconds]="componentItem.showSeconds"
+            [stepHour]="componentItem.stepHour" [stepMinute]="componentItem.stepMinute"
+            [stepSecond]="componentItem.stepSecond" [touchUi]="componentItem.touchUi"
+            [enableMeridian]="componentItem.enableMeridian"></custom-datepicker-input>
+    </div>
+    <div style="border: none;" *ngIf=" componentItem.idTipoComponente == 3">
+        <custom-text-input [label]="componentItem.label" [placeholder]="componentItem.placeholder"
+            [mask]="componentItem.mask" [isDisable]="componentItem.isDisable" [name]="componentItem.name"
+            [id]="componentItem.id"></custom-text-input>
+    </div>
+    <div style="border: none;" *ngIf=" componentItem.idTipoComponente == 4">
+        <custom-number-input [label]="componentItem.label" [placeholder]="componentItem.placeholder"
+            [mask]="componentItem.mask" [isDisable]="componentItem.isDisable" [name]="componentItem.name"
+            [id]="componentItem.id"></custom-number-input>
+    </div>
+</div>

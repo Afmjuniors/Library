@@ -32,7 +32,7 @@ namespace NN.Checklist.Domain.Entities
 
         }
         
-        public ItemVersionChecklistTemplate(long? actionUserId, System.Int64? blockVersionChecklistTemplateId, EnumItemType itemTypeId, System.Int64? optionFieldVersionChecklistTemplateId, System.String optionsTitle, System.Int32 position, System.String title, System.Int64 versionChecklistTemplateId)
+        public ItemVersionChecklistTemplate(long? actionUserId, System.Int64 blockVersionChecklistTemplateId, EnumItemType itemTypeId, System.Int64? optionFieldVersionChecklistTemplateId, System.String optionsTitle, System.Int32 position, System.String title, System.Int64 versionChecklistTemplateId)
         {
 
             var auditTrail = ObjectFactory.GetSingleton<IAuditTrailService>();
@@ -65,8 +65,8 @@ namespace NN.Checklist.Domain.Entities
         [AttributeDescriptor("item_version_checklist_template_id", true, EnumValueRanges.Positive)]
         public System.Int64 ItemVersionChecklistTemplateId { get; internal set; }
 
-        [AttributeDescriptor("block_version_checklist_template_id", false)] 
-        public System.Int64? BlockVersionChecklistTemplateId { get; set; }
+        [AttributeDescriptor("block_version_checklist_template_id", true)] 
+        public System.Int64 BlockVersionChecklistTemplateId { get; set; }
 
         [AttributeDescriptor("item_type_id", true)] 
         public EnumItemType ItemTypeId { get; set; }
@@ -150,7 +150,7 @@ namespace NN.Checklist.Domain.Entities
         #region Save
         
         
-        public async Task Update(long? actionUserId, System.Int64? blockVersionChecklistTemplateId, EnumItemType itemTypeId, System.Int64? optionFieldVersionChecklistTemplateId, System.String optionsTitle, System.Int32 position, System.String title, System.Int64 versionChecklistTemplateId)
+        public async Task Update(long? actionUserId, System.Int64 blockVersionChecklistTemplateId, EnumItemType itemTypeId, System.Int64? optionFieldVersionChecklistTemplateId, System.String optionsTitle, System.Int32 position, System.String title, System.Int64 versionChecklistTemplateId)
         {
             try
             {
