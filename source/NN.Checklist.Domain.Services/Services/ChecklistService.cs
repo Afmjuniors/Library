@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TDCore.Core;
 using TDCore.DependencyInjection;
 
 namespace NN.Checklist.Domain.Services
@@ -15,11 +16,13 @@ namespace NN.Checklist.Domain.Services
     {
 
 
-        public async Task<object> GetCheckList(long checklistId)
+        public async Task<VersionChecklistTemplateDTO> GetLatestCheckList(long checklistId)
         {
             var checklistTeplate = await VersionChecklistTemplate.Repository.GetLatestVersionFromChecklistId(checklistId);
 
-            return checklistTeplate;
+            var dto = checklistTeplate.Transform<VersionChecklistTemplateDTO>();
+
+            return dto;
 
 
         }

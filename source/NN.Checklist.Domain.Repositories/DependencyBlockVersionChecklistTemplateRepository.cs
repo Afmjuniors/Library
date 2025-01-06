@@ -24,9 +24,7 @@ namespace NN.Checklist.Domain.Repositories
             MapColumn("BlockVersionChecklistTemplateId", "block_version_checklist_template_id");
             MapColumn("DependentBlockVersionChecklistTemplateId", "dependent_block_version_checklist_template_id");
             MapColumn("DependentItemVersionChecklistTemplateId", "dependent_item_version_checklist_template_id");
-            MapRelationshipManyToOne("BlockVersionChecklistTemplate", "BlockVersionChecklistTemplateId", "DEPENDENCIES_BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES", "block_version_checklist_template_id" );
-            MapRelationshipManyToOne("DependentBlockVersionChecklistTemplate", "DependentBlockVersionChecklistTemplateId", "DEPENDENCIES_BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES", "dependent_block_version_checklist_template_id" );
-            MapRelationshipManyToOne("DependentItemVersionChecklistTemplate", "DependentItemVersionChecklistTemplateId", "DEPENDENCIES_BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES", "dependent_item_version_checklist_template_id" );
+
 
         }
 

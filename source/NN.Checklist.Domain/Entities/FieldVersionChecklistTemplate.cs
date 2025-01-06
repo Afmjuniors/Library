@@ -90,7 +90,6 @@ namespace NN.Checklist.Domain.Entities
         [AttributeDescriptor("version_checklist_template_id", true)] 
         public System.Int64 VersionChecklistTemplateId { get; set; }
 
-        public VersionChecklistTemplate VersionChecklistTemplate { get => GetManyToOneData<VersionChecklistTemplate>().Result; }
 
 
 

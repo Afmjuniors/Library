@@ -49,11 +49,7 @@ namespace NN.Checklist.Api.Controllers
         {
             try
             {
-                IChecklistService service = ObjectFactory.GetSingleton<IChecklistService>();
-
-              var result =  service.GetCheckList(1);
-
-                return Ok(result);
+                return Ok();
 
             }
             catch (Exception ex)
@@ -69,14 +65,18 @@ namespace NN.Checklist.Api.Controllers
         /// </summary>        
 
         [HttpGet("GetChecklistVersions")]
-        [Authorize()]
+        //[Authorize()]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> GetChecklistVersions([FromQuery] long checklist)
         {
             try
             {
-                return Ok();
+                IChecklistService service = ObjectFactory.GetSingleton<IChecklistService>();
+
+                var result = service.GetLatestCheckList(checklist);
+
+                return Ok(result);
 
             }
             catch (Exception ex)

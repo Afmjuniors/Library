@@ -70,11 +70,8 @@ namespace NN.Checklist.Domain.Entities
         [AttributeDescriptor("dependent_item_version_checklist_template_id", false)] 
         public System.Int64? DependentItemVersionChecklistTemplateId { get; set; }
 
-        public BlockVersionChecklistTemplate BlockVersionChecklistTemplate { get => GetManyToOneData<BlockVersionChecklistTemplate>().Result; }
 
-        public BlockVersionChecklistTemplate DependentBlockVersionChecklistTemplate { get => GetManyToOneData<BlockVersionChecklistTemplate>().Result; }
 
-        public ItemVersionChecklistTemplate DependentItemVersionChecklistTemplate { get => GetManyToOneData<ItemVersionChecklistTemplate>().Result; }
 
 
 

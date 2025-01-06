@@ -34,12 +34,15 @@ namespace NN.Checklist.Domain.Repositories
             MapColumn("Version", "version", 10);
             MapRelationshipManyToOne("ChecklistTemplate", "ChecklistTemplateId", "VERSIONS_CHECKLISTS_TEMPLATES", "checklist_template_id" );
             MapRelationshipManyToOne("CreationUser", "CreationUserId", "VERSIONS_CHECKLISTS_TEMPLATES", "creation_user_id" );
+            MapRelationshipOneToMany("BlocksChecklistTemplate", "BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES", "version_checklist_template_id");
+            MapRelationshipOneToMany("FieldsVersionChecklistsTemplate", "FIELDS_VERSIONS_CHECKLISTS_TEMPLATES", "version_checklist_template_id");
+
 
         }
 
         #region User Code
 
-        public async Task<VersionChecklistTemplateDTO> GetLatestVersionFromChecklistId( long checklistId)
+        public async Task<VersionChecklistTemplate> GetLatestVersionFromChecklistId( long checklistId)
         {
             try { 
             var pars = new List<SqlParameter>();
@@ -50,7 +53,7 @@ namespace NN.Checklist.Domain.Repositories
             param.Value = checklistId;
             pars.Add(param);
 
-            return await Get<VersionChecklistTemplateDTO>(sql, pars);
+            return await Get<VersionChecklistTemplate>(sql, pars);
             }catch (Exception ex)
             {
                 throw ex;

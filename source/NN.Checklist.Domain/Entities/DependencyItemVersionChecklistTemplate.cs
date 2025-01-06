@@ -20,13 +20,6 @@ using System.Threading.Tasks;
 
 #endregion
 
-/*
- * 
- eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxIiwid2luYWNjb3VudG5hbWUiOiJyemxlIiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy91c2VyZGF0YSI6IjEiLCJuYmYiOjE3MzUzMjUzMDEsImV4cCI6MTczNTQxMTcwMSwiaWF0IjoxNzM1MzI1MzAxfQ.Vrx5STlIb47wxqQuqpNfHoLaJd7AXx3RMgY3jXBbQyYb-o4lfNSIyQFbjj4g6eeoLTCGUDcP4iMgwYr1VDykkQ
-
- * */
-
-
 
 
 namespace NN.Checklist.Domain.Entities
@@ -78,12 +71,6 @@ namespace NN.Checklist.Domain.Entities
 
         [AttributeDescriptor("item_version_checklist_template_id", true)] 
         public System.Int64 ItemVersionChecklistTemplateId { get; set; }
-
-        public BlockVersionChecklistTemplate DependentBlockVersionChecklistTemplate { get => GetManyToOneData<BlockVersionChecklistTemplate>().Result; }
-
-        public ItemVersionChecklistTemplate DependentItemVersionChecklistTemplate { get => GetManyToOneData<ItemVersionChecklistTemplate>().Result; }
-
-        public ItemVersionChecklistTemplate ItemVersionChecklistTemplate { get => GetManyToOneData<ItemVersionChecklistTemplate>().Result; }
 
 
 

@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Transactions;
 using System.Threading.Tasks;
+using NN.Checklist.Domain.DTO;
 
 #region Cabeçalho
 
@@ -73,10 +74,11 @@ namespace NN.Checklist.Domain.Entities
 
         [AttributeDescriptor("version_checklist_template_id", true)] 
         public System.Int64 VersionChecklistTemplateId { get; set; }
+        
 
-        public BlockVersionChecklistTemplate ParentBlockVersionChecklistTemplate { get => GetManyToOneData<BlockVersionChecklistTemplate>().Result; }
+        public IList<DependencyBlockVersionChecklistTemplate>? DependentBlockVersionChecklistTemplate { get => GetOneToManyData<DependencyBlockVersionChecklistTemplate>().Result; }
 
-        public VersionChecklistTemplate VersionChecklistTemplate { get => GetManyToOneData<VersionChecklistTemplate>().Result; }
+        public IList<ItemVersionChecklistTemplate> ItemsChecklistsTemplate { get => GetOneToManyData<ItemVersionChecklistTemplate>().Result; set { } }
 
 
 
@@ -84,7 +86,7 @@ namespace NN.Checklist.Domain.Entities
 
         #region Validation
 
-        
+
         public async Task<bool> Validate(bool newRecord)
         {
             try

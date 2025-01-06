@@ -19,7 +19,7 @@ namespace NN.Checklist.Domain.Repositories.Specifications
 
         #region User Code
 
-       public Task<VersionChecklistTemplateDTO> GetLatestVersionFromChecklistId(long checklistId);
+       public Task<TEntity> GetLatestVersionFromChecklistId(long checklistId);
 
     #endregion
 

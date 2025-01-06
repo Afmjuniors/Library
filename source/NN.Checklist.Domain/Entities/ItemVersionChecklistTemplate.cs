@@ -86,11 +86,10 @@ namespace NN.Checklist.Domain.Entities
         [AttributeDescriptor("version_checklist_template_id", true)] 
         public System.Int64 VersionChecklistTemplateId { get; set; }
 
-        public BlockVersionChecklistTemplate BlockVersionChecklistTemplate { get => GetManyToOneData<BlockVersionChecklistTemplate>().Result; }
 
         public OptionFieldVersionChecklistTemplate OptionFieldVersionChecklistTemplate { get => GetManyToOneData<OptionFieldVersionChecklistTemplate>().Result; }
+        public IList<DependencyItemVersionChecklistTemplate>? DependentItemVersionChecklistTemplate { get => GetOneToManyData<DependencyItemVersionChecklistTemplate>().Result; }
 
-        public VersionChecklistTemplate VersionChecklistTemplate { get => GetManyToOneData<VersionChecklistTemplate>().Result; }
 
 
 
@@ -98,7 +97,7 @@ namespace NN.Checklist.Domain.Entities
 
         #region Validation
 
-        
+
         public async Task<bool> Validate(bool newRecord)
         {
             try

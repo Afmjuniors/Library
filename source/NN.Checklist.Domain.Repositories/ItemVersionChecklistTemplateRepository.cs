@@ -5,6 +5,10 @@ using NN.Checklist.Domain.Entities;
 using NN.Checklist.Domain.Repositories.Specifications;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
+using System.Collections;
+using System.Collections.Generic;
+using System.Data.SqlClient;
 
 #region Cabeçalho
 
@@ -31,12 +35,30 @@ namespace NN.Checklist.Domain.Repositories
             MapRelationshipManyToOne("BlockVersionChecklistTemplate", "BlockVersionChecklistTemplateId", "ITEMS_VERSIONS_CHECKLISTS_TEMPLATES", "block_version_checklist_template_id" );
             MapRelationshipManyToOne("ItemType", "ItemTypeId", "ITEMS_VERSIONS_CHECKLISTS_TEMPLATES", "item_type_id" );
             MapRelationshipManyToOne("OptionFieldVersionChecklistTemplate", "OptionFieldVersionChecklistTemplateId", "ITEMS_VERSIONS_CHECKLISTS_TEMPLATES", "option_field_version_checklist_template_id" );
-            MapRelationshipManyToOne("VersionChecklistTemplate", "VersionChecklistTemplateId", "ITEMS_VERSIONS_CHECKLISTS_TEMPLATES", "version_checklist_template_id" );
+            MapRelationshipOneToMany("DependentItemVersionChecklistTemplate", "DEPENDENCIES_ITEMS_VERSIONS_CHECKLISTS_TEMPLATES", "item_version_checklist_template_id");
 
         }
 
         #region User Code
+        public async Task<IList<ItemVersionChecklistTemplate>> ListItemsByVersionChecklist(long versionChaklistId)
+        {
+            try
+            {
+                var pars = new List<SqlParameter>();
+                var sql = @"SELECT  * " +
+                    @" FROM  ITEMS_VERSIONS_CHECKLISTS_TEMPLATES ivct where version_checklist_template_id = @pVersionChecklistId";
 
+                SqlParameter param = new SqlParameter("pVersionChecklistId", System.Data.SqlDbType.BigInt);
+                param.Value = versionChaklistId;
+                pars.Add(param);
+
+                return await List<ItemVersionChecklistTemplate>(sql, pars);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
         
 
         #endregion

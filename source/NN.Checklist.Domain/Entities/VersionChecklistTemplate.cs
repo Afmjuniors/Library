@@ -83,6 +83,13 @@ namespace NN.Checklist.Domain.Entities
         public System.String Version { get; set; }
 
         public ChecklistTemplate ChecklistTemplate { get => GetManyToOneData<ChecklistTemplate>().Result; }
+        
+
+        public IList<BlockVersionChecklistTemplate> BlocksChecklistTemplate { get => GetOneToManyData<BlockVersionChecklistTemplate>().Result; set { } }
+
+
+        public IList<FieldVersionChecklistTemplate> FieldsVersionChecklistsTemplate { get => GetOneToManyData<FieldVersionChecklistTemplate>().Result; set { } }
+
 
         public User CreationUser { get => GetManyToOneData<User>().Result; }
 

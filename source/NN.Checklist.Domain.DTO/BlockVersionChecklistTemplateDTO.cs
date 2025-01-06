@@ -15,10 +15,8 @@ namespace NN.Checklist.Domain.DTO
         public int Position { get; set; }
         public string Title { get; set; }
         public long VersionChecklistTemplateId { get; set; }
-        public List<ItemVersionChecklistTemplateDTO>? ItemVersionChecklistTemplate { get; set; }
-        public List<DependencyItemVersionChecklistTemplateDTO>? DependenciesItemsVersionsChecklistsTemplate { get; set; }
-        [Map("ParentBlockVersionChecklistTemplate")]
-        public List<DependencyBlockVersionChecklistTemplateDTO>? DependenciesBlocskVersiosnChecklistsTemplateDTO { get; set; }
+        public List<DependencyBlockVersionChecklistTemplateDTO>? DependentBlockVersionChecklistTemplate { get; set; }
+        public List<ItemVersionChecklistTemplateDTO>? ItemsChecklistsTemplate { get; set; }
 
 
 
