@@ -24,7 +24,7 @@ import { PdfViewComponent } from '../../../components/pdf-view/pdf-view.componen
 
 import { IdleService } from '../../../../core/_base/layout/services/idle.service';
 import { ChecklistDataSource } from '../../../../core/auth/_data-sources/checklist.datasource';
-import { Checklist } from '../../../../core/auth/_models/checklist.model';
+import { ChecklistTemplate } from '../../../../core/auth/_models/ChecklistTemplate.model';
 import { ChecklistFilter } from '../../../../core/auth/_models/checklistFilter.model';
 import { NewChecklistForm } from '../../../components/new-checklist-form/newChecklistForm.component';
 
@@ -69,7 +69,7 @@ export class CreateChecklistComponent extends BasePageComponent implements OnIni
     @ViewChild('sort1', { static: true }) sort: MatSort;
 
     // Selection
-    checklistResult :Checklist[] = [];
+    checklistResult :ChecklistTemplate[] = [];
     permiteCriar: Boolean;
     permiteEditar: Boolean;
     permiteDesativar: Boolean;

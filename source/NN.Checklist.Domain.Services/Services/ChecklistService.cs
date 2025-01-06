@@ -15,6 +15,17 @@ namespace NN.Checklist.Domain.Services
     public class ChecklistService : ObjectBase, IChecklistService
     {
 
+        public async Task<List<ChecklistTemplateDTO>> ListChecklist()
+        {
+            var checklistTeplate = await ChecklistTemplate.Repository.ListAll();
+
+            var dto = checklistTeplate.TransformList<ChecklistTemplateDTO>().ToList();
+
+            return dto;
+
+
+        }
+
 
         public async Task<VersionChecklistTemplateDTO> GetLatestCheckList(long checklistId)
         {

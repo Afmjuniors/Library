@@ -12,8 +12,8 @@
 					<mat-select placeholder="{{ 'NEW_CHECKLIST.VERSION' | translate }}" [(ngModel)]="filter.checklistTemplateId"
 						class="full-width">
 						<mat-option value="0"></mat-option>
-						<mat-option *ngFor="let itemCl of checklists" [value]="itemCl.checkilistId">
-							{{itemCl.accrom}} - {{itemCl.description}}
+						<mat-option *ngFor="let itemCl of checklists" [value]="itemCl.checklistTemplateId">
+							{{itemCl.description}}
 						</mat-option>
 					</mat-select>
 				</mat-form-field>
@@ -22,54 +22,54 @@
 
 
 			<div *ngIf=" filter.checklistTemplateId>0" class="form-group kt-form__group d-block">		
-				<h2>{{ item.title + " - " + item.version }}</h2>
+				<h2>{{ checklistVersion.description + " - " + checklistVersion.version }}</h2>
 
 
 					<div class="kt-divider"></div>
 
-					<h3>{{item.header.length>0?"CHECKLIST.HEADER" :""}}</h3>
+					<h3>{{checklistVersionfieldsVersionChecklistsTemplate.length>0?"CHECKLIST.HEADER" :""}}</h3>
 
-					<div *ngFor="let itemHeader of item.header" class="combo-container">
-						<div style="border: none;" *ngIf=" itemHeader.idTipoComponente == 1">
+					<div *ngFor="let itemHeader of checklistVersionheader" class="combo-container">
+						<div style="border: none;" *ngIf=" itemHeader.fieldDataTypeId == 1">
 							<custom-text-input 
-							[label]="itemHeader.label"
-							[placeholder]="itemHeader.placeholder"
-							[mask]="itemHeader.mask"
+							[label]="itemHeader.title"
+							[placeholder]="itemHeader.format"
+							[mask]="itemHeader.format"
 							[isDisable]="itemHeader.isDisable"
-							[name]="itemHeader.name"
-							[id]="itemHeader.id"
-							[initialValue] = "itemHeader.initialValue"
+							[name]="itemHeader.title"
+							[id]="itemHeader.fieldVersionChecklistTemplateId"
+							[initialValue] = ""
 							[(ngModel)]="itemHeader.value"
 							></custom-text-input>
 						</div>
-						<div style="border: none;" *ngIf=" itemHeader.idTipoComponente == 2">
+						<div style="border: none;" *ngIf=" itemHeader.fieldDataTypeId == 2">
 							<custom-number-input 
-							[label]="itemHeader.label"
+							[label]="itemHeader.title"
 							[placeholder]="itemHeader.placeholder"
-							[mask]="itemHeader.mask"
+							[mask]="itemHeader.format"
 							[isDisable]="itemHeader.isDisable"
-							[name]="itemHeader.name"
-							[id]="itemHeader.id"
+							[name]="itemHeader.title"
+							[id]="itemHeader.fieldVersionChecklistTemplateId"
 							[(ngModel)]="itemHeader.value"
 							></custom-number-input>
 						</div>
-						<div style="border: none;" *ngIf=" itemHeader.idTipoComponente == 4">
+						<div style="border: none;" *ngIf=" itemHeader.fieldDataTypeId == 4">
 							<custom-combobox-input 
-							[label]="itemHeader.label" 
+							[label]="itemHeader.title" 
 							[options]="itemHeader.options" 
 							[isDisable]="itemHeader.isDisable" 
-							[name]="itemHeader.name"
-							[id]="itemHeader.id"
+							[name]="itemHeader.title"
+							[id]="itemHeader.fieldVersionChecklistTemplateId"
 							[(ngModel)]="itemHeader.value"
 							></custom-combobox-input>
 
 						</div>
-						<div style="border: none;" *ngIf=" itemHeader.idTipoComponente == 3">
+						<div style="border: none;" *ngIf=" itemHeader.fieldDataTypeId == 3">
 							<custom-datepicker-input 
-							[label]="itemHeader.label" 
+							[label]="itemHeader.title" 
 							[isDisable]="itemHeader.isDisable" 
-							[name]="itemHeader.name"
-							[id]="itemHeader.id"							
+							[name]="itemHeader.title"
+							[id]="itemHeader.fieldVersionChecklistTemplateId"							
 							[placeholder]="itemHeader.placeholder"
 							[showSpinners]="itemHeader.showSpinners" 
 							[showSeconds]="itemHeader.showSeconds" 
@@ -85,7 +85,7 @@
 
 					</div>
 
-					<div *ngFor="let blockItem of item.blocks" class="component-wrapper">
+					<div *ngFor="let blockItem of checklistVersionblocks" class="component-wrapper">
 						<div class="kt-divider"></div>
 
 
@@ -96,7 +96,7 @@
 								[label]="componentItem.label"
 								[placeholder]="componentItem.placeholder"
 								[mask]="componentItem.mask"
-								[isDisable]="checkDisble(blockItem, componentItem)"
+								[isDisable]="checkDisable(blockItem, componentItem)"
 								[name]="componentItem.name"
 								[id]="componentItem.id"
 								[(ngModel)]="componentItem.value"
@@ -107,7 +107,7 @@
 								[label]="componentItem.label"
 								[placeholder]="componentItem.placeholder"
 								[mask]="componentItem.mask"
-								[isDisable]="checkDisble(blockItem, componentItem)"
+								[isDisable]="checkDisable(blockItem, componentItem)"
 								[name]="componentItem.name"
 								[id]="componentItem.id"
 								[(ngModel)]="componentItem.value"
@@ -117,7 +117,7 @@
 								<custom-combobox-input 
 								[label]="componentItem.label" 
 								[options]="componentItem.options" 
-								[isDisable]="checkDisble(blockItem, componentItem)" 
+								[isDisable]="checkDisable(blockItem, componentItem)" 
 								[name]="componentItem.name"
 								[id]="componentItem.id"
 								[(ngModel)]="componentItem.value"
@@ -127,7 +127,7 @@
 							<div style="border: none;" *ngIf=" componentItem.idTipoComponente == 3">
 								<custom-datepicker-input 
 								[label]="componentItem.label" 
-								[isDisable]="checkDisble(blockItem, componentItem)" 
+								[isDisable]="checkDisable(blockItem, componentItem)" 
 								[name]="componentItem.name"
 								[id]="componentItem.id"
 								[(ngModel)]="componentItem.value"							

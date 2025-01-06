@@ -10,13 +10,14 @@ import { TypeEventCategory } from '../../../core/auth/_models/typeEventCategory.
 import { TranslateService } from '@ngx-translate/core';
 import { NGX_MAT_DATE_FORMATS } from '@angular-material-components/datetime-picker';
 import { SignatureComponent } from '../signature/signature.component';
-import { Checklist } from '../../../core/auth/_models/checklist.model';
+import { ChecklistVersionTemplate } from '../../../core/auth/_models/checklistVersionTemplate.model';
 import { TypeComponent } from '../../../core/auth/_models/typeComponent.model';
 import { ChecklistFilter } from '../../../core/auth/_models/checklistFilter.model';
 import { ComboboxInputComponent } from '../input-components/combobox/combobox-input.component';
 import { DatePickerInputComponent } from '../input-components/date/datepicker-input.component';
 import { NumberInputComponent } from '../input-components/number/number-input.component';
 import { TextInputComponent } from '../input-components/text/text-input.component';
+import { ChecklistTemplate } from '../../../core/auth/_models/ChecklistTemplate.model';
 
 const DATE_TIME_FORMAT = {
 	parse: {
@@ -41,13 +42,12 @@ const DATE_TIME_FORMAT = {
 	],
 })
 export class NewChecklistForm implements OnInit {
-	checklist: Checklist = new Checklist();
 	typeComponent: TypeComponent[] = [];
 
 	typeId: number = 0;
 
-	systemNodes: SystemNode[] = [];
-	systemStates: State[] = [];
+	checklistVersion: ChecklistVersionTemplate = new ChecklistVersionTemplate() ;
+	checklists: ChecklistTemplate[] = [];
 	filter: ChecklistFilter = new ChecklistFilter();
 	loadingTags: boolean = false;
 
@@ -91,13 +91,14 @@ export class NewChecklistForm implements OnInit {
 		this.title = this.translate.instant("MENU.CHECKLIST");
 		this.checklistDropDown = this.translate.instant("FILTERS.CHECKLIST");
 		this.versions = this.translate.instant("FILTERS.VERSIONS");
+		this.loadListChecklist();
 
 	}
 
 
 
 
-	public checkDisble(block: any, item: any): boolean {
+	public checkDisable(block: any, item: any): boolean {
 		const blockDependeble = this.item.blocks.find(x => x.blockId == block['dependebleblockId']);
 
 
@@ -110,7 +111,7 @@ export class NewChecklistForm implements OnInit {
 	}
 
 	saveInformation(){
-		console.log(this.item);
+		console.log(this.checklists);
 
 	}
 
@@ -235,23 +236,11 @@ export class NewChecklistForm implements OnInit {
 		};
 
 
-	public checklists = [
-		{
-			checkilistId: 1,
-			accrom: "CheckList 1",
-			description: "teste1"
-		},
-		{
-			checkilistId: 2,
-			accrom: "CheckList 2",
-			description: "teste2"
-		}
-	];
 
-
-	loadListStates() {
-		this.app.listStates().subscribe(x => {
-			this.systemStates = x;
+	
+	loadListChecklist() {
+		this.app.listChecklist().subscribe(x => {
+			this.checklists = x.result;
 		},
 			error => {
 				this.layoutUtilsService.showErrorNotification(error, MessageType.Create);
@@ -259,9 +248,9 @@ export class NewChecklistForm implements OnInit {
 	}
 
 
-	loadListSystemNodes() {
-		this.app.listSystemNodes().subscribe(x => {
-			this.systemNodes = x;
+	loadGetChecklistVersionTemplate() {
+		this.app.getChecklistVersions(this.filter.checklistTemplateId).subscribe(x => {
+			this.checklistVersion = x;
 		},
 			error => {
 				this.layoutUtilsService.showErrorNotification(error, MessageType.Create);
@@ -283,7 +272,7 @@ export class NewChecklistForm implements OnInit {
 			return;
 		}
 
-		if (this.checklist.checklistId <= 0) {
+		if (this.checklistVersion.checklistTemplateId <= 0) {
 			this.layoutUtilsService.showErrorNotification(this.translate.instant("MISSING_TYPE_checklist_RECORD"), MessageType.Create);
 			return;
 		}
@@ -306,12 +295,12 @@ export class NewChecklistForm implements OnInit {
 			return;
 		}
 
-		if (this.checklist.checklistId <= 0) {
+		if (this.checklistVersion.checklistTemplateId <= 0) {
 			this.layoutUtilsService.showErrorNotification(this.translate.instant("MISSING_TYPE_checklist_RECORD"), MessageType.Create);
 			return;
 		}
 
-		this.checklist.checklistId = null;
+		this.checklistVersion.checklistTemplateId = null;
 
 		// this.app.insertChecklistRecord(this.checklist, this.comments)
 		// 	.subscribe(res => {
