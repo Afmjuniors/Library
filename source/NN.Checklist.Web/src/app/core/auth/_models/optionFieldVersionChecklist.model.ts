@@ -1,8 +1,7 @@
 import { BaseModel } from '../../_base/crud';
-import { DependencyItemVersionChecklistTemplate } from './dependencyItemVersionChecklistTemplate.model';
 
 
-export class OptionFieldVersionChecklistTemplate extends BaseModel {
+export class OptionFieldVersionChecklist extends BaseModel {
 
     fieldVersionChecklistTemplateId: number;
     optionFieldVersionChecklistTemplateId: number;

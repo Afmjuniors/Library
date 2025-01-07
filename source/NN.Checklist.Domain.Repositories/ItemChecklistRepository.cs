@@ -25,11 +25,11 @@ namespace NN.Checklist.Domain.Repositories
             MapColumn("Comments", "comments", 5000);
             MapColumn("CreationTimestamp", "creation_timestamp");
             MapColumn("CreationUserId", "creation_user_id");
-            MapColumn("ItemVersionchecklistTemplateId", "item_versionchecklist_template_id");
+            MapColumn("ItemVersionchecklistTemplateId", "item_version_checklist_template_id");
             MapColumn("Stamp", "stamp", 500);
             MapRelationshipManyToOne("Checklist", "ChecklistId", "ITEMS_CHECKLISTS", "checklist_id" );
             MapRelationshipManyToOne("CreationUser", "CreationUserId", "ITEMS_CHECKLISTS", "creation_user_id" );
-            MapRelationshipManyToOne("ItemVersionchecklistTemplate", "ItemVersionchecklistTemplateId", "ITEMS_CHECKLISTS", "item_versionchecklist_template_id" );
+            MapRelationshipManyToOne("ItemVersionchecklistTemplate", "ItemVersionchecklistTemplateId", "ITEMS_CHECKLISTS", "item_version_checklist_template_id" );
 
         }
 

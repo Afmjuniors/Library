@@ -1,6 +1,7 @@
 import { BaseModel } from '../../_base/crud';
 import { DependencyItemVersionChecklistTemplate } from './dependencyItemVersionChecklistTemplate.model';
 import { OptionFieldVersionChecklistTemplate } from './optionFieldVersionChecklistTemplate.model';
+import { OptionItemVersionChecklistTemplate } from './optionItemVersionChecklistTemplate.model';
 
 
 export class ItemVersionChecklistTemplate extends BaseModel {
@@ -12,8 +13,9 @@ export class ItemVersionChecklistTemplate extends BaseModel {
     itemTypeId: number;
     optionFieldVersionChecklistTemplateId: number;
     optionsTitle: string;
-    optionFieldVersionChecklistTemplate: OptionFieldVersionChecklistTemplate;
-    DependencyItemVersionChecklistTemplate: DependencyItemVersionChecklistTemplate[];
+    optionFieldVersionChecklistTemplate: OptionFieldVersionChecklistTemplate[];
+    optionItemsVersionChecklistTemplate: OptionItemVersionChecklistTemplate[];
+    dependencyItemVersionChecklistTemplate: DependencyItemVersionChecklistTemplate[];
     position: number;
     title: string;
 
@@ -28,7 +30,7 @@ export class ItemVersionChecklistTemplate extends BaseModel {
         this.optionFieldVersionChecklistTemplateId = 0;
         this.optionsTitle = "";
         this.optionFieldVersionChecklistTemplate = null;
-        this.DependencyItemVersionChecklistTemplate = null;
+        this.dependencyItemVersionChecklistTemplate = null;
         this.position = 0;
         this.title = "";
 

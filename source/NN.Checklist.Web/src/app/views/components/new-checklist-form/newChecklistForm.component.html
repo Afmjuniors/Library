@@ -9,147 +9,166 @@
 
 			<div class="col-md-3">
 				<mat-form-field class="full-width">
-					<mat-select placeholder="{{ 'NEW_CHECKLIST.VERSION' | translate }}" [(ngModel)]="filter.checklistTemplateId"
-						class="full-width">
-						<mat-option value="0"></mat-option>
+					<mat-select placeholder="{{ 'NEW_CHECKLIST.VERSION' | translate }}"
+						[(ngModel)]="filter.checklistTemplateId" class="full-width"
+						(selectionChange)="onChecklistChange($event)">
+						<mat-option value="0">{{ 'NEW_CHECKLIST.NONE_SELECTED' | translate }}</mat-option>
 						<mat-option *ngFor="let itemCl of checklists" [value]="itemCl.checklistTemplateId">
 							{{itemCl.description}}
 						</mat-option>
 					</mat-select>
 				</mat-form-field>
 			</div>
-			
 
 
-			<div *ngIf=" filter.checklistTemplateId>0" class="form-group kt-form__group d-block">		
-				<h2>{{ checklistVersion.description + " - " + checklistVersion.version }}</h2>
+
+			<div *ngIf=" filter.checklistTemplateId>0" class="form-group kt-form__group d-block">
+				<h2>{{ checklistVersion.checklistTemplateDescription + " - " + checklistVersion.version }}</h2>
 
 
+				<div class="kt-divider"></div>
+
+				<h3>{{checklistVersion?"CHECKLIST.HEADER" :""}}</h3>
+				<div style="display: flex; flex-wrap: wrap;">
+
+					<div *ngFor="let field of checklistVersion.fieldsVersionChecklistsTemplate" class="combo-container">
+						<div style="border: none;" *ngIf=" field.fieldDataTypeId == 1">
+							<custom-text-input [label]="field.title" [placeholder]="field.format" [mask]="field.format"
+								[isDisable]="field.isDisable" [name]="field.title"
+								[id]="field.fieldVersionChecklistTemplateId" [initialValue]=""
+								[(ngModel)]="field.value"></custom-text-input>
+						</div>
+						<div style="border: none;" *ngIf=" field.fieldDataTypeId == 2">
+							<custom-number-input [label]="field.title" [placeholder]="field.placeholder"
+								[mask]="field.format" [isDisable]="field.isDisable" [name]="field.title"
+								[id]="field.fieldVersionChecklistTemplateId"
+								[(ngModel)]="field.value"></custom-number-input>
+						</div>
+						<div style="border: none;" *ngIf=" field.fieldDataTypeId == 4">
+							<custom-combobox-input [label]="field.title" [options]="field.options"
+								[isDisable]="field.isDisable" [name]="field.title"
+								[id]="field.fieldVersionChecklistTemplateId"
+								[(ngModel)]="field.value"></custom-combobox-input>
+
+						</div>
+						<div style="border: none;" *ngIf=" field.fieldDataTypeId == 3">
+							<custom-datepicker-input [label]="field.title" [isDisable]="field.isDisable"
+								[name]="field.title" [id]="field.fieldVersionChecklistTemplateId"
+								[placeholder]="field.placeholder" [showSpinners]="field.showSpinners"
+								[showSeconds]="field.showSeconds" [stepHour]="field.stepHour"
+								[stepMinute]="field.stepMinute" [stepSecond]="field.stepSecond"
+								[touchUi]="field.touchUi" [enableMeridian]="field.enableMeridian"
+								[(ngModel)]="field.value"></custom-datepicker-input>
+						</div>
+
+
+					</div>
+				</div>
+
+				<div *ngFor="let block of checklistVersion.blocksChecklistTemplate" class="component-wrapper">
 					<div class="kt-divider"></div>
 
-					<h3>{{checklistVersionfieldsVersionChecklistsTemplate.length>0?"CHECKLIST.HEADER" :""}}</h3>
-
-					<div *ngFor="let itemHeader of checklistVersionheader" class="combo-container">
-						<div style="border: none;" *ngIf=" itemHeader.fieldDataTypeId == 1">
-							<custom-text-input 
-							[label]="itemHeader.title"
-							[placeholder]="itemHeader.format"
-							[mask]="itemHeader.format"
-							[isDisable]="itemHeader.isDisable"
-							[name]="itemHeader.title"
-							[id]="itemHeader.fieldVersionChecklistTemplateId"
-							[initialValue] = ""
-							[(ngModel)]="itemHeader.value"
-							></custom-text-input>
-						</div>
-						<div style="border: none;" *ngIf=" itemHeader.fieldDataTypeId == 2">
-							<custom-number-input 
-							[label]="itemHeader.title"
-							[placeholder]="itemHeader.placeholder"
-							[mask]="itemHeader.format"
-							[isDisable]="itemHeader.isDisable"
-							[name]="itemHeader.title"
-							[id]="itemHeader.fieldVersionChecklistTemplateId"
-							[(ngModel)]="itemHeader.value"
-							></custom-number-input>
-						</div>
-						<div style="border: none;" *ngIf=" itemHeader.fieldDataTypeId == 4">
-							<custom-combobox-input 
-							[label]="itemHeader.title" 
-							[options]="itemHeader.options" 
-							[isDisable]="itemHeader.isDisable" 
-							[name]="itemHeader.title"
-							[id]="itemHeader.fieldVersionChecklistTemplateId"
-							[(ngModel)]="itemHeader.value"
-							></custom-combobox-input>
-
-						</div>
-						<div style="border: none;" *ngIf=" itemHeader.fieldDataTypeId == 3">
-							<custom-datepicker-input 
-							[label]="itemHeader.title" 
-							[isDisable]="itemHeader.isDisable" 
-							[name]="itemHeader.title"
-							[id]="itemHeader.fieldVersionChecklistTemplateId"							
-							[placeholder]="itemHeader.placeholder"
-							[showSpinners]="itemHeader.showSpinners" 
-							[showSeconds]="itemHeader.showSeconds" 
-							[stepHour]="itemHeader.stepHour"
-							[stepMinute]="itemHeader.stepMinute"
-							[stepSecond]="itemHeader.stepSecond"
-							[touchUi]="itemHeader.touchUi"
-							[enableMeridian]="itemHeader.enableMeridian"	
-							[(ngModel)]="itemHeader.value"							
-							></custom-datepicker-input>
-						</div> 
-					
-
-					</div>
-
-					<div *ngFor="let blockItem of checklistVersionblocks" class="component-wrapper">
-						<div class="kt-divider"></div>
-
-
-						<div *ngFor="let componentItem of blockItem.items" class="component-wrapper ">
-
-							<div style="border: none;" *ngIf=" componentItem.idTipoComponente == 1">
-								<custom-text-input 
-								[label]="componentItem.label"
-								[placeholder]="componentItem.placeholder"
-								[mask]="componentItem.mask"
-								[isDisable]="checkDisable(blockItem, componentItem)"
-								[name]="componentItem.name"
-								[id]="componentItem.id"
-								[(ngModel)]="componentItem.value"
-								></custom-text-input>
-							</div>
-							<div style="border: none;" *ngIf=" componentItem.idTipoComponente == 2">
-								<custom-number-input 
-								[label]="componentItem.label"
-								[placeholder]="componentItem.placeholder"
-								[mask]="componentItem.mask"
-								[isDisable]="checkDisable(blockItem, componentItem)"
-								[name]="componentItem.name"
-								[id]="componentItem.id"
-								[(ngModel)]="componentItem.value"
-								></custom-number-input>
-							</div>
-							<div style="border: none;" *ngIf=" componentItem.idTipoComponente == 4">
-								<custom-combobox-input 
-								[label]="componentItem.label" 
-								[options]="componentItem.options" 
-								[isDisable]="checkDisable(blockItem, componentItem)" 
-								[name]="componentItem.name"
-								[id]="componentItem.id"
-								[(ngModel)]="componentItem.value"
-								></custom-combobox-input>
+					<mat-table [dataSource]="block.itemsChecklistsTemplate" class="styled-table">
+						<!-- Column for Component Item Title -->
+						<ng-container matColumnDef="title">
+							<mat-header-cell *matHeaderCellDef style="flex: 2;">{{ block.title }}</mat-header-cell>
+							<mat-cell *matCellDef="let componentItem" style="flex: 2;">
+								<div
+								  style="display: flex; gap: 8px; align-items: center; justify-content: space-between; width: 100%;">
+								  
+								  <!-- Título -->
+								  <div>
+									{{ componentItem.title }}
+								  </div>                        
+<div *ngIf="componentItem.itemTypeId == 3 || componentItem.itemTypeId == 4" >
+	<p>
+		<b>{{componentItem.optionsTitle}}</b>
+	</p>
+	<custom-checkbox-input 
+	[isSingle]="componentItem.itemTypeId == 3"
+	[isDisable]=false
+	[optionsField]="componentItem.optionItemsVersionChecklistTemplate"
 	
-							</div>
-							<div style="border: none;" *ngIf=" componentItem.idTipoComponente == 3">
-								<custom-datepicker-input 
-								[label]="componentItem.label" 
-								[isDisable]="checkDisable(blockItem, componentItem)" 
-								[name]="componentItem.name"
-								[id]="componentItem.id"
-								[(ngModel)]="componentItem.value"							
-								[placeholder]="componentItem.placeholder"
-								[showSpinners]="componentItem.showSpinners" 
-								[showSeconds]="componentItem.showSeconds" 
-								[stepHour]="componentItem.stepHour"
-								[stepMinute]="componentItem.stepMinute"
-								[stepSecond]="componentItem.stepSecond"
-								[touchUi]="componentItem.touchUi"
-								[enableMeridian]="componentItem.enableMeridian"								
-								></custom-datepicker-input>
-							</div> 
+	></custom-checkbox-input>
+</div>
+	
+
+								  <!-- Checkboxes -->
+								 
+								</div>
+							  </mat-cell>
+							  
+						</ng-container>
+
+
+						<!-- Column for Signature -->
+						<ng-container matColumnDef="signature" style="justify-content: end;">
+							<mat-header-cell *matHeaderCellDef
+								style="justify-content: center; flex:1">Assinatura</mat-header-cell>
+							<mat-cell *matCellDef="let componentItem" style="justify-content: end; flex:1;">
+								<div style="display: flex;">
+									<div class="flex">
+										{{componentItem.itemVersionChecklistTemplateId}}
+										<button mat-icon-button color="primary" (click)="sign()">
+											<mat-icon matTooltip="">visibility</mat-icon>
+										</button>
+									</div>
+									<div class="flex">
+										<button type="button" mat-raised-button color="primary" (click)="sign()">
+											{{ 'NEW_CHECKLIST.SIGN' | translate }}
+										</button>
+									</div>
+								</div>
+							</mat-cell>
+						</ng-container>
+
+						<!-- Header Row -->
+						<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+						<!-- Data Row -->
+						<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+					</mat-table>
+
+
+				</div>
+
+				<!-- <div *ngFor="let block of checklistVersion.blocksChecklistTemplate" class="component-wrapper">
+					<div class="kt-divider"></div>
+
+					<mat-table [dataSource]="block.itemsChecklistsTemplate" class="styled-table">
+
+						<ng-container matColumnDef="all">
+							<mat-header-cell *matHeaderCellDef>{{ block.title }}</mat-header-cell>
+
+							<mat-cell *matCellDef="let componentItem" style="flex-direction: column;">
+								<div class="flex flex-column">
+
+									<p>	{{ componentItem.title }}</p>
+									<div style="display: flex;
+												align-items: baseline;
+												justify-content: center;">
+										<p>{{componentItem.itemVersionChecklistTemplateId}}</p>
+										<button mat-icon-button color="primary" (click)="sign()">
+											<mat-icon matTooltip="">visibility</mat-icon>
+										</button>
+									</div>
+
+								</div>
+								<button type="button" mat-raised-button color="primary" (click)="sign()">
+									{{ 'NEW_CHECKLIST.SIGN' | translate }}
+								</button>
+							</mat-cell>
+						</ng-container>
+
 						
-	
-						</div>
-					
+						<mat-header-row *matHeaderRowDef="displayedColumnsCell"></mat-header-row>
 
-					</div>
-				
+						
+						<mat-row *matRowDef="let row; columns: displayedColumnsCell"></mat-row>
+					</mat-table>
+				</div> -->
 
-				
+
 
 			</div>
 		</div>

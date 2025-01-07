@@ -1,9 +1,9 @@
 import { BaseModel } from '../../_base/crud';
 import { BlockVersionChecklistTemplate } from './blockVersionChecklistTemplate.model';
-import { FieldVersionChecklistTemplate } from './FieldVersionChecklistTemplate.model';
+import { FieldVersionChecklistTemplate } from './fieldVersionChecklistTemplate.model';
 
 
-export class ChecklistVersionTemplate extends BaseModel {
+export class VersionChecklistTemplate extends BaseModel {
 
     versionChecklistTemplateId: number;
     checklistTemplateId: number;

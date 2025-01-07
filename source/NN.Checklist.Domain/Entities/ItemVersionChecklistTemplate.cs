@@ -89,6 +89,8 @@ namespace NN.Checklist.Domain.Entities
 
         public OptionFieldVersionChecklistTemplate OptionFieldVersionChecklistTemplate { get => GetManyToOneData<OptionFieldVersionChecklistTemplate>().Result; }
         public IList<DependencyItemVersionChecklistTemplate>? DependentItemVersionChecklistTemplate { get => GetOneToManyData<DependencyItemVersionChecklistTemplate>().Result; }
+        public IList<OptionItemVersionChecklistTemplate>? OptionItemsVersionChecklistTemplate { get => GetOneToManyData<OptionItemVersionChecklistTemplate>().Result; }
+
 
 
 

@@ -58,6 +58,7 @@ import { ComboboxInputComponent } from './input-components/combobox/combobox-inp
 import { DatePickerInputComponent } from './input-components/date/datepicker-input.component';
 import { NumberInputComponent } from './input-components/number/number-input.component';
 import { TextInputComponent } from './input-components/text/text-input.component';
+import { CheckboxInputComponent } from './input-components/checkbox/checkbox-input.component';
 
 const maskConfig: Partial<IConfig> = {
     validation: false,
@@ -137,7 +138,8 @@ const maskConfig: Partial<IConfig> = {
 		ComboboxInputComponent,
 		DatePickerInputComponent,
 		NumberInputComponent,
-		TextInputComponent
+		TextInputComponent,
+		CheckboxInputComponent
 
 
 	],
@@ -154,7 +156,8 @@ const maskConfig: Partial<IConfig> = {
 		ComboboxInputComponent,
 		DatePickerInputComponent,
 		NumberInputComponent,
-		TextInputComponent
+		TextInputComponent,
+		CheckboxInputComponent
 	],
 	exports:[
 		PhoneMaskPipe,

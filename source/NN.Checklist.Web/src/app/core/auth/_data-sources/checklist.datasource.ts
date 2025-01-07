@@ -9,12 +9,12 @@ import { BaseDataSource, QueryResultsModel, QueryParamsModel } from '../../_base
 import { AppState } from '../../reducers';
 // Selectirs
 import { AppService } from '../_services/app.service';
-import { Checklist } from '../_models/checklist.model';
+import { VersionChecklistTemplate } from '../_models/versionChecklistTemplate.model';
 
 
 export class ChecklistDataSource extends BaseDataSource {
     loadingSubject = new BehaviorSubject<boolean>(true);
-    filter: Checklist = new Checklist();
+    filter: VersionChecklistTemplate = new VersionChecklistTemplate();
 
     constructor(private appService: AppService,private store: Store<AppState>) {
         super();
@@ -24,7 +24,7 @@ export class ChecklistDataSource extends BaseDataSource {
     }
     
 
-    load(pageNumber: number, pageSize: number, filtro: Checklist): void
+    load(pageNumber: number, pageSize: number, filtro: VersionChecklistTemplate): void
     {
         let filtro2 = null;
         if (filtro != null)

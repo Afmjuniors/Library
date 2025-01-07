@@ -6,8 +6,9 @@ import { QueryResultsModel } from '../../_base/crud';
 import { AdGroup } from '../_models/adGroup.model';
 import { AdGroupUser } from '../_models/adGroupUser.model';
 import { WatchdogAlarm } from '../_models/watchdogAlarm.model';
-import { ChecklistTemplate } from '../_models/ChecklistTemplate.model';
-import { ChecklistVersionTemplate } from '../_models/checklistVersionTemplate.model';
+import { ChecklistTemplate } from '../_models/checklistTemplate.model';
+import { VersionChecklistTemplate } from '../_models/versionChecklistTemplate.model';
+import { ResponseBase } from '../_models/ResponseBase.model';
 
 const URL_BASE = environment.api;
 
@@ -223,10 +224,10 @@ export class AppService {
 		let header = new HttpHeaders({ 'Authorization': 'Bearer ' + userToken });
 		return this.http.get<any>(URL_BASE + `/Checklist/ListChecklist`, { headers: header });
 	}
-	getChecklistVersions(checklistId: number): Observable<ChecklistVersionTemplate> {
+	getChecklistVersions(checklistId: number): Observable<ResponseBase<VersionChecklistTemplate>> {
 		const userToken = localStorage.getItem(environment.authTokenKey);
 		let header = new HttpHeaders({ 'Authorization': 'Bearer ' + userToken });
-		const res = this.http.get<ChecklistVersionTemplate>(URL_BASE + `/Checklist/GetChecklistVersions?checklist=${checklistId}`, { headers: header });
+		const res = this.http.get<any>(URL_BASE + `/Checklist/GetChecklistVersions?checklist=${checklistId}`, { headers: header });
 		return res;
 	}	
 	getChecklistVersionTemplate(versionId: number): Observable<any> {
@@ -234,7 +235,7 @@ export class AppService {
 		let header = new HttpHeaders({ 'Authorization': 'Bearer ' + userToken });
 		return this.http.get<any>(URL_BASE + `/Checklist/GetChecklistVersionTemplate?versionId=${versionId}`, { headers: header });
 	}
-	createNewChecklist(obj: ChecklistVersionTemplate, comments: string): Observable<any> {
+	createNewChecklist(obj: VersionChecklistTemplate, comments: string): Observable<any> {
 		let data = {
 			data: obj,
 			comments: comments
@@ -243,7 +244,7 @@ export class AppService {
 		let header = new HttpHeaders({ 'Authorization': 'Bearer ' + userToken });
 		return this.http.post<any>(URL_BASE + '/Checklist/CreateNewChecklist', data, { headers: header });
 	}
-	createNewChecklistVersion(obj: ChecklistVersionTemplate, comments: string): Observable<any> {
+	createNewChecklistVersion(obj: VersionChecklistTemplate, comments: string): Observable<any> {
 		let data = {
 			data: obj,
 			comments: comments
@@ -269,7 +270,7 @@ export class AppService {
 		return this.http.post<any>(URL_BASE + '/Checklist/UpdateCheckList', data, { headers: header });
 	}
 
-	removeCheckList(obj: ChecklistVersionTemplate, comments: string): Observable<boolean> {
+	removeCheckList(obj: VersionChecklistTemplate, comments: string): Observable<boolean> {
 		let data = {
 			data: obj,
 			comments: comments

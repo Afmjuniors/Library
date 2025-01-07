@@ -24,7 +24,7 @@ import { PdfViewComponent } from '../../../components/pdf-view/pdf-view.componen
 
 import { IdleService } from '../../../../core/_base/layout/services/idle.service';
 import { ChecklistDataSource } from '../../../../core/auth/_data-sources/checklist.datasource';
-import { ChecklistTemplate } from '../../../../core/auth/_models/ChecklistTemplate.model';
+import { ChecklistTemplate } from '../../../../core/auth/_models/checklistTemplate.model';
 import { ChecklistFilter } from '../../../../core/auth/_models/checklistFilter.model';
 import { NewChecklistForm } from '../../../components/new-checklist-form/newChecklistForm.component';
 

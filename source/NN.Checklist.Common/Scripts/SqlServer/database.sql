@@ -282,7 +282,7 @@ CREATE TABLE [FIELDS_VERSIONS_CHECKLISTS_TEMPLATES](
 CREATE TABLE [ITEMS_CHECKLISTS](
 	[item_checklist_id] [bigint] IDENTITY(1,1) NOT NULL,
 	[checklist_id] [bigint] NOT NULL,
-	[item_versionchecklist_template_id] [bigint] NOT NULL,
+	[item_version_checklist_template_id] [bigint] NOT NULL,
 	[stamp] [varchar](500) NOT NULL,
 	[creation_timestamp] [datetime] NOT NULL,
 	[creation_user_id] [bigint] NOT NULL,

@@ -10,14 +10,14 @@ import { TypeEventCategory } from '../../../core/auth/_models/typeEventCategory.
 import { TranslateService } from '@ngx-translate/core';
 import { NGX_MAT_DATE_FORMATS } from '@angular-material-components/datetime-picker';
 import { SignatureComponent } from '../signature/signature.component';
-import { ChecklistVersionTemplate } from '../../../core/auth/_models/checklistVersionTemplate.model';
+import { VersionChecklistTemplate } from '../../../core/auth/_models/versionChecklistTemplate.model';
 import { TypeComponent } from '../../../core/auth/_models/typeComponent.model';
 import { ChecklistFilter } from '../../../core/auth/_models/checklistFilter.model';
 import { ComboboxInputComponent } from '../input-components/combobox/combobox-input.component';
 import { DatePickerInputComponent } from '../input-components/date/datepicker-input.component';
 import { NumberInputComponent } from '../input-components/number/number-input.component';
 import { TextInputComponent } from '../input-components/text/text-input.component';
-import { ChecklistTemplate } from '../../../core/auth/_models/ChecklistTemplate.model';
+import { ChecklistTemplate } from '../../../core/auth/_models/checklistTemplate.model';
 
 const DATE_TIME_FORMAT = {
 	parse: {
@@ -46,13 +46,16 @@ export class NewChecklistForm implements OnInit {
 
 	typeId: number = 0;
 
-	checklistVersion: ChecklistVersionTemplate = new ChecklistVersionTemplate() ;
+	checklistVersion: VersionChecklistTemplate = new VersionChecklistTemplate() ;
 	checklists: ChecklistTemplate[] = [];
 	filter: ChecklistFilter = new ChecklistFilter();
 	loadingTags: boolean = false;
 
 	comments: string = "";
 	remainingText: number = 8000;
+
+		displayedColumns = ['title', 'signature'];
+		displayedColumnsCell = ['all'];
 
 	//Datetime
 	public date: moment.Moment;
@@ -99,143 +102,26 @@ export class NewChecklistForm implements OnInit {
 
 
 	public checkDisable(block: any, item: any): boolean {
-		const blockDependeble = this.item.blocks.find(x => x.blockId == block['dependebleblockId']);
 
-
-		if (blockDependeble != undefined && !blockDependeble.isCompleted) {
-			return false;
-		} else {
-			return item.isDisable;
-		}
-
+		
+		return false;
 	}
 
 	saveInformation(){
-		console.log(this.checklists);
+		console.log(this.checklistVersion);
 
 	}
 
 
-	public item =
-		{
-			title: 'Text Inputs',
-			version: "V1",
-
-			header: [
-				{
-					idTipoComponente: 1,
-					label: 'Label que eu quiser',
-					placeholder: 'Digite um número...Na vdd texto',
-					isDisable: false,
-					name: 'inputNumber1',
-					id: 'inputNumber1',
-					initialValue:"testeaki",
-					value:"testeaki"
-
-				}
-			],
-			blocks: [
-				{
-					dependebleblockId: null,
-					isCompleted: false,
-					blockId: 1,
-					items: [
-						{
-							idTipoComponente: 4,
-							label: 'Seleção de Opção',
-							placeholder: 'Escolha uma opção...',
-							options: [
-								{ acronym: 'A', description: 'Opção A' },
-								{ acronym: 'B', description: 'Opção B' },
-							],
-							isDisable: false,
-							name: 'combo1',
-							id: 'combo1',
-							value:""
-						},
-						{
-							idTipoComponente: 3,
-							label: 'Data picker',
-							placeholder: 'Digite um número...',
-							isDisable: false,
-							name: 'inputNumber1',
-							id: 'inputNumber1',
-								value:""
-						},
-						{
-							idTipoComponente: 1,
-							label: 'Texto input',
-							placeholder: 'Digite um número...',
-							isDisable: false,
-							name: 'inputNumber1',
-							id: 'inputNumber1',
-								value:""
-						},
-						{
-							idTipoComponente: 2,
-							label: 'Número de Itens',
-							placeholder: 'Digite um número...',
-							isDisable: false,
-							name: 'inputNumber1',
-							id: 'inputNumber1',
-								value:""
-						},
-					]
-				},
-				{
-					dependebleblockId: null,
-					isCompleted: false,
-					blockId: 1,
-					items: [
-						{
-							idTipoComponente: 4,
-							label: 'Seleção de Opção',
-							placeholder: 'Escolha uma opção...',
-							options: [
-								{ acronym: 'A', description: 'Opção A' },
-								{ acronym: 'B', description: 'Opção B' },
-							],
-							isDisable: false,
-							name: 'combo1',
-							id: 'combo1',
-								value:""
-						},
-						{
-							idTipoComponente: 3,
-							label: 'Data picker',
-							placeholder: 'Digite um número...',
-							isDisable: false,
-							name: 'inputNumber1',
-							id: 'inputNumber1',
-								value:""
-						},
-						{
-							idTipoComponente: 1,
-							label: 'Texto input',
-							placeholder: 'Digite um número...',
-							isDisable: false,
-							name: 'inputNumber1',
-							id: 'inputNumber1',
-								value:""
-						},
-						{
-							idTipoComponente: 2,
-							label: 'Número de Itens',
-							placeholder: 'Digite um número...',
-							isDisable: false,
-							name: 'inputNumber1',
-							id: 'inputNumber1',
-								value:""
-						},
-					]
-				}
-			]
-
-
-
-		};
-
-
+	onChecklistChange(event: any): void {
+			const selectedId = event.value;
+			this.app.getChecklistVersions(selectedId).subscribe(x => {
+				this.checklistVersion = x.result;
+			},
+				error => {
+					this.layoutUtilsService.showErrorNotification(error, MessageType.Create);
+				});
+	}
 
 	
 	loadListChecklist() {
@@ -249,12 +135,7 @@ export class NewChecklistForm implements OnInit {
 
 
 	loadGetChecklistVersionTemplate() {
-		this.app.getChecklistVersions(this.filter.checklistTemplateId).subscribe(x => {
-			this.checklistVersion = x;
-		},
-			error => {
-				this.layoutUtilsService.showErrorNotification(error, MessageType.Create);
-			});
+		
 	}
 
 	validate(): boolean {
