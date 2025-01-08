@@ -56,6 +56,30 @@ namespace NN.Checklist.Domain.Entities
                 tran.Complete();
             }
         }
+        public ItemChecklist(long actionUserId, System.Int64 checklistId, System.String comments, System.Int64 itemVersionchecklistTemplateId, System.String stamp)
+        {
+
+            var auditTrail = ObjectFactory.GetSingleton<IAuditTrailService>();
+
+            ChecklistId = checklistId;
+            Comments = comments;
+            CreationTimestamp = DateTime.Now;
+            CreationUserId = actionUserId;
+            ItemVersionchecklistTemplateId = itemVersionchecklistTemplateId;
+            Stamp = stamp;
+
+
+            using (var tran = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                if (Validate(true).Result)
+                {
+                    Insert().Wait();
+
+                    auditTrail.AddRecord("AT_ItemChecklistInserted", ItemChecklistId, EnumSystemFunctionality.Checklists, actionUserId);
+                }
+                tran.Complete();
+            }
+        }
 
         #endregion
 

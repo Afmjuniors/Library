@@ -1,5 +1,9 @@
 
+using NN.Checklist.Domain.DTO.Paging;
+using NN.Checklist.Domain.DTO;
+using System.Threading.Tasks;
 using TDCore.Core;
+using TDCore.Data.Paging;
 using TDCore.Domain;
 
 #region Cabeçalho
@@ -15,9 +19,9 @@ namespace NN.Checklist.Domain.Repositories.Specifications
     public interface IChecklistRepository<TEntity, TKey> : IRepositoryBase<TEntity, TKey> where TEntity : class
     {
 
-    #region User Code
-                
-    
+        #region User Code
+
+        Task<PageMessage<ChecklistDTO>> Search(ChecklistPageMessage data);
 
     #endregion
 

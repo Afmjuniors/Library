@@ -18,6 +18,8 @@ import { DatePickerInputComponent } from '../input-components/date/datepicker-in
 import { NumberInputComponent } from '../input-components/number/number-input.component';
 import { TextInputComponent } from '../input-components/text/text-input.component';
 import { ChecklistTemplate } from '../../../core/auth/_models/checklistTemplate.model';
+import { ChecklistModel } from '../../../core/auth/_models/checklist.model';
+import { FieldChecklist } from '../../../core/auth/_models/fieldChecklist.model';
 
 const DATE_TIME_FORMAT = {
 	parse: {
@@ -46,6 +48,8 @@ export class NewChecklistForm implements OnInit {
 
 	typeId: number = 0;
 
+	checklist : ChecklistModel = new ChecklistModel();
+
 	checklistVersion: VersionChecklistTemplate = new VersionChecklistTemplate() ;
 	checklists: ChecklistTemplate[] = [];
 	filter: ChecklistFilter = new ChecklistFilter();
@@ -56,6 +60,8 @@ export class NewChecklistForm implements OnInit {
 
 		displayedColumns = ['title', 'signature'];
 		displayedColumnsCell = ['all'];
+    checklistId: string | null = null;
+
 
 	//Datetime
 	public date: moment.Moment;
@@ -169,6 +175,28 @@ export class NewChecklistForm implements OnInit {
 				}
 			});
 	}
+	signHeader() {
+		if (!this.validate()) {
+			return;
+		}
+
+		if (this.checklistVersion.checklistTemplateId <= 0) {
+			this.layoutUtilsService.showErrorNotification(this.translate.instant("MISSING_TYPE_checklist_RECORD"), MessageType.Create);
+			return;
+		}
+
+		this.dialog.open(SignatureComponent, {
+			minHeight: '300px',
+			width: '400px',
+			data: true
+		}).afterClosed()
+			.subscribe(x => {
+				if (x != '' && x != undefined) {
+					this.save();
+				}
+			});
+	}
+
 
 	save() {
 
@@ -181,18 +209,54 @@ export class NewChecklistForm implements OnInit {
 			return;
 		}
 
-		this.checklistVersion.checklistTemplateId = null;
 
-		// this.app.insertChecklistRecord(this.checklist, this.comments)
-		// 	.subscribe(res => {
-		// 		if (!res) {
-		// 			return;
-		// 		}
-		// 		this.dialogRef.close();
-		// 	}, error => {
-		// 		this.layoutUtilsService.showErrorNotification(error, MessageType.Create);
-		// 	});
+	this.checklist.versionChecklistTemplateId = this.checklistVersion.versionChecklistTemplateId ;
+
+
+	this.saveFieldChecklist()
+
+
+	this.app.insertUpdateChecklist(this.checklist)
+		 .subscribe(res => {
+			 if (!res) {
+				 return;
+			 }
+			 this.checklist = res;
+		 }, error => {
+			 this.layoutUtilsService.showErrorNotification(error, MessageType.Create);
+		 });
+
+	
+		
 	}
+
+	saveFieldChecklist(){
+		for (let index = 0; index < this.checklistVersion.fieldsVersionChecklistsTemplate.length; index++) {
+			const element = this.checklistVersion.fieldsVersionChecklistsTemplate[index];
+			this.checklist.fields = this.checklist.fields || [];
+			if(element.value!=null){
+				let field = new FieldChecklist();
+				var fieldFoundIndex = this.checklist.fields.findIndex(x=>x.fieldVersionChecklistTemplateId ==  element.fieldVersionChecklistTemplateId)
+				
+				if (fieldFoundIndex >= 0) {
+					if(this.checklist.fields[fieldFoundIndex].value == element.value){
+						continue;
+					}
+					this.checklist.fields.splice(fieldFoundIndex, 1); // Remove o item do array
+				}
+				field.checklistId = this.checklist.checklistId;
+				field.versionChecklistTemplateId =this.checklistVersion.versionChecklistTemplateId;
+				field.fieldChecklistId = null ; //TODO
+				field.fieldVersionChecklistTemplateId = element.fieldVersionChecklistTemplateId;
+				field.optionFieldVersionChecklistTemplateId = element.optionFieldVersionChecklistTemplate!=null ?element.optionFieldVersionChecklistTemplate.find(x=>x.checked).optionFieldVersionChecklistTemplateId:null;
+				field.value = element.value;
+				
+
+				this.checklist.fields.push(field)
+			}
+		}
+	}
+
 
 	closeModal() {
 		this.dialog.closeAll();

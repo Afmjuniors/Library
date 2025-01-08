@@ -1,4 +1,6 @@
 ﻿using NN.Checklist.Domain.DTO;
+using NN.Checklist.Domain.DTO.Paging;
+using NN.Checklist.Domain.DTO.Request;
 using NN.Checklist.Domain.DTO.Response;
 using NN.Checklist.Domain.Entities;
 using NN.Checklist.Domain.Services.Specifications;
@@ -8,7 +10,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TDCore.Core;
+using TDCore.Data.Paging;
 using TDCore.DependencyInjection;
+using static iTextSharp.text.pdf.AcroFields;
+using static NPOI.HSSF.UserModel.HeaderFooter;
 
 namespace NN.Checklist.Domain.Services
 {
@@ -36,6 +41,80 @@ namespace NN.Checklist.Domain.Services
             return dto;
 
 
+        }
+
+        public async Task<ChecklistDTO> NewUpdateChecklist(AuthenticatedUserDTO user, ChecklistDTO obj)
+        {
+            long actionUserId = user.UserId;
+            long? checklistId = obj.ChecklistId;
+            if (!checklistId.HasValue)
+            {
+                var checklist = new Entities.Checklist(actionUserId, obj.VersionChecklistTemplateId);
+                checklistId = checklist.ChecklistId;
+
+            }
+            await CreateUpdateFieldChecklist( actionUserId, (long)checklistId, obj.Fields);
+            await CreateUpdateItemChecklist( actionUserId, (long)checklistId, obj.Items);
+
+
+            var newChelist = await Entities.Checklist.Repository.Get((long)checklistId);
+            
+
+            return newChelist.Transform<ChecklistDTO>();
+
+
+        }
+
+        private async Task CreateUpdateItemChecklist(long actionUserId,long checklistId,List<ItemChecklistDTO> items)
+        {
+            if(items == null)
+            {
+                return;
+            }
+            foreach (var item in items)
+            {
+                if (!item.ItemChecklistId.HasValue)
+                {
+                    //TODO: Verificar os Comments
+                    var itemChecklist = new ItemChecklist(actionUserId, checklistId, item.Comments, item.ItemVersionChecklistTemplateId, item.Stamp);
+
+                }
+                else
+                {
+                    var itemFound = await ItemChecklist.Repository.Get((long)item.ItemChecklistId);
+                    await itemFound.Update(actionUserId, item.ChecklistId, item.Comments, item.CreationTimestamp, item.CreationUserId, item.ItemVersionChecklistTemplateId, item.Stamp);
+                }
+
+            }
+        }
+        private async Task CreateUpdateFieldChecklist(long actionUserId, long checklistId, List<FieldChecklistDTO> fields)
+        {
+            if (fields == null)
+            {
+                return;
+            }
+            foreach (var item in fields)
+            {
+                if (!item.FieldChecklistId.HasValue)
+                {
+
+                    var field = new FieldChecklist(actionUserId, (long)checklistId, DateTime.Now, actionUserId, item.FieldVersionChecklistTemplateId, item.OptionFieldVersionChecklistTemplateId, null, null, item.Value);
+                }
+                else
+                {
+                    var fieldFound = await FieldChecklist.Repository.Get((long)item.FieldChecklistId);
+                    if (fieldFound.Value != item.Value)
+                    {
+                        await fieldFound.Update(actionUserId, item.ChecklistId, item.CreationTimestamp, item.CreationUserId, item.FieldVersionChecklistTemplateId, item.OptionFieldVersionChecklistTemplateId, DateTime.Now, actionUserId, item.Value);
+                    }
+                }
+            }
+        }
+
+        public async Task<PageMessage<ChecklistDTO>> Search(AuthenticatedUserDTO auth, ChecklistPageMessage pageMessage)
+        {
+
+            return await Entities.Checklist.Repository.Search(pageMessage);
         }
 
 

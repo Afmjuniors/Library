@@ -33,6 +33,7 @@ namespace NN.Checklist.Domain.Repositories
             MapColumn("Title", "title", 100);
             MapColumn("VersionChecklistTemplateId", "version_checklist_template_id");
             MapRelationshipManyToOne("FieldDataType", "FieldDataTypeId", "FIELDS_VERSIONS_CHECKLISTS_TEMPLATES", "field_data_type_id" );
+            MapRelationshipOneToMany("OptionFieldVersionChecklistTemplate", "OPTIONS_FIELDS_VERSIONS_CHECKLISTS_TEMPLATES", "field_version_checklist_template_id");
 
         }
 

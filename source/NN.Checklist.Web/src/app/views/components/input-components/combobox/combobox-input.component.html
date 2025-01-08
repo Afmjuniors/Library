@@ -6,8 +6,8 @@
         [disabled]="isDisable"
         class="full-width"
       >
-        <mat-option *ngFor="let option of options" [value]="option.acronym">
-          {{ option.acronym }} - {{ option.description }}
+        <mat-option *ngFor="let option of options" [value]="option.value">
+          {{ option.title }} 
         </mat-option>
       </mat-select>
     </mat-form-field>

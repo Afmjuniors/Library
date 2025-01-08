@@ -10,7 +10,7 @@ namespace NN.Checklist.Domain.DTO
 {
     public class FieldChecklistDTO
     {
-        public long FieldChecklistId { get; set; }
+        public long? FieldChecklistId { get; set; }
         public long ChecklistId { get; set; }
         public long FieldVersionChecklistTemplateId { get; set; }
         public long? OptionFieldVersionChecklistTemplateId { get; set; }
@@ -20,8 +20,6 @@ namespace NN.Checklist.Domain.DTO
         public long? UpdateUserId { get; set; }
         public string Value { get; set; }
 
-        [Map("Checklist")]
-        public ChecklistDTO? Checklist { get; set; }
 
         public FieldVersionChecklistTemplateDTO FieldVersionChecklistTemplate { get; set; }
 

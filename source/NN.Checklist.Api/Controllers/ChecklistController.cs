@@ -8,15 +8,18 @@ using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using NN.Checklist.Domain.DTO;
 using NN.Checklist.Domain.DTO.Paging;
+using NN.Checklist.Domain.DTO.Request;
 using NN.Checklist.Domain.DTO.Response;
 using NN.Checklist.Domain.Entities;
 using NN.Checklist.Domain.Services.Specifications;
 using NPOI.OpenXmlFormats.Dml;
+using NPOI.POIFS.Crypt.Dsig;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
+using TDCore.Data.Paging;
 using TDCore.DependencyInjection;
 using static System.Runtime.InteropServices.JavaScript.JSType;
 
@@ -143,11 +146,16 @@ namespace NN.Checklist.Api.Controllers
         [Authorize()]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> NewChecklist([FromBody] object data)
+        public async Task<ActionResult> NewChecklist([FromBody] ChecklistRequestDTO data)
         {
             try
             {
-                return Ok();
+                var user = await GetUserFromToken();
+
+                IChecklistService service = ObjectFactory.GetSingleton<IChecklistService>();
+               var result = await service.NewUpdateChecklist(user,data.Data);
+
+                return Ok(result);
 
             }
             catch (Exception ex)
@@ -235,11 +243,32 @@ namespace NN.Checklist.Api.Controllers
         [Authorize()]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> SearchChecklists([FromBody] object data)
+        public async Task<ActionResult<ChecklistPageMessage>> SearchChecklists([FromBody] QueryParamsDTO queryParams)
         {
             try
             {
-                return Ok();
+                var user = await GetUserFromToken();
+
+                ChecklistPageMessage pageMessage = new ChecklistPageMessage();
+                pageMessage.ActualPage = queryParams.PageNumber;
+                pageMessage.PageSize = queryParams.PageSize>0? queryParams.PageSize:10;
+                SearchChecklistParamsDTO filter;
+                filter = JsonConvert.DeserializeObject<SearchChecklistParamsDTO>(queryParams.Filter.ToString());
+
+
+                if (filter.StartDate.HasValue)
+                {
+                    pageMessage.StartDate = filter.StartDate.Value.ToLocalTime();
+                }
+                if (filter.EndDate.HasValue)
+                {
+                    pageMessage.EndDate = filter.EndDate.Value.ToLocalTime();
+                }
+
+                IChecklistService service = ObjectFactory.GetSingleton<IChecklistService>();
+                var result = await service.Search(user, pageMessage);
+
+                return Ok(result);
 
             }
             catch (Exception ex)

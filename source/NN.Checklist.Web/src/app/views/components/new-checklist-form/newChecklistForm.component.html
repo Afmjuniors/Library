@@ -1,7 +1,7 @@
 <div class="kt-portlet">
 	<div class="kt-portlet__head kt-portlet__head__custom">
 		<div class="kt-portlet__head-label">
-			<h3 class="kt-portlet__head-title">{{"NEW_CHECKLIST" | translate }}</h3>
+			<h3 class="kt-portlet__head-title">{{"NEW_CHECKLIST.TITLE" | translate }}</h3>
 		</div>
 	</div>
 	<div class="kt-form" autocomplete="off">
@@ -28,7 +28,7 @@
 
 				<div class="kt-divider"></div>
 
-				<h3>{{checklistVersion?"CHECKLIST.HEADER" :""}}</h3>
+				<h3>{{'NEW_CHECKLIST.HEADER' | translate }}</h3>
 				<div style="display: flex; flex-wrap: wrap;">
 
 					<div *ngFor="let field of checklistVersion.fieldsVersionChecklistsTemplate" class="combo-container">
@@ -45,7 +45,7 @@
 								[(ngModel)]="field.value"></custom-number-input>
 						</div>
 						<div style="border: none;" *ngIf=" field.fieldDataTypeId == 4">
-							<custom-combobox-input [label]="field.title" [options]="field.options"
+							<custom-combobox-input [label]="field.title" [options]="field.optionFieldVersionChecklistTemplate"
 								[isDisable]="field.isDisable" [name]="field.title"
 								[id]="field.fieldVersionChecklistTemplateId"
 								[(ngModel)]="field.value"></custom-combobox-input>
@@ -63,6 +63,12 @@
 
 
 					</div>
+
+				</div>
+				<div  style="display: flex; justify-content: end;">
+					<button type="button" mat-raised-button color="primary" (click)="signHeader()">
+						{{ 'NEW_CHECKLIST.SAVE' | translate }}
+					</button>
 				</div>
 
 				<div *ngFor="let block of checklistVersion.blocksChecklistTemplate" class="component-wrapper">
@@ -80,18 +86,18 @@
 								  <div>
 									{{ componentItem.title }}
 								  </div>                        
-<div *ngIf="componentItem.itemTypeId == 3 || componentItem.itemTypeId == 4" >
-	<p>
-		<b>{{componentItem.optionsTitle}}</b>
-	</p>
-	<custom-checkbox-input 
-	[isSingle]="componentItem.itemTypeId == 3"
-	[isDisable]=false
-	[optionsField]="componentItem.optionItemsVersionChecklistTemplate"
-	
-	></custom-checkbox-input>
-</div>
-	
+									<div *ngIf="componentItem.itemTypeId == 3 || componentItem.itemTypeId == 4 "  >
+										<p>
+											<b>{{componentItem.optionsTitle}}</b>
+										</p>
+										<custom-checkbox-input 
+										[isSingle]="componentItem.itemTypeId == 3"
+										[isDisable]=false
+										[optionsField]="componentItem.optionItemsVersionChecklistTemplate"
+										
+										></custom-checkbox-input>
+									</div>
+										
 
 								  <!-- Checkboxes -->
 								 
@@ -183,9 +189,9 @@
 						<button type="button" mat-raised-button color="primary" (click)="sign()">
 							{{ 'SAVE' | translate }}
 						</button>
-						<button type="button" mat-raised-button color="primary" (click)="saveInformation()">
+						<!-- <button type="button" mat-raised-button color="primary" (click)="saveInformation()">
 							{{ 'CONSOLE' | translate }}
-						</button>
+						</button> -->
 					</div>
 				</div>
 			</div>

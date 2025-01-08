@@ -90,7 +90,6 @@ namespace NN.Checklist.Domain.Entities
         [AttributeDescriptor("value", false)] 
         public System.String Value { get; set; }
 
-        public Checklist Checklist { get => GetManyToOneData<Checklist>().Result; }
 
         public User CreationUser { get => GetManyToOneData<User>().Result; }
 

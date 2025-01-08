@@ -287,7 +287,17 @@ export const locale = {
 			BATCH_DATE:"Data do Lote",
 			IS_BATCH_RELEASED:"Lote liberado?",
 			DELETE:"Deletar",
-			EDIT:"Editar"
+			EDIT:"Editar",
+
+
+		},		
+		NEW_CHECKLIST:{
+			NONE_SELECTED:"Nenhum Selecionado",
+			HEADER:"Identificação",
+			TITLE:"Checklist",
+			SAVE:"Salvar",
+			SIGN:"Assinar",
+			VERSION:"Versão"
 
 		},
 		"PLEASE_WAIT": "Aguarde",

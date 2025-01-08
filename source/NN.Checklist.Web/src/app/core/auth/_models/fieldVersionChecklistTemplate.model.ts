@@ -1,4 +1,5 @@
 import { BaseModel } from '../../_base/crud';
+import { OptionFieldVersionChecklistTemplate } from './optionFieldVersionChecklistTemplate.model';
 
 
 export class FieldVersionChecklistTemplate extends BaseModel {
@@ -13,6 +14,7 @@ export class FieldVersionChecklistTemplate extends BaseModel {
     mandatory: boolean;
     isDisable: boolean;
     isKey: boolean;
+     optionFieldVersionChecklistTemplate: OptionFieldVersionChecklistTemplate[];
 
     value:any;
 
@@ -28,6 +30,8 @@ export class FieldVersionChecklistTemplate extends BaseModel {
         this.isKey=null;
         this.isDisable = false;
         this.value=null;
+        this.optionFieldVersionChecklistTemplate=null;
+
 
     
     }

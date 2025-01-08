@@ -188,8 +188,8 @@ export class ChecklistComponent extends BasePageComponent implements OnInit {
 		}
 
 	
-/*
-		this.app.getAllChecklist(this.paginator.pageIndex + 1, this.paginator.pageSize, this.filter).subscribe((response: QueryResultsModel) => {
+
+		this.app.getAllChecklists(this.paginator.pageIndex + 1, this.paginator.pageSize, this.filter).subscribe((response: QueryResultsModel) => {
 			this.dataSource.paginatorTotalSubject.next(response.rowsCount);
 			this.dataSource.entitySubject.next(response.entities);
 			this.dataSource.loadingSubject.next(false);
@@ -200,7 +200,7 @@ export class ChecklistComponent extends BasePageComponent implements OnInit {
 			this.dataSource.loadingSubject.next(false);
 			this.loading = false;
 		});
-		*/
+		
 	}
 
 	ngOnDestroy(): void {
@@ -223,6 +223,7 @@ export class ChecklistComponent extends BasePageComponent implements OnInit {
 
 	loadListLastConditions(){
 		this.lastConditions.push("");
+		this.loadChecklist();
 
 	}
 

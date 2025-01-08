@@ -21,8 +21,7 @@ namespace NN.Checklist.Domain.DTO
         public bool Mandatory { get; set; }
         public bool IsKey { get; set; }
 
-        [Map("VersionChecklistTemplate")]
-        public VersionChecklistTemplateDTO VersionChecklistTemplate { get; set; }
+        public List<OptionFieldVersionChecklistTemplateDTO>? OptionFieldVersionChecklistTemplate { get; set; }
 
 
 

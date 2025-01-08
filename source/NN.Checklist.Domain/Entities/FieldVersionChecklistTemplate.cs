@@ -90,14 +90,17 @@ namespace NN.Checklist.Domain.Entities
         [AttributeDescriptor("version_checklist_template_id", true)] 
         public System.Int64 VersionChecklistTemplateId { get; set; }
 
+        public IList<OptionFieldVersionChecklistTemplate>? OptionFieldVersionChecklistTemplate { get => GetOneToManyData<OptionFieldVersionChecklistTemplate>().Result; }
 
+
+        
 
 
         #endregion
 
         #region Validation
 
-        
+
         public async Task<bool> Validate(bool newRecord)
         {
             try

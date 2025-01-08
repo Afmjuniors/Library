@@ -14,7 +14,7 @@
     <input 
       type="checkbox"
       [id]="option.optionItemVersionChecklistTemplateId?option.optionItemVersionChecklistTemplateId: option.optionFieldVersionChecklistTemplateId  "
-      [name]="option.itemVersionChecklistTemplateId?option.optionItemVersionChecklistTemplateId: option.fieldVersionChecklistTemplateId"
+      [name]="option.optionItemVersionChecklistTemplateId?option.itemVersionChecklistTemplateId: option.fieldVersionChecklistTemplateId"
       [value]="option.value || 1" 
       [checked] = "option.checked"
       [(ngModel)]="option.checked"

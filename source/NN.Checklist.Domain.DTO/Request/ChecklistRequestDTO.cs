@@ -1,0 +1,16 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace NN.Checklist.Domain.DTO.Request
+{
+    public class ChecklistRequestDTO
+    {
+        public ChecklistDTO Data { get; set; }
+        public string Comments { get; set; }
+
+
+    }
+}

@@ -7,6 +7,9 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using NN.Checklist.Domain.DTO;
+using NN.Checklist.Domain.DTO.Paging;
+using System.Collections.Generic;
+using System.Data.SqlClient;
 
 #region Cabeçalho
 
@@ -31,12 +34,60 @@ namespace NN.Checklist.Domain.Repositories
             MapRelationshipManyToOne("CreationUser", "CreationUserId", "CHECKLISTS", "creation_user_id" );
             MapRelationshipManyToOne("UpdateUser", "UpdateUserId", "CHECKLISTS", "update_user_id" );
             MapRelationshipManyToOne("VersionChecklistTemplate", "VersionChecklistTemplateId", "CHECKLISTS", "version_checklist_template_id" );
+            MapRelationshipOneToMany("Items", "ITEMS_CHECKLISTS", "checklist_id");
+            MapRelationshipOneToMany("Fields", "FIELDS_CHECKLISTS", "checklist_id");
 
         }
 
         #region User Code
+        /// <summary>
+        /// Name: Search
+        /// Description: Method that takes data as a parameter and searches the system registry for date.
+        /// Created by: wazc Programa Novo 2022-09-08 
+        /// </summary>
+        public async Task<PageMessage<ChecklistDTO>> Search(ChecklistPageMessage data)
+        {
+            try
+            {
+                var pars = new List<SqlParameter>();
+                List<SqlParameter> parameters = new List<SqlParameter>();
 
-        
+                var sqlSelect = @"SELECT *";
+
+                var sqlFrom = @" FROM CHECKLISTS c with (nolock) ";
+
+                var sqlWhere = "";
+                var and = " where ";
+                if (data.StartDate.HasValue)
+                {
+                    sqlWhere += and + " c.DATE_TIME >= @dthStart ";
+                    SqlParameter param = new SqlParameter("dthStart", System.Data.SqlDbType.DateTime);
+                    param.Value = data.StartDate.Value.ToLocalTime();
+                    parameters.Add(param);
+                    and = " and ";
+                }
+
+                if (data.EndDate.HasValue)
+                {
+                    sqlWhere += and + " c.DATE_TIME < @dthEnd ";
+                    SqlParameter param = new SqlParameter("dthEnd", System.Data.SqlDbType.DateTime);
+                    param.Value = data.EndDate.Value.ToLocalTime();
+                    parameters.Add(param);
+                    and = " and ";
+                }
+
+               
+
+                var sqlOrder = " order by c.checklist_id desc ";
+
+                return await Page<ChecklistDTO>(sqlSelect, sqlFrom, sqlWhere, sqlOrder, parameters, data, null);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         #endregion
 
     }

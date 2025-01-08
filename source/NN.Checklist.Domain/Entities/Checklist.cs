@@ -31,13 +31,34 @@ namespace NN.Checklist.Domain.Entities
         {
 
         }
-        
+        public Checklist(long actionUserId, long versionChecklistTemplateId)
+        {
+
+            var auditTrail = ObjectFactory.GetSingleton<IAuditTrailService>();
+
+            CreationTimestamp = DateTime.Now;
+            CreationUserId = actionUserId;
+            VersionChecklistTemplateId = versionChecklistTemplateId;
+
+
+            using (var tran = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            {
+                if (Validate(true).Result)
+                {
+                    Insert().Wait();
+
+                    auditTrail.AddRecord("AT_ChecklistInserted", ChecklistId, EnumSystemFunctionality.Checklists, actionUserId);
+                }
+                tran.Complete();
+            }
+        }
+
         public Checklist(long? actionUserId, System.DateTime creationTimestamp, System.Int64 creationUserId, System.DateTime? updateTimestamp, System.Int64? updateUserId, System.Int64 versionChecklistTemplateId)
         {
 
             var auditTrail = ObjectFactory.GetSingleton<IAuditTrailService>();
 
-                        CreationTimestamp = creationTimestamp; 
+            CreationTimestamp = creationTimestamp; 
             CreationUserId = creationUserId; 
             UpdateTimestamp = updateTimestamp; 
             UpdateUserId = updateUserId; 
@@ -82,7 +103,10 @@ namespace NN.Checklist.Domain.Entities
 
         public User UpdateUser { get => GetManyToOneData<User>().Result; }
 
-        public VersionChecklistTemplate VersionChecklistTemplate { get => GetManyToOneData<VersionChecklistTemplate>().Result; }
+        public IList<ItemChecklist>? Items { get => GetOneToManyData<ItemChecklist>().Result; set { } }
+
+
+        public IList<FieldChecklist>? Fields { get => GetOneToManyData<FieldChecklist>().Result; set { } }
 
 
 
@@ -90,7 +114,7 @@ namespace NN.Checklist.Domain.Entities
 
         #region Validation
 
-        
+
         public async Task<bool> Validate(bool newRecord)
         {
             try
