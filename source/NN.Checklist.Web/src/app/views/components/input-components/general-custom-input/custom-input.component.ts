@@ -23,6 +23,10 @@ export class DatePickerInputComponent implements OnInit {
     @Input() public stepSecond: number = 1; // Intervalo de segundos
     @Input() public touchUi: boolean = false; // Modo touch-friendly
     @Input() public enableMeridian: boolean = false; // Exibir formato AM/PM
+    @Input() public initialValue: Date ;
+
+    @Input() public isMandatory: boolean=false;
+    @Input() public isKey: boolean= false;
 
     @Output() public  component: { datePicker: Date | null } = { datePicker: null };
 
@@ -32,6 +36,12 @@ export class DatePickerInputComponent implements OnInit {
     ) { }
 
     ngOnInit() {
+        
+        if(this.initialValue){
+            this.component.datePicker = this.initialValue;
+        }
+        let newText = this.isMandatory?"*":"";
+        this.label = this.label + newText;
 
     }
 

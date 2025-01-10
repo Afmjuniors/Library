@@ -22,4 +22,6 @@ export class ViewTextComponent implements OnInit {
 		}
 	}
 
+	
+
 }

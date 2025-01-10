@@ -10,6 +10,8 @@ namespace NN.Checklist.Domain.DTO
     {
         public string Initials { get; set; }
         public DateTime DthSign { get; set; }
+        public string DthSignFormatted { get => DthSign.ToString("yyyy-MM-dd HH:mm"); }
+
         public bool Result { get; set; }
     }
 }

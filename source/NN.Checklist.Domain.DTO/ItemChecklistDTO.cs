@@ -13,6 +13,7 @@ namespace NN.Checklist.Domain.DTO
     {
         public long? ItemChecklistId { get; set; }
         public long ChecklistId { get; set; }
+        public long? VersionChecklistTemplateId { get; set; }
         public long ItemVersionChecklistTemplateId {  get; set; }
         [Map("ItemVersionchecklistTemplate")]
         public ItemVersionChecklistTemplateDTO? ItemVersionChecklistTemplate { get; set; }
@@ -20,6 +21,8 @@ namespace NN.Checklist.Domain.DTO
         public DateTime CreationTimestamp { get; set; }
         public long CreationUserId { get; set; }
         public string? Comments { get; set; }
+
+        public SignApprovalDTO Signature { get; set; }
 
 
 

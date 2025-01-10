@@ -295,7 +295,7 @@ export const locale = {
 			NONE_SELECTED:"Nenhum Selecionado",
 			HEADER:"Identificação",
 			TITLE:"Checklist",
-			SAVE:"Salvar",
+			SAVE:"Gravar",
 			SIGN:"Assinar",
 			VERSION:"Versão"
 

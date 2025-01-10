@@ -8,6 +8,7 @@
           [placeholder]="placeholder"
           [(ngModel)]="component.value"
           [disabled]="isDisable"
+          [ngStyle]="{'border': isKey ? '1px solid green' : 'none'}"
         />
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <ngx-mat-datetime-picker

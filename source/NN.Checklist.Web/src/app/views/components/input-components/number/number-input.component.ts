@@ -14,13 +14,20 @@ export class NumberInputComponent implements OnInit {
     @Input() isDisable: boolean = false; // Desabilitar input (default: false)
     @Input() name: string = ''; // Nome do input
     @Input() id: string = ''; // ID do input
+    @Input() initialValue: number;
+
+
+    @Input() public isMandatory: boolean=false;
+    @Input() public isKey: boolean= false;
     
     @Output() component: { value: number | null } = { value: null }; // Modelo associado ao input
 
 
 
     ngOnInit() {
-
+        this.component.value = this.initialValue;
+        let newText = this.isMandatory?"*":"";
+        this.label = this.label + newText;
     }
 
 }

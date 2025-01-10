@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Transactions;
 using System.Threading.Tasks;
+using System.Collections;
+using System.Xml.Linq;
 
 #region Cabeçalho
 
@@ -100,7 +102,7 @@ namespace NN.Checklist.Domain.Entities
         [AttributeDescriptor("creation_user_id", true)] 
         public System.Int64 CreationUserId { get; set; }
 
-        [AttributeDescriptor("item_versionchecklist_template_id", true)] 
+        [AttributeDescriptor("item_version_checklist_template_id", true)] 
         public System.Int64 ItemVersionchecklistTemplateId { get; set; }
 
         [AttributeDescriptor("stamp", true)] 
@@ -207,8 +209,8 @@ namespace NN.Checklist.Domain.Entities
         #endregion
 
         #region User Code
-                    
-        
+      
+
 
         #endregion
     }

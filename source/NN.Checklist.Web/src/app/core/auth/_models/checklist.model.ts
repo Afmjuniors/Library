@@ -3,6 +3,7 @@ import { BaseModel } from '../../_base/crud';
 import { DependencyItemVersionChecklistTemplate } from './dependencyItemVersionChecklistTemplate.model';
 import { FieldChecklist } from './fieldChecklist.model';
 import { ItemChecklist } from './itemChecklist.model';
+import { VersionChecklistTemplate } from './versionChecklistTemplate.model';
 
 
 export class ChecklistModel extends BaseModel {
@@ -15,6 +16,7 @@ export class ChecklistModel extends BaseModel {
     updateUserId: number;
     fields: FieldChecklist[];
     items: ItemChecklist[];
+    versionChecklistTemplate:VersionChecklistTemplate;
 
 
     clear(): void {
@@ -28,6 +30,8 @@ export class ChecklistModel extends BaseModel {
         this.updateUserId = 0;
         this.fields = null;
         this.items = null;
+        this.versionChecklistTemplate = null;
+
 
     }
 }

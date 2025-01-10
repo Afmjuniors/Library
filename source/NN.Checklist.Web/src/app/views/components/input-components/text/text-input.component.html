@@ -1,18 +1,27 @@
-<div class="container">
-    <div class="text-input">
-      <mat-form-field class="full-width">
+<div class="container" >
+    <div class="text-input" >
+      <mat-form-field class="full-width" 
+      [appearance]="isKey ? 'outline' : 'standard'">
         <mat-label>{{ label }}</mat-label>
         <input
+         
           type="text"
           matInput
           [placeholder]="placeholder"
           [mask]="mask"
           [disabled]="isDisable"
-          [(ngModel)]="component.value"
           [name]="name"
           [id]="id"
           autocomplete="off"
+          [formControlName] = "component.formControlName"
+          [required]="isMandatory"
         />
+        <mat-error *ngIf="error">
+					<strong>{{ 'NEW_CHECKLIST.VALIDATION.REQUIRED_FIELD' | translate }}</strong>
+				</mat-error>
+        <mat-error *ngIf="errorRegex">
+					<strong>{{ 'NEW_CHECKLIST.VALIDATION.FORMAT_INVALID' | translate }}</strong>
+				</mat-error>
       </mat-form-field>
     </div>
   </div>

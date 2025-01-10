@@ -12,6 +12,8 @@ using System.Collections.Generic;
 using System.Text;
 using System.Transactions;
 using System.Threading.Tasks;
+using NN.Checklist.Domain.DTO;
+using System.Linq;
 
 #region Cabeçalho
 
@@ -102,6 +104,7 @@ namespace NN.Checklist.Domain.Entities
         public User CreationUser { get => GetManyToOneData<User>().Result; }
 
         public User UpdateUser { get => GetManyToOneData<User>().Result; }
+        public VersionChecklistTemplate? VersionChecklistTemplate { get => GetManyToOneData<VersionChecklistTemplate>().Result; }
 
         public IList<ItemChecklist>? Items { get => GetOneToManyData<ItemChecklist>().Result; set { } }
 

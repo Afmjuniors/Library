@@ -59,6 +59,7 @@ import { DatePickerInputComponent } from './input-components/date/datepicker-inp
 import { NumberInputComponent } from './input-components/number/number-input.component';
 import { TextInputComponent } from './input-components/text/text-input.component';
 import { CheckboxInputComponent } from './input-components/checkbox/checkbox-input.component';
+import { UpdateCheklistForm } from './update-checklist-form/update-checklist.component';
 
 const maskConfig: Partial<IConfig> = {
     validation: false,
@@ -134,6 +135,7 @@ const maskConfig: Partial<IConfig> = {
 		PdfViewComponent,
 		UserEditComponent,
 		NewChecklistForm,
+		UpdateCheklistForm,
 		UserControlComponent,
 		ComboboxInputComponent,
 		DatePickerInputComponent,
@@ -152,6 +154,7 @@ const maskConfig: Partial<IConfig> = {
 		UserEditComponent,
 		UserControlComponent,
 		NewChecklistForm,
+		UpdateCheklistForm,
 		PhoneMaskPipe,
 		ComboboxInputComponent,
 		DatePickerInputComponent,

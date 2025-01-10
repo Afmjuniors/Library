@@ -1,4 +1,5 @@
-﻿using NN.Checklist.Domain.DTO;
+﻿using K4os.Compression.LZ4.Internal;
+using NN.Checklist.Domain.DTO;
 using NN.Checklist.Domain.DTO.Paging;
 using NN.Checklist.Domain.DTO.Request;
 using NN.Checklist.Domain.DTO.Response;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 using TDCore.Core;
 using TDCore.Data.Paging;
 using TDCore.DependencyInjection;
+using TDCore.Domain.Exceptions;
 using static iTextSharp.text.pdf.AcroFields;
 using static NPOI.HSSF.UserModel.HeaderFooter;
 
@@ -53,21 +55,21 @@ namespace NN.Checklist.Domain.Services
                 checklistId = checklist.ChecklistId;
 
             }
-            await CreateUpdateFieldChecklist( actionUserId, (long)checklistId, obj.Fields);
-            await CreateUpdateItemChecklist( actionUserId, (long)checklistId, obj.Items);
+            await CreateUpdateFieldChecklist(actionUserId, (long)checklistId, obj.Fields);
+            await CreateUpdateItemChecklist(actionUserId, (long)checklistId, obj.Items);
 
 
             var newChelist = await Entities.Checklist.Repository.Get((long)checklistId);
-            
+
 
             return newChelist.Transform<ChecklistDTO>();
 
 
         }
 
-        private async Task CreateUpdateItemChecklist(long actionUserId,long checklistId,List<ItemChecklistDTO> items)
+        private async Task CreateUpdateItemChecklist(long actionUserId, long checklistId, List<ItemChecklistDTO> items)
         {
-            if(items == null)
+            if (items == null)
             {
                 return;
             }
@@ -115,6 +117,44 @@ namespace NN.Checklist.Domain.Services
         {
 
             return await Entities.Checklist.Repository.Search(pageMessage);
+        }
+
+        public async Task<ChecklistDTO> SignItem(AuthenticatedUserDTO auth, ItemChecklistDTO item)
+        {
+            Entities.Checklist checklist;
+
+
+            var accessControlService = ObjectFactory.GetSingleton<IAccessControlService>();
+
+            
+
+
+            if (item.ChecklistId > 0)
+            {
+                checklist = await Entities.Checklist.Repository.Get((long)item.ChecklistId);
+            }
+            else
+            {
+                checklist = new Entities.Checklist(auth.UserId, (long)item.VersionChecklistTemplateId);
+            }
+          
+ 
+            var newItem = new ItemChecklist(auth.UserId, checklist.ChecklistId, item.Comments, DateTime.Now, auth.UserId, item.ItemVersionChecklistTemplateId, item.Stamp);             
+
+
+            var ck = await Entities.Checklist.Repository.Get(checklist.ChecklistId);
+            var dto = ck.Transform<ChecklistDTO>();
+            foreach (var item1 in dto.Items)
+            {
+               item1.Signature =  await accessControlService.ReadSignature(item1.Stamp);
+
+
+            }
+
+            return dto;
+
+
+
         }
 
 

@@ -125,16 +125,16 @@
 				<!-- https://run.stackblitz.com/api/angular/v1?file=app%2Ftable-selection-example.ts -->
 				<ng-container matColumnDef="edit" >
 					<mat-header-cell  *matHeaderCellDef style="flex: 0 0 100px;" mat-sort-header>{{ "CHECKLISTS.EDIT" | translate }}</mat-header-cell>
-					<mat-cell *matCellDef="let occurrence" style="flex: 0 0 100px; ">
-						<button mat-icon-button color="primary" (click)="viewMessageHistory(occurrence.occurrenceRecordId)">
+					<mat-cell *matCellDef="let checklist" style="flex: 0 0 100px; ">
+						<button mat-icon-button color="primary" (click)="editChecklList(checklist)">
 							<mat-icon matTooltip="">edit</mat-icon>
 						</button>
 					</mat-cell>
 				</ng-container>
 				<ng-container matColumnDef="delete">
 					<mat-header-cell *matHeaderCellDef style="flex: 0 0 100px;" mat-sort-header>{{ "CHECKLISTS.DELETE" | translate }}</mat-header-cell>
-					<mat-cell *matCellDef="let occurrence" style="flex: 0 0 100px;  ">
-						<button mat-icon-button color="primary" (click)="viewMessageHistory(occurrence.occurrenceRecordId)">
+					<mat-cell *matCellDef="let checklist" style="flex: 0 0 100px;  ">
+						<button mat-icon-button color="primary" (click)="viewMessageHistory(ochecklist.checklistId)">
 							<mat-icon matTooltip="">delete</mat-icon>
 						</button>
 					</mat-cell>
@@ -143,23 +143,24 @@
 					<!-- ATTRIBUTE mat-sort-header  for sorting | https://material.angular.io/components/sort/overview -->
 					<mat-header-cell *matHeaderCellDef mat-sort-header>{{ "CHECKLISTS.CHECKLIST" | translate }}
 					</mat-header-cell>
-					<mat-cell *matCellDef="let alarm">Checklist</mat-cell>
+					<mat-cell *matCellDef="let checklist">
+						{{checklist.versionChecklistTemplate.checklistTemplateDescription}} - {{checklist.versionChecklistTemplate.version}}</mat-cell>
 				</ng-container>
 
 				<ng-container matColumnDef="batch">
 					<mat-header-cell *matHeaderCellDef mat-sort-header style="justify-content: center;">{{ "CHECKLISTS.BATCH" | translate }}</mat-header-cell>
-					<mat-cell *matCellDef="let alarm" style="justify-content: center;">"{{alarm.lastCondition}}"</mat-cell>
+					<mat-cell *matCellDef="let checklist" style="justify-content: center;">"_batch"</mat-cell>
 				</ng-container>
 
 				<ng-container matColumnDef="batch_date">
 					<mat-header-cell *matHeaderCellDef mat-sort-header>{{ "CHECKLISTS.BATCH_DATE" | translate }}
 					</mat-header-cell>
-					<mat-cell *matCellDef="let alarm">batch_date</mat-cell>
+					<mat-cell *matCellDef="let checklist">{{checklist.updateTimestamp?checklist.updateTimestamp:checklist.creationTimestamp}}</mat-cell>
 				</ng-container>
 
 				<ng-container matColumnDef="is_batch_released">
 					<mat-header-cell *matHeaderCellDef mat-sort-header>{{ "CHECKLISTS.IS_BATCH_RELEASED" | translate }}</mat-header-cell>
-					<mat-cell *matCellDef="let alarm">is_batch_released</mat-cell>
+					<mat-cell *matCellDef="let checklist">is_batch_released</mat-cell>
 					<!-- <mat-cell *matCellDef="let alarm">{{alarm.areaName}}</mat-cell> -->
 
 				</ng-container>

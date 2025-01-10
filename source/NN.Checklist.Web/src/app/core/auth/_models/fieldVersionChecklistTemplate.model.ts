@@ -14,7 +14,7 @@ export class FieldVersionChecklistTemplate extends BaseModel {
     mandatory: boolean;
     isDisable: boolean;
     isKey: boolean;
-     optionFieldVersionChecklistTemplate: OptionFieldVersionChecklistTemplate[];
+    optionFieldVersionChecklistTemplate: OptionFieldVersionChecklistTemplate[];
 
     value:any;
 

@@ -1,0 +1,181 @@
+<div class="kt-portlet">
+	<div class="kt-portlet__head kt-portlet__head__custom">
+		<div class="kt-portlet__head-label">
+			<h3 class="kt-portlet__head-title">{{"NEW_CHECKLIST.TITLE" | translate }}</h3>
+		</div>
+	</div>
+	<div class="kt-form" autocomplete="off">
+		<div class="kt-portlet__body p-t-0">
+
+
+
+
+			<div *ngIf="!loading" class="form-group kt-form__group d-block">
+				<form [formGroup]="fieldForm" autocomplete="off">
+					<h2>{{ checklist.versionChecklistTemplate.checklistTemplateDescription + " - " +
+						checklist.versionChecklistTemplate.version }}</h2>
+
+					<div class="kt-divider"></div>
+
+					<h3>{{'NEW_CHECKLIST.HEADER' | translate }}</h3>
+					<div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 16px;">
+
+						<div *ngFor="let field of checklist.versionChecklistTemplate.fieldsVersionChecklistsTemplate"
+							class="combo-container">
+							<div *ngIf=" field.fieldDataTypeId == 1">
+								<div class="text-input full-width">
+									<mat-form-field [appearance]="field.isKey ? 'outline' : 'legacy'"
+										style="width: 200px;">
+										<mat-label>{{ field.title }} </mat-label>
+										<input matInput type="text"
+											[value]="getValueField(field.fieldVersionChecklistTemplateId)" disabled />
+
+									</mat-form-field>
+								</div>
+							</div>
+							<div *ngIf=" field.fieldDataTypeId == 2">
+								<div class="number-input">
+									<mat-form-field class="example-full-width"
+										[appearance]="field.isKey ? 'outline' : 'legacy'">
+										<mat-label>{{ field.title }} </mat-label>
+										<input matInput type="number"
+											[value]="getValueField(field.fieldVersionChecklistTemplateId)" disabled />
+
+									</mat-form-field>
+
+								</div>
+							</div>
+							<div *ngIf=" field.fieldDataTypeId == 3">
+								<div class="number-input">
+									<div class="datePicker-input">
+										<mat-form-field class="example-full-width"
+											[appearance]="field.isKey ? 'outline' : 'legacy'">
+											<mat-label>>{{ field.title }} </mat-label>
+											<input [value]="getValueField(field.fieldVersionChecklistTemplateId)"
+												disabled />
+
+										</mat-form-field>
+									</div>
+								</div>
+							</div>
+							<div *ngIf=" field.fieldDataTypeId == 4">
+								<!-- TODO:Mudar a cor do select -->
+								<div class="col-md-3">
+									<mat-form-field class="full-width"
+										[appearance]="field.isKey ? 'outline' : 'legacy'">
+										<mat-select [placeholder]="getValueField(field.fieldVersionChecklistTemplateId)"
+											disbabled>
+
+										</mat-select>
+									</mat-form-field>
+								</div>
+							</div>
+
+
+						</div>
+
+					</div>
+
+
+				</form>
+
+
+				<div *ngFor="let block of checklistVersion.blocksChecklistTemplate" class="component-wrapper">
+					<div class="kt-divider"></div>
+
+					<mat-table [dataSource]="block.itemsChecklistsTemplate" class="styled-table">
+						<!-- Column for Component Item Title -->
+						<ng-container matColumnDef="title">
+							<mat-header-cell *matHeaderCellDef style="flex: 2;">{{ block.title }}</mat-header-cell>
+							<mat-cell *matCellDef="let componentItem" style="flex: 2;">
+								<div
+									style="display: flex; gap: 8px; align-items: center; justify-content: space-between; width: 100%;">
+
+									<!-- Título -->
+									<div>
+										{{ componentItem.title }}
+									</div>
+									<div *ngIf="componentItem.itemTypeId == 3 || componentItem.itemTypeId == 4 ">
+										<p>
+											<b>{{componentItem.optionsTitle}}</b>
+										</p>
+										<custom-checkbox-input [isSingle]="componentItem.itemTypeId == 3"
+											[isDisable]=false
+											[optionsField]="componentItem.optionItemsVersionChecklistTemplate"></custom-checkbox-input>
+									</div>
+
+
+									<!-- Checkboxes -->
+
+								</div>
+							</mat-cell>
+
+						</ng-container>
+
+
+						<!-- Column for Signature -->
+						<ng-container matColumnDef="signature" style="justify-content: end;">
+							<mat-header-cell *matHeaderCellDef
+								style="justify-content: center; flex:1">Assinatura</mat-header-cell>
+							<mat-cell *matCellDef="let componentItem" style="justify-content: end; flex:1;">
+								<div style="display: flex;">
+									<div class="flex" *ngIf="getInitials(componentItem.itemVersionChecklistTemplateId)">
+										<div style="display: flex; flex-direction: row; justify-content: center;">
+											<div
+												style="display: flex; flex-direction: column;  align-items: center; justify-content: center;">
+												<p style="margin: 0; padding: 0; font-size: 12px;">
+													{{
+													getDateSignature(componentItem.itemVersionChecklistTemplateId)}}
+												</p>
+												<p style="margin: 0; padding: 0; font-size: 12px;">
+													{{getInitials(componentItem.itemVersionChecklistTemplateId)}}
+												</p>
+
+											</div>
+											<button mat-icon-button color="primary" (click)="sign()">
+												<mat-icon matTooltip="">visibility</mat-icon>
+											</button>
+										</div>
+									</div>
+									<div class="flex">
+										<button type="button" mat-raised-button color="primary"
+											(click)="sign(componentItem.itemVersionChecklistTemplateId)">
+											{{ 'NEW_CHECKLIST.SIGN' | translate }}
+										</button>
+									</div>
+								</div>
+							</mat-cell>
+						</ng-container>
+
+						<!-- Header Row -->
+						<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+						<!-- Data Row -->
+						<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+					</mat-table>
+
+
+				</div>
+
+			</div>
+		</div>
+		<div class="kt-portlet__foot kt-portlet__foot--fit kt-portlet__no-border">
+			<div class="kt-form__actions kt-form__actions--solid">
+				<div class="row text-right">
+					<div class="col-lg-12">
+						<button type="button" mat-raised-button cdkFocusInitial matTooltip="Cancel changes"
+							(click)="closeModal()">
+							{{ 'AUTH.GENERAL.CANCEL' | translate }}
+						</button>&nbsp;
+						<button type="button" mat-raised-button color="primary" (click)="sign()">
+							{{ 'SAVE' | translate }}
+						</button>
+						<button type="button" mat-raised-button color="primary" (click)="saveInformation()">
+							{{ 'CONSOLE' | translate }}
+						</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

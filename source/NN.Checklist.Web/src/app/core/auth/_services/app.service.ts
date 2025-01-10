@@ -10,6 +10,7 @@ import { ChecklistTemplate } from '../_models/checklistTemplate.model';
 import { VersionChecklistTemplate } from '../_models/versionChecklistTemplate.model';
 import { ResponseBase } from '../_models/ResponseBase.model';
 import { ChecklistModel } from '../_models/checklist.model';
+import { ItemChecklist } from '../_models/itemChecklist.model';
 
 const URL_BASE = environment.api;
 
@@ -260,6 +261,16 @@ export class AppService {
 		const userToken = localStorage.getItem(environment.authTokenKey);
 		let header = new HttpHeaders({ 'Authorization': 'Bearer ' + userToken });
 		return this.http.post<any>(URL_BASE + '/Checklist/SearchChecklists', data, { headers: header });
+	}
+
+	signItemChecklist(obj: ItemChecklist, comments:string ): Observable<any> {
+		let data = {
+			data: obj,
+			comments:comments
+		}
+		const userToken = localStorage.getItem(environment.authTokenKey);
+		let header = new HttpHeaders({ 'Authorization': 'Bearer ' + userToken });
+		return this.http.post<any>(URL_BASE + '/Checklist/SignItemChecklist', data, { headers: header });
 	}
 
 

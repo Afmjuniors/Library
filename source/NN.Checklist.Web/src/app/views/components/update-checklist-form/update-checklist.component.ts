@@ -40,14 +40,14 @@ const DATE_TIME_FORMAT = {
 };
 
 @Component({
-  selector: 'kt-new-checklist-form',
-  templateUrl: './newChecklistForm.component.html',
-  styleUrls: ['./newChecklistForm.component.scss'],
+  selector: 'kt-update-checklist-form',
+  templateUrl: './update-checklist.component.html',
+  styleUrls: ['./update-checklist.component.scss'],
   providers: [
     { provide: NGX_MAT_DATE_FORMATS, useValue: DATE_TIME_FORMAT },
   ],
 })
-export class NewChecklistForm implements OnInit {
+export class UpdateCheklistForm implements OnInit {
   typeComponent: TypeComponent[] = [];
   fieldForm: FormGroup;
   loading = false;
@@ -61,7 +61,6 @@ export class NewChecklistForm implements OnInit {
   remainingText: number = 8000;
   displayedColumns = ['title', 'signature'];
   displayedColumnsCell = ['all'];
-  checklistLoaded: boolean = false;
 
   public title: string;
   public checklistDropDown: string;
@@ -70,21 +69,26 @@ export class NewChecklistForm implements OnInit {
   public signatureService: SignatureService;
 
   constructor(
-    public dialogRef: MatDialogRef<NewChecklistForm>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
+    public dialogRef: MatDialogRef<UpdateCheklistForm>,
+    @Inject(MAT_DIALOG_DATA) public data: ChecklistModel,
     private app: AppService,
     public fb: FormBuilder,
     private layoutUtilsService: LayoutUtilsService,
     public dialog: MatDialog,
     private ref: ChangeDetectorRef,
     public translate: TranslateService,
-  ) { }
+  ) {
+
+    this.checklist = data;
+    this.checklistVersion = this.data.versionChecklistTemplate;
+  }
 
   ngOnInit() {
     this.title = this.translate.instant('MENU.CHECKLIST');
     this.checklistDropDown = this.translate.instant('FILTERS.CHECKLIST');
     this.versions = this.translate.instant('FILTERS.VERSIONS');
-    this.loadListChecklist();
+   
+   
 
   }
 
@@ -93,45 +97,29 @@ export class NewChecklistForm implements OnInit {
   }
 
   saveInformation() {
-	console.log(this.fieldForm.controls);
     console.log(this.checklistVersion);
   }
 
-  onChecklistChange(event: any): void {
-	const selectedId = event.value;
-	this.loading= true;
-  
-	this.app.getChecklistVersions(selectedId).subscribe(
-	  (response) => {
-		this.checklistVersion = response.result;
-  
-		// Inicializa o formulário após carregar checklistVersion
-		this.fieldForm = this.fb.group({});
-		this.initFieldForm();
-		this.loading= false;
-	  },
-	  (error) => {
-		this.layoutUtilsService.showErrorNotification(error, MessageType.Create);
-		this.loading= false;
-	  }
-	);
-  }
 
-  loadListChecklist() {
-	this.loading= true;
-    this.app.listChecklist().subscribe(x => {
-      this.checklists = x.result;
-	  this.loading= false;
-    },
-      error => {
-        this.layoutUtilsService.showErrorNotification(error, MessageType.Create);
-		this.loading= false;
-      });
-  }
 
-  loadGetChecklistVersionTemplate() {
-    // Implement any necessary logic for loading checklist versions
+getValueField(idVersionTemplate):string{
+if(this.checklist.fields){
+  var val = this.checklist.fields.find(x=>x.fieldVersionChecklistTemplateId == idVersionTemplate);
+  var vF = this.checklistVersion.fieldsVersionChecklistsTemplate.find(x=>x.fieldVersionChecklistTemplateId == idVersionTemplate)
+  if(val){
+    if(vF.fieldDataTypeId==4)
+    {
+      return vF.optionFieldVersionChecklistTemplate.find(x=>x.optionFieldVersionChecklistTemplateId == val.optionFieldVersionChecklistTemplateId).title;
+    }
+    return val.value
   }
+}
+  return ""
+}
+
+
+
+
 
   validate(): boolean {
     // Implement the actual validation logic
@@ -168,79 +156,9 @@ export class NewChecklistForm implements OnInit {
       });
   }
 
-  submit() {
-    const controls = this.fieldForm.controls;
-    // Check form validity
-    if (this.fieldForm.invalid) {
-      Object.keys(controls).forEach(controlName =>
-        controls[controlName].markAsTouched()
-      );
-      return;
-    }
-    if (this.checklistVersion.checklistTemplateId <= 0) {
-      this.layoutUtilsService.showErrorNotification(this.translate.instant('MISSING_TYPE_checklist_RECORD'), MessageType.Create);
-      return;
-    }
 
-	this.save();
 
-  }
 
-  initFieldForm() {
-    this.checklistVersion.fieldsVersionChecklistsTemplate.forEach((field) => {
-      const controlName = 'name' + field.fieldVersionChecklistTemplateId;
-      const validatorArr = [];
-      if (field.mandatory) {
-		if(field.fieldDataTypeId != 4){
-
-			validatorArr.push(Validators.required);
-		}else{
-			validatorArr.push(Validators.min(1));
-		}
-      }
-      if (field.regexValidation) {
-        validatorArr.push(Validators.pattern(field.regexValidation));
-      }
-
-      this.fieldForm.addControl(controlName, new FormControl("", validatorArr));
-    });
-  }
-
-  // Checking control validation
-  isControlHasError(controlName: string, validationType: string): boolean {
-    const control = this.fieldForm.controls[controlName];
-    if (!control) {
-      return false;
-    }
-
-    return control.hasError(validationType) && (control.dirty || control.touched);
-  }
-
-  save() {
-    if (!this.validate()) {
-      return;
-    }
-
-    if (this.checklistVersion.checklistTemplateId <= 0) {
-      this.layoutUtilsService.showErrorNotification(this.translate.instant('MISSING_TYPE_checklist_RECORD'), MessageType.Create);
-      return;
-    }
-
-    this.saveFieldChecklist();
-	const controls = this.fieldForm.controls;
-    this.app.insertUpdateChecklist(this.checklist)
-      .subscribe(res => {
-        if (!res) {
-          return;
-        }
-        this.checklist = res;
-		this.checklistLoaded= true;
-		Object.keys(controls).forEach(controlName =>
-			controls[controlName].disable())
-      }, error => {
-        this.layoutUtilsService.showErrorNotification(error, MessageType.Create);
-      });
-  }
 
 
   saveSignItem(stamp: string, idItemTemplate: number) {
@@ -261,39 +179,31 @@ export class NewChecklistForm implements OnInit {
   saveFieldChecklist() {
     for (let index = 0; index < this.checklistVersion.fieldsVersionChecklistsTemplate.length; index++) {
       const element = this.checklistVersion.fieldsVersionChecklistsTemplate[index];
-	  const control = this.fieldForm.controls['name'+element.fieldVersionChecklistTemplateId];
+      const control = this.fieldForm.controls['name' + element.fieldVersionChecklistTemplateId];
       this.checklist.fields = this.checklist.fields || [];
-        const field = new FieldChecklist();
-      
-        field.checklistId = this.checklist.checklistId;
-        this.checklist.versionChecklistTemplateId = element.versionChecklistTemplateId;
-        field.fieldChecklistId = null; // TODO: Handle properly
-        field.fieldVersionChecklistTemplateId = element.fieldVersionChecklistTemplateId;
-        field.optionFieldVersionChecklistTemplateId = element.optionFieldVersionChecklistTemplate != null ? element.optionFieldVersionChecklistTemplate.find(x=>x.value==control.value).optionFieldVersionChecklistTemplateId:null;
-        field.value = control.value;
+      const field = new FieldChecklist();
 
-        this.checklist.fields.push(field);
+      field.checklistId = this.checklist.checklistId;
+      this.checklist.versionChecklistTemplateId = element.versionChecklistTemplateId;
+      field.fieldChecklistId = null; // TODO: Handle properly
+      field.fieldVersionChecklistTemplateId = element.fieldVersionChecklistTemplateId;
+      field.optionFieldVersionChecklistTemplateId = element.optionFieldVersionChecklistTemplate != null ? element.optionFieldVersionChecklistTemplate.find(x => x.value == control.value).optionFieldVersionChecklistTemplateId : null;
+      field.value = control.value;
+
+      this.checklist.fields.push(field);
     }
   }
 
-  validateField(): boolean {
-    let flag = true;
-    this.checklistVersion.fieldsVersionChecklistsTemplate.forEach((field) => {
-      if (field.mandatory) {
-        if (!field.value) {
-          flag = false;
-          return false;
-        }
-      }
-    });
-    return flag;
-  }
+
 
   getInitials(idItem: number): string {
     if (this.checklist.items) {
       const item = this.checklist.items.find(x => x.itemVersionChecklistTemplate.itemVersionChecklistTemplateId == idItem);
       if (item) {
-        return item.signature.initials;
+        if(item.signature){
+
+          return item.signature.initials;
+        }
       }
     }
     return '';
@@ -303,7 +213,9 @@ export class NewChecklistForm implements OnInit {
     if (this.checklist.items) {
       const item = this.checklist.items.find(x => x.itemVersionChecklistTemplate.itemVersionChecklistTemplateId == idItem);
       if (item) {
+        if(item.signature){
         return item.signature.dthSignFormatted;
+      }
       }
     }
     return '';

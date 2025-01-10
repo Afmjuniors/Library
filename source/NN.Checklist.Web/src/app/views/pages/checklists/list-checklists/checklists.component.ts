@@ -27,6 +27,8 @@ import { ChecklistDataSource } from '../../../../core/auth/_data-sources/checkli
 import { ChecklistTemplate } from '../../../../core/auth/_models/checklistTemplate.model';
 import { ChecklistFilter } from '../../../../core/auth/_models/checklistFilter.model';
 import { NewChecklistForm } from '../../../components/new-checklist-form/newChecklistForm.component';
+import { ChecklistModel } from '../../../../core/auth/_models/checklist.model';
+import { UpdateCheklistForm } from '../../../components/update-checklist-form/update-checklist.component';
 
 const DATE_TIME_FORMAT = {
 	parse: {
@@ -200,7 +202,7 @@ export class ChecklistComponent extends BasePageComponent implements OnInit {
 			this.dataSource.loadingSubject.next(false);
 			this.loading = false;
 		});
-		
+		console.log(this.dataSource);
 	}
 
 	ngOnDestroy(): void {
@@ -228,135 +230,16 @@ export class ChecklistComponent extends BasePageComponent implements OnInit {
 	}
 
 
-
-	// sendEmailPdf(){
-	// 	const dialogRef = this.dialog.open(EmailComponent, {width:'350px', data: {  } });
-	// 	dialogRef.afterClosed().subscribe(res => {
-	// 		this.filter.sendMail = res;
-	// 		if(res != "" && res != undefined && res != null)
-	// 		{
-	// 			this.loading = true;
-	// 			this.app.exportOccurrencesPdf(this.filter).subscribe(x => {
-	// 				this.loading = false;
-	// 				this.detector.detectChanges();
-	// 				this.pdfFile = x;
-	// 				this.layoutUtilsService.showActionNotification(this.translate.instant("WAITGENERATION"), MessageType.Create);
-	// 			},
-	// 			error =>
-	// 			{
-	// 				this.loading = false;
-	// 				this.detector.detectChanges();
-	// 				this.layoutUtilsService.showErrorNotification(error, MessageType.Create);
-	// 			});
-	// 		}
-	// 	});
-	// }
-
-	// viewMessageHistory(id){
-	// 	const dialogRef = this.dialog.open(MessageHistoryComponent, {width:'80%', height:'80%', data: { occurrenceRecordId: id } });
-	// 	dialogRef.afterClosed().subscribe(res => {
-
-	// 	});
-	// }
-
-	// sendEmailCSV(){
-	// 	const dialogRef = this.dialog.open(EmailComponent, {width:'350px', data: {  } });
-	// 	dialogRef.afterClosed().subscribe(res => {
-	// 		this.filter.sendMail = res;
-	// 		if(res != "" && res != undefined && res != null)
-	// 		{
-	// 			this.loading = true;
-	// 			this.app.ExportOccurrenceCSV(this.filter).subscribe(x => {
-	// 				this.loading = false;
-	// 				this.detector.detectChanges();
-	// 				this.layoutUtilsService.showActionNotification(this.translate.instant("WAITGENERATION"), MessageType.Create);
-	// 				this.csvFile = x;
-	// 			},
-	// 			error =>
-	// 			{
-	// 				this.loading = false;
-	// 				this.detector.detectChanges();
-	// 				this.layoutUtilsService.showErrorNotification(error, MessageType.Create);
-	// 			});
-	// 		}
-	// 	});
-	// }
-
-	// exportPdf() {
-	// 	this.loadingPDF = true;
-	// 	this.app.exportOccurrencesPdf(this.filter).subscribe(response => {
-	// 		this.viewPdf(response);
-	// 		this.loadingPDF = false;
-	// 		this.detector.detectChanges();
-	// 	},
-	// 	error => {
-	// 		this.loadingPDF = false;
-	// 		this.layoutUtilsService.showErrorNotification(error, MessageType.Create);
-	// 	});
-	// }
-
-	// exportCSV() {
-	// 	this.loadingCSV = true;
-	// 	this.app.ExportOccurrenceCSV(this.filter).subscribe(
-	// 		response => {
-	// 			this.download(response);
-	// 			this.loadingCSV = false;
-	// 			this.detector.detectChanges();
-	// 		},
-	// 		error => {
-	// 			this.loadingCSV = false;
-	// 			this.layoutUtilsService.showErrorNotification(error, MessageType.Create);
-	// 		}
-	// 	);
-	// }
-
-	// download(item: string) {
-	// 	this.loading = true
-	// 	this.app.downloadFile(item)
-	// 		.subscribe(x => {
-	// 			if (x && x.body) {
-	// 				var newBlob = new Blob([x], { type: "application/pdf" });
-
-	// 				if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-	// 					window.navigator.msSaveOrOpenBlob(newBlob);
-	// 					return;
-	// 				}
-
-	// 				const data = window.URL.createObjectURL(newBlob);
-	// 				this.document = data;
-
-	// 				this.viewPdf(x);
-
-	// 				var link = document.createElement('a');
-	// 				link.href = data;
-	// 				link.download = item;
-	// 				// this is necessary as link.click() does not work on the latest firefox
-	// 				link.dispatchEvent(new MouseEvent('click', { bubbles: true, cancelable: true, view: window }));
-
-	// 				setTimeout(function () {
-	// 					// For Firefox it is necessary to delay revoking the ObjectURL
-	// 					window.URL.revokeObjectURL(data);
-	// 					link.remove();
-	// 				}, 100);
-	// 			}
-	// 			this.loading = false
-	// 		},
-	// 			error => {
-	// 				this.loading = false;
-	// 				this.layoutUtilsService.showErrorNotification(error, MessageType.Delete, 10000, true, false);
-	// 			}
-	// 		);
-
-	// }
-
-	// viewPdf(item: string){
-	// 	const dialogRef = this.dialog.open(PdfViewComponent, {width:'80%', height:'80%', data: { item: item } });
-	// 	dialogRef.afterClosed().subscribe(res => {
-	// 	});
-	// }
-
 	newChecklist(){
-		const dialogRef = this.dialog.open(NewChecklistForm, {width:'60%', data: { type: 1 } });
+		const dialogRef = this.dialog.open(NewChecklistForm, {width:'60%', data:{type:1}});
+		dialogRef.afterClosed().subscribe(res => {
+			this.loading = true;
+			this.loadChecklist();
+		});
+	}
+
+	editChecklList(checklist: ChecklistModel){
+		const dialogRef = this.dialog.open(UpdateCheklistForm, {width:'60%', data: checklist });
 		dialogRef.afterClosed().subscribe(res => {
 			this.loading = true;
 			this.loadChecklist();

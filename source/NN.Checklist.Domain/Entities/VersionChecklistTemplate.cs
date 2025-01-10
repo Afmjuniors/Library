@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Transactions;
 using System.Threading.Tasks;
+using System.Linq;
 
 #region Cabeçalho
 
@@ -88,7 +89,7 @@ namespace NN.Checklist.Domain.Entities
         public IList<BlockVersionChecklistTemplate> BlocksChecklistTemplate { get => GetOneToManyData<BlockVersionChecklistTemplate>().Result; set { } }
 
 
-        public IList<FieldVersionChecklistTemplate> FieldsVersionChecklistsTemplate { get => GetOneToManyData<FieldVersionChecklistTemplate>().Result; set { } }
+        public List<FieldVersionChecklistTemplate> FieldsVersionChecklistsTemplate { get => GetOneToManyData<FieldVersionChecklistTemplate>().Result.OrderByDescending(x => x.IsKey).ToList(); set { } }
 
 
         public User CreationUser { get => GetManyToOneData<User>().Result; }

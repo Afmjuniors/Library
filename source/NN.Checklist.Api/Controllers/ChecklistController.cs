@@ -243,7 +243,7 @@ namespace NN.Checklist.Api.Controllers
         [Authorize()]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<ChecklistPageMessage>> SearchChecklists([FromBody] QueryParamsDTO queryParams)
+        public async Task<ActionResult<ChecklistDTO>> SearchChecklists([FromBody] QueryParamsDTO queryParams)
         {
             try
             {
@@ -267,6 +267,34 @@ namespace NN.Checklist.Api.Controllers
 
                 IChecklistService service = ObjectFactory.GetSingleton<IChecklistService>();
                 var result = await service.Search(user, pageMessage);
+
+                return Ok(result);
+
+            }
+            catch (Exception ex)
+            {
+                return CreateError(ex);
+            }
+        }
+        /// <summary>
+        /// Name: "SearchChecklists" 
+        /// Description: method,to search all checklists pagged
+        /// Created by: [CREATED_BY] 
+        /// </summary>        
+
+        [HttpPost("SignItemChecklist")]
+        [Authorize()]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<ItemChecklistDTO>> SignItemChecklist([FromBody] SignatureItemDTO data)
+        {
+            try
+            {
+                var user = await GetUserFromToken();
+
+
+                IChecklistService service = ObjectFactory.GetSingleton<IChecklistService>();
+                var result = await service.SignItem(user, data.Data);
 
                 return Ok(result);
 
