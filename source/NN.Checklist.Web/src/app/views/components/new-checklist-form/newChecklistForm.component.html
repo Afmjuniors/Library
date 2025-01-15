@@ -1,7 +1,7 @@
 <div class="kt-portlet">
 	<div class="kt-portlet__head kt-portlet__head__custom">
 		<div class="kt-portlet__head-label">
-			<h3 class="kt-portlet__head-title">{{"NEW_CHECKLIST.TITLE" | translate }}</h3>
+			<h3 class="kt-portlet__head-title">{{"NEW_EDIT_CHECKLIST.TITLE" | translate }}</h3>
 		</div>
 	</div>
 	<div class="kt-form" autocomplete="off">
@@ -9,12 +9,12 @@
 
 			<div class="col-md-3">
 				<mat-form-field class="full-width">
-					<mat-select placeholder="{{ 'NEW_CHECKLIST.VERSION' | translate }}"
+					<mat-select placeholder="{{ 'NEW_EDIT_CHECKLIST.VERSION' | translate }}"
 						[(ngModel)]="filter.checklistTemplateId" class="full-width"
 						(selectionChange)="onChecklistChange($event)"
 						[disabled]="checklistLoaded"
 						>
-						<mat-option value="0">{{ 'NEW_CHECKLIST.NONE_SELECTED' | translate }}</mat-option>
+						<mat-option value="0">{{ 'NEW_EDIT_CHECKLIST.NONE_SELECTED' | translate }}</mat-option>
 						<mat-option *ngFor="let itemCl of checklists" [value]="itemCl.checklistTemplateId">
 							{{itemCl.description}}
 						</mat-option>
@@ -30,7 +30,7 @@
 
 					<div class="kt-divider"></div>
 
-					<h3>{{'NEW_CHECKLIST.HEADER' | translate }}</h3>
+					<h3>{{'NEW_EDIT_CHECKLIST.HEADER' | translate }}</h3>
 					<div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 16px;">
 
 						<div *ngFor="let field of checklistVersion.fieldsVersionChecklistsTemplate"
@@ -54,10 +54,10 @@
 										[required]="field.mandatory"
 									  />
 									  <mat-error *ngIf="isControlHasError(field.fieldVersionChecklistTemplateId,'required')">
-												  <strong>{{ 'NEW_CHECKLIST.VALIDATION.REQUIRED_FIELD' | translate }}</strong>
+												  <strong>{{ 'NEW_EDIT_CHECKLIST.VALIDATION.REQUIRED_FIELD' | translate }}</strong>
 											  </mat-error>
 									  <mat-error *ngIf="isControlHasError(field.fieldVersionChecklistTemplateId,'pattern')">
-												  <strong>{{ 'NEW_CHECKLIST.VALIDATION.FORMAT_INVALID' | translate }}</strong>
+												  <strong>{{ 'NEW_EDIT_CHECKLIST.VALIDATION.FORMAT_INVALID' | translate }}</strong>
 											  </mat-error>
 									</mat-form-field>
 								  </div>
@@ -121,7 +121,7 @@
 									[appearance]="field.isKey ? 'outline' : 'legacy'"			
 									>
 									  <mat-select
-									  [placeholder]="'NEW_CHECKLIST.NONE_SELECTED' | translate"
+									  [placeholder]="'NEW_EDIT_CHECKLIST.NONE_SELECTED' | translate"
 									  autocomplete="off"
 									  [formControlName] = "'name'+field.fieldVersionChecklistTemplateId"
 									  [required]="field.mandatory"
@@ -139,7 +139,7 @@
 
 					</div>
 					<div style="display: flex; justify-content: end; padding-bottom: 16px;">
-						<button [disabled]="checklistLoaded" (click)="submit()" [ngClass]="{'kt-spinner kt-spinner--right kt-spinner--md kt-spinner--light': loading}" id="kt_login_signin_submit" class="btn btn-primary btn-elevate kt-login__btn-primary">{{ 'NEW_CHECKLIST.SAVE' | translate }}</button>
+						<button [disabled]="checklistLoaded" (click)="submit()" [ngClass]="{'kt-spinner kt-spinner--right kt-spinner--md kt-spinner--light': loading}" id="kt_login_signin_submit" class="btn btn-primary btn-elevate kt-login__btn-primary">{{ 'NEW_EDIT_CHECKLIST.SAVE' | translate }}</button>
 						
 					</div>
 
@@ -182,7 +182,7 @@
 						<!-- Column for Signature -->
 						<ng-container matColumnDef="signature" style="justify-content: end;">
 							<mat-header-cell *matHeaderCellDef
-								style="justify-content: center; flex:1">Assinatura</mat-header-cell>
+								style="justify-content: center; flex:1">{{'NEW_EDIT_CHECKLIST.SIGNATURE' | translate}}</mat-header-cell>
 							<mat-cell *matCellDef="let componentItem" style="justify-content: end; flex:1;">
 								<div style="display: flex;">
 									<div class="flex" *ngIf="getInitials(componentItem.itemVersionChecklistTemplateId)">
@@ -197,7 +197,7 @@
 												</p>
 
 											</div>
-											<button mat-icon-button color="primary" (click)="sign()">
+											<button mat-icon-button color="primary" (click)="viewSignatureHistory(componentItem.itemVersionChecklistTemplateId)">
 												<mat-icon matTooltip="">visibility</mat-icon>
 											</button>
 										</div>
@@ -205,7 +205,7 @@
 									<div class="flex">
 										<button type="button" mat-raised-button color="primary"
 											(click)="sign(componentItem.itemVersionChecklistTemplateId)">
-											{{ 'NEW_CHECKLIST.SIGN' | translate }}
+											{{ 'NEW_EDIT_CHECKLIST.SIGN' | translate }}
 										</button>
 									</div>
 								</div>
@@ -246,7 +246,7 @@
 
 								</div>
 								<button type="button" mat-raised-button color="primary" (click)="sign()">
-									{{ 'NEW_CHECKLIST.SIGN' | translate }}
+									{{ 'NEW_EDIT_CHECKLIST.SIGN' | translate }}
 								</button>
 							</mat-cell>
 						</ng-container>

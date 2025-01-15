@@ -28,6 +28,11 @@ namespace NN.Checklist.Domain.DTO.Paging
         public long? Batch { get; set; }
         public string ChecklistTemplateDescription { get; set; }
         public string VersionChecklistTemplateDescription { get; set; }
+        public long? ChecklistId { get; set; }
+        public long? ChecklistTemplateId { get; set; }
+        public long? VersionChecklistTemplateId { get; set; }
+
+
 
 
     }

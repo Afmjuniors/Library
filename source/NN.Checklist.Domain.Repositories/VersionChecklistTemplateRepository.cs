@@ -61,7 +61,28 @@ namespace NN.Checklist.Domain.Repositories
 
         }
 
-        
+        public async Task<IList<VersionChecklistTemplate>> ListVersionFromChecklistTemplateId(long checklistId)
+        {
+            try
+            {
+                var pars = new List<SqlParameter>();
+                var sql = @"SELECT * " +
+                    @" FROM VERSIONS_CHECKLISTS_TEMPLATES vct where checklist_template_id = @pChecklistId order by timestamp_creation DESC";
+
+                SqlParameter param = new SqlParameter("pChecklistId", System.Data.SqlDbType.BigInt);
+                param.Value = checklistId;
+                pars.Add(param);
+
+                return await List<VersionChecklistTemplate>(sql, pars);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
+
 
         #endregion
 

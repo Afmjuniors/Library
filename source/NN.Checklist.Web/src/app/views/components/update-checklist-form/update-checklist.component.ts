@@ -13,10 +13,6 @@ import { SignatureComponent } from '../signature/signature.component';
 import { VersionChecklistTemplate } from '../../../core/auth/_models/versionChecklistTemplate.model';
 import { TypeComponent } from '../../../core/auth/_models/typeComponent.model';
 import { ChecklistFilter } from '../../../core/auth/_models/checklistFilter.model';
-import { ComboboxInputComponent } from '../input-components/combobox/combobox-input.component';
-import { DatePickerInputComponent } from '../input-components/date/datepicker-input.component';
-import { NumberInputComponent } from '../input-components/number/number-input.component';
-import { TextInputComponent } from '../input-components/text/text-input.component';
 import { ChecklistTemplate } from '../../../core/auth/_models/checklistTemplate.model';
 import { ChecklistModel } from '../../../core/auth/_models/checklist.model';
 import { FieldChecklist } from '../../../core/auth/_models/fieldChecklist.model';
@@ -24,6 +20,7 @@ import { ItemChecklist } from '../../../core/auth/_models/itemChecklist.model';
 import { SignatureService } from '../../../core/auth/_services/signature.service';
 import { Signature } from '../../../core/auth/_models/signature.model';
 import { SignApproval } from '../../../core/auth/_models/signAprovval.model';
+import { SignatureHistoryComponent } from '../signature-history/signature-history.component';
 
 const DATE_TIME_FORMAT = {
   parse: {
@@ -98,6 +95,8 @@ export class UpdateCheklistForm implements OnInit {
 
   saveInformation() {
     console.log(this.checklistVersion);
+    console.log(this.checklist);
+
   }
 
 
@@ -134,7 +133,7 @@ if(this.checklist.fields){
     if (!idItemTemplate) {
       return;
     }
-
+let hasSignuture = false;
     if (!this.validate()) {
       return;
     }
@@ -143,11 +142,14 @@ if(this.checklist.fields){
       this.layoutUtilsService.showErrorNotification(this.translate.instant('MISSING_TYPE_checklist_RECORD'), MessageType.Create);
       return;
     }
+    if(this.checklist.items.find(x => x.itemVersionChecklistTemplate.itemVersionChecklistTemplateId == idItemTemplate)){
+      hasSignuture = true;
+    }
 
     this.dialog.open(SignatureComponent, {
       minHeight: '300px',
       width: '400px',
-      data: true
+      data: {result:true,hasComment:hasSignuture},
     }).afterClosed()
       .subscribe(x => {
         if (x != '' && x != undefined) {
@@ -158,12 +160,22 @@ if(this.checklist.fields){
 
 
 
+  viewSignatureHistory(itemTemplateId:number){
+    const dialogRef = this.dialog.open(SignatureHistoryComponent, 
 
+      {
+        width: '400px',
+        data:{checklistId:this.checklist.checklistId, itemTemplateId:itemTemplateId }
+      }).afterClosed()
 
+    
+  
+  }
 
-  saveSignItem(stamp: string, idItemTemplate: number) {
-    const comment = 'teste comentario';
-    const newItem = new ItemChecklist(this.checklist.checklistId, this.checklistVersion.checklistTemplateId, stamp, idItemTemplate, comment);
+  saveSignItem(x: any, idItemTemplate: number) {
+    let comment = x.comment;
+
+    const newItem = new ItemChecklist(this.checklist.checklistId, this.checklistVersion.checklistTemplateId, x.stamp, idItemTemplate, comment);
 
     this.app.signItemChecklist(newItem, comment)
       .subscribe(res => {
@@ -198,7 +210,12 @@ if(this.checklist.fields){
 
   getInitials(idItem: number): string {
     if (this.checklist.items) {
-      const item = this.checklist.items.find(x => x.itemVersionChecklistTemplate.itemVersionChecklistTemplateId == idItem);
+      const arr = this.checklist.items.sort((a, b) => {
+        if (a.signature.dthSign < b.signature.dthSign) return 1; // a vem antes de b
+        if (a.signature.dthSign > b.signature.dthSign) return -1;  // a vem depois de b
+        return 0; // a e b são iguais
+    });
+      const item = arr.find(x => x.itemVersionChecklistTemplate.itemVersionChecklistTemplateId == idItem);
       if (item) {
         if(item.signature){
 
@@ -211,7 +228,12 @@ if(this.checklist.fields){
 
   getDateSignature(idItem: number): Date | string {
     if (this.checklist.items) {
-      const item = this.checklist.items.find(x => x.itemVersionChecklistTemplate.itemVersionChecklistTemplateId == idItem);
+      const arr = this.checklist.items.sort((a, b) => {
+        if (a.signature.dthSign < b.signature.dthSign) return 1; // a vem antes de b
+        if (a.signature.dthSign > b.signature.dthSign) return -1;  // a vem depois de b
+        return 0; // a e b são iguais
+    });
+      const item = arr.find(x => x.itemVersionChecklistTemplate.itemVersionChecklistTemplateId == idItem);
       if (item) {
         if(item.signature){
         return item.signature.dthSignFormatted;

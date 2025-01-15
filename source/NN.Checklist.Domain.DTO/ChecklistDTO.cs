@@ -18,6 +18,16 @@ namespace NN.Checklist.Domain.DTO
         public long CreationUserId { get; set; }
         public DateTime? UpdateTimestamp { get; set; }
         public long? UpdateUserId { get; set; }
+        public string FormattedDate { get
+            {
+                if (UpdateTimestamp.HasValue)
+                {
+                    DateTime dt = (DateTime)UpdateTimestamp;
+                    return dt.ToString("yyyy-MM-dd HH:mm");
+                }
+                    return  CreationTimestamp.ToString("yyyy-MM-dd HH:mm");
+            } }
+
         public List<FieldChecklistDTO>? Fields { get; set; }
         public List<ItemChecklistDTO>? Items { get; set; }
 

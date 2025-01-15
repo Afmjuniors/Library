@@ -128,7 +128,10 @@ export const locale = {
 				PASSWORD: "Senha",
 				ERROR_TITLE: "Erros encontrados",
 				USER_ERROR: "Usuário invalido.",
-				PASS_ERROR: "Password invalido."
+				PASS_ERROR: "Password invalido.",
+				COMMENT_ERROR:"Comentário é obrigatório.",
+				COMMENTS:"Comentário"
+
 			},
 			EMAIL: {
 				EMAIL_INVALID: "Informe um email valido.",
@@ -288,16 +291,28 @@ export const locale = {
 			IS_BATCH_RELEASED:"Lote liberado?",
 			DELETE:"Deletar",
 			EDIT:"Editar",
+			VERSION:"Versão",
+			SIGNATURE:{
+				INITIALS:"Usuário",
+				DATE:"Data da assinatura",
+				CANCEL:"Cancelar"
+			}
 
 
 		},		
-		NEW_CHECKLIST:{
+		NEW_EDIT_CHECKLIST:{
 			NONE_SELECTED:"Nenhum Selecionado",
 			HEADER:"Identificação",
 			TITLE:"Checklist",
 			SAVE:"Gravar",
 			SIGN:"Assinar",
-			VERSION:"Versão"
+			VERSION:"Versão",
+			SIGNATURE:"Assinatura",
+			VALIDATION:{
+				REQUIRED_FIELD:'Campo obrigatório',
+				FORMAT_INVALID:"O campo não é válido"
+
+			}
 
 		},
 		"PLEASE_WAIT": "Aguarde",

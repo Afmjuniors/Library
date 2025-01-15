@@ -32,20 +32,20 @@
 								<div class="row">
 									<div class="col-md-3">
 										<mat-form-field class="full-width">
-											<mat-select [placeholder]="checklist" [(ngModel)]="filter.process" (selectionChange)="changeProcess()" class="full-width">
+											<mat-select [placeholder]="checklist" [(ngModel)]="filter.checklistTemplateId" (selectionChange)="changeTemplate()" class="full-width">
 												<mat-option value="0"></mat-option>
-												<mat-option *ngFor="let item of processes" [value]="item.processId">
-													{{item.acronym}} - {{item.description}}
+												<mat-option *ngFor="let item of checklistsFileter" [value]="item.checklistTemplateId">
+													{{item.description}}
 												</mat-option>
 											</mat-select>
 										</mat-form-field>
 									</div>
-									<div class="col-md-3" *ngIf="filter.process > 0 && areas.length > 0">
+									<div class="col-md-3" *ngIf="filter.checklistTemplateId > 0">
 										<mat-form-field class="full-width">
-											<mat-select [placeholder]="versions" [(ngModel)]="filter.area" class="full-width">
+											<mat-select [placeholder]="versions" [(ngModel)]="filter.versionChecklistTemplateId" class="full-width">
 												<mat-option value="0"></mat-option>
-												<mat-option *ngFor="let item of areas" [value]="item.areaId">
-													{{item.name}} - {{item.description}}
+												<mat-option *ngFor="let item of versionListTemplate" [value]="item.versionChecklistTemplateId">
+													{{item.version}} 
 												</mat-option>
 											</mat-select>
 										</mat-form-field>
@@ -106,9 +106,13 @@
 				<div class="row">
 					<div class="d-flex" style="min-width: 150px;">
 						<button mat-button style="height: 50px; width: 100%; padding: 10px; margin: 10px" mat-raised-button
-							color="primary" type="button" (click)="newChecklist()" [disabled]="loadingCSV || !dataSource.hasItems">
+							color="primary" type="button" (click)="newChecklist()" [disabled]="loadingCSV">
 							<span>{{ 'CHECKLISTS.NEW' | translate }}</span>
 						</button>
+						<button mat-button style="height: 50px; width: 100%; padding: 10px; margin: 10px" mat-raised-button
+						color="primary" type="button" (click)="consoleShowChelistPage()" [disabled]="loadingCSV || !dataSource.hasItems">
+						<span>{{ 'CHECKLISTS.Console' | translate }}</span>
+					</button>
 					</div>
 				</div>
 			</div>
@@ -144,7 +148,7 @@
 					<mat-header-cell *matHeaderCellDef mat-sort-header>{{ "CHECKLISTS.CHECKLIST" | translate }}
 					</mat-header-cell>
 					<mat-cell *matCellDef="let checklist">
-						{{checklist.versionChecklistTemplate.checklistTemplateDescription}} - {{checklist.versionChecklistTemplate.version}}</mat-cell>
+						{{checklist.versionChecklistTemplate?.checklistTemplateDescription}} - {{checklist.versionChecklistTemplate?.version}}</mat-cell>
 				</ng-container>
 
 				<ng-container matColumnDef="batch">
@@ -155,7 +159,7 @@
 				<ng-container matColumnDef="batch_date">
 					<mat-header-cell *matHeaderCellDef mat-sort-header>{{ "CHECKLISTS.BATCH_DATE" | translate }}
 					</mat-header-cell>
-					<mat-cell *matCellDef="let checklist">{{checklist.updateTimestamp?checklist.updateTimestamp:checklist.creationTimestamp}}</mat-cell>
+					<mat-cell *matCellDef="let checklist">{{checklist.formattedDate}}</mat-cell>
 				</ng-container>
 
 				<ng-container matColumnDef="is_batch_released">

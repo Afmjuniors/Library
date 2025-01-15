@@ -98,15 +98,18 @@ namespace NN.Checklist.Api.Controllers
         /// Created by: [CREATED_BY] 
         /// </summary>        
 
-        [HttpGet("GetChecklistVersionTemplate")]
+        [HttpGet("ListChecklistVersions")]
         [Authorize()]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> GetChecklistVersionTemplate([FromQuery] long versionId)
+        public async Task<ActionResult> ListChecklistVersions([FromQuery] long checklistTemplateId)
         {
             try
             {
-                return Ok();
+                IChecklistService service = ObjectFactory.GetSingleton<IChecklistService>();
+
+                var result = service.ListChecklistVersions(checklistTemplateId);
+                return Ok(result);
 
             }
             catch (Exception ex)
@@ -264,8 +267,20 @@ namespace NN.Checklist.Api.Controllers
                 {
                     pageMessage.EndDate = filter.EndDate.Value.ToLocalTime();
                 }
+                if (filter.ChecklistId.HasValue)
+                {
+                    pageMessage.ChecklistId = filter.ChecklistId.Value;
+                }
+                if (filter.ChecklistTemplateId.HasValue)
+                {
+                    pageMessage.ChecklistTemplateId = filter.ChecklistTemplateId.Value;
+                }
+                if (filter.VersionChecklistTemplateId.HasValue)
+                {
+                    pageMessage.VersionChecklistTemplateId = filter.VersionChecklistTemplateId.Value;
+                }
 
-                IChecklistService service = ObjectFactory.GetSingleton<IChecklistService>();
+        IChecklistService service = ObjectFactory.GetSingleton<IChecklistService>();
                 var result = await service.Search(user, pageMessage);
 
                 return Ok(result);
@@ -305,7 +320,30 @@ namespace NN.Checklist.Api.Controllers
             }
         }
 
+        /// <summary>
+        /// Name: "ListSignature" 
+        /// Description: receives as a parameter "signature" passing through the "ObjectFactory's" "ReadSignature" method and being decrypted.
+        /// Created by:[CREATED_BY] 
+        /// </summary>
 
+        [HttpGet("ListSignature")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<SignApprovalDTO>> ListSignature([FromQuery] long checklistId, long itemTemplateId)
+        {
+            try
+            {
+                IChecklistService _service = ObjectFactory.GetSingleton<IChecklistService>();
+                AuthenticatedUserDTO user = await GetUserFromToken();
+                var result = await _service.ListAllSignuture(user,checklistId,itemTemplateId);
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                return CreateError(ex);
+            }
+        }
 
 
 

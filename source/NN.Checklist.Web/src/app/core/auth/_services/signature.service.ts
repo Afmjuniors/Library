@@ -25,4 +25,11 @@ export class SignatureService {
         header.append('Content-Type', 'application/json');
         return this.http.post<Signature>(URL_BASE + '/AccessControl/SignatureValidation', data, { headers: header });
     }
+
+    GetSignatureHistory(checklistId:number, itemTemplateId:number){
+        const userToken = localStorage.getItem(environment.authTokenKey);
+        let header = new HttpHeaders({ 'Authorization': 'Bearer ' + userToken });
+        header.append('Content-Type', 'application/json');
+        return this.http.get<any>(URL_BASE + '/Checklist/ListSignature?checklistId=' + checklistId + '&itemTemplateId=' + itemTemplateId, { headers: header });
+    }
 }

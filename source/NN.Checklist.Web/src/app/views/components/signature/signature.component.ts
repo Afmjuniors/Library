@@ -23,9 +23,11 @@ export class SignatureComponent implements OnInit{
 	permissionTag: string = '';
 	username: string = '';
 	password: string = '';
+	comments: string = '';
 	errors: string[] = [];
 	user: User = null;
 	showPassword: boolean = false;
+	isCommentError:boolean = false;
 
 	/**
 	 * Component constructor
@@ -41,7 +43,7 @@ export class SignatureComponent implements OnInit{
 		public signatureService: SignatureService,
 		private layoutUtilsService: LayoutUtilsService,
         @Inject(MAT_DIALOG_DATA)
-		public data: any
+		public data: any,
 	) {
 
 	}
@@ -71,6 +73,7 @@ export class SignatureComponent implements OnInit{
 	validateSignature()
 	{
 		this.errors = [];
+		this.isCommentError = false;
 		if(this.username.length == 0)
 		{
 			this.errors.push(this.translateService.instant("AUTH.SIGNATURE.USER_ERROR"))
@@ -79,6 +82,10 @@ export class SignatureComponent implements OnInit{
 		{
 			this.errors.push(this.translateService.instant("AUTH.SIGNATURE.PASS_ERROR"));
 		}
+		if(this.data.hasComment && this.comments.length == 0){
+			this.errors.push(this.translateService.instant("AUTH.SIGNATURE.COMMENT_ERROR"));
+			this.isCommentError = true;
+		}
 		if(this.errors.length == 0)
 		{
 			var sig : Signature = new Signature();
@@ -86,10 +93,14 @@ export class SignatureComponent implements OnInit{
 			sig.password = this.password;
 			sig.validationDate = new Date();
 			sig.cryptData = '';
-			sig.result = this.data;
+			sig.result = (typeof this.data === "boolean") ? this.data : this.data.result;
 
 			var request = this.signatureService.ValidateSignature(sig).subscribe((x:Signature) => {
-				this.dialogRef.close(x.cryptData);
+				const res = {
+					stamp:x.cryptData,
+					comments:this.comments
+				}
+				this.dialogRef.close(res);
 			}, responseError => {
 				this.errors.push((typeof responseError.error === 'string') ? responseError.error : responseError.message);
 			});

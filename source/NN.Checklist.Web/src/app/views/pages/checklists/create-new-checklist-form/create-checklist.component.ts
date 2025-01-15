@@ -128,8 +128,8 @@ export class CreateChecklistComponent extends BasePageComponent implements OnIni
         public parameterService: ParameterService,
         public idleService: IdleService,
     )	{
-        super(auth, store, translate, router, "CHECKLIST" ,["CREATE_NEW_CHECKLIST"], "CHECKLIST", parameterService, idleService)
-        this.createNewChecklist = this.readPermission("CREATE_NEW_CHECKLIST");
+        super(auth, store, translate, router, "CHECKLIST" ,["CREATE_NEW_EDIT_CHECKLIST"], "CHECKLIST", parameterService, idleService)
+        this.createNewChecklist = this.readPermission("CREATE_NEW_EDIT_CHECKLIST");
         this.unsubscribe = new Subject();
     }
 

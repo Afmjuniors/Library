@@ -23,7 +23,8 @@
 		<div class="form-group">
 			<mat-form-field>
 				<mat-label>{{ 'AUTH.INPUT.PASSWORD' | translate }}</mat-label>
-				<input matInput [type]="showPassword ? 'text' : 'password'" name="password" placeholder="{{ 'AUTH.INPUT.PASSWORD' | translate }}" formControlName="password" autocomplete="off" required/>
+				<input 
+				matInput [type]="showPassword ? 'text' : 'password'" name="password" placeholder="{{ 'AUTH.INPUT.PASSWORD' | translate }}" formControlName="password" autocomplete="off" required/>
 				<mat-icon style="color: #d2d0d3;" (click)="togglePasswordVisibility()" matSuffix>visibility</mat-icon>
 				<mat-error *ngIf="isControlHasError('password','required')">
 					<strong>{{ 'AUTH.VALIDATION.REQUIRED_FIELD' | translate }}</strong>

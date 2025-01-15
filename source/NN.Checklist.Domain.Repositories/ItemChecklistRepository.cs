@@ -5,6 +5,11 @@ using NN.Checklist.Domain.Entities;
 using NN.Checklist.Domain.Repositories.Specifications;
 using System;
 using System.Linq;
+using iTextSharp.text;
+using NN.Checklist.Domain.DTO;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using System.Data.SqlClient;
 
 #region Cabeçalho
 
@@ -35,7 +40,29 @@ namespace NN.Checklist.Domain.Repositories
 
         #region User Code
 
-        
+        public async Task<IList<ItemChecklist>> ListAllItensByChecklistIdAndIdTemplate(long checklistId, long itemTemplateId)
+        {
+            try
+            {
+
+            var pars = new List<SqlParameter>();
+            var sql = "SELECT * from ITEMS_CHECKLISTS ic where ic.item_version_checklist_template_id = @pItemTemplateId and  ic.checklist_id = @pChecklistId Order by creation_timestamp DESC";
+
+            SqlParameter param = new SqlParameter("pItemTemplateId", System.Data.SqlDbType.BigInt);
+            param.Value = itemTemplateId;
+            pars.Add(param);
+            SqlParameter param2 = new SqlParameter("pChecklistId", System.Data.SqlDbType.BigInt);
+            param2.Value = checklistId;
+            pars.Add(param2);
+            return await List<ItemChecklist>(sql,pars);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
 
         #endregion
 

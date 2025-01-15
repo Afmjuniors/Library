@@ -29,18 +29,19 @@ import { ChecklistFilter } from '../../../../core/auth/_models/checklistFilter.m
 import { NewChecklistForm } from '../../../components/new-checklist-form/newChecklistForm.component';
 import { ChecklistModel } from '../../../../core/auth/_models/checklist.model';
 import { UpdateCheklistForm } from '../../../components/update-checklist-form/update-checklist.component';
+import { VersionChecklistTemplate } from '../../../../core/auth/_models/versionChecklistTemplate.model';
 
 const DATE_TIME_FORMAT = {
 	parse: {
-	  dateInput: 'YYYY-MM-DD HH:mm:ss',
+		dateInput: 'YYYY-MM-DD HH:mm:ss',
 	},
 	display: {
-	  dateInput: 'YYYY-MM-DD HH:mm:ss',
-	  monthYearLabel: 'YYYY MMM',
-	  dateA11yLabel: 'DD',
-	  monthYearA11yLabel: 'YYYY MMM',
-	  enableMeridian: false,
-	  useUtc: true
+		dateInput: 'YYYY-MM-DD HH:mm:ss',
+		monthYearLabel: 'YYYY MMM',
+		dateA11yLabel: 'DD',
+		monthYearA11yLabel: 'YYYY MMM',
+		enableMeridian: false,
+		useUtc: true
 	},
 };
 
@@ -49,7 +50,7 @@ const DATE_TIME_FORMAT = {
 	templateUrl: './checklists.component.html',
 	styleUrls: ['./checklists.component.scss'],
 	providers: [
-		{provide: NGX_MAT_DATE_FORMATS, useValue: DATE_TIME_FORMAT},
+		{ provide: NGX_MAT_DATE_FORMATS, useValue: DATE_TIME_FORMAT },
 	],
 })
 export class ChecklistComponent extends BasePageComponent implements OnInit {
@@ -66,12 +67,12 @@ export class ChecklistComponent extends BasePageComponent implements OnInit {
 
 	// Table fields
 	dataSource: ChecklistDataSource;
-	displayedColumns = ['edit','delete', 'Checklist', 'batch', 'batch_date', 'is_batch_released'];
+	displayedColumns = ['edit', 'delete', 'Checklist', 'batch', 'batch_date', 'is_batch_released'];
 	@ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 	@ViewChild('sort1', { static: true }) sort: MatSort;
 
 	// Selection
-	checklistResult :ChecklistTemplate[] = [];
+	checklistResult: ChecklistTemplate[] = [];
 	permiteCriar: Boolean;
 	permiteEditar: Boolean;
 	permiteDesativar: Boolean;
@@ -94,12 +95,14 @@ export class ChecklistComponent extends BasePageComponent implements OnInit {
 	document;
 	visible = false;
 
+	versionListTemplate:VersionChecklistTemplate[] = [];
 
 	loadingCSV: boolean = false;
 	loadingPDF: boolean = false;
 
 	InactivityTimeLimit: number = 60;
 	timer: any;
+	public checklistsFileter: ChecklistTemplate[] = [];
 
 	//Datetime
 	public date: moment.Moment;
@@ -115,6 +118,7 @@ export class ChecklistComponent extends BasePageComponent implements OnInit {
 	public date2: moment.Moment;
 	public createNewChecklist: boolean = false;
 
+
 	private unsubscribe: Subject<any>;
 
 	constructor(
@@ -129,22 +133,35 @@ export class ChecklistComponent extends BasePageComponent implements OnInit {
 		private detector: ChangeDetectorRef,
 		public parameterService: ParameterService,
 		public idleService: IdleService,
-	)	{
-		super(auth, store, translate, router, "CHECKLIST" ,["CREATE_NEW_CHECKLIST"], "CHECKLIST", parameterService, idleService)
-		this.createNewChecklist = this.readPermission("CREATE_NEW_CHECKLIST");
+	) {
+		super(auth, store, translate, router, "CHECKLIST", ["CREATE_NEW_EDIT_CHECKLIST"], "CHECKLIST", parameterService, idleService)
+		this.createNewChecklist = this.readPermission("CREATE_NEW_EDIT_CHECKLIST");
 		this.unsubscribe = new Subject();
 	}
 
 	ngOnInit() {
-		this.title  = this.translate.instant("MENU.CHECKLIST");
-		this.checklist  = this.translate.instant("FILTERS.CHECKLIST");
-		this.versions  = this.translate.instant("FILTERS.VERSIONS");
+		this.title = this.translate.instant("MENU.CHECKLIST");
+		this.checklist = this.translate.instant("FILTERS.CHECKLIST");
+		this.versions = this.translate.instant("FILTERS.VERSIONS");
 		this.loadListLastConditions();
 		this.initChecklist();
+		this.loadListChecklist();
 		//this.checkTimer();
 	}
 
-	initChecklist(){
+	loadListChecklist() {
+		this.loading = true;
+		this.app.listChecklist().subscribe(x => {
+			this.checklistsFileter = x.result;
+			this.loading = false;
+		},
+			error => {
+				this.layoutUtilsService.showErrorNotification(error, MessageType.Create);
+				this.loading = false;
+			});
+	}
+
+	initChecklist() {
 
 		this.loading = true;
 		this.paginator.page.pipe(
@@ -172,7 +189,7 @@ export class ChecklistComponent extends BasePageComponent implements OnInit {
 		).subscribe(res => {
 			this.checklistResult = res;
 			this.loading = false;
-		},error =>{
+		}, error => {
 			this.mensagemErro = '';
 			this.error = true;
 			this.mensagemErro = error.message;
@@ -181,27 +198,45 @@ export class ChecklistComponent extends BasePageComponent implements OnInit {
 		this.subscriptions.push(entitiesSubscription);
 	}
 
+	changeTemplate() {
+		this.loading = true;
 
+		this.app.getChecklistVersionsList(this.filter.checklistTemplateId)
+			.subscribe((response) => {
+				this.versionListTemplate = response.result
+				this.loading = false;
+
+
+			}, error => {
+
+				this.loading = false;
+			});
+	}
 
 	loadChecklist(): void {
 		this.loading = true;
-		if(this.filter.versionChecklistTemplateId == 0){
+		if (this.filter.versionChecklistTemplateId == 0) {
 			this.filter.versionChecklistTemplateId = null;
 		}
 
-	
+
 
 		this.app.getAllChecklists(this.paginator.pageIndex + 1, this.paginator.pageSize, this.filter).subscribe((response: QueryResultsModel) => {
 			this.dataSource.paginatorTotalSubject.next(response.rowsCount);
 			this.dataSource.entitySubject.next(response.entities);
 			this.dataSource.loadingSubject.next(false);
 			this.loading = false;
-		}, error =>{
+
+		}, error => {
 			this.dataSource.paginatorTotalSubject.next(0);
 			this.dataSource.entitySubject.next(null);
 			this.dataSource.loadingSubject.next(false);
 			this.loading = false;
 		});
+
+	}
+
+	consoleShowChelistPage() {
 		console.log(this.dataSource);
 	}
 
@@ -223,23 +258,23 @@ export class ChecklistComponent extends BasePageComponent implements OnInit {
 		this.loadChecklist();
 	}
 
-	loadListLastConditions(){
+	loadListLastConditions() {
 		this.lastConditions.push("");
 		this.loadChecklist();
 
 	}
 
 
-	newChecklist(){
-		const dialogRef = this.dialog.open(NewChecklistForm, {width:'60%', data:{type:1}});
+	newChecklist() {
+		const dialogRef = this.dialog.open(NewChecklistForm, { width: '60%', data: { type: 1 } });
 		dialogRef.afterClosed().subscribe(res => {
 			this.loading = true;
 			this.loadChecklist();
 		});
 	}
 
-	editChecklList(checklist: ChecklistModel){
-		const dialogRef = this.dialog.open(UpdateCheklistForm, {width:'60%', data: checklist });
+	editChecklList(checklist: ChecklistModel) {
+		const dialogRef = this.dialog.open(UpdateCheklistForm, { width: '60%', data: checklist });
 		dialogRef.afterClosed().subscribe(res => {
 			this.loading = true;
 			this.loadChecklist();

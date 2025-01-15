@@ -52,15 +52,15 @@ namespace NN.Checklist.Domain.Repositories
                 var pars = new List<SqlParameter>();
                 List<SqlParameter> parameters = new List<SqlParameter>();
 
-                var sqlSelect = @"SELECT *";
+                var sqlSelect = @"SELECT c.*";
 
-                var sqlFrom = @" FROM CHECKLISTS c with (nolock) ";
+                var sqlFrom = @" FROM CHECKLISTS c with (nolock) join VERSIONS_CHECKLISTS_TEMPLATES vct on c.version_checklist_template_id =  vct.version_checklist_template_id ";
 
                 var sqlWhere = "";
                 var and = " where ";
                 if (data.StartDate.HasValue)
                 {
-                    sqlWhere += and + " c.DATE_TIME >= @dthStart ";
+                    sqlWhere += and + " c.creation_timestamp >= @dthStart ";
                     SqlParameter param = new SqlParameter("dthStart", System.Data.SqlDbType.DateTime);
                     param.Value = data.StartDate.Value.ToLocalTime();
                     parameters.Add(param);
@@ -69,14 +69,31 @@ namespace NN.Checklist.Domain.Repositories
 
                 if (data.EndDate.HasValue)
                 {
-                    sqlWhere += and + " c.DATE_TIME < @dthEnd ";
+                    sqlWhere += and + " c.creation_timestamp < @dthEnd ";
                     SqlParameter param = new SqlParameter("dthEnd", System.Data.SqlDbType.DateTime);
                     param.Value = data.EndDate.Value.ToLocalTime();
                     parameters.Add(param);
                     and = " and ";
                 }
+                if (data.ChecklistTemplateId.HasValue)
+                {
+                    sqlWhere += and + "vct.checklist_template_id = @checklistTempateId ";
+                    SqlParameter param = new SqlParameter("checklistTempateId", System.Data.SqlDbType.BigInt);
+                    param.Value = data.ChecklistTemplateId.Value;
+                    parameters.Add(param);
+                    and = " and ";
+                }
+                if (data.VersionChecklistTemplateId.HasValue)
+                {
+                    sqlWhere += and + "c.version_checklist_template_id = @versionTempateId ";
+                    SqlParameter param = new SqlParameter("versionTempateId", System.Data.SqlDbType.BigInt);
+                    param.Value = data.VersionChecklistTemplateId.Value;
+                    parameters.Add(param);
+                    and = " and ";
+                }
 
-               
+
+
 
                 var sqlOrder = " order by c.checklist_id desc ";
 

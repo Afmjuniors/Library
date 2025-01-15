@@ -45,6 +45,15 @@ namespace NN.Checklist.Domain.Services
 
         }
 
+        public async Task<List<VersionChecklistTemplateDTO>> ListChecklistVersions(long checklistId)
+        {
+            var checklistTeplate = await VersionChecklistTemplate.Repository.ListVersionFromChecklistTemplateId(checklistId);
+
+            var dto = checklistTeplate.TransformList<VersionChecklistTemplateDTO>();
+
+            return dto.ToList();
+        }
+
         public async Task<ChecklistDTO> NewUpdateChecklist(AuthenticatedUserDTO user, ChecklistDTO obj)
         {
             long actionUserId = user.UserId;
@@ -116,7 +125,29 @@ namespace NN.Checklist.Domain.Services
         public async Task<PageMessage<ChecklistDTO>> Search(AuthenticatedUserDTO auth, ChecklistPageMessage pageMessage)
         {
 
-            return await Entities.Checklist.Repository.Search(pageMessage);
+            var res = await Entities.Checklist.Repository.Search(pageMessage);
+            var accessControlService = ObjectFactory.GetSingleton<IAccessControlService>();
+            if (res.Entities == null)
+            {
+                return res;
+            }
+
+            foreach (var enty in res.Entities)
+            {
+                if (enty.Items != null)
+                {
+
+                    foreach (var item1 in enty.Items)
+                    {
+
+
+                        item1.Signature = await accessControlService.ReadSignature(item1.Stamp);
+                    }
+                }
+
+
+            }
+            return res;
         }
 
         public async Task<ChecklistDTO> SignItem(AuthenticatedUserDTO auth, ItemChecklistDTO item)
@@ -126,7 +157,7 @@ namespace NN.Checklist.Domain.Services
 
             var accessControlService = ObjectFactory.GetSingleton<IAccessControlService>();
 
-            
+
 
 
             if (item.ChecklistId > 0)
@@ -137,16 +168,16 @@ namespace NN.Checklist.Domain.Services
             {
                 checklist = new Entities.Checklist(auth.UserId, (long)item.VersionChecklistTemplateId);
             }
-          
- 
-            var newItem = new ItemChecklist(auth.UserId, checklist.ChecklistId, item.Comments, DateTime.Now, auth.UserId, item.ItemVersionChecklistTemplateId, item.Stamp);             
+
+
+            var newItem = new ItemChecklist(auth.UserId, checklist.ChecklistId, item.Comments, DateTime.Now, auth.UserId, item.ItemVersionChecklistTemplateId, item.Stamp);
 
 
             var ck = await Entities.Checklist.Repository.Get(checklist.ChecklistId);
             var dto = ck.Transform<ChecklistDTO>();
             foreach (var item1 in dto.Items)
             {
-               item1.Signature =  await accessControlService.ReadSignature(item1.Stamp);
+                item1.Signature = await accessControlService.ReadSignature(item1.Stamp);
 
 
             }
@@ -154,6 +185,32 @@ namespace NN.Checklist.Domain.Services
             return dto;
 
 
+
+        }
+
+
+        public async Task<List<SignApprovalDTO>> ListAllSignuture(AuthenticatedUserDTO auth, long checklistId, long itemTemplateId)
+        {
+            try
+            {
+
+
+                var accessControlService = ObjectFactory.GetSingleton<IAccessControlService>();
+                var res = await ItemChecklist.Repository.ListAllItensByChecklistIdAndIdTemplate(checklistId, itemTemplateId);
+                List<SignApprovalDTO> lst = new List<SignApprovalDTO>();
+                foreach (var item in res)
+                {
+                    var signature = await accessControlService.ReadSignature(item.Stamp);
+                    lst.Add(signature);
+
+                }
+                return lst;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
 
         }
 

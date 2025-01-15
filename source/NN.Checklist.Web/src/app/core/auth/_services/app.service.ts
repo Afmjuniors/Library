@@ -232,6 +232,12 @@ export class AppService {
 		const res = this.http.get<any>(URL_BASE + `/Checklist/GetChecklistVersions?checklist=${checklistId}`, { headers: header });
 		return res;
 	}	
+	getChecklistVersionsList(checklistId: number): Observable<ResponseBase<VersionChecklistTemplate[]>> {
+		const userToken = localStorage.getItem(environment.authTokenKey);
+		let header = new HttpHeaders({ 'Authorization': 'Bearer ' + userToken });
+		const res = this.http.get<any>(URL_BASE + `/Checklist/ListChecklistVersions?checklistTemplateId=${checklistId}`, { headers: header });
+		return res;
+	}	
 
 	createNewChecklist(obj: VersionChecklistTemplate, comments: string): Observable<any> {
 		let data = {

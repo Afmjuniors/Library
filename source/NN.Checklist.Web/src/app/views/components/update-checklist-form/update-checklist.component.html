@@ -1,7 +1,7 @@
 <div class="kt-portlet">
 	<div class="kt-portlet__head kt-portlet__head__custom">
 		<div class="kt-portlet__head-label">
-			<h3 class="kt-portlet__head-title">{{"NEW_CHECKLIST.TITLE" | translate }}</h3>
+			<h3 class="kt-portlet__head-title">{{"NEW_EDIT_CHECKLIST.TITLE" | translate }}</h3>
 		</div>
 	</div>
 	<div class="kt-form" autocomplete="off">
@@ -11,13 +11,12 @@
 
 
 			<div *ngIf="!loading" class="form-group kt-form__group d-block">
-				<form [formGroup]="fieldForm" autocomplete="off">
 					<h2>{{ checklist.versionChecklistTemplate.checklistTemplateDescription + " - " +
 						checklist.versionChecklistTemplate.version }}</h2>
 
 					<div class="kt-divider"></div>
 
-					<h3>{{'NEW_CHECKLIST.HEADER' | translate }}</h3>
+					<h3>{{'NEW_EDIT_CHECKLIST.HEADER' | translate }}</h3>
 					<div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 16px;">
 
 						<div *ngFor="let field of checklist.versionChecklistTemplate.fieldsVersionChecklistsTemplate"
@@ -77,7 +76,6 @@
 					</div>
 
 
-				</form>
 
 
 				<div *ngFor="let block of checklistVersion.blocksChecklistTemplate" class="component-wrapper">
@@ -116,7 +114,7 @@
 						<!-- Column for Signature -->
 						<ng-container matColumnDef="signature" style="justify-content: end;">
 							<mat-header-cell *matHeaderCellDef
-								style="justify-content: center; flex:1">Assinatura</mat-header-cell>
+								style="justify-content: center; flex:1">{{'NEW_EDIT_CHECKLIST.SIGNATURE' | translate}}</mat-header-cell>
 							<mat-cell *matCellDef="let componentItem" style="justify-content: end; flex:1;">
 								<div style="display: flex;">
 									<div class="flex" *ngIf="getInitials(componentItem.itemVersionChecklistTemplateId)">
@@ -132,7 +130,7 @@
 												</p>
 
 											</div>
-											<button mat-icon-button color="primary" (click)="sign()">
+											<button mat-icon-button color="primary" (click)="  viewSignatureHistory(componentItem.itemVersionChecklistTemplateId)">
 												<mat-icon matTooltip="">visibility</mat-icon>
 											</button>
 										</div>
@@ -140,7 +138,7 @@
 									<div class="flex">
 										<button type="button" mat-raised-button color="primary"
 											(click)="sign(componentItem.itemVersionChecklistTemplateId)">
-											{{ 'NEW_CHECKLIST.SIGN' | translate }}
+											{{ 'NEW_EDIT_CHECKLIST.SIGN' | translate }}
 										</button>
 									</div>
 								</div>

@@ -54,12 +54,9 @@ import { ViewTextComponent } from './view-text/view-text.component';
 import { PhoneMaskPipe } from './phone-mask/phone-mask.pipe';
 import { NgxMaskModule, IConfig } from 'ngx-mask'
 import { NewChecklistForm } from './new-checklist-form/newChecklistForm.component';
-import { ComboboxInputComponent } from './input-components/combobox/combobox-input.component';
-import { DatePickerInputComponent } from './input-components/date/datepicker-input.component';
-import { NumberInputComponent } from './input-components/number/number-input.component';
-import { TextInputComponent } from './input-components/text/text-input.component';
 import { CheckboxInputComponent } from './input-components/checkbox/checkbox-input.component';
 import { UpdateCheklistForm } from './update-checklist-form/update-checklist.component';
+import { SignatureHistoryComponent } from './signature-history/signature-history.component';
 
 const maskConfig: Partial<IConfig> = {
     validation: false,
@@ -129,6 +126,7 @@ const maskConfig: Partial<IConfig> = {
 	entryComponents: [
 		ActionNotificationComponent,
 		SignatureComponent,
+		SignatureHistoryComponent,
 		EmailComponent,
 		SendMailComponent,
 		ViewTextComponent,
@@ -137,16 +135,13 @@ const maskConfig: Partial<IConfig> = {
 		NewChecklistForm,
 		UpdateCheklistForm,
 		UserControlComponent,
-		ComboboxInputComponent,
-		DatePickerInputComponent,
-		NumberInputComponent,
-		TextInputComponent,
 		CheckboxInputComponent
 
 
 	],
 	declarations: [
 		SignatureComponent,
+		SignatureHistoryComponent,
 		EmailComponent,
 		SendMailComponent,
 		ViewTextComponent,
@@ -156,15 +151,10 @@ const maskConfig: Partial<IConfig> = {
 		NewChecklistForm,
 		UpdateCheklistForm,
 		PhoneMaskPipe,
-		ComboboxInputComponent,
-		DatePickerInputComponent,
-		NumberInputComponent,
-		TextInputComponent,
 		CheckboxInputComponent
 	],
 	exports:[
 		PhoneMaskPipe,
-		ComboboxInputComponent
 	]
 })
 export class ComponentsModule { }

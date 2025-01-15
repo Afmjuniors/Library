@@ -22,7 +22,7 @@ namespace NN.Checklist.Domain.DTO
         public long CreationUserId { get; set; }
         public string? Comments { get; set; }
 
-        public SignApprovalDTO Signature { get; set; }
+        public SignApprovalDTO? Signature { get; set; }
 
 
 
