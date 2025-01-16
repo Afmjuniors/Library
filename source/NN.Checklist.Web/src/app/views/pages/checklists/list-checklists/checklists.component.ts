@@ -30,6 +30,7 @@ import { NewChecklistForm } from '../../../components/new-checklist-form/newChec
 import { ChecklistModel } from '../../../../core/auth/_models/checklist.model';
 import { UpdateCheklistForm } from '../../../components/update-checklist-form/update-checklist.component';
 import { VersionChecklistTemplate } from '../../../../core/auth/_models/versionChecklistTemplate.model';
+import { FieldChecklist } from '../../../../core/auth/_models/fieldChecklist.model';
 
 const DATE_TIME_FORMAT = {
 	parse: {
@@ -67,7 +68,7 @@ export class ChecklistComponent extends BasePageComponent implements OnInit {
 
 	// Table fields
 	dataSource: ChecklistDataSource;
-	displayedColumns = ['edit', 'delete', 'Checklist', 'batch', 'batch_date', 'is_batch_released'];
+	displayedColumns = ['edit',  'Checklist', 'batch', 'batch_date', 'is_batch_released'];
 	@ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 	@ViewChild('sort1', { static: true }) sort: MatSort;
 
@@ -261,6 +262,14 @@ export class ChecklistComponent extends BasePageComponent implements OnInit {
 	loadListLastConditions() {
 		this.lastConditions.push("");
 		this.loadChecklist();
+
+	}
+	getBatchIdValue(fields: FieldChecklist[]):string{
+		var field = fields.find(x=>x.fieldVersionChecklistTemplate.isKey);
+		if(!field){
+			return "BatchID";
+		}
+		return field.value;
 
 	}
 

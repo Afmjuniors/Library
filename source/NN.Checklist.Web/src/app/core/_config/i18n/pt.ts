@@ -295,6 +295,7 @@ export const locale = {
 			SIGNATURE:{
 				INITIALS:"Usuário",
 				DATE:"Data da assinatura",
+				COMMENTS:"Comentário",
 				CANCEL:"Cancelar"
 			}
 

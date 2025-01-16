@@ -208,6 +208,12 @@
 											{{ 'NEW_EDIT_CHECKLIST.SIGN' | translate }}
 										</button>
 									</div>
+									<div class="flex btn-space" *ngIf="componentItem.itemTypeId==2">
+										<button type="button" mat-raised-button color="primary"
+											(click)="sign(componentItem.itemVersionChecklistTemplateId)">
+											{{ 'NEW_EDIT_CHECKLIST.SIGN' | translate }}
+										</button>
+									</div>
 								</div>
 							</mat-cell>
 						</ng-container>
@@ -222,43 +228,6 @@
 
 				</div>
 </div>
-
-				<!-- <div *ngFor="let block of checklistVersion.blocksChecklistTemplate" class="component-wrapper">
-					<div class="kt-divider"></div>
-
-					<mat-table [dataSource]="block.itemsChecklistsTemplate" class="styled-table">
-
-						<ng-container matColumnDef="all">
-							<mat-header-cell *matHeaderCellDef>{{ block.title }}</mat-header-cell>
-
-							<mat-cell *matCellDef="let componentItem" style="flex-direction: column;">
-								<div class="flex flex-column">
-
-									<p>	{{ componentItem.title }}</p>
-									<div style="display: flex;
-												align-items: baseline;
-												justify-content: center;">
-										<p>{{componentItem.itemVersionChecklistTemplateId}}</p>
-										<button mat-icon-button color="primary" (click)="sign()">
-											<mat-icon matTooltip="">visibility</mat-icon>
-										</button>
-									</div>
-
-								</div>
-								<button type="button" mat-raised-button color="primary" (click)="sign()">
-									{{ 'NEW_EDIT_CHECKLIST.SIGN' | translate }}
-								</button>
-							</mat-cell>
-						</ng-container>
-
-						
-						<mat-header-row *matHeaderRowDef="displayedColumnsCell"></mat-header-row>
-
-						
-						<mat-row *matRowDef="let row; columns: displayedColumnsCell"></mat-row>
-					</mat-table>
-				</div> -->
-
 
 
 			</div>

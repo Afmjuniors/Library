@@ -153,13 +153,7 @@ namespace NN.Checklist.Domain.Services
         public async Task<ChecklistDTO> SignItem(AuthenticatedUserDTO auth, ItemChecklistDTO item)
         {
             Entities.Checklist checklist;
-
-
             var accessControlService = ObjectFactory.GetSingleton<IAccessControlService>();
-
-
-
-
             if (item.ChecklistId > 0)
             {
                 checklist = await Entities.Checklist.Repository.Get((long)item.ChecklistId);
@@ -168,24 +162,14 @@ namespace NN.Checklist.Domain.Services
             {
                 checklist = new Entities.Checklist(auth.UserId, (long)item.VersionChecklistTemplateId);
             }
-
-
             var newItem = new ItemChecklist(auth.UserId, checklist.ChecklistId, item.Comments, DateTime.Now, auth.UserId, item.ItemVersionChecklistTemplateId, item.Stamp);
-
-
             var ck = await Entities.Checklist.Repository.Get(checklist.ChecklistId);
             var dto = ck.Transform<ChecklistDTO>();
             foreach (var item1 in dto.Items)
             {
                 item1.Signature = await accessControlService.ReadSignature(item1.Stamp);
-
-
             }
-
             return dto;
-
-
-
         }
 
 
@@ -201,6 +185,7 @@ namespace NN.Checklist.Domain.Services
                 foreach (var item in res)
                 {
                     var signature = await accessControlService.ReadSignature(item.Stamp);
+                    signature.Comments = item.Comments;
                     lst.Add(signature);
 
                 }

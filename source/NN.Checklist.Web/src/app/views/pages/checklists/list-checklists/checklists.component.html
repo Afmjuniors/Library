@@ -135,14 +135,6 @@
 						</button>
 					</mat-cell>
 				</ng-container>
-				<ng-container matColumnDef="delete">
-					<mat-header-cell *matHeaderCellDef style="flex: 0 0 100px;" mat-sort-header>{{ "CHECKLISTS.DELETE" | translate }}</mat-header-cell>
-					<mat-cell *matCellDef="let checklist" style="flex: 0 0 100px;  ">
-						<button mat-icon-button color="primary" (click)="viewMessageHistory(ochecklist.checklistId)">
-							<mat-icon matTooltip="">delete</mat-icon>
-						</button>
-					</mat-cell>
-				</ng-container>
 				<ng-container matColumnDef="Checklist">
 					<!-- ATTRIBUTE mat-sort-header  for sorting | https://material.angular.io/components/sort/overview -->
 					<mat-header-cell *matHeaderCellDef mat-sort-header>{{ "CHECKLISTS.CHECKLIST" | translate }}
@@ -153,7 +145,7 @@
 
 				<ng-container matColumnDef="batch">
 					<mat-header-cell *matHeaderCellDef mat-sort-header style="justify-content: center;">{{ "CHECKLISTS.BATCH" | translate }}</mat-header-cell>
-					<mat-cell *matCellDef="let checklist" style="justify-content: center;">"_batch"</mat-cell>
+					<mat-cell *matCellDef="let checklist" style="justify-content: center;">{{getBatchIdValue(checklist?.fields)}}</mat-cell>
 				</ng-container>
 
 				<ng-container matColumnDef="batch_date">
@@ -164,7 +156,7 @@
 
 				<ng-container matColumnDef="is_batch_released">
 					<mat-header-cell *matHeaderCellDef mat-sort-header>{{ "CHECKLISTS.IS_BATCH_RELEASED" | translate }}</mat-header-cell>
-					<mat-cell *matCellDef="let checklist">is_batch_released</mat-cell>
+					<mat-cell *matCellDef="let checklist">"is_Closed?"</mat-cell>
 					<!-- <mat-cell *matCellDef="let alarm">{{alarm.areaName}}</mat-cell> -->
 
 				</ng-container>

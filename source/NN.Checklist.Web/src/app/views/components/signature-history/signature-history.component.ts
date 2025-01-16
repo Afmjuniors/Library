@@ -28,7 +28,7 @@ export class SignatureHistoryComponent implements OnInit{
     user: User = null;
     showPassword: boolean = false;
     dataSource: MatTableDataSource<any> = new MatTableDataSource();
-    displayedColumns = ['user',"date"]
+    displayedColumns = ['user',"date","comments"]
 
     /**
      * Component constructor

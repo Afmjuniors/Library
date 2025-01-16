@@ -1,5 +1,6 @@
 
 import { BaseModel } from '../../_base/crud';
+import { FieldVersionChecklistTemplate } from './fieldVersionChecklistTemplate.model';
 
 
 export class FieldChecklist extends BaseModel {
@@ -10,7 +11,7 @@ export class FieldChecklist extends BaseModel {
     creationUserId: number | null;
     updateTimestamp: Date| null;
     updateUserId: number| null;
-
+    fieldVersionChecklistTemplate: FieldVersionChecklistTemplate | null;
 
     fieldChecklistId: number | null;
     fieldVersionChecklistTemplateId: number;
@@ -28,6 +29,7 @@ export class FieldChecklist extends BaseModel {
         this.creationUserId = null;
         this.updateTimestamp = null;
         this.updateUserId = null;
+        this.fieldVersionChecklistTemplate= null;
 
     }
 }

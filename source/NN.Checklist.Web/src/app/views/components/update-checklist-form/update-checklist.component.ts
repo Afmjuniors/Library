@@ -21,6 +21,8 @@ import { SignatureService } from '../../../core/auth/_services/signature.service
 import { Signature } from '../../../core/auth/_models/signature.model';
 import { SignApproval } from '../../../core/auth/_models/signAprovval.model';
 import { SignatureHistoryComponent } from '../signature-history/signature-history.component';
+import { BlockVersionChecklistTemplate } from '../../../core/auth/_models/blockVersionChecklistTemplate.model';
+import { DependencyItemVersionChecklistTemplate } from '../../../core/auth/_models/dependencyItemVersionChecklistTemplate.model';
 
 const DATE_TIME_FORMAT = {
   parse: {
@@ -89,8 +91,33 @@ export class UpdateCheklistForm implements OnInit {
 
   }
 
-  public checkDisable(block: any, item: any): boolean {
-    return false;
+  public checkDisable(item: ItemChecklist): boolean {
+    //pegar o template 
+    const  templateId = item.itemVersionChecklistTemplateId;
+    const itms =this.checklist.versionChecklistTemplate.blocksChecklistTemplate.find(x=>(x.itemsChecklistsTemplate.some(y=>y.itemVersionChecklistTemplateId==templateId)) ).itemsChecklistsTemplate;
+    if(!itms){
+      return false;
+    }
+    //const listar as dependencias
+    const dependencias: DependencyItemVersionChecklistTemplate[] = itms.find(y=>y.itemVersionChecklistTemplateId==templateId).dependencyItemVersionChecklistTemplate;
+
+    if(!dependencias){
+      return true;
+    }
+
+
+    dependencias.forEach(element => {
+      //achar o dependente
+var dependente = this.checklist.items.find(x=>x.itemVersionChecklistTemplateId == element.dependencyItemVersionChecklistTemplateId)
+//verificar se esta vazio
+  if(!dependente.stamp){
+    return true;
+  }
+
+  
+});
+
+    return true;
   }
 
   saveInformation() {
@@ -173,7 +200,7 @@ let hasSignuture = false;
   }
 
   saveSignItem(x: any, idItemTemplate: number) {
-    let comment = x.comment;
+    let comment = x.comments;
 
     const newItem = new ItemChecklist(this.checklist.checklistId, this.checklistVersion.checklistTemplateId, x.stamp, idItemTemplate, comment);
 

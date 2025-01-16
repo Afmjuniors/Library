@@ -17,6 +17,11 @@
                     <mat-cell *matCellDef="let signature">{{signature.dthSignFormatted}}</mat-cell>
 
                 </ng-container>
+                <ng-container matColumnDef="comments"  >
+                    <mat-header-cell *matHeaderCellDef mat-sort-header style="align-items: center; justify-content: center;">{{ "CHECKLISTS.SIGNATURE.COMMENTS" | translate }}</mat-header-cell>
+                    <mat-cell *matCellDef="let signature" style="align-items: center; justify-content: center;">{{signature?.comments}}</mat-cell>
+
+                </ng-container>
 
                 <mat-header-row *matHeaderRowDef="displayedColumns"  style="width:400px"></mat-header-row>
                 <mat-row *matRowDef="let row; columns: displayedColumns"  style="width:400px"></mat-row>

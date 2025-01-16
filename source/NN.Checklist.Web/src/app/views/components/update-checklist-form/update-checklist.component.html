@@ -137,6 +137,14 @@
 									</div>
 									<div class="flex">
 										<button type="button" mat-raised-button color="primary"
+										[disabled]="checkDisable(componentItem)"
+											(click)="sign(componentItem.itemVersionChecklistTemplateId)">
+											{{ 'NEW_EDIT_CHECKLIST.SIGN' | translate }}
+										</button>
+									</div>
+									<div class="flex btn-space" *ngIf="componentItem.itemTypeId==2">
+										<button type="button" mat-raised-button color="primary"
+											[disabled]="checkDisable(componentItem)"
 											(click)="sign(componentItem.itemVersionChecklistTemplateId)">
 											{{ 'NEW_EDIT_CHECKLIST.SIGN' | translate }}
 										</button>
