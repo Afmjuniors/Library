@@ -1,0 +1,123 @@
+<div class="my-container">
+	<ngx-loading [show]="loading" [config]="{ backdropBorderRadius: '0px' }"></ngx-loading>
+</div>
+<kt-portlet>
+	<!-- PORTLET LOADING | Binded to TABLE Datasource -->
+	<!-- See prop => '~/core/_crud/models/data-sources/_base.datasource.ts' (loading$) -->
+	<kt-portlet-header [title]="'ACCESS_PROFILES' | translate " [class]="'kt-portlet__head--lg'">
+	</kt-portlet-header>
+
+	<!-- end::Header -->
+
+	<kt-portlet-body>
+		<kt-alert *ngIf="error" type="warn" [duration]="5000" [showCloseButton]="true">
+			{{errorMessage}}
+		</kt-alert>
+
+		<div class="kt-form kt-margin-b-30" >
+			<ng-container ktPortletTools>
+				<button (click)="newAdGroup()" mat-raised-button color="primary"
+					type="button">
+					<span translate="MENU.NEW"></span>
+				</button>
+				<!-- Buttons (Material Angular) | See off.documenations 'https://material.angular.io/components/button/overview' -->
+				<!-- mat-raised-button | Rectangular contained button w/ elevation  -->
+			</ng-container>
+		</div>
+		<div class="row">
+			<div class="col-lg-12" style="padding-bottom: 10px;">
+				<mat-accordion>
+					<mat-expansion-panel>
+						<mat-expansion-panel-header>
+							<mat-panel-title>
+								{{ 'MENU.FILTERS' | translate }}
+
+							</mat-panel-title>
+						</mat-expansion-panel-header>
+
+						<div class="row">
+							<div class="col-md-10">
+								<div class="row">
+									<div class="col-md-3">
+										<mat-form-field class="full-width">
+											<mat-label>{{ "MENU.NAME" | translate }}</mat-label>
+											<input type="text" matInput autocomplete="off" [(ngModel)]="filter.name">
+										</mat-form-field>
+									</div>
+								</div>
+
+							</div>
+							<div class="col-md-2">
+								<div class="row">
+									<div class="col-md-12" style="padding: 10px;">
+										<button mat-button (click)="applyFilters()" style="height: 50px; width: 100%;"
+											mat-raised-button color="primary" type="button">
+											<span>{{ 'MENU.FILTER' | translate }}</span>
+										</button>
+									</div>
+									<div class="col-md-12" style="padding: 10px;">
+										<button mat-button (click)="limparFiltros()" style="height: 50px; width: 100%;"
+											mat-raised-button color="default" type="button">
+											<span>{{ 'MENU.CLEAR' | translate }}</span>
+										</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</mat-expansion-panel>
+				</mat-accordion>
+
+			</div>
+		</div>
+
+		<div class="mat-table__wrapper">
+			<mat-table class="lmat-elevation-z8" #table [dataSource]="dataSource" matSort #sort1="matSort"
+				matSortActive="id" matSortDirection="asc" matSortDisableClear>
+				<!-- Checkbox Column -->
+
+				<!-- Table with selection -->
+				<!-- https://run.stackblitz.com/api/angular/v1?file=app%2Ftable-selection-example.ts -->
+				<ng-container matColumnDef="name">
+					<mat-header-cell *matHeaderCellDef>{{ "MENU.NAME" | translate }}</mat-header-cell>
+					<mat-cell *matCellDef="let adGroup">{{adGroup.name}}</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="administrator">
+					<mat-header-cell *matHeaderCellDef>{{ "ADMINISTRATOR" | translate }}</mat-header-cell>
+					<mat-cell *matCellDef="let adGroup">
+						<mat-checkbox disabled [(ngModel)]="adGroup.administrator"></mat-checkbox>
+					</mat-cell>
+				</ng-container>
+
+				<ng-container matColumnDef="action">
+					<mat-header-cell *matHeaderCellDef>{{ "MENU.ACTIONS" | translate }}</mat-header-cell>
+					<mat-cell *matCellDef="let adGroup">
+						<button mat-icon-button color="primary" (click)="removeAdGroup(adGroup)">
+							<mat-icon>delete</mat-icon>
+						</button>
+						<button mat-icon-button color="primary" (click)="editAdGroup(adGroup)">
+							<mat-icon>create</mat-icon>
+						</button>
+					</mat-cell>
+				</ng-container>
+
+				<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+				<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+			</mat-table>
+
+			<div *ngIf="dataSource != null">
+				<div class="mat-table__message" *ngIf="!dataSource.hasItems">{{ "MENU.NO_RECORDS" | translate }}</div>
+			</div>
+			<!-- Message for empty data  -->
+			<div class="mat-table__message" *ngIf="dataSource.isPreloadTextViewed$ | async">{{ "MENU.PLEASE_WAIT" |
+				translate }}</div>
+		</div>
+		<div class="mat-table__bottom">
+			<mat-spinner [color]="'primary'" [diameter]="20" *ngIf="dataSource.loading$ | async"></mat-spinner>
+			<mat-paginator [pageSize]="10" [pageSizeOptions]="[5, 10, 20]" [length]="dataSource.paginatorTotal$ | async"
+				[showFirstLastButtons]="true"></mat-paginator>
+		</div>
+	</kt-portlet-body>
+	<!-- end::Body -->
+</kt-portlet>
