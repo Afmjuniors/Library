@@ -139,7 +139,7 @@ export class NewChecklistForm implements OnInit {
     this.remainingText = 8000 - value;
   }
 
-  sign(idItemTemplate: number | null) {
+  sign(idItemTemplate: number | null, blockTemplateId: number) {
     if (!idItemTemplate) {
       return;
     }
@@ -167,7 +167,7 @@ if(this.checklist.items){
     }).afterClosed()
       .subscribe(x => {
         if (x != '' && x != undefined) {
-          this.saveSignItem(x, idItemTemplate);
+          this.saveSignItem(x, idItemTemplate,blockTemplateId);
         }
       });
   }
@@ -247,9 +247,9 @@ if(this.checklist.items){
   }
 
 
-  saveSignItem(x: any, idItemTemplate: number) {
+  saveSignItem(x: any, idItemTemplate: number, blockTemplateId:number) {
     const comment = x.comments;
-    const newItem = new ItemChecklist(this.checklist.checklistId, this.checklistVersion.checklistTemplateId, x.stamp, idItemTemplate, comment);
+    const newItem = new ItemChecklist(this.checklist.checklistId, this.checklistVersion.checklistTemplateId,blockTemplateId, x.stamp, idItemTemplate, comment);
 
     this.app.signItemChecklist(newItem, comment)
       .subscribe(res => {

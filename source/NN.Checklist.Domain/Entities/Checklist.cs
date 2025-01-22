@@ -104,7 +104,23 @@ namespace NN.Checklist.Domain.Entities
         public User CreationUser { get => GetManyToOneData<User>().Result; }
 
         public User UpdateUser { get => GetManyToOneData<User>().Result; }
-        public VersionChecklistTemplate? VersionChecklistTemplate { get => GetManyToOneData<VersionChecklistTemplate>().Result; }
+
+        public VersionChecklistTemplate? _versionChecklistTemplate;
+        public VersionChecklistTemplate? VersionChecklistTemplate
+        {
+            get
+            {
+                if (_versionChecklistTemplate == null)
+                {
+                    _versionChecklistTemplate = GetManyToOneData<VersionChecklistTemplate>().Result;
+                }
+                return _versionChecklistTemplate;
+            }
+            set
+            {
+                _versionChecklistTemplate = value;
+            }
+        }
 
         public IList<ItemChecklist>? Items { get => GetOneToManyData<ItemChecklist>().Result; set { } }
 
@@ -195,7 +211,18 @@ namespace NN.Checklist.Domain.Entities
         #endregion
 
         #region User Code
-                    
+        public void CheckAvailability()
+        {
+            try
+            {
+
+                VersionChecklistTemplate.CheckAvailability(Items);
+
+            }catch(Exception ex)
+            {
+                throw ex;
+            }
+        }
         
 
         #endregion

@@ -11,9 +11,7 @@
 				<mat-form-field class="full-width">
 					<mat-select placeholder="{{ 'NEW_EDIT_CHECKLIST.VERSION' | translate }}"
 						[(ngModel)]="filter.checklistTemplateId" class="full-width"
-						(selectionChange)="onChecklistChange($event)"
-						[disabled]="checklistLoaded"
-						>
+						(selectionChange)="onChecklistChange($event)" [disabled]="checklistLoaded">
 						<mat-option value="0">{{ 'NEW_EDIT_CHECKLIST.NONE_SELECTED' | translate }}</mat-option>
 						<mat-option *ngFor="let itemCl of checklists" [value]="itemCl.checklistTemplateId">
 							{{itemCl.description}}
@@ -28,206 +26,193 @@
 				<form [formGroup]="fieldForm" autocomplete="off">
 					<h2>{{ checklistVersion.checklistTemplateDescription + " - " + checklistVersion.version }}</h2>
 
-					<div class="kt-divider"></div>
 
-					<h3>{{'NEW_EDIT_CHECKLIST.HEADER' | translate }}</h3>
-					<div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 16px;">
+					<div class="card">
+						<h3>{{'NEW_EDIT_CHECKLIST.HEADER' | translate }}</h3>
+						<div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 16px;">
 
-						<div *ngFor="let field of checklistVersion.fieldsVersionChecklistsTemplate"
-							class="combo-container">
-							<div *ngIf=" field.fieldDataTypeId == 1">
-								<div class="text-input full-width" >
-									<mat-form-field 
-									[appearance]="field.isKey ? 'outline' : 'legacy'"
-									style="width: 200px;" 
-									>
-									  <mat-label>{{ field.title  }} </mat-label>
-									  <input									   
-									  matInput
-										type="text"
-										[placeholder]="field.placeholder"
-										[mask]="field.format"
-										[name]="field.fieldVersionChecklistTemplateId"
-										[id]="field.fieldVersionChecklistTemplateId"
-										autocomplete="off"
-										[formControlName] = "'name'+field.fieldVersionChecklistTemplateId"
-										[required]="field.mandatory"
-									  />
-									  <mat-error *ngIf="isControlHasError(field.fieldVersionChecklistTemplateId,'required')">
-												  <strong>{{ 'NEW_EDIT_CHECKLIST.VALIDATION.REQUIRED_FIELD' | translate }}</strong>
-											  </mat-error>
-									  <mat-error *ngIf="isControlHasError(field.fieldVersionChecklistTemplateId,'pattern')">
-												  <strong>{{ 'NEW_EDIT_CHECKLIST.VALIDATION.FORMAT_INVALID' | translate }}</strong>
-											  </mat-error>
-									</mat-form-field>
-								  </div>
-							</div>
-							<div *ngIf=" field.fieldDataTypeId == 2">
-								<div class="number-input">
-									<mat-form-field class="example-full-width"
-									[appearance]="field.isKey ? 'outline' : 'legacy'"
-									>
-										<mat-label>{{ field.title  }} </mat-label>
-									  <input
-									  	matInput
-										  ype="number"
-										  [placeholder]="field.placeholder"
-										  [mask]="field.format"
-										  [name]="field.fieldVersionChecklistTemplateId"
-										  [id]="field.fieldVersionChecklistTemplateId"
-										  autocomplete="off"
-										  [formControlName] = "'name'+field.fieldVersionChecklistTemplateId"
-										  [required]="field.mandatory"
-									  />
-									  
-									</mat-form-field>
-									
-								  </div>
-							</div>
-							<div *ngIf=" field.fieldDataTypeId == 3">
-								<div class="number-input">
-									<div class="datePicker-input">
-										<mat-form-field class="example-full-width"
-										[appearance]="field.isKey ? 'outline' : 'legacy'"
-										>
-										  <mat-label>>{{ field.title  }} </mat-label>
-										  <input
-										  [ngxMatDatetimePicker]="picker"
-										  [placeholder]="field.placeholder"
-										  [formControlName] = "'name'+field.fieldVersionChecklistTemplateId"
-										  [required]="field.mandatory"
-										  [disabled]="checklistLoaded"
-										  />
-										  <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-										  <ngx-mat-datetime-picker
-										  #picker
-										  [showSpinners]="true"
-										  [showSeconds]="false"
-										  [stepHour]="1"
-										  [stepMinute]="1"
-										  [stepSecond]="1"
-										  [touchUi]="false"
-										  [enableMeridian]="false"
-										  >
-										  </ngx-mat-datetime-picker>
+							<div *ngFor="let field of checklistVersion.fieldsVersionChecklistsTemplate"
+								class="combo-container">
+								<div *ngIf=" field.fieldDataTypeId == 1">
+									<div class="text-input full-width">
+										<mat-form-field [appearance]="field.isKey ? 'outline' : 'legacy'"
+											style="width: 200px;">
+											<mat-label>{{ field.title }} </mat-label>
+											<input matInput type="text" [placeholder]="field.placeholder"
+												[mask]="field.format" [name]="field.fieldVersionChecklistTemplateId"
+												[id]="field.fieldVersionChecklistTemplateId" autocomplete="off"
+												[formControlName]="'name'+field.fieldVersionChecklistTemplateId"
+												[required]="field.mandatory" />
+											<mat-error
+												*ngIf="isControlHasError(field.fieldVersionChecklistTemplateId,'required')">
+												<strong>{{ 'NEW_EDIT_CHECKLIST.VALIDATION.REQUIRED_FIELD' | translate
+													}}</strong>
+											</mat-error>
+											<mat-error
+												*ngIf="isControlHasError(field.fieldVersionChecklistTemplateId,'pattern')">
+												<strong>{{ 'NEW_EDIT_CHECKLIST.VALIDATION.FORMAT_INVALID' | translate
+													}}</strong>
+											</mat-error>
 										</mat-form-field>
-									  </div>
-								  </div>
+									</div>
+								</div>
+								<div *ngIf=" field.fieldDataTypeId == 2">
+									<div class="number-input">
+										<mat-form-field class="example-full-width"
+											[appearance]="field.isKey ? 'outline' : 'legacy'">
+											<mat-label>{{ field.title }} </mat-label>
+											<input matInput ype="number" [placeholder]="field.placeholder"
+												[mask]="field.format" [name]="field.fieldVersionChecklistTemplateId"
+												[id]="field.fieldVersionChecklistTemplateId" autocomplete="off"
+												[formControlName]="'name'+field.fieldVersionChecklistTemplateId"
+												[required]="field.mandatory" />
+
+										</mat-form-field>
+
+									</div>
+								</div>
+								<div *ngIf=" field.fieldDataTypeId == 3">
+									<div class="number-input">
+										<div class="datePicker-input">
+											<mat-form-field class="example-full-width"
+												[appearance]="field.isKey ? 'outline' : 'legacy'">
+												<mat-label>>{{ field.title }} </mat-label>
+												<input [ngxMatDatetimePicker]="picker" [placeholder]="field.placeholder"
+													[formControlName]="'name'+field.fieldVersionChecklistTemplateId"
+													[required]="field.mandatory" [disabled]="checklistLoaded" />
+												<mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+												<ngx-mat-datetime-picker #picker [showSpinners]="true"
+													[showSeconds]="false" [stepHour]="1" [stepMinute]="1"
+													[stepSecond]="1" [touchUi]="false" [enableMeridian]="false">
+												</ngx-mat-datetime-picker>
+											</mat-form-field>
+										</div>
+									</div>
+								</div>
+								<div *ngIf=" field.fieldDataTypeId == 4">
+									<!-- TODO:Mudar a cor do select -->
+									<div class="col-md-3">
+										<mat-form-field class="full-width"
+											[appearance]="field.isKey ? 'outline' : 'legacy'">
+											<mat-select [placeholder]="'NEW_EDIT_CHECKLIST.NONE_SELECTED' | translate"
+												autocomplete="off"
+												[formControlName]="'name'+field.fieldVersionChecklistTemplateId"
+												[required]="field.mandatory">
+												<mat-option
+													*ngFor="let option of field.optionFieldVersionChecklistTemplate"
+													[value]="option.value">
+													{{ option.title }}
+												</mat-option>
+											</mat-select>
+										</mat-form-field>
+									</div>
+								</div>
+
+
 							</div>
-							<div *ngIf=" field.fieldDataTypeId == 4">
-								<!-- TODO:Mudar a cor do select -->
-								<div class="col-md-3">
-									<mat-form-field class="full-width"		
-									[appearance]="field.isKey ? 'outline' : 'legacy'"			
-									>
-									  <mat-select
-									  [placeholder]="'NEW_EDIT_CHECKLIST.NONE_SELECTED' | translate"
-									  autocomplete="off"
-									  [formControlName] = "'name'+field.fieldVersionChecklistTemplateId"
-									  [required]="field.mandatory"
-									  >
-										<mat-option  *ngFor="let option of field.optionFieldVersionChecklistTemplate" [value]="option.value">
-										  {{ option.title }} 
-										</mat-option>
-									  </mat-select>
-									</mat-form-field>
-								  </div>  
-							</div>
-							
+
+						</div>
+						<div style="display: flex; justify-content: end; padding-bottom: 16px;">
+							<button [disabled]="checklistLoaded" (click)="submit()"
+								[ngClass]="{'kt-spinner kt-spinner--right kt-spinner--md kt-spinner--light': loading}"
+								id="kt_login_signin_submit" class="btn btn-primary btn-elevate kt-login__btn-primary">{{
+								'NEW_EDIT_CHECKLIST.SAVE' | translate }}</button>
 
 						</div>
 
 					</div>
-					<div style="display: flex; justify-content: end; padding-bottom: 16px;">
-						<button [disabled]="checklistLoaded" (click)="submit()" [ngClass]="{'kt-spinner kt-spinner--right kt-spinner--md kt-spinner--light': loading}" id="kt_login_signin_submit" class="btn btn-primary btn-elevate kt-login__btn-primary">{{ 'NEW_EDIT_CHECKLIST.SAVE' | translate }}</button>
-						
-					</div>
-
 				</form>
-<div *ngIf="checklistLoaded" >
+				<div *ngIf="checklistLoaded">
 
-				<div *ngFor="let block of checklistVersion.blocksChecklistTemplate" class="component-wrapper">
-					<div class="kt-divider"></div>
+					<div *ngFor="let block of checklistVersion.blocksChecklistTemplate" class="component-wrapper">
+						<div class="card">
 
-					<mat-table [dataSource]="block.itemsChecklistsTemplate" class="styled-table">
-						<!-- Column for Component Item Title -->
-						<ng-container matColumnDef="title">
-							<mat-header-cell *matHeaderCellDef style="flex: 2;">{{ block.title }}</mat-header-cell>
-							<mat-cell *matCellDef="let componentItem" style="flex: 2;">
-								<div
-									style="display: flex; gap: 8px; align-items: center; justify-content: space-between; width: 100%;">
+							<mat-table [dataSource]="block.itemsChecklistsTemplate" class="styled-table">
+								<!-- Column for Component Item Title -->
+								<ng-container matColumnDef="title">
+									<mat-header-cell *matHeaderCellDef style="flex: 2;">{{ block.title
+										}}</mat-header-cell>
+									<mat-cell *matCellDef="let componentItem" style="flex: 2;">
+										<div
+											style="display: flex; gap: 8px; align-items: center; justify-content: space-between; width: 100%;">
 
-									<!-- Título -->
-									<div>
-										{{ componentItem.title }}
-									</div>
-									<div *ngIf="componentItem.itemTypeId == 3 || componentItem.itemTypeId == 4 ">
-										<p>
-											<b>{{componentItem.optionsTitle}}</b>
-										</p>
-										<custom-checkbox-input [isSingle]="componentItem.itemTypeId == 3"
-											[isDisable]=false
-											[optionsField]="componentItem.optionItemsVersionChecklistTemplate"></custom-checkbox-input>
-									</div>
-
-
-									<!-- Checkboxes -->
-
-								</div>
-							</mat-cell>
-
-						</ng-container>
-
-
-						<!-- Column for Signature -->
-						<ng-container matColumnDef="signature" style="justify-content: end;">
-							<mat-header-cell *matHeaderCellDef
-								style="justify-content: center; flex:1">{{'NEW_EDIT_CHECKLIST.SIGNATURE' | translate}}</mat-header-cell>
-							<mat-cell *matCellDef="let componentItem" style="justify-content: end; flex:1;">
-								<div style="display: flex;">
-									<div class="flex" *ngIf="getInitials(componentItem.itemVersionChecklistTemplateId)">
-										<div style="display: flex; flex-direction: row; justify-content: center;">
-											<div
-												style="display: flex; flex-direction: column;  align-items: center; justify-content: center;">
-												<p style="margin: 0; padding: 0; font-size: 12px;">
-													{{ getDateSignature(componentItem.itemVersionChecklistTemplateId)}}
-												</p>
-												<p style="margin: 0; padding: 0; font-size: 12px;">
-													{{getInitials(componentItem.itemVersionChecklistTemplateId)}}
-												</p>
-
+											<!-- Título -->
+											<div>
+												{{ componentItem.title }}
 											</div>
-											<button mat-icon-button color="primary" (click)="viewSignatureHistory(componentItem.itemVersionChecklistTemplateId)">
-												<mat-icon matTooltip="">visibility</mat-icon>
-											</button>
+											<div
+												*ngIf="componentItem.itemTypeId == 3 || componentItem.itemTypeId == 4 ">
+												<p>
+													<b>{{componentItem.optionsTitle}}</b>
+												</p>
+												<custom-checkbox-input [isSingle]="componentItem.itemTypeId == 3"
+													[isDisable]=false
+													[optionsField]="componentItem.optionItemsVersionChecklistTemplate"></custom-checkbox-input>
+											</div>
+
+
+											<!-- Checkboxes -->
+
 										</div>
-									</div>
-									<div class="flex">
-										<button type="button" mat-raised-button color="primary"
-											(click)="sign(componentItem.itemVersionChecklistTemplateId)">
-											{{ 'NEW_EDIT_CHECKLIST.SIGN' | translate }}
-										</button>
-									</div>
-									<div class="flex btn-space" *ngIf="componentItem.itemTypeId==2">
-										<button type="button" mat-raised-button color="primary"
-											(click)="sign(componentItem.itemVersionChecklistTemplateId)">
-											{{ 'NEW_EDIT_CHECKLIST.SIGN' | translate }}
-										</button>
-									</div>
-								</div>
-							</mat-cell>
-						</ng-container>
+									</mat-cell>
 
-						<!-- Header Row -->
-						<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-
-						<!-- Data Row -->
-						<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-					</mat-table>
+								</ng-container>
 
 
+								<!-- Column for Signature -->
+								<ng-container matColumnDef="signature" style="justify-content: end;">
+									<mat-header-cell *matHeaderCellDef
+										style="justify-content: center; flex:1">{{'NEW_EDIT_CHECKLIST.SIGNATURE' |
+										translate}}</mat-header-cell>
+									<mat-cell *matCellDef="let componentItem" style="justify-content: end; flex:1;">
+										<div style="display: flex;">
+											<div class="flex"
+												*ngIf="getInitials(componentItem.itemVersionChecklistTemplateId)">
+												<div
+													style="display: flex; flex-direction: row; justify-content: center;">
+													<div
+														style="display: flex; flex-direction: column;  align-items: center; justify-content: center;">
+														<p style="margin: 0; padding: 0; font-size: 12px;">
+															{{
+															getDateSignature(componentItem.itemVersionChecklistTemplateId)}}
+														</p>
+														<p style="margin: 0; padding: 0; font-size: 12px;">
+															{{getInitials(componentItem.itemVersionChecklistTemplateId)}}
+														</p>
+
+													</div>
+													<button mat-icon-button color="primary"
+														(click)="viewSignatureHistory(componentItem.itemVersionChecklistTemplateId)">
+														<mat-icon matTooltip="">visibility</mat-icon>
+													</button>
+												</div>
+											</div>
+											<div class="flex">
+												<button type="button" mat-raised-button color="primary"
+													(click)="sign(componentItem.itemVersionChecklistTemplateId, block.blockVersionChecklistTemplateId)">
+													{{ 'NEW_EDIT_CHECKLIST.SIGN' | translate }}
+												</button>
+											</div>
+											<div class="flex btn-space" *ngIf="componentItem.itemTypeId==2">
+												<button type="button" mat-raised-button color="primary"
+													(click)="sign(componentItem.itemVersionChecklistTemplateId, block.blockVersionChecklistTemplateId)">
+													{{ 'NEW_EDIT_CHECKLIST.SIGN' | translate }}
+												</button>
+											</div>
+										</div>
+									</mat-cell>
+								</ng-container>
+
+								<!-- Header Row -->
+								<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+
+								<!-- Data Row -->
+								<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+							</mat-table>
+						</div>
+
+					</div>
 				</div>
-</div>
 
 
 			</div>
@@ -238,14 +223,8 @@
 					<div class="col-lg-12">
 						<button type="button" mat-raised-button cdkFocusInitial matTooltip="Cancel changes"
 							(click)="closeModal()">
-							{{ 'AUTH.GENERAL.CANCEL' | translate }}
+							{{ 'CHECKLISTS.CLOSE' | translate }}
 						</button>&nbsp;
-						<button type="button" mat-raised-button color="primary" (click)="sign()">
-							{{ 'SAVE' | translate }}
-						</button>
-						<button type="button" mat-raised-button color="primary" (click)="saveInformation()">
-							{{ 'CONSOLE' | translate }}
-						</button>
 					</div>
 				</div>
 			</div>

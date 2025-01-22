@@ -28,6 +28,7 @@ namespace NN.Checklist.Domain.DTO
                     return  CreationTimestamp.ToString("yyyy-MM-dd HH:mm");
             } }
 
+
         public List<FieldChecklistDTO>? Fields { get; set; }
         public List<ItemChecklistDTO>? Items { get; set; }
 

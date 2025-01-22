@@ -10,13 +10,16 @@ namespace NN.Checklist.Domain.DTO
 {
     public class BlockVersionChecklistTemplateDTO
     {
-        public long BlockVersionChecklistTemplateId {  get; set; }
+        public long BlockVersionChecklistTemplateId { get; set; }
         public long? ParentBlockVersionChecklistTemplateId { get; set; }
         public int Position { get; set; }
         public string Title { get; set; }
         public long VersionChecklistTemplateId { get; set; }
+        public bool? IsCompleted { get; set; }
+        public bool IsDisabled { get; set; }
         public List<DependencyBlockVersionChecklistTemplateDTO>? DependentBlockVersionChecklistTemplate { get; set; }
         public List<ItemVersionChecklistTemplateDTO>? ItemsChecklistsTemplate { get; set; }
+
 
 
 

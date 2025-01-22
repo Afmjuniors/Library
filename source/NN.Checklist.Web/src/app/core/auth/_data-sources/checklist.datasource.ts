@@ -32,7 +32,7 @@ export class ChecklistDataSource extends BaseDataSource {
             filtro2 = filtro;
         }
 
-        this.appService.getAllUsers(pageNumber + 1, pageSize, filtro2).subscribe((response: QueryResultsModel) => {
+        this.appService.getAllChecklists(pageNumber + 1, pageSize, filtro2).subscribe((response: QueryResultsModel) => {
             this.paginatorTotalSubject.next(response.rowsCount);
             this.entitySubject.next(response.entities);
             this.loadingSubject.next(false);

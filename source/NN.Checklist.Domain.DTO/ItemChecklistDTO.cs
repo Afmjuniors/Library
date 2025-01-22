@@ -17,6 +17,7 @@ namespace NN.Checklist.Domain.DTO
         public long ItemVersionChecklistTemplateId {  get; set; }
         [Map("ItemVersionchecklistTemplate")]
         public ItemVersionChecklistTemplateDTO? ItemVersionChecklistTemplate { get; set; }
+        public long BlockVersionTemplateId { get; set; }
         public string Stamp { get; set; }
         public DateTime CreationTimestamp { get; set; }
         public long CreationUserId { get; set; }

@@ -42,7 +42,7 @@ namespace NN.Checklist.Domain.Entities
                         ChecklistId = checklistId; 
             Comments = comments; 
             CreationTimestamp = creationTimestamp; 
-            CreationUserId = creationUserId; 
+            CreationUserId = creationUserId;
             ItemVersionchecklistTemplateId = itemVersionchecklistTemplateId; 
             Stamp = stamp; 
 
@@ -180,8 +180,8 @@ namespace NN.Checklist.Domain.Entities
                             ChecklistId = checklistId; 
             Comments = comments; 
             CreationTimestamp = creationTimestamp; 
-            CreationUserId = creationUserId; 
-            ItemVersionchecklistTemplateId = itemVersionchecklistTemplateId; 
+            CreationUserId = creationUserId;
+                ItemVersionchecklistTemplateId = itemVersionchecklistTemplateId; 
             Stamp = stamp; 
 
 

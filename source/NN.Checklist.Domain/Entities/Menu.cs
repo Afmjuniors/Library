@@ -78,6 +78,8 @@ namespace NN.Checklist.Domain.Entities
                     Page = "/checklists",
                 };
 
+
+
                 ret.Add(menuItem);
 
                 return ret;

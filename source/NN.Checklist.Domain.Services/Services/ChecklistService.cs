@@ -1,4 +1,5 @@
-﻿using K4os.Compression.LZ4.Internal;
+﻿using iTextSharp.text;
+using K4os.Compression.LZ4.Internal;
 using NN.Checklist.Domain.DTO;
 using NN.Checklist.Domain.DTO.Paging;
 using NN.Checklist.Domain.DTO.Request;
@@ -8,6 +9,7 @@ using NN.Checklist.Domain.Services.Specifications;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Intrinsics.X86;
 using System.Text;
 using System.Threading.Tasks;
 using TDCore.Core;
@@ -15,6 +17,7 @@ using TDCore.Data.Paging;
 using TDCore.DependencyInjection;
 using TDCore.Domain.Exceptions;
 using static iTextSharp.text.pdf.AcroFields;
+using static iTextSharp.text.pdf.qrcode.Version;
 using static NPOI.HSSF.UserModel.HeaderFooter;
 
 namespace NN.Checklist.Domain.Services
@@ -48,8 +51,13 @@ namespace NN.Checklist.Domain.Services
         public async Task<List<VersionChecklistTemplateDTO>> ListChecklistVersions(long checklistId)
         {
             var checklistTeplate = await VersionChecklistTemplate.Repository.ListVersionFromChecklistTemplateId(checklistId);
+            IList<VersionChecklistTemplateDTO> dto = new List<VersionChecklistTemplateDTO>();
+            if (checklistTeplate != null)
+            {
+                dto = checklistTeplate.TransformList<VersionChecklistTemplateDTO>();
 
-            var dto = checklistTeplate.TransformList<VersionChecklistTemplateDTO>();
+            }
+
 
             return dto.ToList();
         }
@@ -124,30 +132,41 @@ namespace NN.Checklist.Domain.Services
 
         public async Task<PageMessage<ChecklistDTO>> Search(AuthenticatedUserDTO auth, ChecklistPageMessage pageMessage)
         {
-
-            var res = await Entities.Checklist.Repository.Search(pageMessage);
-            var accessControlService = ObjectFactory.GetSingleton<IAccessControlService>();
-            if (res.Entities == null)
+            try
             {
-                return res;
-            }
 
-            foreach (var enty in res.Entities)
-            {
-                if (enty.Items != null)
+                var res = await Entities.Checklist.Repository.Search(pageMessage);
+                var accessControlService = ObjectFactory.GetSingleton<IAccessControlService>();
+
+
+                if (res.Entities == null)
                 {
 
-                    foreach (var item1 in enty.Items)
-                    {
-
-
-                        item1.Signature = await accessControlService.ReadSignature(item1.Stamp);
-                    }
+                    return res;
                 }
 
 
+                res.Entities = CheckAvabiality(res.Entities);
+
+
+                foreach (var entity in res.Entities)
+                {
+                    if (entity.Items != null)
+                    {
+                        foreach (var item1 in entity.Items)
+                        {
+                            item1.Signature = await accessControlService.ReadSignature(item1.Stamp);
+                        }
+                    }
+
+
+                }
+                return res;
             }
-            return res;
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         public async Task<ChecklistDTO> SignItem(AuthenticatedUserDTO auth, ItemChecklistDTO item)
@@ -162,13 +181,18 @@ namespace NN.Checklist.Domain.Services
             {
                 checklist = new Entities.Checklist(auth.UserId, (long)item.VersionChecklistTemplateId);
             }
+
             var newItem = new ItemChecklist(auth.UserId, checklist.ChecklistId, item.Comments, DateTime.Now, auth.UserId, item.ItemVersionChecklistTemplateId, item.Stamp);
             var ck = await Entities.Checklist.Repository.Get(checklist.ChecklistId);
+             ck.CheckAvailability();
             var dto = ck.Transform<ChecklistDTO>();
             foreach (var item1 in dto.Items)
             {
                 item1.Signature = await accessControlService.ReadSignature(item1.Stamp);
             }
+
+            
+
             return dto;
         }
 
@@ -199,6 +223,19 @@ namespace NN.Checklist.Domain.Services
 
         }
 
+        private List<ChecklistDTO> CheckAvabiality(IEnumerable<ChecklistDTO> entities)
+        {
+            List<ChecklistDTO> ckLst = new List<ChecklistDTO>();
+            foreach (var entity in entities)
+            {
+                var et = entity.Transform<Entities.Checklist>();
+                et.CheckAvailability();
+                ckLst.Add(et.Transform<ChecklistDTO>());
+            }
 
+            return ckLst;
+        }
+
+       
     }
 }

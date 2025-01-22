@@ -109,10 +109,10 @@
 							color="primary" type="button" (click)="newChecklist()" [disabled]="loadingCSV">
 							<span>{{ 'CHECKLISTS.NEW' | translate }}</span>
 						</button>
-						<button mat-button style="height: 50px; width: 100%; padding: 10px; margin: 10px" mat-raised-button
+						<!-- <button mat-button style="height: 50px; width: 100%; padding: 10px; margin: 10px" mat-raised-button
 						color="primary" type="button" (click)="consoleShowChelistPage()" [disabled]="loadingCSV || !dataSource.hasItems">
 						<span>{{ 'CHECKLISTS.Console' | translate }}</span>
-					</button>
+					</button> -->
 					</div>
 				</div>
 			</div>
@@ -142,10 +142,15 @@
 					<mat-cell *matCellDef="let checklist">
 						{{checklist.versionChecklistTemplate?.checklistTemplateDescription}} - {{checklist.versionChecklistTemplate?.version}}</mat-cell>
 				</ng-container>
+				
+				<ng-container matColumnDef="key-title">
+					<mat-header-cell *matHeaderCellDef mat-sort-header style="justify-content: center;">{{ "CHECKLISTS.KEY_TITLE" | translate }}</mat-header-cell>
+					<mat-cell *matCellDef="let checklist" style="justify-content: center;">{{getKeyName(checklist?.fields)}}</mat-cell>
+				</ng-container>
 
-				<ng-container matColumnDef="batch">
-					<mat-header-cell *matHeaderCellDef mat-sort-header style="justify-content: center;">{{ "CHECKLISTS.BATCH" | translate }}</mat-header-cell>
-					<mat-cell *matCellDef="let checklist" style="justify-content: center;">{{getBatchIdValue(checklist?.fields)}}</mat-cell>
+				<ng-container matColumnDef="key">
+					<mat-header-cell *matHeaderCellDef mat-sort-header style="justify-content: center;">{{ "CHECKLISTS.KEY" | translate }}</mat-header-cell>
+					<mat-cell *matCellDef="let checklist" style="justify-content: center;">{{getKeyValue(checklist?.fields)}}</mat-cell>
 				</ng-container>
 
 				<ng-container matColumnDef="batch_date">

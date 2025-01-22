@@ -13,6 +13,8 @@ using System.Text;
 using System.Transactions;
 using System.Threading.Tasks;
 using System.Linq;
+using static iTextSharp.text.pdf.AcroFields;
+using static iTextSharp.text.pdf.events.IndexEvents;
 
 #region Cabeçalho
 
@@ -86,7 +88,6 @@ namespace NN.Checklist.Domain.Entities
         public ChecklistTemplate ChecklistTemplate { get => GetManyToOneData<ChecklistTemplate>().Result; }
         
 
-        public IList<BlockVersionChecklistTemplate> BlocksChecklistTemplate { get => GetOneToManyData<BlockVersionChecklistTemplate>().Result; set { } }
 
 
         public List<FieldVersionChecklistTemplate> FieldsVersionChecklistsTemplate { get => GetOneToManyData<FieldVersionChecklistTemplate>().Result.OrderByDescending(x => x.IsKey).ToList(); set { } }
@@ -94,13 +95,31 @@ namespace NN.Checklist.Domain.Entities
 
         public User CreationUser { get => GetManyToOneData<User>().Result; }
 
+        private IList<BlockVersionChecklistTemplate> _blocksChecklistTemplate;
+
+        public IList<BlockVersionChecklistTemplate> BlocksChecklistTemplate
+        {
+            get
+            {
+                if (_blocksChecklistTemplate == null)
+                {
+                    _blocksChecklistTemplate = GetOneToManyData<BlockVersionChecklistTemplate>().Result;
+                }
+                return _blocksChecklistTemplate;
+            }
+            set
+            {
+                _blocksChecklistTemplate = value;
+            }
+        }
+
 
 
         #endregion
 
         #region Validation
 
-        
+
         public async Task<bool> Validate(bool newRecord)
         {
             try
@@ -189,8 +208,28 @@ namespace NN.Checklist.Domain.Entities
         #endregion
 
         #region User Code
-                    
-        
+
+         public void CheckAvailability(IList<ItemChecklist>? items)
+        {
+            try
+            {
+                                List<BlockVersionChecklistTemplate> lst = new List<BlockVersionChecklistTemplate>();
+            foreach (var block in BlocksChecklistTemplate)
+            {
+                block.CheckAvailability(items, BlocksChecklistTemplate);
+                lst.Add(block);
+            }
+                _blocksChecklistTemplate = lst;
+            }
+
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
 
         #endregion
     }

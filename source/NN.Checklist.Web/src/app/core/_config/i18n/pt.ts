@@ -292,11 +292,15 @@ export const locale = {
 			DELETE:"Deletar",
 			EDIT:"Editar",
 			VERSION:"Versão",
+			CLOSE:"Fechar",
+			LOADING:"Carregando",
+			KEY:"Chave",
+			KEY_TITLE:"Titulo da chave",
 			SIGNATURE:{
 				INITIALS:"Usuário",
 				DATE:"Data da assinatura",
 				COMMENTS:"Comentário",
-				CANCEL:"Cancelar"
+				CLOSE:"FECHAR"
 			}
 
 

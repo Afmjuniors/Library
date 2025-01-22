@@ -91,34 +91,7 @@ export class UpdateCheklistForm implements OnInit {
 
   }
 
-  public checkDisable(item: ItemChecklist): boolean {
-    //pegar o template 
-    const  templateId = item.itemVersionChecklistTemplateId;
-    const itms =this.checklist.versionChecklistTemplate.blocksChecklistTemplate.find(x=>(x.itemsChecklistsTemplate.some(y=>y.itemVersionChecklistTemplateId==templateId)) ).itemsChecklistsTemplate;
-    if(!itms){
-      return false;
-    }
-    //const listar as dependencias
-    const dependencias: DependencyItemVersionChecklistTemplate[] = itms.find(y=>y.itemVersionChecklistTemplateId==templateId).dependencyItemVersionChecklistTemplate;
 
-    if(!dependencias){
-      return true;
-    }
-
-
-    dependencias.forEach(element => {
-      //achar o dependente
-var dependente = this.checklist.items.find(x=>x.itemVersionChecklistTemplateId == element.dependencyItemVersionChecklistTemplateId)
-//verificar se esta vazio
-  if(!dependente.stamp){
-    return true;
-  }
-
-  
-});
-
-    return true;
-  }
 
   saveInformation() {
     console.log(this.checklistVersion);
@@ -156,7 +129,7 @@ if(this.checklist.fields){
     this.remainingText = 8000 - value;
   }
 
-  sign(idItemTemplate: number | null) {
+  sign(idItemTemplate: number | null,  blockTemplateId:number) {
     if (!idItemTemplate) {
       return;
     }
@@ -169,8 +142,11 @@ let hasSignuture = false;
       this.layoutUtilsService.showErrorNotification(this.translate.instant('MISSING_TYPE_checklist_RECORD'), MessageType.Create);
       return;
     }
-    if(this.checklist.items.find(x => x.itemVersionChecklistTemplate.itemVersionChecklistTemplateId == idItemTemplate)){
-      hasSignuture = true;
+    if(this.checklist.items!=null){
+
+      if(this.checklist.items.find(x => x.itemVersionChecklistTemplate.itemVersionChecklistTemplateId == idItemTemplate)){
+        hasSignuture = true;
+      }
     }
 
     this.dialog.open(SignatureComponent, {
@@ -180,7 +156,7 @@ let hasSignuture = false;
     }).afterClosed()
       .subscribe(x => {
         if (x != '' && x != undefined) {
-          this.saveSignItem(x, idItemTemplate);
+          this.saveSignItem(x, idItemTemplate, blockTemplateId);
         }
       });
   }
@@ -199,10 +175,10 @@ let hasSignuture = false;
   
   }
 
-  saveSignItem(x: any, idItemTemplate: number) {
+  saveSignItem(x: any, idItemTemplate: number, blockTemplateId:number) {
     let comment = x.comments;
 
-    const newItem = new ItemChecklist(this.checklist.checklistId, this.checklistVersion.checklistTemplateId, x.stamp, idItemTemplate, comment);
+    const newItem = new ItemChecklist(this.checklist.checklistId, this.checklistVersion.checklistTemplateId,blockTemplateId,  x.stamp, idItemTemplate, comment);
 
     this.app.signItemChecklist(newItem, comment)
       .subscribe(res => {
@@ -210,6 +186,8 @@ let hasSignuture = false;
           return;
         }
         this.checklist = res;
+        this.checklistVersion = this.checklist.versionChecklistTemplate;
+        this.ref.detectChanges();
       }, error => {
         this.layoutUtilsService.showErrorNotification(error, MessageType.Create);
       });

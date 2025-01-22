@@ -68,7 +68,7 @@ export class ChecklistComponent extends BasePageComponent implements OnInit {
 
 	// Table fields
 	dataSource: ChecklistDataSource;
-	displayedColumns = ['edit',  'Checklist', 'batch', 'batch_date', 'is_batch_released'];
+	displayedColumns = ['edit',  'Checklist','key-title' ,'key', 'batch_date', 'is_batch_released'];
 	@ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 	@ViewChild('sort1', { static: true }) sort: MatSort;
 
@@ -98,9 +98,6 @@ export class ChecklistComponent extends BasePageComponent implements OnInit {
 
 	versionListTemplate:VersionChecklistTemplate[] = [];
 
-	loadingCSV: boolean = false;
-	loadingPDF: boolean = false;
-
 	InactivityTimeLimit: number = 60;
 	timer: any;
 	public checklistsFileter: ChecklistTemplate[] = [];
@@ -121,6 +118,8 @@ export class ChecklistComponent extends BasePageComponent implements OnInit {
 
 
 	private unsubscribe: Subject<any>;
+
+	private loadingStr:string;
 
 	constructor(
 		public store: Store<AppState>,
@@ -144,9 +143,10 @@ export class ChecklistComponent extends BasePageComponent implements OnInit {
 		this.title = this.translate.instant("MENU.CHECKLIST");
 		this.checklist = this.translate.instant("FILTERS.CHECKLIST");
 		this.versions = this.translate.instant("FILTERS.VERSIONS");
+		this.loadingStr = this.translate.instant("CHECKLISTS.LOADING");
 		this.loadListLastConditions();
-		this.initChecklist();
 		this.loadListChecklist();
+		this.initChecklist();
 		//this.checkTimer();
 	}
 
@@ -164,7 +164,6 @@ export class ChecklistComponent extends BasePageComponent implements OnInit {
 
 	initChecklist() {
 
-		this.loading = true;
 		this.paginator.page.pipe(
 			tap(() => {
 				this.loading = true;
@@ -220,8 +219,6 @@ export class ChecklistComponent extends BasePageComponent implements OnInit {
 			this.filter.versionChecklistTemplateId = null;
 		}
 
-
-
 		this.app.getAllChecklists(this.paginator.pageIndex + 1, this.paginator.pageSize, this.filter).subscribe((response: QueryResultsModel) => {
 			this.dataSource.paginatorTotalSubject.next(response.rowsCount);
 			this.dataSource.entitySubject.next(response.entities);
@@ -264,12 +261,26 @@ export class ChecklistComponent extends BasePageComponent implements OnInit {
 		this.loadChecklist();
 
 	}
-	getBatchIdValue(fields: FieldChecklist[]):string{
+	getKeyValue(fields: FieldChecklist[]):string{
+		if(!fields){
+			return this.loadingStr;
+		}
 		var field = fields.find(x=>x.fieldVersionChecklistTemplate.isKey);
 		if(!field){
-			return "BatchID";
+			return "KeyValue";
 		}
 		return field.value;
+
+	}
+	getKeyName(fields: FieldChecklist[]):string{
+		if(!fields){
+			return this.loadingStr;
+		}
+		var field = fields.find(x=>x.fieldVersionChecklistTemplate.isKey);
+		if(!field){
+			return "KeyTitle";
+		}
+		return field.fieldVersionChecklistTemplate.title;
 
 	}
 

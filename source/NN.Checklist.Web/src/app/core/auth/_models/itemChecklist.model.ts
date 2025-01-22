@@ -15,6 +15,8 @@ export class ItemChecklist extends BaseModel {
     stamp:string;
 
     itemChecklistId: number | null;
+    blockVersionTemplateId: number | null;
+
     itemVersionChecklistTemplateId: number;
     comments:string;
     signature:SignApproval;
@@ -29,18 +31,20 @@ export class ItemChecklist extends BaseModel {
         this.creationUserId = 0;
         this.stamp = "";
         this.comments = "";
+        this.blockVersionTemplateId = null;
         this.signature=null;
 
     }
     /**
      *
      */
-    constructor(_checklistId:number|null,_versionChecklistTemplateId:number,_stamp:string,_itemVersionChecklistTemplateId:number,_comments:string) {
+    constructor(_checklistId:number|null,_versionChecklistTemplateId:number,_blockVersionTemplateId:number,_stamp:string,_itemVersionChecklistTemplateId:number,_comments:string) {
         super();
         this.checklistId = _checklistId;
         this.versionChecklistTemplateId = _versionChecklistTemplateId;
         this.stamp = _stamp;
         this.itemVersionChecklistTemplateId =_itemVersionChecklistTemplateId;
+        this.blockVersionTemplateId = _blockVersionTemplateId;
         this.comments = _comments;
         
     }

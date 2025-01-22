@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Transactions;
 using System.Threading.Tasks;
+using System.Linq;
 
 #region Cabeçalho
 
@@ -86,9 +87,11 @@ namespace NN.Checklist.Domain.Entities
         [AttributeDescriptor("version_checklist_template_id", true)] 
         public System.Int64 VersionChecklistTemplateId { get; set; }
 
+        public bool IsDisabled { get; set; }
+
 
         public OptionFieldVersionChecklistTemplate OptionFieldVersionChecklistTemplate { get => GetManyToOneData<OptionFieldVersionChecklistTemplate>().Result; }
-        public IList<DependencyItemVersionChecklistTemplate>? DependentItemVersionChecklistTemplate { get => GetOneToManyData<DependencyItemVersionChecklistTemplate>().Result; }
+        public IList<DependencyItemVersionChecklistTemplate>? DependencyItemVersionChecklistTemplate { get => GetOneToManyData<DependencyItemVersionChecklistTemplate>().Result; }
         public IList<OptionItemVersionChecklistTemplate>? OptionItemsVersionChecklistTemplate { get => GetOneToManyData<OptionItemVersionChecklistTemplate>().Result; }
 
 
@@ -189,8 +192,108 @@ namespace NN.Checklist.Domain.Entities
         #endregion
 
         #region User Code
-                    
-        
+
+        public void CheckAvailability(IList<ItemChecklist>? items, IList<BlockVersionChecklistTemplate> blocksChecklistTemplate)
+        {
+            try
+            {
+
+            IsDisabled = CheckBlockDependency(blocksChecklistTemplate) || CheckItemDependency(items);
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+
+
+        }
+
+        private bool CheckItemDependency(IList<ItemChecklist>? items)
+        {
+            try
+            {
+                if (DependencyItemVersionChecklistTemplate == null)
+                {
+                    return false;
+                }
+
+            var itemsDependencies = DependencyItemVersionChecklistTemplate.ToList().Where(x => x.DependentItemVersionChecklistTemplateId.HasValue);
+            if (itemsDependencies.Any())
+            {
+                foreach (var itemDependecy in itemsDependencies)
+                {
+                    if (items == null)
+                    {
+                        return true;
+                    }
+
+                    var item = items.Where(x => x.ItemVersionchecklistTemplate.ItemVersionChecklistTemplateId == itemDependecy.DependentItemVersionChecklistTemplateId);
+
+                    if (!item.Any())
+                    {
+                        return true;
+                    }
+                      
+
+                }
+            }
+
+
+
+            return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+        private bool CheckBlockDependency(IList<BlockVersionChecklistTemplate> blocksChecklistTemplate)
+        {
+            try
+            {
+                if (DependencyItemVersionChecklistTemplate == null)
+                {
+                    return false;
+                }
+
+
+            var blocksDependencies = DependencyItemVersionChecklistTemplate.ToList().Where(x => x.DependentBlockVersionChecklistTemplateId.HasValue);
+            if (blocksDependencies.Any())
+            {
+
+                foreach (var blockD in blocksDependencies)
+                {
+                    var blockToCheck = blocksChecklistTemplate.Where(x => x.BlockVersionChecklistTemplateId == blockD.DependentBlockVersionChecklistTemplateId).FirstOrDefault();
+
+                    if (blockToCheck != null)
+                    {
+                        if ((!blockToCheck.IsCompleted.HasValue))
+                        {
+
+                            return true;
+                        }
+                        if (!(bool)blockToCheck.IsCompleted)
+                        {
+                            return true;
+                        }
+
+                    }
+                }
+
+            }
+            return false;
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
 
         #endregion
     }

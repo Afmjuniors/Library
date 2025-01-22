@@ -13,6 +13,9 @@ using System.Text;
 using System.Transactions;
 using System.Threading.Tasks;
 using NN.Checklist.Domain.DTO;
+using System.Linq;
+using static iTextSharp.text.pdf.AcroFields;
+using static iTextSharp.text.pdf.events.IndexEvents;
 
 #region Cabeçalho
 
@@ -32,16 +35,16 @@ namespace NN.Checklist.Domain.Entities
         {
 
         }
-        
+
         public BlockVersionChecklistTemplate(long? actionUserId, System.Int64? parentBlockVersionChecklistTemplateId, System.Int32 position, System.String title, System.Int64 versionChecklistTemplateId)
         {
 
             var auditTrail = ObjectFactory.GetSingleton<IAuditTrailService>();
 
-                        ParentBlockVersionChecklistTemplateId = parentBlockVersionChecklistTemplateId; 
-            Position = position; 
-            Title = title; 
-            VersionChecklistTemplateId = versionChecklistTemplateId; 
+            ParentBlockVersionChecklistTemplateId = parentBlockVersionChecklistTemplateId;
+            Position = position;
+            Title = title;
+            VersionChecklistTemplateId = versionChecklistTemplateId;
 
 
             using (var tran = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -63,22 +66,41 @@ namespace NN.Checklist.Domain.Entities
         [AttributeDescriptor("block_version_checklist_template_id", true, EnumValueRanges.Positive)]
         public System.Int64 BlockVersionChecklistTemplateId { get; internal set; }
 
-        [AttributeDescriptor("parent_block_version_checklist_template_id", false)] 
+        [AttributeDescriptor("parent_block_version_checklist_template_id", false)]
         public System.Int64? ParentBlockVersionChecklistTemplateId { get; set; }
 
-        [AttributeDescriptor("position", true)] 
+        [AttributeDescriptor("position", true)]
         public System.Int32 Position { get; set; }
 
-        [AttributeDescriptor("title", true)] 
+        [AttributeDescriptor("title", true)]
         public System.String Title { get; set; }
 
-        [AttributeDescriptor("version_checklist_template_id", true)] 
+        [AttributeDescriptor("version_checklist_template_id", true)]
         public System.Int64 VersionChecklistTemplateId { get; set; }
-        
+
+        public bool? IsCompleted { get; set; }
+        public bool IsDisabled { get; set; }
 
         public IList<DependencyBlockVersionChecklistTemplate>? DependentBlockVersionChecklistTemplate { get => GetOneToManyData<DependencyBlockVersionChecklistTemplate>().Result; }
 
-        public IList<ItemVersionChecklistTemplate> ItemsChecklistsTemplate { get => GetOneToManyData<ItemVersionChecklistTemplate>().Result; set { } }
+        private IList<ItemVersionChecklistTemplate> _itemsChecklistsTemplate;
+
+        public IList<ItemVersionChecklistTemplate> ItemsChecklistsTemplate
+        {
+            get
+            {
+                if (_itemsChecklistsTemplate == null)
+                {
+                    // Carregue os dados apenas quando necessário
+                    _itemsChecklistsTemplate = GetOneToManyData<ItemVersionChecklistTemplate>().Result;
+                }
+                return _itemsChecklistsTemplate;
+            }
+            set
+            {
+                _itemsChecklistsTemplate = value;
+            }
+        }
 
 
 
@@ -101,17 +123,17 @@ namespace NN.Checklist.Domain.Entities
                 }
                 else
                 {
-                                        if (String.IsNullOrEmpty(Title))
+                    if (String.IsNullOrEmpty(Title))
                     {
                         erros.Add(new DomainError("title", "TitleInvalid"));
                     }
-                    
+
                     if (Title != null && Title.Length > 150)
                     {
                         erros.Add(new DomainError("title", "TitleInvalidSize"));
                     }
-                    
-                    
+
+
                 }
 
                 if (erros.Count > 0)
@@ -132,25 +154,25 @@ namespace NN.Checklist.Domain.Entities
 
         }
 
-        
+
         #endregion
 
         #region Save
-        
-        
+
+
         public async Task Update(long? actionUserId, System.Int64? parentBlockVersionChecklistTemplateId, System.Int32 position, System.String title, System.Int64 versionChecklistTemplateId)
         {
             try
             {
                 var auditTrail = ObjectFactory.GetSingleton<IAuditTrailService>();
-                            ParentBlockVersionChecklistTemplateId = parentBlockVersionChecklistTemplateId; 
-            Position = position; 
-            Title = title; 
-            VersionChecklistTemplateId = versionChecklistTemplateId; 
+                ParentBlockVersionChecklistTemplateId = parentBlockVersionChecklistTemplateId;
+                Position = position;
+                Title = title;
+                VersionChecklistTemplateId = versionChecklistTemplateId;
 
 
                 using (var tran = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-                { 
+                {
                     if (await Validate(false))
                     {
                         await Update();
@@ -173,8 +195,149 @@ namespace NN.Checklist.Domain.Entities
         #endregion
 
         #region User Code
-                    
-        
+
+        public void CheckAvailability(IList<ItemChecklist>? items, IList<BlockVersionChecklistTemplate> blocksChecklistTemplate)
+        {
+            try
+            {
+                IsCompleted = IsBlockCompleted(items);
+
+                if (DependentBlockVersionChecklistTemplate != null)
+                {
+                    IsDisabled = CheckBlockDependency(blocksChecklistTemplate) || CheckItemDependency(items);
+                }
+                if (ItemsChecklistsTemplate != null)
+                {
+
+                    List<ItemVersionChecklistTemplate> lst = new List<ItemVersionChecklistTemplate>();
+                    foreach (var item in ItemsChecklistsTemplate)
+                    {
+                        if (IsDisabled)
+                        {
+                            item.IsDisabled = true;
+                        }
+                        else
+                        {
+                            item.CheckAvailability(items, blocksChecklistTemplate);
+
+                        }
+
+                        lst.Add(item);
+                    }
+                    _itemsChecklistsTemplate = lst;
+
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+
+        }
+
+        private bool CheckItemDependency(IList<ItemChecklist>? items)
+        {
+            try
+            {
+
+                var itemsDependencies = DependentBlockVersionChecklistTemplate.ToList().Where(x => x.DependentItemVersionChecklistTemplateId.HasValue);
+                if (itemsDependencies.Any())
+                {
+                    foreach (var itemDependecy in itemsDependencies)
+                    {
+                        if (items == null)
+                        {
+                            return true;
+                        }
+
+                        var item = items.Where(x => x.ItemVersionchecklistTemplate.ItemVersionChecklistTemplateId == itemDependecy.DependentItemVersionChecklistTemplateId);
+
+                        if (!item.Any())
+                        {
+                            return true;
+                        }
+
+                    }
+                }
+
+
+
+                return false;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+        private bool CheckBlockDependency(IList<BlockVersionChecklistTemplate> blocksChecklistTemplate)
+        {
+            var blocksDependencies = DependentBlockVersionChecklistTemplate.ToList().Where(x => x.DependentBlockVersionChecklistTemplateId.HasValue);
+            if (blocksDependencies.Any())
+            {
+
+                foreach (var blockD in blocksDependencies)
+                {
+                    var blockToCheck = blocksChecklistTemplate.Where(x => x.BlockVersionChecklistTemplateId == blockD.DependentBlockVersionChecklistTemplateId).FirstOrDefault();
+
+                    if (blockToCheck != null)
+                    {
+                        if ((!blockToCheck.IsCompleted.HasValue))
+                        {
+
+                            return true;
+                        }
+                        if (!(bool)blockToCheck.IsCompleted)
+                        {
+                            return true;
+                        }
+
+                    }
+                }
+
+            }
+            return false;
+        }
+        private bool IsBlockCompleted(IList<ItemChecklist>? items)
+        {
+            try
+            {
+
+
+
+                if (items == null)
+                {
+                    return false;
+                }
+                if(ItemsChecklistsTemplate == null)
+                {
+                    return true;
+                }
+                if (items.Any())
+                {
+                    foreach (var item in ItemsChecklistsTemplate)
+                    {
+                        var hasSignatures = items.Any(x => x.ItemVersionchecklistTemplate.ItemVersionChecklistTemplateId == item.ItemVersionChecklistTemplateId);
+                        if (!hasSignatures)
+                        {
+                            return false;
+                        }
+
+                    }
+                    return true;
+
+                }
+                return false;
+
+
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
         #endregion
     }
