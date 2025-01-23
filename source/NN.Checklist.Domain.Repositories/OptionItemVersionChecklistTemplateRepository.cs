@@ -24,6 +24,7 @@ namespace NN.Checklist.Domain.Repositories
             MapColumn("ItemVersionChecklistTemplateId", "item_version_checklist_template_id");
             MapColumn("Title", "title", 50);
             MapColumn("Value", "value");
+            MapRelationshipOneToMany("CancelledItemsVersionChecklistTemplate", "CANCELLED_ITEMS_VERSIONS_CHECKLISTS_TEMPLATES", "option_item_version_checklist_template_id");
             MapRelationshipManyToOne("ItemVersionChecklistTemplate", "ItemVersionChecklistTemplateId", "OPTIONS_ITEMS_VERSIONS_CHECKLISTS_TEMPLATES", "item_version_checklist_template_id" );
 
         }

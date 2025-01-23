@@ -11,11 +11,11 @@
 
 
 			<div *ngIf="!loading" class="form-group kt-form__group d-block">
-					<h2>{{ checklist.versionChecklistTemplate.checklistTemplateDescription + " - " +
-						checklist.versionChecklistTemplate.version }}</h2>
-						<div class="card">
+				<h2>{{ checklist.versionChecklistTemplate.checklistTemplateDescription + " - " +
+					checklist.versionChecklistTemplate.version }}</h2>
+				<div class="card">
 
-					
+
 					<h3>{{'NEW_EDIT_CHECKLIST.HEADER' | translate }}</h3>
 					<div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 16px;">
 						<div *ngFor="let field of checklist.versionChecklistTemplate.fieldsVersionChecklistsTemplate"
@@ -73,94 +73,100 @@
 						</div>
 					</div>
 
-					</div>
+				</div>
 
 
 
 
 				<div *ngFor="let block of checklistVersion.blocksChecklistTemplate" class="component-wrapper">
-			
-<div class="card">
 
-					<mat-table [dataSource]="block.itemsChecklistsTemplate" class="styled-table">
-						<!-- Column for Component Item Title -->
-						<ng-container matColumnDef="title">
-							<mat-header-cell *matHeaderCellDef style="flex: 2;">{{ block.title }}</mat-header-cell>
-							<mat-cell *matCellDef="let componentItem" style="flex: 2;">
-								<div
-									style="display: flex; gap: 8px; align-items: center; justify-content: space-between; width: 100%;">
+					<div class="card">
 
-									<!-- Título -->
-									<div>
-										{{ componentItem.title }}
+						<mat-table [dataSource]="block.itemsChecklistsTemplate" class="styled-table">
+							<!-- Column for Component Item Title -->
+							<ng-container matColumnDef="title">
+								<mat-header-cell *matHeaderCellDef style="flex: 2;">{{ block.title }}</mat-header-cell>
+								<mat-cell *matCellDef="let componentItem" style="flex: 2;">
+									<div
+										class="item-title" [ngClass]="{'disabled-title': componentItem.isDisabled}">
+
+										<!-- Título -->
+										<div>
+											{{ componentItem.title }}
+										</div>
+										<div *ngIf="componentItem.itemTypeId == 3 || componentItem.itemTypeId == 4 ">
+											<p>
+												<b [ngClass]="{'disabled-title': componentItem.isDisabled}">{{componentItem.optionsTitle}}</b>
+											</p>
+											<custom-checkbox-input [isSingle]="componentItem.itemTypeId == 3"
+												[isDisable]="componentItem.isDisabled"
+												[optionsItems]="componentItem.optionItemsVersionChecklistTemplate"
+												[items]="checklist.items"											
+												(valueChange)="onCheckboxValueChange($event,componentItem.itemVersionChecklistTemplateId)"
+												></custom-checkbox-input>
+										</div>
+
+
+										<!-- Checkboxes -->
+
 									</div>
-									<div *ngIf="componentItem.itemTypeId == 3 || componentItem.itemTypeId == 4 ">
-										<p>
-											<b>{{componentItem.optionsTitle}}</b>
-										</p>
-										<custom-checkbox-input [isSingle]="componentItem.itemTypeId == 3"
-											[isDisable]=false
-											[optionsField]="componentItem.optionItemsVersionChecklistTemplate"></custom-checkbox-input>
-									</div>
+								</mat-cell>
+
+							</ng-container>
 
 
-									<!-- Checkboxes -->
+							<!-- Column for Signature -->
+							<ng-container matColumnDef="signature" style="justify-content: end;">
+								<mat-header-cell *matHeaderCellDef
+									style="justify-content: center; flex:1">{{'NEW_EDIT_CHECKLIST.SIGNATURE' |
+									translate}}</mat-header-cell>
+								<mat-cell *matCellDef="let componentItem" style="justify-content: end; flex:1;">
+									<div style="display: flex;">
+										<div class="flex"
+											*ngIf="getInitials(componentItem.itemVersionChecklistTemplateId)">
+											<div style="display: flex; flex-direction: row; justify-content: center;">
+												<div
+													style="display: flex; flex-direction: column;  align-items: center; justify-content: center;">
+													<p style="margin: 0; padding: 0; font-size: 12px;">
+														{{
+														getDateSignature(componentItem.itemVersionChecklistTemplateId)}}
+													</p>
+													<p style="margin: 0; padding: 0; font-size: 12px;">
+														{{getInitials(componentItem.itemVersionChecklistTemplateId)}}
+													</p>
 
-								</div>
-							</mat-cell>
-
-						</ng-container>
-
-
-						<!-- Column for Signature -->
-						<ng-container matColumnDef="signature" style="justify-content: end;">
-							<mat-header-cell *matHeaderCellDef
-								style="justify-content: center; flex:1">{{'NEW_EDIT_CHECKLIST.SIGNATURE' | translate}}</mat-header-cell>
-							<mat-cell *matCellDef="let componentItem" style="justify-content: end; flex:1;">
-								<div style="display: flex;">
-									<div class="flex" *ngIf="getInitials(componentItem.itemVersionChecklistTemplateId)">
-										<div style="display: flex; flex-direction: row; justify-content: center;">
-											<div
-												style="display: flex; flex-direction: column;  align-items: center; justify-content: center;">
-												<p style="margin: 0; padding: 0; font-size: 12px;">
-													{{
-													getDateSignature(componentItem.itemVersionChecklistTemplateId)}}
-												</p>
-												<p style="margin: 0; padding: 0; font-size: 12px;">
-													{{getInitials(componentItem.itemVersionChecklistTemplateId)}}
-												</p>
-
+												</div>
+												<button mat-icon-button color="primary"
+													(click)="  viewSignatureHistory(componentItem.itemVersionChecklistTemplateId)">
+													<mat-icon matTooltip="">visibility</mat-icon>
+												</button>
 											</div>
-											<button mat-icon-button color="primary" (click)="  viewSignatureHistory(componentItem.itemVersionChecklistTemplateId)">
-												<mat-icon matTooltip="">visibility</mat-icon>
+										</div>
+										<div class="flex">
+											<button type="button" mat-raised-button color="primary"
+												[disabled]="componentItem.isDisabled"
+												(click)="sign(componentItem.itemVersionChecklistTemplateId, block.blockVersionChecklistTemplateId)">
+												{{ 'NEW_EDIT_CHECKLIST.SIGN' | translate }}
+											</button>
+										</div>
+										<div class="flex btn-space" *ngIf="componentItem.itemTypeId==2">
+											<button type="button" mat-raised-button color="primary"
+												[disabled]="componentItem.isDisabled"
+												(click)="sign(componentItem.itemVersionChecklistTemplateId, block.blockVersionChecklistTemplateId)">
+												{{ 'NEW_EDIT_CHECKLIST.SIGN' | translate }}
 											</button>
 										</div>
 									</div>
-									<div class="flex">
-										<button type="button" mat-raised-button color="primary"
-										[disabled]="componentItem.isDisabled"
-											(click)="sign(componentItem.itemVersionChecklistTemplateId, block.blockVersionChecklistTemplateId)">
-											{{ 'NEW_EDIT_CHECKLIST.SIGN' | translate }}
-										</button>
-									</div>
-									<div class="flex btn-space" *ngIf="componentItem.itemTypeId==2">
-										<button type="button" mat-raised-button color="primary"
-										[disabled]="componentItem.isDisabled"
-											(click)="sign(componentItem.itemVersionChecklistTemplateId, block.blockVersionChecklistTemplateId)">
-											{{ 'NEW_EDIT_CHECKLIST.SIGN' | translate }}
-										</button>
-									</div>
-								</div>
-							</mat-cell>
-						</ng-container>
+								</mat-cell>
+							</ng-container>
 
-						<!-- Header Row -->
-						<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+							<!-- Header Row -->
+							<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
 
-						<!-- Data Row -->
-						<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-					</mat-table>
-				</div>
+							<!-- Data Row -->
+							<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+						</mat-table>
+					</div>
 
 
 				</div>

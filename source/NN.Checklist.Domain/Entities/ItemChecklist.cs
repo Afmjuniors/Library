@@ -71,6 +71,8 @@ namespace NN.Checklist.Domain.Entities
             Stamp = stamp;
 
 
+
+
             using (var tran = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
                 if (Validate(true).Result)
@@ -107,11 +109,13 @@ namespace NN.Checklist.Domain.Entities
 
         [AttributeDescriptor("stamp", true)] 
         public System.String Stamp { get; set; }
+        public bool IsRejected { get; set; } = false;
 
         public Checklist Checklist { get => GetManyToOneData<Checklist>().Result; }
 
         public User CreationUser { get => GetManyToOneData<User>().Result; }
 
+         public IList<OptionItemChecklist> OptionsItemsChecklist { get=> GetOneToManyData<OptionItemChecklist>().Result; }
         public ItemVersionChecklistTemplate ItemVersionchecklistTemplate { get => GetManyToOneData<ItemVersionChecklistTemplate>().Result; }
 
 

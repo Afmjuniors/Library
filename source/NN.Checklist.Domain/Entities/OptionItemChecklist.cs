@@ -37,10 +37,10 @@ namespace NN.Checklist.Domain.Entities
 
             var auditTrail = ObjectFactory.GetSingleton<IAuditTrailService>();
 
-                        CreationTimestamp = creationTimestamp; 
+            CreationTimestamp = creationTimestamp; 
             CreationUserId = creationUserId; 
             ItemChecklistId = itemChecklistId; 
-            OptionItemVersionChecklistTemplateId = optionItemVersionChecklistTemplateId; 
+            OptionItemVersionChecklistTemplateId = optionItemVersionChecklistTemplateId;
 
 
             using (var tran = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -73,10 +73,9 @@ namespace NN.Checklist.Domain.Entities
 
         [AttributeDescriptor("option_item_version_checklist_template_id", true)] 
         public System.Int64 OptionItemVersionChecklistTemplateId { get; set; }
+  
 
         public User CreationUser { get => GetManyToOneData<User>().Result; }
-
-        public ItemChecklist ItemChecklist { get => GetManyToOneData<ItemChecklist>().Result; }
 
         public OptionItemVersionChecklistTemplate OptionItemVersionChecklistTemplate { get => GetManyToOneData<OptionItemVersionChecklistTemplate>().Result; }
 

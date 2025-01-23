@@ -87,7 +87,8 @@ namespace NN.Checklist.Domain.Entities
         [AttributeDescriptor("version_checklist_template_id", true)] 
         public System.Int64 VersionChecklistTemplateId { get; set; }
 
-        public bool IsDisabled { get; set; }
+        public bool IsDisabled { get; set; } = false;
+
 
 
         public OptionFieldVersionChecklistTemplate OptionFieldVersionChecklistTemplate { get => GetManyToOneData<OptionFieldVersionChecklistTemplate>().Result; }

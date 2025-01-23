@@ -183,6 +183,12 @@ namespace NN.Checklist.Domain.Services
             }
 
             var newItem = new ItemChecklist(auth.UserId, checklist.ChecklistId, item.Comments, DateTime.Now, auth.UserId, item.ItemVersionChecklistTemplateId, item.Stamp);
+            foreach (var optionItem in item.OptionsItemsChecklist)
+            {
+                var optionVersionTemplate = await OptionItemVersionChecklistTemplate.Repository.Get(optionItem.OptionItemVersionChecklistTemplateId);
+;                new OptionItemChecklist(auth.UserId, DateTime.Now, auth.UserId, newItem.ItemChecklistId, optionItem.OptionItemVersionChecklistTemplateId);
+            }
+
             var ck = await Entities.Checklist.Repository.Get(checklist.ChecklistId);
              ck.CheckAvailability();
             var dto = ck.Transform<ChecklistDTO>();
@@ -195,6 +201,7 @@ namespace NN.Checklist.Domain.Services
 
             return dto;
         }
+        
 
 
         public async Task<List<SignApprovalDTO>> ListAllSignuture(AuthenticatedUserDTO auth, long checklistId, long itemTemplateId)

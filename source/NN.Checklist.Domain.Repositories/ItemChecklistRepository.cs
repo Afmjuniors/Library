@@ -35,6 +35,7 @@ namespace NN.Checklist.Domain.Repositories
             MapRelationshipManyToOne("Checklist", "ChecklistId", "ITEMS_CHECKLISTS", "checklist_id" );
             MapRelationshipManyToOne("CreationUser", "CreationUserId", "ITEMS_CHECKLISTS", "creation_user_id" );
             MapRelationshipManyToOne("ItemVersionchecklistTemplate", "ItemVersionchecklistTemplateId", "ITEMS_CHECKLISTS", "item_version_checklist_template_id" );
+            MapRelationshipOneToMany("OptionsItemsChecklist", "OPTIONS_ITEMS_CHECKLISTS", "item_checklist_id");
 
         }
 

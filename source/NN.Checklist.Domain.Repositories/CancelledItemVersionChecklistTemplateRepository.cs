@@ -21,9 +21,8 @@ namespace NN.Checklist.Domain.Repositories
         {
             MapTable("CANCELLED_ITEMS_VERSIONS_CHECKLISTS_TEMPLATES");
             MapPrimaryKey("CancelledItemVersionChecklistTemplateId", "cancelled_item_version_checklist_template_id",false,0);
-            MapColumn("ItemVersionChecklistTemplateId", "item_version_checklist_template_id");
+            MapColumn("OptionItemVersionChecklistTemplateId", "option_item_version_checklist_template_id");
             MapColumn("TargetItemVersionChecklistTemplateId", "target_item_version_checklist_template_id");
-            MapRelationshipManyToOne("ItemVersionChecklistTemplate", "ItemVersionChecklistTemplateId", "CANCELLED_ITEMS_VERSIONS_CHECKLISTS_TEMPLATES", "item_version_checklist_template_id" );
             MapRelationshipManyToOne("TargetItemVersionChecklistTemplate", "TargetItemVersionChecklistTemplateId", "CANCELLED_ITEMS_VERSIONS_CHECKLISTS_TEMPLATES", "target_item_version_checklist_template_id" );
 
         }

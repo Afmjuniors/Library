@@ -1,3 +1,6 @@
+
+$color:rgb(212, 209, 209);
+
 .btn-space{
     padding-left: 16px;
 }
@@ -7,4 +10,15 @@
     border-radius: 10px;
     padding: 8px;
 	margin-bottom: 15px;
+}
+.item-title{
+    display: flex; 
+    gap: 8px; 
+    align-items: center; 
+    justify-content: space-between; 
+    width: 100%;
+   
+}
+.disabled-title{
+    color:$color;
 }

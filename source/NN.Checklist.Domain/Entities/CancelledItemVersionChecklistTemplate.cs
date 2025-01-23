@@ -32,12 +32,12 @@ namespace NN.Checklist.Domain.Entities
 
         }
         
-        public CancelledItemVersionChecklistTemplate(long? actionUserId, System.Int64 itemVersionChecklistTemplateId, System.Int64 targetItemVersionChecklistTemplateId)
+        public CancelledItemVersionChecklistTemplate(long? actionUserId, System.Int64 optionItemVersionChecklistTemplateId, System.Int64 targetItemVersionChecklistTemplateId)
         {
 
             var auditTrail = ObjectFactory.GetSingleton<IAuditTrailService>();
 
-                        ItemVersionChecklistTemplateId = itemVersionChecklistTemplateId; 
+                        OptionItemVersionChecklistTemplateId = optionItemVersionChecklistTemplateId; 
             TargetItemVersionChecklistTemplateId = targetItemVersionChecklistTemplateId; 
 
 
@@ -60,13 +60,12 @@ namespace NN.Checklist.Domain.Entities
         [AttributeDescriptor("cancelled_item_version_checklist_template_id", true, EnumValueRanges.Positive)]
         public System.Int64 CancelledItemVersionChecklistTemplateId { get; set; }
 
-        [AttributeDescriptor("item_version_checklist_template_id", true)] 
-        public System.Int64 ItemVersionChecklistTemplateId { get; set; }
+        [AttributeDescriptor("option_item_version_checklist_template_id", true)] 
+        public System.Int64 OptionItemVersionChecklistTemplateId { get; set; }
 
         [AttributeDescriptor("target_item_version_checklist_template_id", true)] 
         public System.Int64 TargetItemVersionChecklistTemplateId { get; set; }
 
-        public ItemVersionChecklistTemplate ItemVersionChecklistTemplate { get => GetManyToOneData<ItemVersionChecklistTemplate>().Result; }
 
         public ItemVersionChecklistTemplate TargetItemVersionChecklistTemplate { get => GetManyToOneData<ItemVersionChecklistTemplate>().Result; }
 
@@ -118,12 +117,12 @@ namespace NN.Checklist.Domain.Entities
         #region Save
         
         
-        public async Task Update(long? actionUserId, System.Int64 itemVersionChecklistTemplateId, System.Int64 targetItemVersionChecklistTemplateId)
+        public async Task Update(long? actionUserId, System.Int64 optionItemVersionChecklistTemplateId, System.Int64 targetItemVersionChecklistTemplateId)
         {
             try
             {
                 var auditTrail = ObjectFactory.GetSingleton<IAuditTrailService>();
-                            ItemVersionChecklistTemplateId = itemVersionChecklistTemplateId; 
+                OptionItemVersionChecklistTemplateId = optionItemVersionChecklistTemplateId; 
             TargetItemVersionChecklistTemplateId = targetItemVersionChecklistTemplateId; 
 
 

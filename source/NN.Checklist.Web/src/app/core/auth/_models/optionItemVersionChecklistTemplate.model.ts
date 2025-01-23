@@ -1,4 +1,5 @@
 import { BaseModel } from '../../_base/crud';
+import { CancelledItemVersionChecklistTemplate } from './CancelledItemVersionChecklistTemplate.model';
 
 
 export class OptionItemVersionChecklistTemplate extends BaseModel {
@@ -8,6 +9,7 @@ export class OptionItemVersionChecklistTemplate extends BaseModel {
     value: string;
     title: string;
     checked:boolean;
+    cancelledItemsVersionChecklistTemplate:CancelledItemVersionChecklistTemplate[];
 
     clear(): void {
 
@@ -16,8 +18,8 @@ export class OptionItemVersionChecklistTemplate extends BaseModel {
         this.title = "";
         this.value = "";
         this.checked= false;
+        this.cancelledItemsVersionChecklistTemplate = null;
 
     }
 }
-
 

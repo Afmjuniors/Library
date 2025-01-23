@@ -13,8 +13,10 @@ export class CheckboxInputComponent implements OnInit {
 
     @Input() public isSingle: boolean = false ;
     @Input() public isDisable: boolean = false; // Habilitar/desabilitar combobox
-    @Input() public optionsField: OptionFieldVersionChecklistTemplate[] | OptionItemVersionChecklistTemplate[] = [];
+    @Input() public optionsItems:  OptionItemVersionChecklistTemplate[] = [];
     @Input() public optionsSelected: ItemChecklist[] = [];
+    @Input() public items:ItemChecklist[];
+
 
 
     @Input() public isMandatory: boolean=false;
@@ -26,16 +28,22 @@ export class CheckboxInputComponent implements OnInit {
 
     onCheckboxChange(selectedOption: any, index: number): void {
         if (this.isSingle) {
-          this.optionsField.forEach((option, i) => {
-            option.checked = i === index; // Apenas o selecionado permanece marcado
+          this.optionsItems.forEach((option, i) => {
+            if(option.checked){
+              if(i !== index){
+                option.checked = false;
+              }
+            }
+           
           });
         }
-        this.valueChange.emit(this.optionsField);
+        const selectedItems = this.optionsItems.filter((option: OptionItemVersionChecklistTemplate) => option.checked);
+        this.valueChange.emit(selectedItems);
       }
 
       checkSelected(){
         if(this.optionsSelected.length>0){
-            this.optionsField.forEach((option, i) => {
+            this.optionsItems.forEach((option, i) => {
              var f = this.optionsSelected.find(x=>option.itemVersionChecklistTemplateId == x.itemVersionChecklistTemplateId);
                 if(f)
                 option.checked = true; // Apenas o selecionado permanece marcado
@@ -43,8 +51,26 @@ export class CheckboxInputComponent implements OnInit {
         }
       }
 
+
+
     ngOnInit() {
         this.checkSelected();
+        if(this.items){
+          const item = this.items.find(x=>x.itemVersionChecklistTemplate.itemVersionChecklistTemplateId == this.optionsItems[0].itemVersionChecklistTemplateId)
+              if(!item){
+                return;
+              }
+          item.optionsItemsChecklist.forEach((op,i)=>{                
+                this.optionsItems.map(x=>{
+                if(x.optionItemVersionChecklistTemplateId == op.optionItemVersionChecklistTemplateId){
+                x.checked = true;
+              }
+            }
+          )
+          
+        })
+    
+        }
 
     }
 

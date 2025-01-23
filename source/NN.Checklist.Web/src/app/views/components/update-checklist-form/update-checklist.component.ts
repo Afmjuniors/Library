@@ -23,6 +23,7 @@ import { SignApproval } from '../../../core/auth/_models/signAprovval.model';
 import { SignatureHistoryComponent } from '../signature-history/signature-history.component';
 import { BlockVersionChecklistTemplate } from '../../../core/auth/_models/blockVersionChecklistTemplate.model';
 import { DependencyItemVersionChecklistTemplate } from '../../../core/auth/_models/dependencyItemVersionChecklistTemplate.model';
+import { OptionItemVersionChecklistTemplate } from '../../../core/auth/_models/optionItemVersionChecklistTemplate.model';
 
 const DATE_TIME_FORMAT = {
   parse: {
@@ -61,6 +62,9 @@ export class UpdateCheklistForm implements OnInit {
   displayedColumns = ['title', 'signature'];
   displayedColumnsCell = ['all'];
 
+  selectedOptions: { [key: string]: OptionItemVersionChecklistTemplate[] } = {};
+
+
   public title: string;
   public checklistDropDown: string;
   public versions: string;
@@ -86,10 +90,11 @@ export class UpdateCheklistForm implements OnInit {
     this.title = this.translate.instant('MENU.CHECKLIST');
     this.checklistDropDown = this.translate.instant('FILTERS.CHECKLIST');
     this.versions = this.translate.instant('FILTERS.VERSIONS');
-   
-   
+
+
 
   }
+
 
 
 
@@ -101,20 +106,19 @@ export class UpdateCheklistForm implements OnInit {
 
 
 
-getValueField(idVersionTemplate):string{
-if(this.checklist.fields){
-  var val = this.checklist.fields.find(x=>x.fieldVersionChecklistTemplateId == idVersionTemplate);
-  var vF = this.checklistVersion.fieldsVersionChecklistsTemplate.find(x=>x.fieldVersionChecklistTemplateId == idVersionTemplate)
-  if(val){
-    if(vF.fieldDataTypeId==4)
-    {
-      return vF.optionFieldVersionChecklistTemplate.find(x=>x.optionFieldVersionChecklistTemplateId == val.optionFieldVersionChecklistTemplateId).title;
+  getValueField(idVersionTemplate): string {
+    if (this.checklist.fields) {
+      var val = this.checklist.fields.find(x => x.fieldVersionChecklistTemplateId == idVersionTemplate);
+      var vF = this.checklistVersion.fieldsVersionChecklistsTemplate.find(x => x.fieldVersionChecklistTemplateId == idVersionTemplate)
+      if (val) {
+        if (vF.fieldDataTypeId == 4) {
+          return vF.optionFieldVersionChecklistTemplate.find(x => x.optionFieldVersionChecklistTemplateId == val.optionFieldVersionChecklistTemplateId).title;
+        }
+        return val.value
+      }
     }
-    return val.value
+    return ""
   }
-}
-  return ""
-}
 
 
 
@@ -125,15 +129,27 @@ if(this.checklist.fields){
     return true;
   }
 
+  onCheckboxValueChange(updatedOptions: OptionItemVersionChecklistTemplate[], itemVersionChecklistTemplateId:number): void {
+
+    const key = `${itemVersionChecklistTemplateId}`;
+    this.selectedOptions[key] = [...updatedOptions];
+    console.log(this.selectedOptions);
+  }
+
+
+
+
+
   valueChange(value) {
+    console.log(value);
     this.remainingText = 8000 - value;
   }
 
-  sign(idItemTemplate: number | null,  blockTemplateId:number) {
+  sign(idItemTemplate: number | null, blockTemplateId: number) {
     if (!idItemTemplate) {
       return;
     }
-let hasSignuture = false;
+    let hasSignuture = false;
     if (!this.validate()) {
       return;
     }
@@ -142,9 +158,9 @@ let hasSignuture = false;
       this.layoutUtilsService.showErrorNotification(this.translate.instant('MISSING_TYPE_checklist_RECORD'), MessageType.Create);
       return;
     }
-    if(this.checklist.items!=null){
+    if (this.checklist.items != null) {
 
-      if(this.checklist.items.find(x => x.itemVersionChecklistTemplate.itemVersionChecklistTemplateId == idItemTemplate)){
+      if (this.checklist.items.find(x => x.itemVersionChecklistTemplate.itemVersionChecklistTemplateId == idItemTemplate)) {
         hasSignuture = true;
       }
     }
@@ -152,7 +168,7 @@ let hasSignuture = false;
     this.dialog.open(SignatureComponent, {
       minHeight: '300px',
       width: '400px',
-      data: {result:true,hasComment:hasSignuture},
+      data: { result: true, hasComment: hasSignuture },
     }).afterClosed()
       .subscribe(x => {
         if (x != '' && x != undefined) {
@@ -163,22 +179,23 @@ let hasSignuture = false;
 
 
 
-  viewSignatureHistory(itemTemplateId:number){
-    const dialogRef = this.dialog.open(SignatureHistoryComponent, 
+  viewSignatureHistory(itemTemplateId: number) {
+    const dialogRef = this.dialog.open(SignatureHistoryComponent,
 
       {
         width: '400px',
-        data:{checklistId:this.checklist.checklistId, itemTemplateId:itemTemplateId }
+        data: { checklistId: this.checklist.checklistId, itemTemplateId: itemTemplateId }
       }).afterClosed()
 
-    
-  
+
+
   }
 
-  saveSignItem(x: any, idItemTemplate: number, blockTemplateId:number) {
+  saveSignItem(x: any, idItemTemplate: number, blockTemplateId: number) {
     let comment = x.comments;
+   const optionsDto = this.selectedOptions[idItemTemplate];
 
-    const newItem = new ItemChecklist(this.checklist.checklistId, this.checklistVersion.checklistTemplateId,blockTemplateId,  x.stamp, idItemTemplate, comment);
+    const newItem = new ItemChecklist(this.checklist.checklistId, this.checklistVersion.checklistTemplateId, optionsDto, blockTemplateId, x.stamp, idItemTemplate, comment);
 
     this.app.signItemChecklist(newItem, comment)
       .subscribe(res => {
@@ -219,10 +236,10 @@ let hasSignuture = false;
         if (a.signature.dthSign < b.signature.dthSign) return 1; // a vem antes de b
         if (a.signature.dthSign > b.signature.dthSign) return -1;  // a vem depois de b
         return 0; // a e b são iguais
-    });
+      });
       const item = arr.find(x => x.itemVersionChecklistTemplate.itemVersionChecklistTemplateId == idItem);
       if (item) {
-        if(item.signature){
+        if (item.signature) {
 
           return item.signature.initials;
         }
@@ -237,12 +254,12 @@ let hasSignuture = false;
         if (a.signature.dthSign < b.signature.dthSign) return 1; // a vem antes de b
         if (a.signature.dthSign > b.signature.dthSign) return -1;  // a vem depois de b
         return 0; // a e b são iguais
-    });
+      });
       const item = arr.find(x => x.itemVersionChecklistTemplate.itemVersionChecklistTemplateId == idItem);
       if (item) {
-        if(item.signature){
-        return item.signature.dthSignFormatted;
-      }
+        if (item.signature) {
+          return item.signature.dthSignFormatted;
+        }
       }
     }
     return '';

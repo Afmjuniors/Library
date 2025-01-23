@@ -70,6 +70,8 @@ namespace NN.Checklist.Domain.Entities
         [AttributeDescriptor("value", true)] 
         public System.Int32 Value { get; set; }
 
+        public IList<CancelledItemVersionChecklistTemplate>? CancelledItemsVersionChecklistTemplate { get => GetOneToManyData<CancelledItemVersionChecklistTemplate>().Result; }
+
         public ItemVersionChecklistTemplate ItemVersionChecklistTemplate { get => GetManyToOneData<ItemVersionChecklistTemplate>().Result; }
 
 

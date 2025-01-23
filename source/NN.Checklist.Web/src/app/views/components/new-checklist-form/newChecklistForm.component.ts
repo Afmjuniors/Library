@@ -249,7 +249,7 @@ if(this.checklist.items){
 
   saveSignItem(x: any, idItemTemplate: number, blockTemplateId:number) {
     const comment = x.comments;
-    const newItem = new ItemChecklist(this.checklist.checklistId, this.checklistVersion.checklistTemplateId,blockTemplateId, x.stamp, idItemTemplate, comment);
+    const newItem = new ItemChecklist(this.checklist.checklistId,this.checklistVersion.checklistTemplateId, null,blockTemplateId, x.stamp, idItemTemplate, comment);
 
     this.app.signItemChecklist(newItem, comment)
       .subscribe(res => {
