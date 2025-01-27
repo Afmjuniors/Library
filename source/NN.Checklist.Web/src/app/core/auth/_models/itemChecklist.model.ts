@@ -17,6 +17,7 @@ export class ItemChecklist extends BaseModel {
     optionsItemsChecklist: OptionItemVersionChecklistTemplate[];
     itemChecklistId: number | null;
     blockVersionTemplateId: number | null;
+    isRejected:boolean | null;
 
     itemVersionChecklistTemplateId: number;
     comments:string;
@@ -39,6 +40,7 @@ export class ItemChecklist extends BaseModel {
         this.blockVersionTemplateId = null;
         this.signature=null;
         this.optionsItemsChecklist = null;
+        this.isRejected = null;
 
     }
     /**

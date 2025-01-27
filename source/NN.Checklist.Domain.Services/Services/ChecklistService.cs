@@ -183,28 +183,48 @@ namespace NN.Checklist.Domain.Services
             }
 
             var newItem = new ItemChecklist(auth.UserId, checklist.ChecklistId, item.Comments, DateTime.Now, auth.UserId, item.ItemVersionChecklistTemplateId, item.Stamp);
-            foreach (var optionItem in item.OptionsItemsChecklist)
+            if (item.OptionsItemsChecklist!=null)
             {
-                var optionVersionTemplate = await OptionItemVersionChecklistTemplate.Repository.Get(optionItem.OptionItemVersionChecklistTemplateId);
-;                new OptionItemChecklist(auth.UserId, DateTime.Now, auth.UserId, newItem.ItemChecklistId, optionItem.OptionItemVersionChecklistTemplateId);
+                foreach (var optionItem in item.OptionsItemsChecklist)
+                {
+                    var option = new OptionItemChecklist(auth.UserId, DateTime.Now, auth.UserId, newItem.ItemChecklistId, optionItem.OptionItemVersionChecklistTemplateId);
+                    if(optionItem.CancelledItemsVersionChecklistTemplate != null)
+                    {
+                        foreach (var cancelledItem in optionItem.CancelledItemsVersionChecklistTemplate)
+                        {
+                            if (checklist.Items != null)
+                            {
+                                var itemToReject = checklist.Items
+                                    .Where(x => x.ItemVersionchecklistTemplateId == cancelledItem.TargetItemVersionChecklistTemplateId)
+                                    .OrderByDescending(x=>x.CreationTimestamp)
+                                    .FirstOrDefault();
+                                if(itemToReject != null)
+                                {
+                                 await itemToReject.RejectItem();
+
+                                }
+
+                            }
+                        }
+                    }
+                }
             }
 
-            var ck = await Entities.Checklist.Repository.Get(checklist.ChecklistId);
-             ck.CheckAvailability();
-            var dto = ck.Transform<ChecklistDTO>();
+            checklist.CheckAvailability();
+            var dto = checklist.Transform<ChecklistDTO>();
             foreach (var item1 in dto.Items)
             {
                 item1.Signature = await accessControlService.ReadSignature(item1.Stamp);
             }
 
-            
+
 
             return dto;
         }
-        
 
 
-        public async Task<List<SignApprovalDTO>> ListAllSignuture(AuthenticatedUserDTO auth, long checklistId, long itemTemplateId)
+
+        public async Task<List<HistorySignatureDTO>> ListAllSignuture(AuthenticatedUserDTO auth, long checklistId, long itemTemplateId)
         {
             try
             {
@@ -212,12 +232,19 @@ namespace NN.Checklist.Domain.Services
 
                 var accessControlService = ObjectFactory.GetSingleton<IAccessControlService>();
                 var res = await ItemChecklist.Repository.ListAllItensByChecklistIdAndIdTemplate(checklistId, itemTemplateId);
-                List<SignApprovalDTO> lst = new List<SignApprovalDTO>();
+                List<HistorySignatureDTO> lst = new List<HistorySignatureDTO>();
                 foreach (var item in res)
                 {
                     var signature = await accessControlService.ReadSignature(item.Stamp);
                     signature.Comments = item.Comments;
-                    lst.Add(signature);
+                    var history = new HistorySignatureDTO()
+                    {
+                        Signature = signature,
+                        IsRejected= item.IsRejected,
+                        OptionsSelected = item.OptionsItemsChecklist!=null?item.OptionsItemsChecklist.TransformList<OptionItemChecklistDTO>().ToList():[],
+                        OptionsAvalible = item.ItemVersionchecklistTemplate.OptionItemsVersionChecklistTemplate!=null? item.ItemVersionchecklistTemplate.OptionItemsVersionChecklistTemplate.TransformList<OptionItemVersionChecklistTemplateDTO>().ToList():[]
+                    };
+                    lst.Add(history);
 
                 }
                 return lst;
@@ -243,6 +270,6 @@ namespace NN.Checklist.Domain.Services
             return ckLst;
         }
 
-       
+
     }
 }

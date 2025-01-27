@@ -318,7 +318,7 @@ namespace NN.Checklist.Domain.Entities
                 {
                     foreach (var item in ItemsChecklistsTemplate)
                     {
-                        var hasSignatures = items.Any(x => x.ItemVersionchecklistTemplate.ItemVersionChecklistTemplateId == item.ItemVersionChecklistTemplateId && !x.IsRejected);
+                        var hasSignatures = items.Any(x => x.ItemVersionchecklistTemplate.ItemVersionChecklistTemplateId == item.ItemVersionChecklistTemplateId && (!x.IsRejected.HasValue || !x.IsRejected.Value ));
                         if (!hasSignatures)
                         {
                             return false;

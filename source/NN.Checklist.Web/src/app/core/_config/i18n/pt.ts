@@ -300,7 +300,8 @@ export const locale = {
 				INITIALS:"Usuário",
 				DATE:"Data da assinatura",
 				COMMENTS:"Comentário",
-				CLOSE:"FECHAR"
+				CLOSE:"FECHAR",
+				SELECTED:"Opções"
 			}
 
 

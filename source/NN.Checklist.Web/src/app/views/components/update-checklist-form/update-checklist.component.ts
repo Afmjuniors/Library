@@ -24,6 +24,7 @@ import { SignatureHistoryComponent } from '../signature-history/signature-histor
 import { BlockVersionChecklistTemplate } from '../../../core/auth/_models/blockVersionChecklistTemplate.model';
 import { DependencyItemVersionChecklistTemplate } from '../../../core/auth/_models/dependencyItemVersionChecklistTemplate.model';
 import { OptionItemVersionChecklistTemplate } from '../../../core/auth/_models/optionItemVersionChecklistTemplate.model';
+import { ItemVersionChecklistTemplate } from '../../../core/auth/_models/itemVersionChecklistTemplate.model';
 
 const DATE_TIME_FORMAT = {
   parse: {
@@ -63,6 +64,8 @@ export class UpdateCheklistForm implements OnInit {
   displayedColumnsCell = ['all'];
 
   selectedOptions: { [key: string]: OptionItemVersionChecklistTemplate[] } = {};
+  optionsDirtys: { [key: string]: boolean } = {};
+
 
 
   public title: string;
@@ -85,6 +88,8 @@ export class UpdateCheklistForm implements OnInit {
     this.checklist = data;
     this.checklistVersion = this.data.versionChecklistTemplate;
   }
+
+
 
   ngOnInit() {
     this.title = this.translate.instant('MENU.CHECKLIST');
@@ -133,7 +138,27 @@ export class UpdateCheklistForm implements OnInit {
 
     const key = `${itemVersionChecklistTemplateId}`;
     this.selectedOptions[key] = [...updatedOptions];
+    this.optionsDirtys[key] = true;
     console.log(this.selectedOptions);
+  }
+ 
+  checkBtnAvaliability(item:ItemVersionChecklistTemplate):boolean{
+    if(item.isDisabled){
+      return true;
+    }else{
+      if(item.optionItemsVersionChecklistTemplate ){
+
+        if(this.optionsDirtys[item.itemVersionChecklistTemplateId]){
+          
+          return false;
+        }else{
+          return true;
+        }
+      }
+      return false;
+    }
+
+
   }
 
 
@@ -183,7 +208,7 @@ export class UpdateCheklistForm implements OnInit {
     const dialogRef = this.dialog.open(SignatureHistoryComponent,
 
       {
-        width: '400px',
+        width: '600px',
         data: { checklistId: this.checklist.checklistId, itemTemplateId: itemTemplateId }
       }).afterClosed()
 
@@ -204,30 +229,35 @@ export class UpdateCheklistForm implements OnInit {
         }
         this.checklist = res;
         this.checklistVersion = this.checklist.versionChecklistTemplate;
+        if(optionsDto){
+          this.optionsDirtys[idItemTemplate] = false;
+        }
         this.ref.detectChanges();
       }, error => {
         this.layoutUtilsService.showErrorNotification(error, MessageType.Create);
       });
   }
 
-  saveFieldChecklist() {
-    for (let index = 0; index < this.checklistVersion.fieldsVersionChecklistsTemplate.length; index++) {
-      const element = this.checklistVersion.fieldsVersionChecklistsTemplate[index];
-      const control = this.fieldForm.controls['name' + element.fieldVersionChecklistTemplateId];
-      this.checklist.fields = this.checklist.fields || [];
-      const field = new FieldChecklist();
 
-      field.checklistId = this.checklist.checklistId;
-      this.checklist.versionChecklistTemplateId = element.versionChecklistTemplateId;
-      field.fieldChecklistId = null; // TODO: Handle properly
-      field.fieldVersionChecklistTemplateId = element.fieldVersionChecklistTemplateId;
-      field.optionFieldVersionChecklistTemplateId = element.optionFieldVersionChecklistTemplate != null ? element.optionFieldVersionChecklistTemplate.find(x => x.value == control.value).optionFieldVersionChecklistTemplateId : null;
-      field.value = control.value;
 
-      this.checklist.fields.push(field);
+  getColorRejected(idItemVersionTemplate: number):string{
+    if (this.checklist.items) {
+      const arr = this.checklist.items.sort((a, b) => {
+        if (a.signature.dthSign < b.signature.dthSign) return 1; // a vem antes de b
+        if (a.signature.dthSign > b.signature.dthSign) return -1;  // a vem depois de b
+        return 0; // a e b são iguais
+      });
+      const item = arr.find(x => x.itemVersionChecklistTemplate.itemVersionChecklistTemplateId == idItemVersionTemplate);
+      if (item) {
+        if (item.isRejected) {
+
+          return 'warn';
+        }
+      }
     }
+    return 'primary';
   }
-
+  
 
 
   getInitials(idItem: number): string {

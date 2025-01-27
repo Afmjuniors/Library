@@ -227,34 +227,7 @@ namespace NN.Checklist.Domain.Entities
             }
         }
         
-        public void CheckRejectedItems(long optionitemId)
-        {
-            foreach (var block in VersionChecklistTemplate.BlocksChecklistTemplate)
-            {
-                foreach (var item in block.ItemsChecklistsTemplate)
-                {
-                    foreach (var option in item.OptionItemsVersionChecklistTemplate)
-                    {
-                        foreach (var cancelledItem in option.CancelledItemsVersionChecklistTemplate)
-                        {
-                            if(cancelledItem.OptionItemVersionChecklistTemplateId == optionitemId)
-                            {
-                                foreach (var item1 in Items)
-                                {
-                                    if(item1.ItemVersionchecklistTemplateId == cancelledItem.TargetItemVersionChecklistTemplateId)
-                                    {
-                                        item1.IsRejected = true;
-                                    }
-                                }
-                            }
-                        }
 
-                    }
-
-                }
-            }
-
-        }
 
         #endregion
     }

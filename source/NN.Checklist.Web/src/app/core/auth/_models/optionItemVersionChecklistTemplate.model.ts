@@ -1,5 +1,5 @@
 import { BaseModel } from '../../_base/crud';
-import { CancelledItemVersionChecklistTemplate } from './CancelledItemVersionChecklistTemplate.model';
+import { CancelledItemVersionChecklistTemplate } from './cancelledItemVersionChecklistTemplate.model';
 
 
 export class OptionItemVersionChecklistTemplate extends BaseModel {

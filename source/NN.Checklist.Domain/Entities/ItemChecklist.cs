@@ -33,18 +33,18 @@ namespace NN.Checklist.Domain.Entities
         {
 
         }
-        
+
         public ItemChecklist(long? actionUserId, System.Int64 checklistId, System.String comments, System.DateTime creationTimestamp, System.Int64 creationUserId, System.Int64 itemVersionchecklistTemplateId, System.String stamp)
         {
 
             var auditTrail = ObjectFactory.GetSingleton<IAuditTrailService>();
 
-                        ChecklistId = checklistId; 
-            Comments = comments; 
-            CreationTimestamp = creationTimestamp; 
+            ChecklistId = checklistId;
+            Comments = comments;
+            CreationTimestamp = creationTimestamp;
             CreationUserId = creationUserId;
-            ItemVersionchecklistTemplateId = itemVersionchecklistTemplateId; 
-            Stamp = stamp; 
+            ItemVersionchecklistTemplateId = itemVersionchecklistTemplateId;
+            Stamp = stamp;
 
 
             using (var tran = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -92,30 +92,32 @@ namespace NN.Checklist.Domain.Entities
         [AttributeDescriptor("item_checklist_id", true, EnumValueRanges.Positive)]
         public System.Int64 ItemChecklistId { get; internal set; }
 
-        [AttributeDescriptor("checklist_id", true)] 
+        [AttributeDescriptor("checklist_id", true)]
         public System.Int64 ChecklistId { get; set; }
 
-        [AttributeDescriptor("comments", false)] 
+        [AttributeDescriptor("comments", false)]
         public System.String Comments { get; set; }
 
-        [AttributeDescriptor("creation_timestamp", true)] 
+        [AttributeDescriptor("creation_timestamp", true)]
         public System.DateTime CreationTimestamp { get; set; }
 
-        [AttributeDescriptor("creation_user_id", true)] 
+        [AttributeDescriptor("creation_user_id", true)]
         public System.Int64 CreationUserId { get; set; }
 
-        [AttributeDescriptor("item_version_checklist_template_id", true)] 
+        [AttributeDescriptor("item_version_checklist_template_id", true)]
         public System.Int64 ItemVersionchecklistTemplateId { get; set; }
 
-        [AttributeDescriptor("stamp", true)] 
+        [AttributeDescriptor("stamp", true)]
         public System.String Stamp { get; set; }
-        public bool IsRejected { get; set; } = false;
+
+        [AttributeDescriptor("is_rejected", false)]
+        public bool? IsRejected { get; set; } = false;
 
         public Checklist Checklist { get => GetManyToOneData<Checklist>().Result; }
 
         public User CreationUser { get => GetManyToOneData<User>().Result; }
 
-         public IList<OptionItemChecklist> OptionsItemsChecklist { get=> GetOneToManyData<OptionItemChecklist>().Result; }
+        public IList<OptionItemChecklist> OptionsItemsChecklist { get => GetOneToManyData<OptionItemChecklist>().Result; }
         public ItemVersionChecklistTemplate ItemVersionchecklistTemplate { get => GetManyToOneData<ItemVersionChecklistTemplate>().Result; }
 
 
@@ -124,7 +126,7 @@ namespace NN.Checklist.Domain.Entities
 
         #region Validation
 
-        
+
         public async Task<bool> Validate(bool newRecord)
         {
             try
@@ -139,17 +141,17 @@ namespace NN.Checklist.Domain.Entities
                 }
                 else
                 {
-                                        if (String.IsNullOrEmpty(Stamp))
+                    if (String.IsNullOrEmpty(Stamp))
                     {
                         erros.Add(new DomainError("stamp", "StampInvalid"));
                     }
-                    
+
                     if (Stamp != null && Stamp.Length > 500)
                     {
                         erros.Add(new DomainError("stamp", "StampInvalidSize"));
                     }
-                    
-                    
+
+
                 }
 
                 if (erros.Count > 0)
@@ -170,27 +172,27 @@ namespace NN.Checklist.Domain.Entities
 
         }
 
-        
+
         #endregion
 
         #region Save
-        
-        
+
+
         public async Task Update(long? actionUserId, System.Int64 checklistId, System.String comments, System.DateTime creationTimestamp, System.Int64 creationUserId, System.Int64 itemVersionchecklistTemplateId, System.String stamp)
         {
             try
             {
                 var auditTrail = ObjectFactory.GetSingleton<IAuditTrailService>();
-                            ChecklistId = checklistId; 
-            Comments = comments; 
-            CreationTimestamp = creationTimestamp; 
-            CreationUserId = creationUserId;
-                ItemVersionchecklistTemplateId = itemVersionchecklistTemplateId; 
-            Stamp = stamp; 
+                ChecklistId = checklistId;
+                Comments = comments;
+                CreationTimestamp = creationTimestamp;
+                CreationUserId = creationUserId;
+                ItemVersionchecklistTemplateId = itemVersionchecklistTemplateId;
+                Stamp = stamp;
 
 
                 using (var tran = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-                { 
+                {
                     if (await Validate(false))
                     {
                         await Update();
@@ -213,7 +215,42 @@ namespace NN.Checklist.Domain.Entities
         #endregion
 
         #region User Code
-      
+        public async Task RejectItem()
+        {
+            try
+            {
+
+                IsRejected = true;
+                await Update();
+            }
+            catch (DomainException ex)
+            {
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                throw new DomainException("UpdatedItemRejectionError", ex);
+            }
+
+        }
+        public async Task ApproveItem()
+        {
+            try
+            {
+
+                IsRejected = false;
+                await Update();
+            }
+            catch (DomainException ex)
+            {
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                throw new DomainException("UpdatedItemRejectionError", ex);
+            }
+
+        }
 
 
         #endregion

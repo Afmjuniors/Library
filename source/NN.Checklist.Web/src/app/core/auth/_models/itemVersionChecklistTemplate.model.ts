@@ -18,6 +18,7 @@ export class ItemVersionChecklistTemplate extends BaseModel {
     dependencyItemVersionChecklistTemplate: DependencyItemVersionChecklistTemplate[];
     position: number;
     title: string;
+    isDisabled:boolean;
 
 
     clear(): void {
@@ -33,6 +34,7 @@ export class ItemVersionChecklistTemplate extends BaseModel {
         this.dependencyItemVersionChecklistTemplate = null;
         this.position = 0;
         this.title = "";
+        this.isDisabled = false;
 
 
     }

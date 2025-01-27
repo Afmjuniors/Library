@@ -18,7 +18,7 @@ namespace NN.Checklist.Domain.DTO
         [Map("OptionItemVersionChecklistTemplate.Value")]
         public System.Int32 Value { get; set; }
 
-
+        public List<CancelledItemVersionChecklistTemplateDTO>? CancelledItemsVersionChecklistTemplate { get; set; }
 
     }
 }

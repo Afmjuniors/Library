@@ -137,21 +137,21 @@
 
 												</div>
 												<button mat-icon-button color="primary"
-													(click)="  viewSignatureHistory(componentItem.itemVersionChecklistTemplateId)">
+													(click)="viewSignatureHistory(componentItem.itemVersionChecklistTemplateId)">
 													<mat-icon matTooltip="">visibility</mat-icon>
 												</button>
 											</div>
 										</div>
 										<div class="flex">
-											<button type="button" mat-raised-button color="primary"
-												[disabled]="componentItem.isDisabled"
+											<button type="button" mat-raised-button  [color]="getColorRejected(componentItem.itemVersionChecklistTemplateId)"
+												[disabled]="checkBtnAvaliability(componentItem)"
 												(click)="sign(componentItem.itemVersionChecklistTemplateId, block.blockVersionChecklistTemplateId)">
 												{{ 'NEW_EDIT_CHECKLIST.SIGN' | translate }}
 											</button>
 										</div>
-										<div class="flex btn-space" *ngIf="componentItem.itemTypeId==2">
-											<button type="button" mat-raised-button color="primary"
-												[disabled]="componentItem.isDisabled"
+										<div class="flex btn-space" *ngIf="componentItem.itemTypeId==2" >
+											<button type="button" mat-raised-button  [color]="getColorRejected(componentItem.itemVersionChecklistTemplateId)"
+												[disabled]="checkBtnAvaliability(componentItem)"
 												(click)="sign(componentItem.itemVersionChecklistTemplateId, block.blockVersionChecklistTemplateId)">
 												{{ 'NEW_EDIT_CHECKLIST.SIGN' | translate }}
 											</button>

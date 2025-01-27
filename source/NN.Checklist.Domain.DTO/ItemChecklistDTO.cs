@@ -23,6 +23,8 @@ namespace NN.Checklist.Domain.DTO
         public DateTime CreationTimestamp { get; set; }
         public long CreationUserId { get; set; }
         public string? Comments { get; set; }
+        public bool? IsRejected { get; set; }
+
 
         public SignApprovalDTO? Signature { get; set; }
 

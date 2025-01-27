@@ -287,6 +287,7 @@ CREATE TABLE [ITEMS_CHECKLISTS](
 	[creation_timestamp] [datetime] NOT NULL,
 	[creation_user_id] [bigint] NOT NULL,
 	[comments] [varchar](5000) NULL,
+	[is_rejected] [bit] NULL,
  CONSTRAINT [PK_ITEMS_CHECKLISTS] PRIMARY KEY CLUSTERED 
 (
 	[item_checklist_id] ASC
