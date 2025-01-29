@@ -156,7 +156,7 @@ namespace NN.Checklist.Api.Controllers
                 var user = await GetUserFromToken();
 
                 IChecklistService service = ObjectFactory.GetSingleton<IChecklistService>();
-               var result = await service.NewUpdateChecklist(user,data.Data);
+               var result = await service.CreateUpdateChecklist(user,data.Data);
 
                 return Ok(result);
 
@@ -167,75 +167,7 @@ namespace NN.Checklist.Api.Controllers
             }
         }
 
-        /// <summary>
-        /// Name: "CreateNewChecklistVersion" 
-        /// Description: method,to create a new version of a checklist 
-        /// Created by: [CREATED_BY] 
-        /// </summary>        
 
-        [HttpPost("CreateNewChecklistVersion")]
-        [Authorize()]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> CreateNewChecklistVersion([FromBody] object data)
-        {
-            try
-            {
-                return Ok();
-
-            }
-            catch (Exception ex)
-            {
-                return CreateError(ex);
-            }
-        }
-
-
-        /// <summary>
-        /// Name: "UpdateCheckList" 
-        /// Description: method,to update a checklist that already initialized 
-        /// Created by: [CREATED_BY] 
-        /// </summary>        
-
-        [HttpPost("UpdateCheckList")]
-        [Authorize()]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> UpdateCheckList([FromBody] object data)
-        {
-            try
-            {
-                return Ok();
-
-            }
-            catch (Exception ex)
-            {
-                return CreateError(ex);
-            }
-        }
-
-        /// <summary>
-        /// Name: "RemoveCheckList" 
-        /// Description: method,to remove a checklist
-        /// Created by: [CREATED_BY] 
-        /// </summary>        
-
-        [HttpPost("RemoveCheckList")]
-        [Authorize()]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> RemoveCheckList([FromBody] object data)
-        {
-            try
-            {
-                return Ok();
-
-            }
-            catch (Exception ex)
-            {
-                return CreateError(ex);
-            }
-        }
         /// <summary>
         /// Name: "SearchChecklists" 
         /// Description: method,to search all checklists pagged

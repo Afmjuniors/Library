@@ -24,8 +24,17 @@ namespace NN.Checklist.Domain.Services
 
         public async Task<PageMessage<SystemRecordDTO>> Search(AuthenticatedUserDTO auth, SystemRecordPageMessage pageMessage)
         {
-            
-            return await SystemRecord.Repository.Search(pageMessage);
+
+            var globalization = ObjectFactory.GetSingleton<IGlobalizationService>();
+
+            var res = await SystemRecord.Repository.Search(pageMessage);
+            //foreach (var item in res.Entities)
+            //{
+            //    item.Description = await globalization.GetString(auth.CultureInfo, item.Description);
+            //}
+
+
+            return res;
         }
 
 

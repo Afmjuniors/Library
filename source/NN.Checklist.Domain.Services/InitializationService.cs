@@ -44,7 +44,7 @@ namespace NN.Checklist.Domain.Services
             //Starts Globalization service 
             Specifications.IGlobalizationService globalizationService = ObjectFactory.GetSingleton<Specifications.IGlobalizationService>();
 
-            await globalizationService.StartGlobalization();
+           await globalizationService.StartGlobalization();
 
             globalizationService.DefaultLanguage = "pt-BR";
 

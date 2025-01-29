@@ -146,10 +146,10 @@
 					<mat-header-cell *matHeaderCellDef>{{ "AUDIT_TRAIL.DESCRIPTION" | translate }}
 					</mat-header-cell>
 					<mat-cell class="mouse" *matCellDef="let record">
-						<span *ngIf="record.description.length <= 20">
+						<span *ngIf="record.description.length <= 30">
 							{{record.description }}
 						</span>
-						<mat-icon class="view" *ngIf="record.description.length > 20" (click)="viewDetails(record.description)">visibility</mat-icon>
+						<mat-icon class="view" *ngIf="record.description.length > 30" (click)="viewDetails(record.description)">visibility</mat-icon>
 					</mat-cell>
 				</ng-container>
 

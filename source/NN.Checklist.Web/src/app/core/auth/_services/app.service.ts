@@ -239,15 +239,6 @@ export class AppService {
 		return res;
 	}	
 
-	createNewChecklist(obj: VersionChecklistTemplate, comments: string): Observable<any> {
-		let data = {
-			data: obj,
-			comments: comments
-		}
-		const userToken = localStorage.getItem(environment.authTokenKey);
-		let header = new HttpHeaders({ 'Authorization': 'Bearer ' + userToken });
-		return this.http.post<any>(URL_BASE + '/Checklist/CreateNewChecklist', data, { headers: header });
-	}
 
 	insertUpdateChecklist(obj: ChecklistModel): Observable<any> {
 		let data = {

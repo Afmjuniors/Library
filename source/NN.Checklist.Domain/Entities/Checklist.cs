@@ -37,23 +37,39 @@ namespace NN.Checklist.Domain.Entities
         public Checklist(long actionUserId, long versionChecklistTemplateId)
         {
 
-            var auditTrail = ObjectFactory.GetSingleton<IAuditTrailService>();
-
-            CreationTimestamp = DateTime.Now;
-            CreationUserId = actionUserId;
-            VersionChecklistTemplateId = versionChecklistTemplateId;
-
-
-            using (var tran = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+            try
             {
-                if (Validate(true).Result)
-                {
-                    Insert().Wait();
+                var auditTrail = ObjectFactory.GetSingleton<IAuditTrailService>();
+                var globalization = ObjectFactory.GetSingleton<IGlobalizationService>();
 
-                    auditTrail.AddRecord("AT_ChecklistInserted", ChecklistId, EnumSystemFunctionality.Checklists, actionUserId);
+
+                CreationTimestamp = DateTime.Now;
+                CreationUserId = actionUserId;
+                VersionChecklistTemplateId = versionChecklistTemplateId;
+                using (var tran = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
+                {
+                    if (Validate(true).Result)
+                    {
+                        Insert().Wait();
+                        auditTrail.AddRecord("AT_ChecklistInserted", ChecklistId, EnumSystemFunctionality.Checklists, actionUserId);
+                    }
+                    tran.Complete();
                 }
-                tran.Complete();
             }
+            catch (DomainException ex)
+            {
+                throw ex;
+            }
+            catch (Exception ex)
+            {
+                throw new DomainException("EX_ChecklistNotCreated", ex);
+            }
+
+
+
+
+
+
         }
 
         public Checklist(long? actionUserId, System.DateTime creationTimestamp, System.Int64 creationUserId, System.DateTime? updateTimestamp, System.Int64? updateUserId, System.Int64 versionChecklistTemplateId)
@@ -61,11 +77,11 @@ namespace NN.Checklist.Domain.Entities
 
             var auditTrail = ObjectFactory.GetSingleton<IAuditTrailService>();
 
-            CreationTimestamp = creationTimestamp; 
-            CreationUserId = creationUserId; 
-            UpdateTimestamp = updateTimestamp; 
-            UpdateUserId = updateUserId; 
-            VersionChecklistTemplateId = versionChecklistTemplateId; 
+            CreationTimestamp = creationTimestamp;
+            CreationUserId = creationUserId;
+            UpdateTimestamp = updateTimestamp;
+            UpdateUserId = updateUserId;
+            VersionChecklistTemplateId = versionChecklistTemplateId;
 
 
             using (var tran = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -87,24 +103,22 @@ namespace NN.Checklist.Domain.Entities
         [AttributeDescriptor("checklist_id", true, EnumValueRanges.Positive)]
         public System.Int64 ChecklistId { get; internal set; }
 
-        [AttributeDescriptor("creation_timestamp", true)] 
+        [AttributeDescriptor("creation_timestamp", true)]
         public System.DateTime CreationTimestamp { get; set; }
 
-        [AttributeDescriptor("creation_user_id", true)] 
+        [AttributeDescriptor("creation_user_id", true)]
         public System.Int64 CreationUserId { get; set; }
 
-        [AttributeDescriptor("update_timestamp", false)] 
+        [AttributeDescriptor("update_timestamp", false)]
         public System.DateTime? UpdateTimestamp { get; set; }
 
-        [AttributeDescriptor("update_user_id", false)] 
+        [AttributeDescriptor("update_user_id", false)]
         public System.Int64? UpdateUserId { get; set; }
 
-        [AttributeDescriptor("version_checklist_template_id", true)] 
+        [AttributeDescriptor("version_checklist_template_id", true)]
         public System.Int64 VersionChecklistTemplateId { get; set; }
 
         public User CreationUser { get => GetManyToOneData<User>().Result; }
-
-
 
         public User UpdateUser { get => GetManyToOneData<User>().Result; }
 
@@ -132,6 +146,7 @@ namespace NN.Checklist.Domain.Entities
 
 
 
+
         #endregion
 
         #region Validation
@@ -151,7 +166,7 @@ namespace NN.Checklist.Domain.Entities
                 }
                 else
                 {
-                                        
+
                 }
 
                 if (erros.Count > 0)
@@ -172,26 +187,26 @@ namespace NN.Checklist.Domain.Entities
 
         }
 
-        
+
         #endregion
 
         #region Save
-        
-        
+
+
         public async Task Update(long? actionUserId, System.DateTime creationTimestamp, System.Int64 creationUserId, System.DateTime? updateTimestamp, System.Int64? updateUserId, System.Int64 versionChecklistTemplateId)
         {
             try
             {
                 var auditTrail = ObjectFactory.GetSingleton<IAuditTrailService>();
-                            CreationTimestamp = creationTimestamp; 
-            CreationUserId = creationUserId; 
-            UpdateTimestamp = updateTimestamp; 
-            UpdateUserId = updateUserId; 
-            VersionChecklistTemplateId = versionChecklistTemplateId; 
+                CreationTimestamp = creationTimestamp;
+                CreationUserId = creationUserId;
+                UpdateTimestamp = updateTimestamp;
+                UpdateUserId = updateUserId;
+                VersionChecklistTemplateId = versionChecklistTemplateId;
 
 
                 using (var tran = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-                { 
+                {
                     if (await Validate(false))
                     {
                         await Update();
@@ -219,14 +234,15 @@ namespace NN.Checklist.Domain.Entities
             try
             {
 
-                VersionChecklistTemplate.CheckAvailability(Items);
+                VersionChecklistTemplate.CheckAvailability(Items, null);
 
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
                 throw ex;
             }
         }
-        
+
 
 
         #endregion

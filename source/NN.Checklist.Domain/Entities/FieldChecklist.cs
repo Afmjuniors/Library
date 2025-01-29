@@ -31,21 +31,20 @@ namespace NN.Checklist.Domain.Entities
         {
 
         }
-        
+
         public FieldChecklist(long? actionUserId, System.Int64 checklistId, System.DateTime creationTimestamp, System.Int64 creationUserId, System.Int64 fieldVersionChecklistTemplateId, System.Int64? optionFieldVersionChecklistTemplateId, System.DateTime? updateTimestamp, System.Int64? updateUserId, System.String value)
         {
 
             var auditTrail = ObjectFactory.GetSingleton<IAuditTrailService>();
 
-                        ChecklistId = checklistId; 
-            CreationTimestamp = creationTimestamp; 
-            CreationUserId = creationUserId; 
-            FieldVersionChecklistTemplateId = fieldVersionChecklistTemplateId; 
-            OptionFieldVersionChecklistTemplateId = optionFieldVersionChecklistTemplateId; 
-            UpdateTimestamp = updateTimestamp; 
-            UpdateUserId = updateUserId; 
-            Value = value; 
-
+            ChecklistId = checklistId;
+            CreationTimestamp = creationTimestamp;
+            CreationUserId = creationUserId;
+            FieldVersionChecklistTemplateId = fieldVersionChecklistTemplateId;
+            OptionFieldVersionChecklistTemplateId = optionFieldVersionChecklistTemplateId;
+            UpdateTimestamp = updateTimestamp;
+            UpdateUserId = updateUserId;
+            Value = value;
 
             using (var tran = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
@@ -66,28 +65,28 @@ namespace NN.Checklist.Domain.Entities
         [AttributeDescriptor("field_checklist_id", true, EnumValueRanges.Positive)]
         public System.Int64 FieldChecklistId { get; internal set; }
 
-        [AttributeDescriptor("checklist_id", true)] 
+        [AttributeDescriptor("checklist_id", true)]
         public System.Int64 ChecklistId { get; set; }
 
-        [AttributeDescriptor("creation_timestamp", true)] 
+        [AttributeDescriptor("creation_timestamp", true)]
         public System.DateTime CreationTimestamp { get; set; }
 
-        [AttributeDescriptor("creation_user_id", true)] 
+        [AttributeDescriptor("creation_user_id", true)]
         public System.Int64 CreationUserId { get; set; }
 
-        [AttributeDescriptor("field_version_checklist_template_id", true)] 
+        [AttributeDescriptor("field_version_checklist_template_id", true)]
         public System.Int64 FieldVersionChecklistTemplateId { get; set; }
 
-        [AttributeDescriptor("option_field_version_checklist_template_id", false)] 
+        [AttributeDescriptor("option_field_version_checklist_template_id", false)]
         public System.Int64? OptionFieldVersionChecklistTemplateId { get; set; }
 
-        [AttributeDescriptor("update_timestamp", false)] 
+        [AttributeDescriptor("update_timestamp", false)]
         public System.DateTime? UpdateTimestamp { get; set; }
 
-        [AttributeDescriptor("update_user_id", false)] 
+        [AttributeDescriptor("update_user_id", false)]
         public System.Int64? UpdateUserId { get; set; }
 
-        [AttributeDescriptor("value", false)] 
+        [AttributeDescriptor("value", false)]
         public System.String Value { get; set; }
 
 
@@ -105,7 +104,7 @@ namespace NN.Checklist.Domain.Entities
 
         #region Validation
 
-        
+
         public async Task<bool> Validate(bool newRecord)
         {
             try
@@ -120,7 +119,7 @@ namespace NN.Checklist.Domain.Entities
                 }
                 else
                 {
-                                        
+
                 }
 
                 if (erros.Count > 0)
@@ -141,29 +140,29 @@ namespace NN.Checklist.Domain.Entities
 
         }
 
-        
+
         #endregion
 
         #region Save
-        
-        
+
+
         public async Task Update(long? actionUserId, System.Int64 checklistId, System.DateTime creationTimestamp, System.Int64 creationUserId, System.Int64 fieldVersionChecklistTemplateId, System.Int64? optionFieldVersionChecklistTemplateId, System.DateTime? updateTimestamp, System.Int64? updateUserId, System.String value)
         {
             try
             {
                 var auditTrail = ObjectFactory.GetSingleton<IAuditTrailService>();
-                            ChecklistId = checklistId; 
-            CreationTimestamp = creationTimestamp; 
-            CreationUserId = creationUserId; 
-            FieldVersionChecklistTemplateId = fieldVersionChecklistTemplateId; 
-            OptionFieldVersionChecklistTemplateId = optionFieldVersionChecklistTemplateId; 
-            UpdateTimestamp = updateTimestamp; 
-            UpdateUserId = updateUserId; 
-            Value = value; 
+                ChecklistId = checklistId;
+                CreationTimestamp = creationTimestamp;
+                CreationUserId = creationUserId;
+                FieldVersionChecklistTemplateId = fieldVersionChecklistTemplateId;
+                OptionFieldVersionChecklistTemplateId = optionFieldVersionChecklistTemplateId;
+                UpdateTimestamp = updateTimestamp;
+                UpdateUserId = updateUserId;
+                Value = value;
 
 
                 using (var tran = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-                { 
+                {
                     if (await Validate(false))
                     {
                         await Update();
@@ -186,8 +185,8 @@ namespace NN.Checklist.Domain.Entities
         #endregion
 
         #region User Code
-                    
-        
+
+
 
         #endregion
     }

@@ -246,6 +246,8 @@ if(this.checklist.items){
       });
   }
 
+ 
+
 
   saveSignItem(x: any, idItemTemplate: number, blockTemplateId:number) {
     const comment = x.comments;

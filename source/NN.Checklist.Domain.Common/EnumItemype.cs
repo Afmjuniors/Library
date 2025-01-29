@@ -12,6 +12,7 @@ namespace NN.Checklist.Domain.Common
         CheckItem = 1,
         DoubleCheckItem = 2,
         CheckItemOneOption = 3,
-        CheckItemManyOptions = 4
+        CheckItemManyOptions = 4,
+        DependebleAnotherChecklist = 5
     }
 }

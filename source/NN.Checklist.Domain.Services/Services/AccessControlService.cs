@@ -91,6 +91,7 @@ namespace NN.Checklist.Domain.Services
                             }
                         });
 
+
 #else
                     ActiveDirectoryUserDetail usuario = ActiveDirectoryHelper.GetUserByLoginName(domain.DomainAddress, user.Username, user.Password);
 

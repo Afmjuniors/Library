@@ -10,6 +10,7 @@ using NN.Checklist.Domain.DTO;
 using NN.Checklist.Domain.DTO.Paging;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 #region Cabeçalho
 
@@ -20,20 +21,20 @@ using System.Data.SqlClient;
 
 namespace NN.Checklist.Domain.Repositories
 {
-    public class ChecklistRepository: RepositoryBase<Domain.Entities.Checklist, System.Int64>, IChecklistRepository<Domain.Entities.Checklist, System.Int64>
+    public class ChecklistRepository : RepositoryBase<Domain.Entities.Checklist, System.Int64>, IChecklistRepository<Domain.Entities.Checklist, System.Int64>
     {
         public ChecklistRepository()
         {
             MapTable("CHECKLISTS");
-            MapPrimaryKey("ChecklistId", "checklist_id",true,0);
+            MapPrimaryKey("ChecklistId", "checklist_id", true, 0);
             MapColumn("CreationTimestamp", "creation_timestamp");
             MapColumn("CreationUserId", "creation_user_id");
             MapColumn("UpdateTimestamp", "update_timestamp");
             MapColumn("UpdateUserId", "update_user_id");
             MapColumn("VersionChecklistTemplateId", "version_checklist_template_id");
-            MapRelationshipManyToOne("CreationUser", "CreationUserId", "CHECKLISTS", "creation_user_id" );
-            MapRelationshipManyToOne("UpdateUser", "UpdateUserId", "CHECKLISTS", "update_user_id" );
-            MapRelationshipManyToOne("VersionChecklistTemplate", "VersionChecklistTemplateId", "CHECKLISTS", "version_checklist_template_id" );
+            MapRelationshipManyToOne("CreationUser", "CreationUserId", "CHECKLISTS", "creation_user_id");
+            MapRelationshipManyToOne("UpdateUser", "UpdateUserId", "CHECKLISTS", "update_user_id");
+            MapRelationshipManyToOne("VersionChecklistTemplate", "VersionChecklistTemplateId", "CHECKLISTS", "version_checklist_template_id");
             MapRelationshipOneToMany("Items", "ITEMS_CHECKLISTS", "checklist_id");
             MapRelationshipOneToMany("Fields", "FIELDS_CHECKLISTS", "checklist_id");
 
@@ -49,12 +50,13 @@ namespace NN.Checklist.Domain.Repositories
         {
             try
             {
-                var pars = new List<SqlParameter>();
+
                 List<SqlParameter> parameters = new List<SqlParameter>();
 
                 var sqlSelect = @"SELECT c.*";
 
-                var sqlFrom = @" FROM CHECKLISTS c with (nolock) join VERSIONS_CHECKLISTS_TEMPLATES vct on c.version_checklist_template_id =  vct.version_checklist_template_id ";
+                var sqlFrom = @" FROM CHECKLISTS c with (nolock)
+                join VERSIONS_CHECKLISTS_TEMPLATES vct on c.version_checklist_template_id =  vct.version_checklist_template_id ";
 
                 var sqlWhere = "";
                 var and = " where ";
@@ -103,6 +105,29 @@ namespace NN.Checklist.Domain.Repositories
             {
                 throw ex;
             }
+        }
+        /// <summary>
+        /// Name: Search
+        /// Description: Method that takes versionChecklistTemplateId as a parameter and list the checklists by its versions.
+        /// Created by: wazc Programa Novo 2022-09-08 
+        /// </summary>
+        public async Task<IList<ChecklistDTO>> ListChecklistByVersion(long versionChecklistTemplateId)
+        {
+            var pars = new List<SqlParameter>();
+
+            var sqlSelect = @"SELECT c.*";
+
+            var sqlFrom = @" FROM CHECKLISTS c with (nolock) " +
+                "join VERSIONS_CHECKLISTS_TEMPLATES vct on c.version_checklist_template_id =  vct.version_checklist_template_id ";
+            var sqlWhere = "where vct.version_checklist_template_id =  @pVersionChecklistTemplateId ";
+
+            SqlParameter param = new SqlParameter("pVersionChecklistTemplateId", System.Data.SqlDbType.BigInt);
+            param.Value = versionChecklistTemplateId;
+            pars.Add(param);
+            var sqlOrder = " order by c.checklist_id desc ";
+            var sql = sqlSelect + sqlFrom + sqlWhere + sqlOrder;
+            return await List<ChecklistDTO>(sql, pars);
+
         }
 
         #endregion

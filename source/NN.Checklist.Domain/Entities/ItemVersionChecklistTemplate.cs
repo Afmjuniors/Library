@@ -32,19 +32,19 @@ namespace NN.Checklist.Domain.Entities
         {
 
         }
-        
+
         public ItemVersionChecklistTemplate(long? actionUserId, System.Int64 blockVersionChecklistTemplateId, EnumItemType itemTypeId, System.Int64? optionFieldVersionChecklistTemplateId, System.String optionsTitle, System.Int32 position, System.String title, System.Int64 versionChecklistTemplateId)
         {
 
             var auditTrail = ObjectFactory.GetSingleton<IAuditTrailService>();
 
-            BlockVersionChecklistTemplateId = blockVersionChecklistTemplateId; 
-            ItemTypeId = itemTypeId; 
-            OptionFieldVersionChecklistTemplateId = optionFieldVersionChecklistTemplateId; 
-            OptionsTitle = optionsTitle; 
-            Position = position; 
-            Title = title; 
-            VersionChecklistTemplateId = versionChecklistTemplateId; 
+            BlockVersionChecklistTemplateId = blockVersionChecklistTemplateId;
+            ItemTypeId = itemTypeId;
+            OptionFieldVersionChecklistTemplateId = optionFieldVersionChecklistTemplateId;
+            OptionsTitle = optionsTitle;
+            Position = position;
+            Title = title;
+            VersionChecklistTemplateId = versionChecklistTemplateId;
 
 
             using (var tran = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -66,25 +66,25 @@ namespace NN.Checklist.Domain.Entities
         [AttributeDescriptor("item_version_checklist_template_id", true, EnumValueRanges.Positive)]
         public System.Int64 ItemVersionChecklistTemplateId { get; internal set; }
 
-        [AttributeDescriptor("block_version_checklist_template_id", true)] 
+        [AttributeDescriptor("block_version_checklist_template_id", true)]
         public System.Int64 BlockVersionChecklistTemplateId { get; set; }
 
-        [AttributeDescriptor("item_type_id", true)] 
+        [AttributeDescriptor("item_type_id", true)]
         public EnumItemType ItemTypeId { get; set; }
 
-        [AttributeDescriptor("option_field_version_checklist_template_id", false)] 
+        [AttributeDescriptor("option_field_version_checklist_template_id", false)]
         public System.Int64? OptionFieldVersionChecklistTemplateId { get; set; }
 
-        [AttributeDescriptor("options_title", false)] 
+        [AttributeDescriptor("options_title", false)]
         public System.String OptionsTitle { get; set; }
 
-        [AttributeDescriptor("position", true)] 
+        [AttributeDescriptor("position", true)]
         public System.Int32 Position { get; set; }
 
-        [AttributeDescriptor("title", true)] 
+        [AttributeDescriptor("title", true)]
         public System.String Title { get; set; }
 
-        [AttributeDescriptor("version_checklist_template_id", true)] 
+        [AttributeDescriptor("version_checklist_template_id", true)]
         public System.Int64 VersionChecklistTemplateId { get; set; }
 
         public bool IsDisabled { get; set; } = false;
@@ -118,17 +118,17 @@ namespace NN.Checklist.Domain.Entities
                 }
                 else
                 {
-                                        if (String.IsNullOrEmpty(Title))
+                    if (String.IsNullOrEmpty(Title))
                     {
                         erros.Add(new DomainError("title", "TitleInvalid"));
                     }
-                    
+
                     if (Title != null && Title.Length > 500)
                     {
                         erros.Add(new DomainError("title", "TitleInvalidSize"));
                     }
-                    
-                    
+
+
                 }
 
                 if (erros.Count > 0)
@@ -149,28 +149,28 @@ namespace NN.Checklist.Domain.Entities
 
         }
 
-        
+
         #endregion
 
         #region Save
-        
-        
+
+
         public async Task Update(long? actionUserId, System.Int64 blockVersionChecklistTemplateId, EnumItemType itemTypeId, System.Int64? optionFieldVersionChecklistTemplateId, System.String optionsTitle, System.Int32 position, System.String title, System.Int64 versionChecklistTemplateId)
         {
             try
             {
                 var auditTrail = ObjectFactory.GetSingleton<IAuditTrailService>();
-                
-                BlockVersionChecklistTemplateId = blockVersionChecklistTemplateId; 
-                ItemTypeId = itemTypeId; 
-                OptionFieldVersionChecklistTemplateId = optionFieldVersionChecklistTemplateId; 
-                OptionsTitle = optionsTitle; 
-                Position = position; 
-                Title = title; 
-                VersionChecklistTemplateId = versionChecklistTemplateId; 
+
+                BlockVersionChecklistTemplateId = blockVersionChecklistTemplateId;
+                ItemTypeId = itemTypeId;
+                OptionFieldVersionChecklistTemplateId = optionFieldVersionChecklistTemplateId;
+                OptionsTitle = optionsTitle;
+                Position = position;
+                Title = title;
+                VersionChecklistTemplateId = versionChecklistTemplateId;
 
                 using (var tran = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-                { 
+                {
                     if (await Validate(false))
                     {
                         await Update();
@@ -194,12 +194,12 @@ namespace NN.Checklist.Domain.Entities
 
         #region User Code
 
-        public void CheckAvailability(IList<ItemChecklist>? items, IList<BlockVersionChecklistTemplate> blocksChecklistTemplate)
+        public void CheckAvailability(IList<ItemChecklist>? items, IList<BlockVersionChecklistTemplate> blocksChecklistTemplate, long? checklistId)
         {
             try
             {
 
-            IsDisabled = CheckBlockDependency(blocksChecklistTemplate) || CheckItemDependency(items);
+                IsDisabled = CheckBlockDependency(blocksChecklistTemplate, checklistId) || CheckItemDependency(items, checklistId);
 
             }
             catch (Exception ex)
@@ -211,7 +211,7 @@ namespace NN.Checklist.Domain.Entities
 
         }
 
-        private bool CheckItemDependency(IList<ItemChecklist>? items)
+        private bool CheckItemDependency(IList<ItemChecklist>? items, long? checklistId)
         {
             try
             {
@@ -220,30 +220,53 @@ namespace NN.Checklist.Domain.Entities
                     return false;
                 }
 
-            var itemsDependencies = DependencyItemVersionChecklistTemplate.ToList().Where(x => x.DependentItemVersionChecklistTemplateId.HasValue);
-            if (itemsDependencies.Any())
-            {
-                foreach (var itemDependecy in itemsDependencies)
+                var itemsDependencies = DependencyItemVersionChecklistTemplate.ToList().Where(x => x.DependentItemVersionChecklistTemplateId.HasValue);
+                if (itemsDependencies.Any())
                 {
-                    if (items == null)
+                    foreach (var itemDependecy in itemsDependencies)
                     {
-                        return true;
+                        if (itemDependecy.DependentVersionChecklistTemplateId == VersionChecklistTemplateId)
+                        {
+
+                            if (items == null)
+                            {
+                                return true;
+                            }
+
+                            var item = items.Where(x => x.ItemVersionchecklistTemplate.ItemVersionChecklistTemplateId == itemDependecy.DependentItemVersionChecklistTemplateId);
+
+                            if (!item.Any())
+                            {
+                                return true;
+                            }
+                        }
+                        else
+                        {
+                            if (checklistId == null)
+                            {
+                                return true;
+                            }
+                            var checklist = Checklist.Repository.Get((long)checklistId).Result;
+
+                            if (checklist.Items == null)
+                            {
+                                return true;
+                            }
+                            var itemCk = checklist.Items.Where(x => x.ItemVersionchecklistTemplate.ItemVersionChecklistTemplateId == itemDependecy.DependentItemVersionChecklistTemplateId);
+
+                            if (!itemCk.Any())
+                            {
+                                return true;
+                            }
+                        }
+
+
                     }
-
-                    var item = items.Where(x => x.ItemVersionchecklistTemplate.ItemVersionChecklistTemplateId == itemDependecy.DependentItemVersionChecklistTemplateId);
-
-                    if (!item.Any())
-                    {
-                        return true;
-                    }
-                      
-
                 }
-            }
 
 
 
-            return false;
+                return false;
             }
             catch (Exception ex)
             {
@@ -251,7 +274,7 @@ namespace NN.Checklist.Domain.Entities
             }
 
         }
-        private bool CheckBlockDependency(IList<BlockVersionChecklistTemplate> blocksChecklistTemplate)
+        private bool CheckBlockDependency(IList<BlockVersionChecklistTemplate> blocksChecklistTemplate, long? checklistId)
         {
             try
             {
@@ -261,31 +284,57 @@ namespace NN.Checklist.Domain.Entities
                 }
 
 
-            var blocksDependencies = DependencyItemVersionChecklistTemplate.ToList().Where(x => x.DependentBlockVersionChecklistTemplateId.HasValue);
-            if (blocksDependencies.Any())
-            {
-
-                foreach (var blockD in blocksDependencies)
+                var blocksDependencies = DependencyItemVersionChecklistTemplate.ToList().Where(x => x.DependentBlockVersionChecklistTemplateId.HasValue);
+                if (blocksDependencies.Any())
                 {
-                    var blockToCheck = blocksChecklistTemplate.Where(x => x.BlockVersionChecklistTemplateId == blockD.DependentBlockVersionChecklistTemplateId).FirstOrDefault();
 
-                    if (blockToCheck != null)
+                    foreach (var blockD in blocksDependencies)
                     {
-                        if ((!blockToCheck.IsCompleted.HasValue))
+                        var blockToCheck = blocksChecklistTemplate.Where(x => x.BlockVersionChecklistTemplateId == blockD.DependentBlockVersionChecklistTemplateId).FirstOrDefault();
+
+                        if (blockToCheck.VersionChecklistTemplateId == VersionChecklistTemplateId)
                         {
 
-                            return true;
-                        }
-                        if (!(bool)blockToCheck.IsCompleted)
-                        {
-                            return true;
-                        }
+                            if (blockToCheck != null)
+                            {
+                                if ((!blockToCheck.IsCompleted.HasValue))
+                                {
 
+                                    return true;
+                                }
+                                if (!(bool)blockToCheck.IsCompleted)
+                                {
+                                    return true;
+                                }
+
+                            }
+                        }
+                        else
+                        {
+                            if (checklistId == null)
+                            {
+                                return true;
+                            }
+                            var checklist = Checklist.Repository.Get((long)checklistId).Result;
+                            checklist.CheckAvailability();
+                            var blockDiff = checklist.VersionChecklistTemplate.BlocksChecklistTemplate.Where(x => x.BlockVersionChecklistTemplateId == blockToCheck.BlockVersionChecklistTemplateId).FirstOrDefault();
+                            if (blockDiff != null)
+                            {
+                                if ((!blockToCheck.IsCompleted.HasValue))
+                                {
+
+                                    return true;
+                                }
+                                if (!(bool)blockToCheck.IsCompleted)
+                                {
+                                    return true;
+                                }
+                            }
+                        }
                     }
-                }
 
-            }
-            return false;
+                }
+                return false;
 
             }
             catch (Exception ex)

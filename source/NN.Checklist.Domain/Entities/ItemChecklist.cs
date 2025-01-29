@@ -34,7 +34,7 @@ namespace NN.Checklist.Domain.Entities
 
         }
 
-        public ItemChecklist(long? actionUserId, System.Int64 checklistId, System.String comments, System.DateTime creationTimestamp, System.Int64 creationUserId, System.Int64 itemVersionchecklistTemplateId, System.String stamp)
+        public ItemChecklist(long actionUserId, System.Int64 checklistId, System.String comments, System.DateTime creationTimestamp, System.Int64 creationUserId, System.Int64 itemVersionchecklistTemplateId, System.String stamp)
         {
 
             var auditTrail = ObjectFactory.GetSingleton<IAuditTrailService>();
@@ -53,7 +53,7 @@ namespace NN.Checklist.Domain.Entities
                 {
                     Insert().Wait();
 
-                    auditTrail.AddRecord("AT_ItemChecklistInserted", ItemChecklistId, EnumSystemFunctionality.Checklists, actionUserId);
+                    auditTrail.AddRecord("AT_ItemChecklistInserted", ItemChecklistId, EnumSystemFunctionality.Checklists, actionUserId, comments);
                 }
                 tran.Complete();
             }

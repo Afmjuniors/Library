@@ -41,7 +41,7 @@
 	},
 	{
 		"key": "LoginSuccess",
-		"value": "Successfully logged in. User {0}"
+		"value": "Successfully logged in. User "
 	},
 	{
 		"key": "LoginFailAdmin",
@@ -1244,5 +1244,25 @@
 	{
 		"key": "No",
 		"value": "No"
+	},
+	{
+		"key": "SearchChecklist",
+		"value": "Search Cheklist."
+	},
+	{
+		"key": "AT_ChecklistInserted",
+		"value": "Created checklist."
+	},
+	{
+		"key": "EX_ChecklistNotCreated",
+		"value": "Error while creating new checklist"
+	},
+	{
+		"key": "AT_ItemChecklistInserted",
+		"value": "Item has been signned successfully"
+	},
+	{
+		"key": "AT_FieldChecklistInserted",
+		"value": "Field inserted successfully."
 	}
 ]

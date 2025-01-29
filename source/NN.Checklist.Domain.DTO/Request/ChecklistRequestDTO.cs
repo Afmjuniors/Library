@@ -9,6 +9,7 @@ namespace NN.Checklist.Domain.DTO.Request
     public class ChecklistRequestDTO
     {
         public ChecklistDTO Data { get; set; }
+
         public string Comments { get; set; }
 
 

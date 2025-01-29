@@ -196,7 +196,7 @@ namespace NN.Checklist.Domain.Entities
 
         #region User Code
 
-        public void CheckAvailability(IList<ItemChecklist>? items, IList<BlockVersionChecklistTemplate> blocksChecklistTemplate)
+        public void CheckAvailability(IList<ItemChecklist>? items, IList<BlockVersionChecklistTemplate> blocksChecklistTemplate, long? checklistId)
         {
             try
             {
@@ -204,7 +204,7 @@ namespace NN.Checklist.Domain.Entities
 
                 if (DependentBlockVersionChecklistTemplate != null)
                 {
-                    IsDisabled = CheckBlockDependency(blocksChecklistTemplate) || CheckItemDependency(items);
+                    IsDisabled = CheckBlockDependency(blocksChecklistTemplate, checklistId) || CheckItemDependency(items, checklistId);
                 }
                 if (ItemsChecklistsTemplate != null)
                 {
@@ -218,7 +218,7 @@ namespace NN.Checklist.Domain.Entities
                         }
                         else
                         {
-                            item.CheckAvailability(items, blocksChecklistTemplate);
+                            item.CheckAvailability(items, blocksChecklistTemplate, checklistId);
 
                         }
 
@@ -236,7 +236,7 @@ namespace NN.Checklist.Domain.Entities
 
         }
 
-        private bool CheckItemDependency(IList<ItemChecklist>? items)
+        private bool CheckItemDependency(IList<ItemChecklist>? items, long? checklistId)
         {
             try
             {
@@ -246,16 +246,39 @@ namespace NN.Checklist.Domain.Entities
                 {
                     foreach (var itemDependecy in itemsDependencies)
                     {
-                        if (items == null)
+
+                        if (itemDependecy.DependentVersionChecklistTemplateId == VersionChecklistTemplateId)
                         {
-                            return true;
+                            if (items == null)
+                            {
+                                return true;
+                            }
+                            var item = items.Where(x => x.ItemVersionchecklistTemplate.ItemVersionChecklistTemplateId == itemDependecy.DependentItemVersionChecklistTemplateId);
+
+                            if (!item.Any())
+                            {
+                                return true;
+                            }
                         }
-
-                        var item = items.Where(x => x.ItemVersionchecklistTemplate.ItemVersionChecklistTemplateId == itemDependecy.DependentItemVersionChecklistTemplateId);
-
-                        if (!item.Any())
+                        else
                         {
-                            return true;
+                            if (checklistId == null)
+                            {
+                                return true;
+                            }
+                            var checklist = Checklist.Repository.Get((long)checklistId).Result;
+
+                            if (checklist.Items == null)
+                            {
+                                return true;
+                            }
+                            var itemCk = checklist.Items.Where(x => x.ItemVersionchecklistTemplate.ItemVersionChecklistTemplateId == itemDependecy.DependentItemVersionChecklistTemplateId);
+
+                            if (!itemCk.Any())
+                            {
+                                return true;
+                            }
+
                         }
 
                     }
@@ -271,7 +294,7 @@ namespace NN.Checklist.Domain.Entities
             }
 
         }
-        private bool CheckBlockDependency(IList<BlockVersionChecklistTemplate> blocksChecklistTemplate)
+        private bool CheckBlockDependency(IList<BlockVersionChecklistTemplate> blocksChecklistTemplate, long? checklistId)
         {
             var blocksDependencies = DependentBlockVersionChecklistTemplate.ToList().Where(x => x.DependentBlockVersionChecklistTemplateId.HasValue);
             if (blocksDependencies.Any())
@@ -280,17 +303,42 @@ namespace NN.Checklist.Domain.Entities
                 foreach (var blockD in blocksDependencies)
                 {
                     var blockToCheck = blocksChecklistTemplate.Where(x => x.BlockVersionChecklistTemplateId == blockD.DependentBlockVersionChecklistTemplateId).FirstOrDefault();
-
-                    if (blockToCheck != null)
+                    if (blockD.DependentVersionChecklistTemplateId == VersionChecklistTemplateId)
                     {
-                        if ((!blockToCheck.IsCompleted.HasValue))
+                        if (blockToCheck != null)
                         {
+                            if ((!blockToCheck.IsCompleted.HasValue))
+                            {
 
+                                return true;
+                            }
+                            if (!(bool)blockToCheck.IsCompleted)
+                            {
+                                return true;
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        if (checklistId == null)
+                        {
                             return true;
                         }
-                        if (!(bool)blockToCheck.IsCompleted)
+                        var checklist = Checklist.Repository.Get((long)checklistId).Result;
+                        checklist.CheckAvailability();
+                        var blockDiff = checklist.VersionChecklistTemplate.BlocksChecklistTemplate.Where(x => x.BlockVersionChecklistTemplateId == blockToCheck.BlockVersionChecklistTemplateId).FirstOrDefault();
+                        if (blockDiff != null)
                         {
-                            return true;
+                            if ((!blockToCheck.IsCompleted.HasValue))
+                            {
+
+                                return true;
+                            }
+                            if (!(bool)blockToCheck.IsCompleted)
+                            {
+                                return true;
+                            }
                         }
 
                     }
@@ -310,7 +358,7 @@ namespace NN.Checklist.Domain.Entities
                 {
                     return false;
                 }
-                if(ItemsChecklistsTemplate == null)
+                if (ItemsChecklistsTemplate == null)
                 {
                     return true;
                 }
@@ -318,7 +366,7 @@ namespace NN.Checklist.Domain.Entities
                 {
                     foreach (var item in ItemsChecklistsTemplate)
                     {
-                        var hasSignatures = items.Any(x => x.ItemVersionchecklistTemplate.ItemVersionChecklistTemplateId == item.ItemVersionChecklistTemplateId && (!x.IsRejected.HasValue || !x.IsRejected.Value ));
+                        var hasSignatures = items.Any(x => x.ItemVersionchecklistTemplate.ItemVersionChecklistTemplateId == item.ItemVersionChecklistTemplateId && (!x.IsRejected.HasValue || !x.IsRejected.Value));
                         if (!hasSignatures)
                         {
                             return false;

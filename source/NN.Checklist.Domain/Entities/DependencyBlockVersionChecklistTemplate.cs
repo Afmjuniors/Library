@@ -31,15 +31,15 @@ namespace NN.Checklist.Domain.Entities
         {
 
         }
-        
+
         public DependencyBlockVersionChecklistTemplate(long? actionUserId, System.Int64 blockVersionChecklistTemplateId, System.Int64? dependentBlockVersionChecklistTemplateId, System.Int64? dependentItemVersionChecklistTemplateId)
         {
 
             var auditTrail = ObjectFactory.GetSingleton<IAuditTrailService>();
 
-                        BlockVersionChecklistTemplateId = blockVersionChecklistTemplateId; 
-            DependentBlockVersionChecklistTemplateId = dependentBlockVersionChecklistTemplateId; 
-            DependentItemVersionChecklistTemplateId = dependentItemVersionChecklistTemplateId; 
+            BlockVersionChecklistTemplateId = blockVersionChecklistTemplateId;
+            DependentBlockVersionChecklistTemplateId = dependentBlockVersionChecklistTemplateId;
+            DependentItemVersionChecklistTemplateId = dependentItemVersionChecklistTemplateId;
 
 
             using (var tran = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -61,15 +61,33 @@ namespace NN.Checklist.Domain.Entities
         [AttributeDescriptor("dependency_block_version_checklist_template_id", true, EnumValueRanges.Positive)]
         public System.Int64 DependencyBlockVersionChecklistTemplateId { get; internal set; }
 
-        [AttributeDescriptor("block_version_checklist_template_id", true)] 
+        [AttributeDescriptor("block_version_checklist_template_id", true)]
         public System.Int64 BlockVersionChecklistTemplateId { get; set; }
 
-        [AttributeDescriptor("dependent_block_version_checklist_template_id", false)] 
+        [AttributeDescriptor("dependent_block_version_checklist_template_id", false)]
         public System.Int64? DependentBlockVersionChecklistTemplateId { get; set; }
 
-        [AttributeDescriptor("dependent_item_version_checklist_template_id", false)] 
+        [AttributeDescriptor("dependent_item_version_checklist_template_id", false)]
         public System.Int64? DependentItemVersionChecklistTemplateId { get; set; }
+        public long? DependentVersionChecklistTemplateId
+        {
+            get
+            {
+                long? id = null;
+                if (DependentBlockVersionChecklistTemplate != null)
+                {
+                    id = DependentBlockVersionChecklistTemplate.VersionChecklistTemplateId;
+                }
+                else if (DependentItemVersionChecklistTemplate != null)
+                {
+                    id = DependentItemVersionChecklistTemplate.VersionChecklistTemplateId;
+                }
 
+                return id;
+            }
+        }
+        public ItemVersionChecklistTemplate DependentItemVersionChecklistTemplate { get => GetManyToOneData<ItemVersionChecklistTemplate>().Result; }
+        public BlockVersionChecklistTemplate DependentBlockVersionChecklistTemplate { get => GetManyToOneData<BlockVersionChecklistTemplate>().Result; }
 
 
 
@@ -79,7 +97,7 @@ namespace NN.Checklist.Domain.Entities
 
         #region Validation
 
-        
+
         public async Task<bool> Validate(bool newRecord)
         {
             try
@@ -94,7 +112,7 @@ namespace NN.Checklist.Domain.Entities
                 }
                 else
                 {
-                                        
+
                 }
 
                 if (erros.Count > 0)
@@ -115,24 +133,24 @@ namespace NN.Checklist.Domain.Entities
 
         }
 
-        
+
         #endregion
 
         #region Save
-        
-        
+
+
         public async Task Update(long? actionUserId, System.Int64 blockVersionChecklistTemplateId, System.Int64? dependentBlockVersionChecklistTemplateId, System.Int64? dependentItemVersionChecklistTemplateId)
         {
             try
             {
                 var auditTrail = ObjectFactory.GetSingleton<IAuditTrailService>();
-                            BlockVersionChecklistTemplateId = blockVersionChecklistTemplateId; 
-            DependentBlockVersionChecklistTemplateId = dependentBlockVersionChecklistTemplateId; 
-            DependentItemVersionChecklistTemplateId = dependentItemVersionChecklistTemplateId; 
+                BlockVersionChecklistTemplateId = blockVersionChecklistTemplateId;
+                DependentBlockVersionChecklistTemplateId = dependentBlockVersionChecklistTemplateId;
+                DependentItemVersionChecklistTemplateId = dependentItemVersionChecklistTemplateId;
 
 
                 using (var tran = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-                { 
+                {
                     if (await Validate(false))
                     {
                         await Update();
@@ -155,8 +173,8 @@ namespace NN.Checklist.Domain.Entities
         #endregion
 
         #region User Code
-                    
-        
+
+
 
         #endregion
     }

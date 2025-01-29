@@ -172,10 +172,7 @@
           "System.ServiceModel.Primitives": "4.10.2"
         },
         "runtime": {
-          "TDCore.Core.dll": {
-            "assemblyVersion": "1.0.0",
-            "fileVersion": "1.0.0.0"
-          }
+          "TDCore.Core.dll": {}
         }
       },
       "TDCore.DependencyInjection/1.0.0": {
@@ -184,10 +181,7 @@
           "TDCore.Core": "1.0.0"
         },
         "runtime": {
-          "TDCore.DependencyInjection.dll": {
-            "assemblyVersion": "1.0.0",
-            "fileVersion": "1.0.0.0"
-          }
+          "TDCore.DependencyInjection.dll": {}
         }
       }
     }

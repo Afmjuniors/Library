@@ -5,9 +5,10 @@ using System.Threading.Tasks;
 using TDCore.Core;
 using TDCore.Data.Paging;
 using TDCore.Domain;
+using System.Collections.Generic;
 
 #region Cabeçalho
-            
+
 //TECHDRIVEN DIGITAL
 //Generated: 17/12/2024 10:10:12
 
@@ -23,7 +24,9 @@ namespace NN.Checklist.Domain.Repositories.Specifications
 
         Task<PageMessage<ChecklistDTO>> Search(ChecklistPageMessage data);
 
-    #endregion
+        Task<IList<ChecklistDTO>> ListChecklistByVersion(long versionChecklistTemplateId);
+
+        #endregion
 
     }
 }

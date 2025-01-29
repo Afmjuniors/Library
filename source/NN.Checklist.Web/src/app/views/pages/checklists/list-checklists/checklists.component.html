@@ -6,16 +6,11 @@
 	<!-- See prop => '~/core/_crud/models/data-sources/_base.datasource.ts' (loading$) -->
 	<kt-portlet-header [title]="'MENU.CHECKLISTS' | translate " [class]="'kt-portlet__head--lg'">
 	</kt-portlet-header>
-
 	<!-- end::Header -->
-
 	<kt-portlet-body>
 		<kt-alert *ngIf="error" type="warn" [duration]="5000" [showCloseButton]="true">
 			{{mensagemErro}}
 		</kt-alert>
-
-
-
 		<div class="row">
 			<div class="col-lg-12" style="padding-bottom: 10px;">
 				<mat-accordion>
@@ -23,10 +18,8 @@
 						<mat-expansion-panel-header>
 							<mat-panel-title>
 								{{ 'FILTERS.FILTERS' | translate }}
-
 							</mat-panel-title>
 						</mat-expansion-panel-header>
-
 						<div class="row">
 							<div class="col-md-10">
 								<div class="row">
@@ -81,8 +74,6 @@
 										</mat-form-field>
 									</div>
 								</div>
-
-								
 							</div>
 							<div class="col-md-2">
 								<div class="row">
@@ -106,25 +97,21 @@
 				<div class="row">
 					<div class="d-flex" style="min-width: 150px;">
 						<button mat-button style="height: 50px; width: 100%; padding: 10px; margin: 10px" mat-raised-button
-							color="primary" type="button" (click)="newChecklist()" [disabled]="loadingCSV">
+							color="primary" type="button" (click)="newChecklist()" [disabled]="loading">
 							<span>{{ 'CHECKLISTS.NEW' | translate }}</span>
 						</button>
 						 <button mat-button style="height: 50px; width: 100%; padding: 10px; margin: 10px" mat-raised-button
-						color="primary" type="button" (click)="consoleShowChelistPage()" [disabled]="loadingCSV || !dataSource.hasItems">
+						color="primary" type="button" (click)="consoleShowChelistPage()" [disabled]="loading || !dataSource.hasItems">
 						<span>{{ 'CHECKLISTS.Console' | translate }}</span>
 					</button>
 					</div>
 				</div>
 			</div>
 		</div>
-
-
-
 		<div class="mat-table__wrapper">
 			<mat-table class="lmat-elevation-z8" #table [dataSource]="dataSource" matSort #sort1="matSort"
 				matSortActive="id" matSortDirection="asc" matSortDisableClear>
 				<!-- Checkbox Column -->
-
 				<!-- Table with selection -->
 				<!-- https://run.stackblitz.com/api/angular/v1?file=app%2Ftable-selection-example.ts -->
 				<ng-container matColumnDef="edit" >

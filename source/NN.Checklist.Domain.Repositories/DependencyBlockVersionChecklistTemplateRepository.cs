@@ -15,22 +15,23 @@ using System.Linq;
 
 namespace NN.Checklist.Domain.Repositories
 {
-    public class DependencyBlockVersionChecklistTemplateRepository: RepositoryBase<DependencyBlockVersionChecklistTemplate, System.Int64>, IDependencyBlockVersionChecklistTemplateRepository<DependencyBlockVersionChecklistTemplate, System.Int64>
+    public class DependencyBlockVersionChecklistTemplateRepository : RepositoryBase<DependencyBlockVersionChecklistTemplate, System.Int64>, IDependencyBlockVersionChecklistTemplateRepository<DependencyBlockVersionChecklistTemplate, System.Int64>
     {
         public DependencyBlockVersionChecklistTemplateRepository()
         {
             MapTable("DEPENDENCIES_BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES");
-            MapPrimaryKey("DependencyBlockVersionChecklistTemplateId", "dependency_block_version_checklist_template_id",true,0);
+            MapPrimaryKey("DependencyBlockVersionChecklistTemplateId", "dependency_block_version_checklist_template_id", true, 0);
             MapColumn("BlockVersionChecklistTemplateId", "block_version_checklist_template_id");
             MapColumn("DependentBlockVersionChecklistTemplateId", "dependent_block_version_checklist_template_id");
             MapColumn("DependentItemVersionChecklistTemplateId", "dependent_item_version_checklist_template_id");
-
+            MapRelationshipManyToOne("DependentBlockVersionChecklistTemplate", "DependentBlockVersionChecklistTemplateId", "BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES", "dependent_block_version_checklist_template_id");
+            MapRelationshipManyToOne("DependentItemVersionChecklistTemplate", "DependentItemVersionChecklistTemplateId", "ITEMS_VERSIONS_CHECKLISTS_TEMPLATES", "dependent_item_version_checklist_template_id");
 
         }
 
         #region User Code
 
-        
+
 
         #endregion
 

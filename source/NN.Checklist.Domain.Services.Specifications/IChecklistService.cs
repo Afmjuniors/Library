@@ -17,7 +17,7 @@ namespace NN.Checklist.Domain.Services.Specifications
         Task<List<ChecklistTemplateDTO>> ListChecklist();
         Task<VersionChecklistTemplateDTO> GetLatestCheckList(long checklistId);
         Task<List<VersionChecklistTemplateDTO>> ListChecklistVersions(long checklistId);
-        Task<ChecklistDTO> NewUpdateChecklist(AuthenticatedUserDTO user, ChecklistDTO obj);
+        Task<ChecklistDTO> CreateUpdateChecklist(AuthenticatedUserDTO user, ChecklistDTO obj);
         Task<PageMessage<ChecklistDTO>> Search(AuthenticatedUserDTO auth, ChecklistPageMessage pageMessage);
         Task<ChecklistDTO> SignItem(AuthenticatedUserDTO auth, ItemChecklistDTO item);
         Task<List<HistorySignatureDTO>> ListAllSignuture(AuthenticatedUserDTO auth, long checklistId, long itemTemplateId);

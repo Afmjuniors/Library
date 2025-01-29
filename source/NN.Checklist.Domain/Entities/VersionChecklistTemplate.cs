@@ -34,18 +34,18 @@ namespace NN.Checklist.Domain.Entities
         {
 
         }
-        
+
         public VersionChecklistTemplate(long? actionUserId, System.Int64 checklistTemplateId, System.Int64 creationUserId, System.DateTime timestampCreation, System.DateTime? timestampUpdate, System.Int64? updateUserId, System.String version)
         {
 
             var auditTrail = ObjectFactory.GetSingleton<IAuditTrailService>();
 
-                        ChecklistTemplateId = checklistTemplateId; 
-            CreationUserId = creationUserId; 
-            TimestampCreation = timestampCreation; 
-            TimestampUpdate = timestampUpdate; 
-            UpdateUserId = updateUserId; 
-            Version = version; 
+            ChecklistTemplateId = checklistTemplateId;
+            CreationUserId = creationUserId;
+            TimestampCreation = timestampCreation;
+            TimestampUpdate = timestampUpdate;
+            UpdateUserId = updateUserId;
+            Version = version;
 
 
             using (var tran = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -67,26 +67,59 @@ namespace NN.Checklist.Domain.Entities
         [AttributeDescriptor("version_checklist_template_id", true, EnumValueRanges.Positive)]
         public System.Int64 VersionChecklistTemplateId { get; internal set; }
 
-        [AttributeDescriptor("checklist_template_id", true)] 
+        [AttributeDescriptor("checklist_template_id", true)]
         public System.Int64 ChecklistTemplateId { get; set; }
 
-        [AttributeDescriptor("creation_user_id", true)] 
+        [AttributeDescriptor("creation_user_id", true)]
         public System.Int64 CreationUserId { get; set; }
 
-        [AttributeDescriptor("timestamp_creation", true)] 
+        [AttributeDescriptor("timestamp_creation", true)]
         public System.DateTime TimestampCreation { get; set; }
 
-        [AttributeDescriptor("timestamp_update", false)] 
+        [AttributeDescriptor("timestamp_update", false)]
         public System.DateTime? TimestampUpdate { get; set; }
 
-        [AttributeDescriptor("update_user_id", false)] 
+        [AttributeDescriptor("update_user_id", false)]
         public System.Int64? UpdateUserId { get; set; }
 
-        [AttributeDescriptor("version", true)] 
+        [AttributeDescriptor("version", true)]
         public System.String Version { get; set; }
 
         public ChecklistTemplate ChecklistTemplate { get => GetManyToOneData<ChecklistTemplate>().Result; }
-        
+
+        public VersionChecklistTemplate? DependentVersionChecklistTemplate { get
+                {
+
+                bool flag = false;
+                foreach (var block in BlocksChecklistTemplate)
+                {
+                    if(block.ItemsChecklistsTemplate == null)
+                    {
+                        return null;
+                    }
+                    foreach (var item in block.ItemsChecklistsTemplate)
+                    {
+                        if (item.DependencyItemVersionChecklistTemplate == null)
+                        {
+                            return null;
+                        }
+                        foreach (var itemD in item.DependencyItemVersionChecklistTemplate)
+                        {
+                            if(itemD.DependentVersionChecklistTemplateId != VersionChecklistTemplateId)
+                            {
+                               return Get((long)itemD.DependentVersionChecklistTemplateId).Result;
+                            }
+                            
+                        }
+
+                    }
+                }
+                return null;
+
+            }
+        }
+
+
 
 
 
@@ -134,17 +167,17 @@ namespace NN.Checklist.Domain.Entities
                 }
                 else
                 {
-                                        if (String.IsNullOrEmpty(Version))
+                    if (String.IsNullOrEmpty(Version))
                     {
                         erros.Add(new DomainError("version", "VersionInvalid"));
                     }
-                    
+
                     if (Version != null && Version.Length > 10)
                     {
                         erros.Add(new DomainError("version", "VersionInvalidSize"));
                     }
-                    
-                    
+
+
                 }
 
                 if (erros.Count > 0)
@@ -165,27 +198,27 @@ namespace NN.Checklist.Domain.Entities
 
         }
 
-        
+
         #endregion
 
         #region Save
-        
-        
+
+
         public async Task Update(long? actionUserId, System.Int64 checklistTemplateId, System.Int64 creationUserId, System.DateTime timestampCreation, System.DateTime? timestampUpdate, System.Int64? updateUserId, System.String version)
         {
             try
             {
                 var auditTrail = ObjectFactory.GetSingleton<IAuditTrailService>();
-                            ChecklistTemplateId = checklistTemplateId; 
-            CreationUserId = creationUserId; 
-            TimestampCreation = timestampCreation; 
-            TimestampUpdate = timestampUpdate; 
-            UpdateUserId = updateUserId; 
-            Version = version; 
+                ChecklistTemplateId = checklistTemplateId;
+                CreationUserId = creationUserId;
+                TimestampCreation = timestampCreation;
+                TimestampUpdate = timestampUpdate;
+                UpdateUserId = updateUserId;
+                Version = version;
 
 
                 using (var tran = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-                { 
+                {
                     if (await Validate(false))
                     {
                         await Update();
@@ -209,16 +242,16 @@ namespace NN.Checklist.Domain.Entities
 
         #region User Code
 
-         public void CheckAvailability(IList<ItemChecklist>? items)
+        public void CheckAvailability(IList<ItemChecklist>? items, long? checklistId)
         {
             try
             {
-                                List<BlockVersionChecklistTemplate> lst = new List<BlockVersionChecklistTemplate>();
-            foreach (var block in BlocksChecklistTemplate)
-            {
-                block.CheckAvailability(items, BlocksChecklistTemplate);
-                lst.Add(block);
-            }
+                List<BlockVersionChecklistTemplate> lst = new List<BlockVersionChecklistTemplate>();
+                foreach (var block in BlocksChecklistTemplate)
+                {
+                    block.CheckAvailability(items, BlocksChecklistTemplate, checklistId);
+                    lst.Add(block);
+                }
                 _blocksChecklistTemplate = lst;
             }
 

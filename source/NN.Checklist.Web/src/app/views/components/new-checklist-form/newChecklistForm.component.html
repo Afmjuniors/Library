@@ -112,6 +112,26 @@
 							</div>
 
 						</div>
+
+						<div class="card">
+							<h3>{{'NEW_EDIT_CHECKLIST.RELATION' | translate }}</h3>
+							<div class="col-md-3">
+								<mat-form-field class="full-width"
+									[appearance]='legacy'>
+									<mat-select [placeholder]="'NEW_EDIT_CHECKLIST.NONE_SELECTED' | translate"
+										autocomplete="off"
+										[formControlName]="'name'+a">
+										<mat-option
+											*ngFor="let option of testeAKI"
+											[value]="option.value">
+											{{ option.title }}
+										</mat-option>
+									</mat-select>
+								</mat-form-field>
+							</div>
+	
+						</div>
+
 						<div style="display: flex; justify-content: end; padding-bottom: 16px;">
 							<button [disabled]="checklistLoaded" (click)="submit()"
 								[ngClass]="{'kt-spinner kt-spinner--right kt-spinner--md kt-spinner--light': loading}"
@@ -121,6 +141,8 @@
 						</div>
 
 					</div>
+				
+				
 				</form>
 				<div *ngIf="checklistLoaded">
 

@@ -9,7 +9,7 @@ namespace NN.Checklist.Domain.DTO
 {
     public class VersionChecklistTemplateDTO
     {
-        public long VersionChecklistTemplateId {  get; set; }
+        public long VersionChecklistTemplateId { get; set; }
         public long ChecklistTemplateId { get; set; }
 
 
@@ -23,8 +23,9 @@ namespace NN.Checklist.Domain.DTO
         public long? UpdateUserId { get; set; }
 
 
+
         public List<FieldVersionChecklistTemplateDTO>? FieldsVersionChecklistsTemplate { get; set; }
         public List<BlockVersionChecklistTemplateDTO>? BlocksChecklistTemplate { get; set; }
-
+        public VersionChecklistTemplateDTO? DependentVersionChecklistTemplate { get; set; }
     }
 }

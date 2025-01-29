@@ -1,9 +1,11 @@
 ﻿using iTextSharp.text;
 using K4os.Compression.LZ4.Internal;
+using NN.Checklist.Domain.Common;
 using NN.Checklist.Domain.DTO;
 using NN.Checklist.Domain.DTO.Paging;
 using NN.Checklist.Domain.DTO.Request;
 using NN.Checklist.Domain.DTO.Response;
+using NN.Checklist.Domain.DTO.Response.User;
 using NN.Checklist.Domain.Entities;
 using NN.Checklist.Domain.Services.Specifications;
 using System;
@@ -62,7 +64,7 @@ namespace NN.Checklist.Domain.Services
             return dto.ToList();
         }
 
-        public async Task<ChecklistDTO> NewUpdateChecklist(AuthenticatedUserDTO user, ChecklistDTO obj)
+        public async Task<ChecklistDTO> CreateUpdateChecklist(AuthenticatedUserDTO user, ChecklistDTO obj)
         {
             long actionUserId = user.UserId;
             long? checklistId = obj.ChecklistId;
@@ -72,8 +74,9 @@ namespace NN.Checklist.Domain.Services
                 checklistId = checklist.ChecklistId;
 
             }
-            await CreateUpdateFieldChecklist(actionUserId, (long)checklistId, obj.Fields);
-            await CreateUpdateItemChecklist(actionUserId, (long)checklistId, obj.Items);
+
+            await CreateFieldChecklist(actionUserId, (long)checklistId, obj.Fields);
+            await CreateItemChecklist(actionUserId, (long)checklistId, obj.Items);
 
 
             var newChelist = await Entities.Checklist.Repository.Get((long)checklistId);
@@ -84,7 +87,7 @@ namespace NN.Checklist.Domain.Services
 
         }
 
-        private async Task CreateUpdateItemChecklist(long actionUserId, long checklistId, List<ItemChecklistDTO> items)
+        private async Task CreateItemChecklist(long actionUserId, long checklistId, List<ItemChecklistDTO> items)
         {
             if (items == null)
             {
@@ -106,7 +109,7 @@ namespace NN.Checklist.Domain.Services
 
             }
         }
-        private async Task CreateUpdateFieldChecklist(long actionUserId, long checklistId, List<FieldChecklistDTO> fields)
+        private async Task CreateFieldChecklist(long actionUserId, long checklistId, List<FieldChecklistDTO> fields)
         {
             if (fields == null)
             {
@@ -134,6 +137,7 @@ namespace NN.Checklist.Domain.Services
         {
             try
             {
+                var globalization = ObjectFactory.GetSingleton<IGlobalizationService>();
 
                 var res = await Entities.Checklist.Repository.Search(pageMessage);
                 var accessControlService = ObjectFactory.GetSingleton<IAccessControlService>();
@@ -161,6 +165,7 @@ namespace NN.Checklist.Domain.Services
 
 
                 }
+
                 return res;
             }
             catch (Exception ex)
@@ -171,6 +176,7 @@ namespace NN.Checklist.Domain.Services
 
         public async Task<ChecklistDTO> SignItem(AuthenticatedUserDTO auth, ItemChecklistDTO item)
         {
+
             Entities.Checklist checklist;
             var accessControlService = ObjectFactory.GetSingleton<IAccessControlService>();
             if (item.ChecklistId > 0)
@@ -183,12 +189,12 @@ namespace NN.Checklist.Domain.Services
             }
 
             var newItem = new ItemChecklist(auth.UserId, checklist.ChecklistId, item.Comments, DateTime.Now, auth.UserId, item.ItemVersionChecklistTemplateId, item.Stamp);
-            if (item.OptionsItemsChecklist!=null)
+            if (item.OptionsItemsChecklist != null)
             {
                 foreach (var optionItem in item.OptionsItemsChecklist)
                 {
                     var option = new OptionItemChecklist(auth.UserId, DateTime.Now, auth.UserId, newItem.ItemChecklistId, optionItem.OptionItemVersionChecklistTemplateId);
-                    if(optionItem.CancelledItemsVersionChecklistTemplate != null)
+                    if (optionItem.CancelledItemsVersionChecklistTemplate != null)
                     {
                         foreach (var cancelledItem in optionItem.CancelledItemsVersionChecklistTemplate)
                         {
@@ -196,11 +202,11 @@ namespace NN.Checklist.Domain.Services
                             {
                                 var itemToReject = checklist.Items
                                     .Where(x => x.ItemVersionchecklistTemplateId == cancelledItem.TargetItemVersionChecklistTemplateId)
-                                    .OrderByDescending(x=>x.CreationTimestamp)
+                                    .OrderByDescending(x => x.CreationTimestamp)
                                     .FirstOrDefault();
-                                if(itemToReject != null)
+                                if (itemToReject != null)
                                 {
-                                 await itemToReject.RejectItem();
+                                    await itemToReject.RejectItem();
 
                                 }
 
@@ -216,6 +222,8 @@ namespace NN.Checklist.Domain.Services
             {
                 item1.Signature = await accessControlService.ReadSignature(item1.Stamp);
             }
+
+
 
 
 
@@ -240,9 +248,9 @@ namespace NN.Checklist.Domain.Services
                     var history = new HistorySignatureDTO()
                     {
                         Signature = signature,
-                        IsRejected= item.IsRejected,
-                        OptionsSelected = item.OptionsItemsChecklist!=null?item.OptionsItemsChecklist.TransformList<OptionItemChecklistDTO>().ToList():[],
-                        OptionsAvalible = item.ItemVersionchecklistTemplate.OptionItemsVersionChecklistTemplate!=null? item.ItemVersionchecklistTemplate.OptionItemsVersionChecklistTemplate.TransformList<OptionItemVersionChecklistTemplateDTO>().ToList():[]
+                        IsRejected = item.IsRejected,
+                        OptionsSelected = item.OptionsItemsChecklist != null ? item.OptionsItemsChecklist.TransformList<OptionItemChecklistDTO>().ToList() : [],
+                        OptionsAvalible = item.ItemVersionchecklistTemplate.OptionItemsVersionChecklistTemplate != null ? item.ItemVersionchecklistTemplate.OptionItemsVersionChecklistTemplate.TransformList<OptionItemVersionChecklistTemplateDTO>().ToList() : []
                     };
                     lst.Add(history);
 
