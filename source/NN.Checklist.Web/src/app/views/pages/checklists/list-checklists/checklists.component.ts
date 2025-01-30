@@ -152,7 +152,7 @@ export class ChecklistComponent extends BasePageComponent implements OnInit {
 
 	loadListChecklist() {
 		this.loading = true;
-		this.app.listChecklist().subscribe(x => {
+		this.app.listChecklistTemplate().subscribe(x => {
 			this.checklistsFileter = x.result;
 			this.loading = false;
 		},

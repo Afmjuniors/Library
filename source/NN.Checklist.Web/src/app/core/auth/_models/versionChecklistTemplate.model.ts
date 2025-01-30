@@ -15,6 +15,7 @@ export class VersionChecklistTemplate extends BaseModel {
     updateUserId: number;
     fieldsVersionChecklistsTemplate:FieldVersionChecklistTemplate[];
     blocksChecklistTemplate:BlockVersionChecklistTemplate[];
+    dependentVersionChecklistTemplate:VersionChecklistTemplate | null;
 
 
 
@@ -31,6 +32,8 @@ export class VersionChecklistTemplate extends BaseModel {
         
         this.fieldsVersionChecklistsTemplate = null;
         this.blocksChecklistTemplate = null;
+        this.dependentVersionChecklistTemplate = null;
+
     }
 }
 

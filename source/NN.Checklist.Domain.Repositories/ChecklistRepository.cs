@@ -111,7 +111,7 @@ namespace NN.Checklist.Domain.Repositories
         /// Description: Method that takes versionChecklistTemplateId as a parameter and list the checklists by its versions.
         /// Created by: wazc Programa Novo 2022-09-08 
         /// </summary>
-        public async Task<IList<ChecklistDTO>> ListChecklistByVersion(long versionChecklistTemplateId)
+        public async Task<IList<Entities.Checklist>> ListChecklistByVersion(long versionChecklistTemplateId)
         {
             var pars = new List<SqlParameter>();
 
@@ -126,7 +126,7 @@ namespace NN.Checklist.Domain.Repositories
             pars.Add(param);
             var sqlOrder = " order by c.checklist_id desc ";
             var sql = sqlSelect + sqlFrom + sqlWhere + sqlOrder;
-            return await List<ChecklistDTO>(sql, pars);
+            return await List<Entities.Checklist>(sql, pars);
 
         }
 

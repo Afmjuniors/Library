@@ -14,7 +14,8 @@ namespace NN.Checklist.Domain.Services.Specifications
     [ObjectMap("ChecklistService", true)]
     public interface IChecklistService
     {
-        Task<List<ChecklistTemplateDTO>> ListChecklist();
+        Task<List<ChecklistTemplateDTO>> ListChecklistTemplate();
+        Task<List<ChecklistResponseDTO>> ListChecklist(long versionChecklistId);
         Task<VersionChecklistTemplateDTO> GetLatestCheckList(long checklistId);
         Task<List<VersionChecklistTemplateDTO>> ListChecklistVersions(long checklistId);
         Task<ChecklistDTO> CreateUpdateChecklist(AuthenticatedUserDTO user, ChecklistDTO obj);

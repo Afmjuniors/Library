@@ -44,17 +44,17 @@ namespace NN.Checklist.Api.Controllers
         /// Created by: [CREATED_BY] 
         /// </summary>        
 
-        [HttpGet("ListChecklist")]
+        [HttpGet("ListChecklistTemplate")]
         [Authorize()]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> ListChecklist()
+        public async Task<ActionResult> ListChecklistTemplate()
         {
             try
             {
                 IChecklistService service = ObjectFactory.GetSingleton<IChecklistService>();
 
-                var result = service.ListChecklist();
+                var result = service.ListChecklistTemplate();
 
                 return Ok(result);
 
@@ -64,6 +64,34 @@ namespace NN.Checklist.Api.Controllers
                 return CreateError(ex);
             }
         }
+
+        /// <summary>
+        /// Name: "GetCheckList" 
+        /// Description: method,to get all checklists base
+        /// Created by: [CREATED_BY] 
+        /// </summary>        
+
+        [HttpGet("ListChecklist")]
+        [Authorize()]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult> ListChecklist([FromQuery] long versionChecklistId)
+        {
+            try
+            {
+                IChecklistService service = ObjectFactory.GetSingleton<IChecklistService>();
+
+                var result = service.ListChecklist(versionChecklistId);
+
+                return Ok(result);
+
+            }
+            catch (Exception ex)
+            {
+                return CreateError(ex);
+            }
+        }
+
 
         /// <summary>
         /// Name: "GetChecklistVersions" 

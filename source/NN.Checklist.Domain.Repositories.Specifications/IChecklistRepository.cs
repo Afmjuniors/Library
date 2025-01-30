@@ -24,7 +24,7 @@ namespace NN.Checklist.Domain.Repositories.Specifications
 
         Task<PageMessage<ChecklistDTO>> Search(ChecklistPageMessage data);
 
-        Task<IList<ChecklistDTO>> ListChecklistByVersion(long versionChecklistTemplateId);
+        Task<IList<TEntity>> ListChecklistByVersion(long versionChecklistTemplateId);
 
         #endregion
 

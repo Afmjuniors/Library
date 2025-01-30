@@ -21,6 +21,9 @@ import { SignatureService } from '../../../core/auth/_services/signature.service
 import { Signature } from '../../../core/auth/_models/signature.model';
 import { SignApproval } from '../../../core/auth/_models/signAprovval.model';
 import { SignatureHistoryComponent } from '../signature-history/signature-history.component';
+import { OptionItemVersionChecklistTemplate } from '../../../core/auth/_models/optionItemVersionChecklistTemplate.model';
+import { ItemVersionChecklistTemplate } from '../../../core/auth/_models/itemVersionChecklistTemplate.model';
+import { DependentChecklist } from '../../../core/auth/_models/dependentChecklistDTO.model';
 
 const DATE_TIME_FORMAT = {
   parse: {
@@ -60,11 +63,15 @@ export class NewChecklistForm implements OnInit {
   displayedColumnsCell = ['all'];
   checklistLoaded: boolean = false;
 
+    selectedOptions: { [key: string]: OptionItemVersionChecklistTemplate[] } = {};
+    optionsDirtys: { [key: string]: boolean } = {};
+
   public title: string;
   public checklistDropDown: string;
   public versions: string;
   myInjector: Injector;
   public signatureService: SignatureService;
+  public  listChecklistToRelate : DependentChecklist[];
 
   constructor(
     public dialogRef: MatDialogRef<NewChecklistForm>,
@@ -85,9 +92,6 @@ export class NewChecklistForm implements OnInit {
 
   }
 
-  public checkDisable(block: any, item: any): boolean {
-    return false;
-  }
 
   saveInformation() {
 	console.log(this.fieldForm.controls);
@@ -101,7 +105,11 @@ export class NewChecklistForm implements OnInit {
 	this.app.getChecklistVersions(selectedId).subscribe(
 	  (response) => {
 		this.checklistVersion = response.result;
-  
+    if(response.result.dependentVersionChecklistTemplate!=undefined){
+      this.app.listChecklist(response.result.dependentVersionChecklistTemplate.versionChecklistTemplateId).subscribe(x => {
+        this.listChecklistToRelate = x.result;
+      });
+    }
 		// Inicializa o formulário após carregar checklistVersion
 		this.fieldForm = this.fb.group({});
 		this.initFieldForm();
@@ -113,10 +121,10 @@ export class NewChecklistForm implements OnInit {
 	  }
 	);
   }
-
+  
   loadListChecklist() {
 	this.loading= true;
-    this.app.listChecklist().subscribe(x => {
+    this.app.listChecklistTemplate().subscribe(x => {
       this.checklists = x.result;
 	  this.loading= false;
     },
@@ -126,14 +134,38 @@ export class NewChecklistForm implements OnInit {
       });
   }
 
-  loadGetChecklistVersionTemplate() {
-    // Implement any necessary logic for loading checklist versions
-  }
-
   validate(): boolean {
     // Implement the actual validation logic
     return true;
   }
+    onCheckboxValueChange(updatedOptions: OptionItemVersionChecklistTemplate[], itemVersionChecklistTemplateId:number): void {
+  
+      const key = `${itemVersionChecklistTemplateId}`;
+      this.selectedOptions[key] = [...updatedOptions];
+      this.optionsDirtys[key] = true;
+      console.log(this.selectedOptions);
+    }
+      checkBtnAvaliability(item:ItemVersionChecklistTemplate):boolean{
+        if(item.isDisabled){
+          return true;
+        }else{
+          if(item.optionItemsVersionChecklistTemplate ){
+    
+            if(this.optionsDirtys[item.itemVersionChecklistTemplateId]){
+              
+              return false;
+            }else{
+              return true;
+            }
+          }
+          return false;
+        }
+    
+    
+      }
+    
+    
+   
 
   valueChange(value) {
     this.remainingText = 8000 - value;
@@ -247,11 +279,23 @@ if(this.checklist.items){
   }
 
  
+  
+  viewSignatureHistory(itemTemplateId:number){
+    const dialogRef = this.dialog.open(SignatureHistoryComponent, 
 
+      {
+        width: '600px',
+        data:{checklistId:this.checklist.checklistId, itemTemplateId:itemTemplateId }
+      }).afterClosed()
+
+    
+  
+  }
 
   saveSignItem(x: any, idItemTemplate: number, blockTemplateId:number) {
     const comment = x.comments;
-    const newItem = new ItemChecklist(this.checklist.checklistId,this.checklistVersion.checklistTemplateId, null,blockTemplateId, x.stamp, idItemTemplate, comment);
+    const optionsDto = this.selectedOptions[idItemTemplate];
+    const newItem = new ItemChecklist(this.checklist.checklistId,this.checklistVersion.checklistTemplateId, optionsDto,blockTemplateId, x.stamp, idItemTemplate, comment);
 
     this.app.signItemChecklist(newItem, comment)
       .subscribe(res => {
@@ -259,10 +303,32 @@ if(this.checklist.items){
           return;
         }
         this.checklist = res;
+        this.checklistVersion = this.checklist.versionChecklistTemplate;
+        if(optionsDto){
+          this.optionsDirtys[idItemTemplate] = false;
+        }
       }, error => {
         this.layoutUtilsService.showErrorNotification(error, MessageType.Create);
       });
   }
+  getColorRejected(idItemVersionTemplate: number):string{
+    if (this.checklist.items) {
+      const arr = this.checklist.items.sort((a, b) => {
+        if (a.signature.dthSign < b.signature.dthSign) return 1; // a vem antes de b
+        if (a.signature.dthSign > b.signature.dthSign) return -1;  // a vem depois de b
+        return 0; // a e b são iguais
+      });
+      const item = arr.find(x => x.itemVersionChecklistTemplate.itemVersionChecklistTemplateId == idItemVersionTemplate);
+      if (item) {
+        if (item.isRejected) {
+
+          return 'warn';
+        }
+      }
+    }
+    return 'primary';
+  }
+  
 
   saveFieldChecklist() {
     for (let index = 0; index < this.checklistVersion.fieldsVersionChecklistsTemplate.length; index++) {
@@ -282,18 +348,7 @@ if(this.checklist.items){
     }
   }
 
-  
-    viewSignatureHistory(itemTemplateId:number){
-      const dialogRef = this.dialog.open(SignatureHistoryComponent, 
-  
-        {
-          width: '400px',
-          data:{checklistId:this.checklist.checklistId, itemTemplateId:itemTemplateId }
-        }).afterClosed()
-  
-      
-    
-    }
+
 
   validateField(): boolean {
     let flag = true;

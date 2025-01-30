@@ -87,13 +87,27 @@ namespace NN.Checklist.Domain.Entities
 
         public ChecklistTemplate ChecklistTemplate { get => GetManyToOneData<ChecklistTemplate>().Result; }
 
-        public VersionChecklistTemplate? DependentVersionChecklistTemplate { get
-                {
+        public VersionChecklistTemplate? DependentVersionChecklistTemplate
+        {
+            get
+            {
 
-                bool flag = false;
+
                 foreach (var block in BlocksChecklistTemplate)
                 {
-                    if(block.ItemsChecklistsTemplate == null)
+
+                    if (block.DependentBlockVersionChecklistTemplate != null)
+                    {
+                        foreach (var blockD in block.DependentBlockVersionChecklistTemplate)
+                        {
+                            if (blockD.DependentVersionChecklistTemplateId != VersionChecklistTemplateId)
+                            {
+
+                                return Get((long)blockD.DependentVersionChecklistTemplateId).Result;
+                            }
+                        }
+                    }
+                    if (block.ItemsChecklistsTemplate == null)
                     {
                         return null;
                     }
@@ -105,17 +119,17 @@ namespace NN.Checklist.Domain.Entities
                         }
                         foreach (var itemD in item.DependencyItemVersionChecklistTemplate)
                         {
-                            if(itemD.DependentVersionChecklistTemplateId != VersionChecklistTemplateId)
+                            if (itemD.DependentVersionChecklistTemplateId != VersionChecklistTemplateId)
                             {
-                               return Get((long)itemD.DependentVersionChecklistTemplateId).Result;
+
+                                return Get((long)itemD.DependentVersionChecklistTemplateId).Result;
                             }
-                            
+
                         }
 
                     }
                 }
                 return null;
-
             }
         }
 

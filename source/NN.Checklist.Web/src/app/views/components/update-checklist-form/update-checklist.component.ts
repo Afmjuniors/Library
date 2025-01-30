@@ -99,17 +99,11 @@ export class UpdateCheklistForm implements OnInit {
 
 
   }
-
-
-
-
   saveInformation() {
     console.log(this.checklistVersion);
     console.log(this.checklist);
 
   }
-
-
 
   getValueField(idVersionTemplate): string {
     if (this.checklist.fields) {
@@ -124,10 +118,6 @@ export class UpdateCheklistForm implements OnInit {
     }
     return ""
   }
-
-
-
-
 
   validate(): boolean {
     // Implement the actual validation logic

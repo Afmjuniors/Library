@@ -221,10 +221,10 @@ export class AppService {
 	//TODO: Change type
 
 
-	listChecklist(): Observable<any> {
+	listChecklistTemplate(): Observable<any> {
 		const userToken = localStorage.getItem(environment.authTokenKey);
 		let header = new HttpHeaders({ 'Authorization': 'Bearer ' + userToken });
-		return this.http.get<any>(URL_BASE + `/Checklist/ListChecklist`, { headers: header });
+		return this.http.get<any>(URL_BASE + `/Checklist/ListChecklistTemplate`, { headers: header });
 	}
 	getChecklistVersions(checklistId: number): Observable<ResponseBase<VersionChecklistTemplate>> {
 		const userToken = localStorage.getItem(environment.authTokenKey);
@@ -237,7 +237,12 @@ export class AppService {
 		let header = new HttpHeaders({ 'Authorization': 'Bearer ' + userToken });
 		const res = this.http.get<any>(URL_BASE + `/Checklist/ListChecklistVersions?checklistTemplateId=${checklistId}`, { headers: header });
 		return res;
-	}	
+	}
+	listChecklist(versionChecklistId: number): Observable<any> {
+		const userToken = localStorage.getItem(environment.authTokenKey);
+		let header = new HttpHeaders({ 'Authorization': 'Bearer ' + userToken });
+		return this.http.get<any>(URL_BASE + `/Checklist/ListChecklist?versionChecklistId=${versionChecklistId}`, { headers: header });
+	}
 
 
 	insertUpdateChecklist(obj: ChecklistModel): Observable<any> {
