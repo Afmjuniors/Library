@@ -130,6 +130,33 @@ namespace NN.Checklist.Domain.Repositories
 
         }
 
+        public async Task<Entities.Checklist> GetChecklistByKeyValue(string value, long versionTemplateId)
+        {
+            var pars = new List<SqlParameter>();
+
+            var sqlSelect = @"SELECT c.*";
+
+            var sqlFrom = @" FROM CHECKLISTS c with (nolock) " +
+                "join VERSIONS_CHECKLISTS_TEMPLATES vct on c.version_checklist_template_id =  vct.version_checklist_template_id " +
+                "join FIELDS_CHECKLISTS fc on fc.checklist_id = c.checklist_id ";
+            var sqlWhere = "where vct.version_checklist_template_id = @pVersionChecklistTemplateId ";
+
+            SqlParameter param = new SqlParameter("pVersionChecklistTemplateId", System.Data.SqlDbType.BigInt);
+            param.Value = versionTemplateId;
+            pars.Add(param);
+            if (!string.IsNullOrEmpty(value))
+            {
+                sqlWhere += "and fc.value = @pValue";
+                SqlParameter param2 = new SqlParameter("pValue", System.Data.SqlDbType.VarChar);
+                param2.Value = value;
+                pars.Add(param2);
+            }
+
+
+            var sql = sqlSelect + sqlFrom + sqlWhere ;
+            return await Get<Entities.Checklist>(sql, pars);
+        }
+
         #endregion
 
     }

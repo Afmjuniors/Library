@@ -1,4 +1,6 @@
 
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using TDCore.Core;
 using TDCore.Domain;
 
@@ -15,9 +17,10 @@ namespace NN.Checklist.Domain.Repositories.Specifications
     public interface IDependencyBlockVersionChecklistTemplateRepository<TEntity, TKey> : IRepositoryBase<TEntity, TKey> where TEntity : class
     {
 
-    #region User Code
-                
-    
+        #region User Code
+
+
+        Task<IList<TEntity>> ListAllBLocksFromDependentBlockIdOrItemBlockId(long? blockId, long? itemId);
 
     #endregion
 

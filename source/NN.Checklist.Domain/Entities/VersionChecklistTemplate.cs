@@ -15,6 +15,8 @@ using System.Threading.Tasks;
 using System.Linq;
 using static iTextSharp.text.pdf.AcroFields;
 using static iTextSharp.text.pdf.events.IndexEvents;
+using NN.Checklist.Domain.DTO.Response;
+using NN.Checklist.Domain.DTO;
 
 #region Cabeçalho
 
@@ -133,10 +135,6 @@ namespace NN.Checklist.Domain.Entities
             }
         }
 
-
-
-
-
         public List<FieldVersionChecklistTemplate> FieldsVersionChecklistsTemplate { get => GetOneToManyData<FieldVersionChecklistTemplate>().Result.OrderByDescending(x => x.IsKey).ToList(); set { } }
 
 
@@ -160,6 +158,7 @@ namespace NN.Checklist.Domain.Entities
             }
         }
 
+        public List<BlockVersionChecklistTemplateDTO> BlocksTree { get => LoadBlocks(); }
 
 
         #endregion
@@ -256,14 +255,14 @@ namespace NN.Checklist.Domain.Entities
 
         #region User Code
 
-        public void CheckAvailability(IList<ItemChecklist>? items, long? checklistId)
+        public void CheckAvailability(IList<ItemChecklist>? items, string? keyValue)
         {
             try
             {
                 List<BlockVersionChecklistTemplate> lst = new List<BlockVersionChecklistTemplate>();
                 foreach (var block in BlocksChecklistTemplate)
                 {
-                    block.CheckAvailability(items, BlocksChecklistTemplate, checklistId);
+                    block.CheckAvailability(items, BlocksChecklistTemplate, keyValue, BlocksTree);
                     lst.Add(block);
                 }
                 _blocksChecklistTemplate = lst;
@@ -276,7 +275,79 @@ namespace NN.Checklist.Domain.Entities
             }
 
         }
+        public bool CheckIfCompleted(IList<ItemChecklist>? items)
+        {
+            try
+            {
+                foreach (var block in BlocksChecklistTemplate)
+                {
+                    var flag = block.IsBlockCompleted(items, BlocksTree);
+                    if (!flag)
+                    {
+                        return false;
+                    }
 
+                }
+                return true;
+
+
+            }
+
+
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
+
+        public List<BlockVersionChecklistTemplateDTO> LoadBlocks()
+        {
+            var rootBlocks = new List<BlockVersionChecklistTemplateDTO>();
+
+            if (BlocksChecklistTemplate != null && BlocksChecklistTemplate.Count > 0)
+            {
+                var main = BlocksChecklistTemplate.Where(x => x.ParentBlockVersionChecklistTemplateId == null);
+                var root = main.TransformList<BlockVersionChecklistTemplateDTO>();
+
+
+                if (main != null)
+                {
+                    foreach (var block in root)
+                    {
+
+
+                        block.Blocks = BuildBlocksTree(block);
+                        rootBlocks.Add(block);
+                    }
+                }
+            }
+
+            return rootBlocks;
+        }
+
+        private List<BlockVersionChecklistTemplateDTO> BuildBlocksTree(BlockVersionChecklistTemplateDTO blockPrev)
+        {
+            var lst = BlocksChecklistTemplate.Where(x => x.ParentBlockVersionChecklistTemplateId == blockPrev.BlockVersionChecklistTemplateId).OrderBy(x => x.Position).ToList();
+            var chlidrenBlocks = lst.TransformList<BlockVersionChecklistTemplateDTO>().ToList();
+            if (lst != null && lst.Count > 0)
+            {
+
+                foreach (var childBlock in chlidrenBlocks)
+                {
+              
+                        var children = BuildBlocksTree(childBlock);
+                        childBlock.Blocks = children;
+
+                    
+                }
+
+                return chlidrenBlocks;
+            }
+
+            return null;
+        }
 
         #endregion
     }

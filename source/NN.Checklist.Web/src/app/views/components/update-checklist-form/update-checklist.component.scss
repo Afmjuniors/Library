@@ -1,5 +1,7 @@
 
 $color:rgb(212, 209, 209);
+$colorRejectedFont:white;
+$colorRejectedBg:rgb(218, 72, 72);
 
 .btn-space{
     padding-left: 16px;
@@ -22,6 +24,32 @@ $color:rgb(212, 209, 209);
 .disabled-title{
     color:$color;
 }
-.is-cancelled{
-    border-color: red;
+
+
+.rejected-item{
+	background-color:$colorRejectedBg;
+    color:$colorRejectedFont;
+}
+.sub-table{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: stretch;
+}
+.sub-title{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-right:solid 1px rgb(212, 209, 209);
+}
+.dependecy-list{
+    display: flex;
+    flex-direction: row;
+    font-size: 8px;
+}
+
+.title-dependency{
+    display: flex;
+    flex-direction: column;
+
 }

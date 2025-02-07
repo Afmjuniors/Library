@@ -145,28 +145,7 @@ namespace NN.Checklist.Api.Controllers
                 return CreateError(ex);
             }
         }
-        /// <summary>
-        /// Name: "CreateNewChecklist" 
-        /// Description: method,to create an new checklist by the user
-        /// Created by: [CREATED_BY] 
-        /// </summary>        
 
-        [HttpPost("CreateNewChecklist")]
-        [Authorize()]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult> CreateNewChecklist([FromBody] object data)
-        {
-            try
-            {
-                return Ok();
-
-            }
-            catch (Exception ex)
-            {
-                return CreateError(ex);
-            }
-        }
         /// <summary>
         /// Name: "NewChecklist" 
         /// Description: method,to create a new black checklist form an template 

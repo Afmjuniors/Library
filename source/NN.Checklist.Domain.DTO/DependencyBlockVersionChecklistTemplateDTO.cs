@@ -16,6 +16,7 @@ namespace NN.Checklist.Domain.DTO
 
         public long? DependentItemVersionChecklistTemplateId { get; set; }
         public long DependentVersionChecklistTemplateId { get; set; }
+        public string DependentString { get; set; }
 
 
     }

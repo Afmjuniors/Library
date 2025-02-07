@@ -16,6 +16,7 @@ export class ChecklistModel extends BaseModel {
     updateUserId: number;
     fields: FieldChecklist[];
     items: ItemChecklist[];
+    dependentChecklistId:number;
     versionChecklistTemplate:VersionChecklistTemplate;
 
 
@@ -30,6 +31,7 @@ export class ChecklistModel extends BaseModel {
         this.updateUserId = 0;
         this.fields = null;
         this.items = null;
+        this.dependentChecklistId = 0;
         this.versionChecklistTemplate = null;
 
 

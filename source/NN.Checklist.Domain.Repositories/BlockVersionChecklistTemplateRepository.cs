@@ -31,6 +31,8 @@ namespace NN.Checklist.Domain.Repositories
             MapRelationshipManyToOne("VersionChecklistTemplate", "VersionChecklistTemplateId", "BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES", "version_checklist_template_id" );
             MapRelationshipOneToMany("ItemsChecklistsTemplate", "ITEMS_VERSIONS_CHECKLISTS_TEMPLATES", "block_version_checklist_template_id");
             MapRelationshipOneToMany("DependentBlockVersionChecklistTemplate", "DEPENDENCIES_BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES", "block_version_checklist_template_id");
+            MapRelationshipManyToOne("ParentBlock", "ParentBlockVersionChecklistTemplateId", "BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES", "parent_block_version_checklist_template_id");
+
 
 
 

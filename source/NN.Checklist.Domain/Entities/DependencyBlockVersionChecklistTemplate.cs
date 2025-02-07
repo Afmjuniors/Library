@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Transactions;
 using System.Threading.Tasks;
+using NN.Checklist.Domain.Entities.Interfaces;
 
 #region Cabeçalho
 
@@ -22,7 +23,7 @@ using System.Threading.Tasks;
 
 namespace NN.Checklist.Domain.Entities
 {
-    public class DependencyBlockVersionChecklistTemplate : DomainBase<DependencyBlockVersionChecklistTemplate, IDependencyBlockVersionChecklistTemplateRepository<DependencyBlockVersionChecklistTemplate, System.Int64>, System.Int64>
+    public class DependencyBlockVersionChecklistTemplate : DomainBase<DependencyBlockVersionChecklistTemplate, IDependencyBlockVersionChecklistTemplateRepository<DependencyBlockVersionChecklistTemplate, System.Int64>, System.Int64>, IDependecy
     {
 
         #region Constructors
@@ -69,6 +70,27 @@ namespace NN.Checklist.Domain.Entities
 
         [AttributeDescriptor("dependent_item_version_checklist_template_id", false)]
         public System.Int64? DependentItemVersionChecklistTemplateId { get; set; }
+        public string DependentString
+        {
+            get
+            {
+
+                var dependentString = string.Empty;
+
+                if (DependentItemVersionChecklistTemplate != null)
+                {
+                    dependentString = DependentItemVersionChecklistTemplate.AbsolutePositionString;
+                }
+                else
+                if (DependentBlockVersionChecklistTemplate != null)
+                {
+                    dependentString = DependentBlockVersionChecklistTemplate.AbsolutePositionString;
+                }
+
+                return dependentString;
+
+            }
+        }
         public long? DependentVersionChecklistTemplateId
         {
             get

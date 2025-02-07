@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using NN.Checklist.Domain.DTO;
 using System.Linq;
 using iTextSharp.text;
+using static iTextSharp.text.pdf.AcroFields;
 
 #region Cabeçalho
 
@@ -117,6 +118,7 @@ namespace NN.Checklist.Domain.Entities
 
         [AttributeDescriptor("version_checklist_template_id", true)]
         public System.Int64 VersionChecklistTemplateId { get; set; }
+        public bool IsCompleted { get; set; }
 
         public User CreationUser { get => GetManyToOneData<User>().Result; }
 
@@ -138,11 +140,8 @@ namespace NN.Checklist.Domain.Entities
                 _versionChecklistTemplate = value;
             }
         }
-
-        public IList<ItemChecklist>? Items { get => GetOneToManyData<ItemChecklist>().Result; set { } }
-
-
-        public IList<FieldChecklist>? Fields { get => GetOneToManyData<FieldChecklist>().Result; set { } }
+        public IList<ItemChecklist> Items { get => GetOneToManyData<ItemChecklist>().Result; set { } }
+        public IList<FieldChecklist> Fields { get => GetOneToManyData<FieldChecklist>().Result; set { } }
 
 
 
@@ -233,8 +232,15 @@ namespace NN.Checklist.Domain.Entities
         {
             try
             {
+                string keyValue = "";
+                if (Fields != null)
+                {
+                    keyValue = Fields.Where(x => x.FieldVersionChecklistTemplate.IsKey).FirstOrDefault().Value;
 
-                VersionChecklistTemplate.CheckAvailability(Items, null);
+                }
+
+                VersionChecklistTemplate.CheckAvailability(Items, keyValue);
+                CheckChecklistIsCompleted();
 
             }
             catch (Exception ex)
@@ -242,9 +248,159 @@ namespace NN.Checklist.Domain.Entities
                 throw ex;
             }
         }
+        public async Task CheckBlockAndItemDependencyForRejection(long? blockVersionId, long? itemVersionId)
+        {
+            await CheckBlockDependencyRejection(blockVersionId, itemVersionId, null);
+
+            await CheckItemDependencyRejection(blockVersionId, itemVersionId, null);
 
 
 
-        #endregion
+
+        }
+        private async Task CheckItemDependencyRejection(long? blockVersionId, long? itemVersionId, IList<DependencyItemVersionChecklistTemplate> prevItems)
+        {
+            var itemsToReject = await DependencyItemVersionChecklistTemplate.Repository.ListAllBLocksFromDependentBlockIdOrItemBlockId(blockVersionId, itemVersionId);
+
+            if (prevItems == null || !prevItems.Any())
+            {
+                prevItems = itemsToReject ?? new List<DependencyItemVersionChecklistTemplate>();
+            }
+            if (itemsToReject == null || !itemsToReject.Any())
+            {
+                return;
+            }
+
+            foreach (var item in itemsToReject)
+            {
+                var itemToCheck = Items
+                    .Where(x => x.ItemVersionchecklistTemplateId == item.ItemVersionChecklistTemplateId)
+                    .OrderByDescending(x => x.CreationTimestamp)
+                    .FirstOrDefault();
+                if(itemToCheck== null)
+                {
+                    var a = 1;
+                }
+
+                if(itemToCheck!=null)
+                await CheckItemDependencyRejection(
+                    itemToCheck.ItemVersionchecklistTemplate.BlockVersionChecklistTemplateId,
+                    itemToCheck.ItemVersionchecklistTemplateId,
+                    itemsToReject);
+
+                var itemToReject = Items?
+                    .Where(x => x.ItemVersionchecklistTemplateId == item.ItemVersionChecklistTemplateId)
+                    .OrderByDescending(x => x.CreationTimestamp)
+                    .FirstOrDefault();
+
+                if (itemToReject != null)
+                {
+                    await itemToReject.RejectItem();
+                }
+
+            }
+        }
+
+        private async Task CheckBlockDependencyRejection(long? blockVersionId, long? itemVersionId, IList<DependencyBlockVersionChecklistTemplate> prevBlocks)
+        {
+
+
+            var blocksToReject = await DependencyBlockVersionChecklistTemplate.Repository.ListAllBLocksFromDependentBlockIdOrItemBlockId(blockVersionId, itemVersionId);
+
+            if (prevBlocks == null || !prevBlocks.Any())
+            {
+                prevBlocks = blocksToReject ?? new List<DependencyBlockVersionChecklistTemplate>();
+            }
+
+
+            if (blocksToReject == null)
+            {
+
+                return;
+            }
+
+            foreach (var blockToReject in blocksToReject)
+            {
+                var blks = VersionChecklistTemplate.BlocksChecklistTemplate.Where(x => x.BlockVersionChecklistTemplateId == blockToReject.BlockVersionChecklistTemplateId).FirstOrDefault();
+                if (blks != null)
+                {
+                    //aki n estou pegando o bloco estou pegando o item
+                    var blockToCheck = Items
+                        .Where(x => x.ItemVersionchecklistTemplate.BlockVersionChecklistTemplateId == blockToReject.BlockVersionChecklistTemplateId)
+                        .OrderByDescending(x => x.CreationTimestamp)
+                        .FirstOrDefault();
+
+                    var iToReject = blks.ItemsChecklistsTemplate;
+                    if(blockToCheck!=null)
+                    await CheckBlockDependencyRejection(
+                   blockToCheck.ItemVersionchecklistTemplate.BlockVersionChecklistTemplateId,
+                   blockToCheck.ItemVersionchecklistTemplateId,
+                   blocksToReject);
+
+                    foreach (var item2 in iToReject)
+                    {
+                        if (Items != null)
+                        {
+
+                            var itemToReject = Items
+                                .Where(x => x.ItemVersionchecklistTemplateId == item2.ItemVersionChecklistTemplateId)
+                                .OrderByDescending(x => x.CreationTimestamp)
+                                .FirstOrDefault();
+                            if (itemToReject != null)
+                            {
+                                await itemToReject.RejectItem();
+
+                            }
+
+                        }
+                    }
+
+                }
+                else
+                {
+
+                    var blockCheckList = await BlockVersionChecklistTemplate.Repository.Get(blockToReject.BlockVersionChecklistTemplateId);
+                    if (blockCheckList.VersionChecklistTemplateId != VersionChecklistTemplateId)
+                    {
+                        var a = 1;
+                        string keyValue = "";
+                        if (Fields != null)
+                        {
+                            keyValue = Fields.Where(x => x.FieldVersionChecklistTemplate.IsKey).FirstOrDefault().Value;
+
+                        }
+                        var checklistOther = await Repository.GetChecklistByKeyValue(keyValue, blockCheckList.VersionChecklistTemplateId);
+                        if (checklistOther!=null && checklistOther.Items != null)
+                        {
+              
+                                await checklistOther.CheckBlockAndItemDependencyForRejection(blockVersionId, itemVersionId);
+                            
+                        }
+
+                    }
+
+                }
+
+            }
+
+        }
+
+        private  void CheckChecklistIsCompleted()
+        {
+            var blocks = VersionChecklistTemplate.BlocksTree;
+            foreach (var block in blocks)
+            {
+                if(!block.IsCompleted.HasValue || !block.IsCompleted.Value)
+                {
+                    IsCompleted = false;
+                    return;
+                }
+            }
+            IsCompleted = true;
+        }
     }
+
+
+
+    #endregion
 }

@@ -5,6 +5,9 @@ using NN.Checklist.Domain.Entities;
 using NN.Checklist.Domain.Repositories.Specifications;
 using System;
 using System.Linq;
+using System.Collections.Generic;
+using System.Data.SqlClient;
+using System.Threading.Tasks;
 
 #region Cabeçalho
 
@@ -30,7 +33,50 @@ namespace NN.Checklist.Domain.Repositories
         }
 
         #region User Code
+        public async Task<IList<DependencyItemVersionChecklistTemplate>> ListAllBLocksFromDependentBlockIdOrItemBlockId(long? blockId, long? itemId)
+        {
 
+            try
+            {
+
+                var pars = new List<SqlParameter>();
+                var sql = "SELECT DISTINCT * from DEPENDENCIES_ITEMS_VERSIONS_CHECKLISTS_TEMPLATES d ";
+                var sqlWhere = "where ";
+                var sqlAnd = "";
+
+
+                if (itemId.HasValue && itemId > 0)
+                {
+                    sqlWhere += sqlAnd + " d.dependent_item_version_checklist_template_id = @pItemId ";
+                    SqlParameter param = new SqlParameter("pItemId", System.Data.SqlDbType.BigInt);
+                    param.Value = itemId;
+                    pars.Add(param);
+                    sqlAnd = "or ";
+
+                }
+                if (blockId.HasValue && blockId > 0)
+                {
+                    sqlWhere += sqlAnd + " d.dependent_block_version_checklist_template_id = @pBlockId ";
+                    SqlParameter param2 = new SqlParameter("pBlockId", System.Data.SqlDbType.BigInt);
+                    param2.Value = blockId;
+                    pars.Add(param2);
+                    sqlAnd = "or ";
+                }
+                sql += sqlWhere;
+
+                var b = await List<DependencyItemVersionChecklistTemplate>(sql, pars);
+
+
+                return await List<DependencyItemVersionChecklistTemplate>(sql, pars);
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+
+        }
 
 
         #endregion

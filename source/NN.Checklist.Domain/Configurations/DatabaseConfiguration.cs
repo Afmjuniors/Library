@@ -72,6 +72,7 @@ namespace NN.Checklist.Domain.Configurations
                 AddObject(CreateRepository("OptionItemChecklistRepository", "NN.Checklist.Domain.Repositories.OptionItemChecklistRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
                 AddObject(CreateRepository("OptionItemVersionChecklistTemplateRepository", "NN.Checklist.Domain.Repositories.OptionItemVersionChecklistTemplateRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
                 AddObject(CreateRepository("VersionChecklistTemplateRepository", "NN.Checklist.Domain.Repositories.VersionChecklistTemplateRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
+                AddObject(CreateRepository("RelationChecklistRepository", "NN.Checklist.Domain.Repositories.RelationChecklistRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
 
 
 

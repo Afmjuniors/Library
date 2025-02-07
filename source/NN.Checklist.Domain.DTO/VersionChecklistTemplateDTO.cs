@@ -12,7 +12,6 @@ namespace NN.Checklist.Domain.DTO
         public long VersionChecklistTemplateId { get; set; }
         public long ChecklistTemplateId { get; set; }
 
-
         [Map("ChecklistTemplate.Description")]
         public string ChecklistTemplateDescription { get; set; }
 
@@ -22,10 +21,9 @@ namespace NN.Checklist.Domain.DTO
         public DateTime? TimestampUpdate { get; set; }
         public long? UpdateUserId { get; set; }
 
-
-
         public List<FieldVersionChecklistTemplateDTO>? FieldsVersionChecklistsTemplate { get; set; }
         public List<BlockVersionChecklistTemplateDTO>? BlocksChecklistTemplate { get; set; }
         public VersionChecklistTemplateDTO? DependentVersionChecklistTemplate { get; set; }
+        public List<BlockVersionChecklistTemplateDTO> BlocksTree {  get; set; }
     }
 }

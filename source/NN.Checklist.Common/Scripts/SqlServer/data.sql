@@ -60,7 +60,7 @@ INSERT INTO FIELDS_DATA_TYPES (field_data_type_id, name) VALUES (2,'Number');
 INSERT INTO FIELDS_DATA_TYPES (field_data_type_id, name) VALUES (3,'Date'); 
 INSERT INTO FIELDS_DATA_TYPES (field_data_type_id, name) VALUES (4,'Options'); 
  
---FORMULARIO A12 AP - ANP: Approval or next process 
+
 INSERT INTO FIELDS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id, position, title, field_data_type_id, regex_validation, format, mandatory, is_key)  
 select v.version_checklist_template_id, 1, 'Batch Number (Formulation)',1, '', null, 1, 1  
 from VERSIONS_CHECKLISTS_TEMPLATES v  
@@ -104,7 +104,7 @@ cross join users u
 where c.description = 'Checklist A12 AP - ANP: Approval for next process' and initials = '_adm'; 
  
 INSERT INTO FIELDS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id, position, title, field_data_type_id, regex_validation, format, mandatory, is_key)  
-select v.version_checklist_template_id, 7, 'Item name',2, null, null, 1, 0  
+select v.version_checklist_template_id, 7, 'Item name',1, null, null, 1, 0  
 from VERSIONS_CHECKLISTS_TEMPLATES v  
 join checklists_templates c on v.checklist_template_id = c.checklist_template_id  
 cross join users u  
@@ -350,8 +350,7 @@ join ITEMS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = 
 where c.description = 'Checklist A12 AP - ANP: Approval for next process' and b.position = 15  
 ) t; 
  
- 
---FORMULARIO A12 AP - FSA usando DBR 
+
 INSERT INTO FIELDS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id, position, title, field_data_type_id, regex_validation, format, mandatory, is_key)  
 select v.version_checklist_template_id, 1, 'Batch Number (Formulation)',1, '', null, 1, 1  
 from VERSIONS_CHECKLISTS_TEMPLATES v  
@@ -395,7 +394,7 @@ cross join users u
 where c.description = 'Checklist A12 AP - FSA usando DBR' and initials = '_adm'; 
  
 INSERT INTO FIELDS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id, position, title, field_data_type_id, regex_validation, format, mandatory, is_key) 
-select v.version_checklist_template_id, 7, 'Item name',2, null, null, 1, 0 
+select v.version_checklist_template_id, 7, 'Item name',1, null, null, 1, 0 
 from VERSIONS_CHECKLISTS_TEMPLATES v 
 join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
 cross join users u 
@@ -476,7 +475,6 @@ where c.description = 'Checklist A12 AP - ANP: Approval for next process' and b.
 ) t; 
  
  
---FORMULARIO A12 AP - FSA: Bulk De STJ, CH e CL recebidos em MOC 
 INSERT INTO FIELDS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id, position, title, field_data_type_id, regex_validation, format, mandatory, is_key) 
 select v.version_checklist_template_id, 1, 'Batch Number',1, '', null, 1, 1 
 from VERSIONS_CHECKLISTS_TEMPLATES v 
@@ -492,7 +490,7 @@ cross join users u
 where c.description = 'Checklist A12 AP - FSA: Bulk De STJ, CH e CL recebidos em MOC' and initials = '_adm'; 
  
 INSERT INTO FIELDS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id, position, title, field_data_type_id, regex_validation, format, mandatory, is_key) 
-select v.version_checklist_template_id, 3, 'Item name',2, null, null, 1, 0 
+select v.version_checklist_template_id, 3, 'Item name',1, null, null, 1, 0 
 from VERSIONS_CHECKLISTS_TEMPLATES v 
 join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
 cross join users u 

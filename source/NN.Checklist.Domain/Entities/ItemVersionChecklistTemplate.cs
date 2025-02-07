@@ -86,18 +86,32 @@ namespace NN.Checklist.Domain.Entities
 
         [AttributeDescriptor("version_checklist_template_id", true)]
         public System.Int64 VersionChecklistTemplateId { get; set; }
-
         public bool IsDisabled { get; set; } = false;
 
+        public string AbsolutePositionString
+        {
+            get
+            {
+                BlockVersionChecklistTemplate parentBlock = BlockVersionChecklistTemplate.Repository.Get(BlockVersionChecklistTemplateId).Result;
 
+                var absolutePosition = string.Empty;
+                if (parentBlock != null)
+                {
+                    absolutePosition += parentBlock.AbsolutePositionString;
+                }
+                absolutePosition += "." + Position.ToString();
+
+
+                return absolutePosition.TrimStart('.');
+
+            }
+        }
 
         public OptionFieldVersionChecklistTemplate OptionFieldVersionChecklistTemplate { get => GetManyToOneData<OptionFieldVersionChecklistTemplate>().Result; }
         public IList<DependencyItemVersionChecklistTemplate>? DependencyItemVersionChecklistTemplate { get => GetOneToManyData<DependencyItemVersionChecklistTemplate>().Result; }
         public IList<OptionItemVersionChecklistTemplate>? OptionItemsVersionChecklistTemplate { get => GetOneToManyData<OptionItemVersionChecklistTemplate>().Result; }
 
-
-
-
+      
 
         #endregion
 
@@ -194,12 +208,12 @@ namespace NN.Checklist.Domain.Entities
 
         #region User Code
 
-        public void CheckAvailability(IList<ItemChecklist>? items, IList<BlockVersionChecklistTemplate> blocksChecklistTemplate, long? checklistId)
+        public void CheckAvailability(IList<ItemChecklist>? items, IList<BlockVersionChecklistTemplate> blocksChecklistTemplate, string batchNumber)
         {
             try
             {
 
-                IsDisabled = CheckBlockDependency(blocksChecklistTemplate, checklistId) || CheckItemDependency(items, checklistId);
+                IsDisabled = CheckBlockDependency(blocksChecklistTemplate, batchNumber) || CheckItemDependency(items, batchNumber);
 
             }
             catch (Exception ex)
@@ -211,7 +225,7 @@ namespace NN.Checklist.Domain.Entities
 
         }
 
-        private bool CheckItemDependency(IList<ItemChecklist>? items, long? checklistId)
+        private bool CheckItemDependency(IList<ItemChecklist>? items, string batchNumber)
         {
             try
             {
@@ -233,20 +247,20 @@ namespace NN.Checklist.Domain.Entities
                                 return true;
                             }
 
-                            var item = items.Where(x => x.ItemVersionchecklistTemplate.ItemVersionChecklistTemplateId == itemDependecy.DependentItemVersionChecklistTemplateId);
+                            var item = items.Where(x => x.ItemVersionchecklistTemplate.ItemVersionChecklistTemplateId == itemDependecy.DependentItemVersionChecklistTemplateId).OrderByDescending(x => x.CreationTimestamp).FirstOrDefault();
 
-                            if (!item.Any())
+                            if (item==null || (bool)item.IsRejected)
                             {
                                 return true;
                             }
                         }
                         else
                         {
-                            if (checklistId == null)
+                            if (String.IsNullOrEmpty(batchNumber))
                             {
                                 return true;
                             }
-                            var checklist = Checklist.Repository.Get((long)checklistId).Result;
+                            var checklist = Checklist.Repository.GetChecklistByKeyValue(batchNumber, VersionChecklistTemplateId).Result;
 
                             if (checklist.Items == null)
                             {
@@ -274,7 +288,7 @@ namespace NN.Checklist.Domain.Entities
             }
 
         }
-        private bool CheckBlockDependency(IList<BlockVersionChecklistTemplate> blocksChecklistTemplate, long? checklistId)
+        private bool CheckBlockDependency(IList<BlockVersionChecklistTemplate> blocksChecklistTemplate, string batchNumber)
         {
             try
             {
@@ -311,11 +325,11 @@ namespace NN.Checklist.Domain.Entities
                         }
                         else
                         {
-                            if (checklistId == null)
+                            if (String.IsNullOrEmpty(batchNumber))
                             {
                                 return true;
                             }
-                            var checklist = Checklist.Repository.Get((long)checklistId).Result;
+                            var checklist = Checklist.Repository.GetChecklistByKeyValue(batchNumber, VersionChecklistTemplateId).Result;
                             checklist.CheckAvailability();
                             var blockDiff = checklist.VersionChecklistTemplate.BlocksChecklistTemplate.Where(x => x.BlockVersionChecklistTemplateId == blockToCheck.BlockVersionChecklistTemplateId).FirstOrDefault();
                             if (blockDiff != null)

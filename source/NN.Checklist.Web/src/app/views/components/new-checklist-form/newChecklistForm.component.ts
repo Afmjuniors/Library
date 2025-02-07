@@ -71,7 +71,7 @@ export class NewChecklistForm implements OnInit {
   public versions: string;
   myInjector: Injector;
   public signatureService: SignatureService;
-  public  listChecklistToRelate : DependentChecklist[];
+
 
   constructor(
     public dialogRef: MatDialogRef<NewChecklistForm>,
@@ -105,11 +105,7 @@ export class NewChecklistForm implements OnInit {
 	this.app.getChecklistVersions(selectedId).subscribe(
 	  (response) => {
 		this.checklistVersion = response.result;
-    if(response.result.dependentVersionChecklistTemplate!=undefined){
-      this.app.listChecklist(response.result.dependentVersionChecklistTemplate.versionChecklistTemplateId).subscribe(x => {
-        this.listChecklistToRelate = x.result;
-      });
-    }
+   
 		// Inicializa o formulário após carregar checklistVersion
 		this.fieldForm = this.fb.group({});
 		this.initFieldForm();
@@ -240,8 +236,8 @@ if(this.checklist.items){
 
       this.fieldForm.addControl(controlName, new FormControl("", validatorArr));
     });
-  }
 
+  }
   // Checking control validation
   isControlHasError(controlName: string, validationType: string): boolean {
     const control = this.fieldForm.controls[controlName];
@@ -346,6 +342,7 @@ if(this.checklist.items){
 
         this.checklist.fields.push(field);
     }
+
   }
 
 

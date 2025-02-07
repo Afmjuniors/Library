@@ -20,7 +20,8 @@ namespace NN.Checklist.Domain.DTO
         public long? OptionFieldVersionChecklistTemplateId { get; set; }
         public string OptionsTitle { get; set; }
         public bool IsDisabled { get; set; }
-        
+        public string AbsolutePositionString { get; set; }
+
         public BlockVersionChecklistTemplateDTO BlockVersionChecklistTemplate { get; set; }
         public List<OptionFieldVersionChecklistTemplateDTO>? OptionFieldVersionChecklistTemplate { get; set; }
         public List<DependencyItemVersionChecklistTemplateDTO>? DependencyItemVersionChecklistTemplate { get; set; }

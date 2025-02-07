@@ -228,6 +228,25 @@ export class UpdateCheklistForm implements OnInit {
       });
   }
 
+  checkIfLatsItemIsRejected(idItemVersionTemplate: number):boolean{
+    if (this.checklist.items) {
+      const arr = this.checklist.items.sort((a, b) => {
+        if (a.signature.dthSign < b.signature.dthSign) return 1; // a vem antes de b
+        if (a.signature.dthSign > b.signature.dthSign) return -1;  // a vem depois de b
+        return 0; // a e b são iguais
+      });
+      const item = arr.find(x => x.itemVersionChecklistTemplate.itemVersionChecklistTemplateId == idItemVersionTemplate);
+      if (item) {
+        if (item.isRejected) {
+
+          return true;
+        }
+      }
+    }
+    return false;
+
+  }
+
 
 
   getColorRejected(idItemVersionTemplate: number):string{
