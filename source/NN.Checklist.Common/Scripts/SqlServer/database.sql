@@ -205,9 +205,10 @@ CREATE TABLE [CHECKLISTS_TEMPLATES](
 CREATE TABLE [COMMENTS_CHECKLISTS](
 	[comment_checklist_id] [bigint] IDENTITY(1,1) NOT NULL,
 	[checklist_id] [bigint] NOT NULL,
+	[item_template_version_id] [bigint] NULL,
 	[stamp] [varchar](500) NOT NULL,
 	[comments] [varchar](5000) NOT NULL,
-	[creation_timestamp] [bigint] NOT NULL,
+	[creation_timestamp] [datetime] NOT NULL,
 	[creation_user_id] [bigint] NOT NULL,
  CONSTRAINT [PK_COMMENTS_CHECKLISTS] PRIMARY KEY CLUSTERED 
 (

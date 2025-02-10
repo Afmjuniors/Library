@@ -11,8 +11,8 @@ using TDCore.Domain;
 
 namespace NN.Checklist.Domain.Repositories.Specifications
 {
-    [ObjectMap("CommentCheclistRepository", true)]
-    public interface ICommentCheclistRepository<TEntity, TKey> : IRepositoryBase<TEntity, TKey> where TEntity : class
+    [ObjectMap("CommentChecklistRepository", true)]
+    public interface ICommentChecklistRepository<TEntity, TKey> : IRepositoryBase<TEntity, TKey> where TEntity : class
     {
 
     #region User Code

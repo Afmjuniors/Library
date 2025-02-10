@@ -2,6 +2,7 @@
 $color:rgb(212, 209, 209);
 $colorRejectedFont:white;
 $colorRejectedBg:rgb(218, 72, 72);
+$colorCompleteddBg:rgb(245, 255, 245);
 
 .btn-space{
     padding-left: 16px;
@@ -52,4 +53,7 @@ $colorRejectedBg:rgb(218, 72, 72);
     display: flex;
     flex-direction: column;
 
+}
+.completed-item{
+    background-color:$colorCompleteddBg;
 }

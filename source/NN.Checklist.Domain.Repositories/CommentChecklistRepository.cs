@@ -15,15 +15,16 @@ using System.Linq;
 
 namespace NN.Checklist.Domain.Repositories
 {
-    public class CommentCheclistRepository: RepositoryBase<CommentCheclist, System.Int64>, ICommentCheclistRepository<CommentCheclist, System.Int64>
+    public class CommentChecklistRepository: RepositoryBase<CommentChecklist, System.Int64>, ICommentChecklistRepository<CommentChecklist, System.Int64>
     {
-        public CommentCheclistRepository()
+        public CommentChecklistRepository()
         {
             MapTable("COMMENTS_CHECKLISTS");
             MapPrimaryKey("CommentChecklistId", "comment_checklist_id",true,0);
             MapColumn("ChecklistId", "checklist_id");
             MapColumn("Comments", "comments", 5000);
             MapColumn("CreationTimestamp", "creation_timestamp");
+            MapColumn("ItemTemplateVersionId", "item_template_version_id");
             MapColumn("CreationUserId", "creation_user_id");
             MapColumn("Stamp", "stamp", 500);
             MapRelationshipManyToOne("Checklist", "ChecklistId", "COMMENTS_CHECKLISTS", "checklist_id" );

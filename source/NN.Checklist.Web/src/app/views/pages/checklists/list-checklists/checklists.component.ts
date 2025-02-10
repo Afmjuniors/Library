@@ -150,6 +150,15 @@ export class ChecklistComponent extends BasePageComponent implements OnInit {
 		//this.checkTimer();
 	}
 
+tranlateIfIsCompleted(isCompleted:boolean){
+	if(isCompleted){
+		return this.translate.instant("CHECKLISTS.IS_COMPLETED");
+
+	}else{
+		return this.translate.instant("CHECKLISTS.IS_NOT_COMPLETED");
+	}
+}
+
 	loadListChecklist() {
 		this.loading = true;
 		this.app.listChecklistTemplate().subscribe(x => {

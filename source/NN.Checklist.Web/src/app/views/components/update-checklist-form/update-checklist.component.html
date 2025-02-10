@@ -90,7 +90,8 @@
 											{{ block.title }}
 										</div>
 									<div *ngIf="block.dependentBlockVersionChecklistTemplate" class="dependecy-list">
-										Dependencia:
+										<span>{{ 'NEW_EDIT_CHECKLIST.DEPENDENCY' | translate }} </span>
+										<span> : </span>
 										<div *ngFor="let dependent of block.dependentBlockVersionChecklistTemplate">
 											<span>{{ dependent.dependentString }}</span>
 										</div>
@@ -99,9 +100,11 @@
 								</div>
 								</mat-header-cell>
 								<mat-cell *matCellDef="let componentItem" style="flex: 2;"
-									[ngClass]="{'rejected-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)}">
+									[ngClass]="{'rejected-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)=='rejected',
+												'completed-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)=='completed'}">
 									<div class="item-title"
-										[ngClass]="{'disabled-title': componentItem.isDisabled , 'rejected-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)}">
+										[ngClass]="{'disabled-title': componentItem.isDisabled , 'rejected-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)=='rejected',
+												'completed-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)=='completed'}">
 
 										<!-- Título -->
 										<div>
@@ -110,7 +113,8 @@
 											</div>
 											<div *ngIf="componentItem.dependencyItemVersionChecklistTemplate"
 												class="dependecy-list">
-												Dependencia:
+												<span>{{ 'NEW_EDIT_CHECKLIST.DEPENDENCY' | translate }} </span>
+												<span> : </span>
 												<div
 													*ngFor="let dependent of componentItem.dependencyItemVersionChecklistTemplate">
 													<span>{{ dependent.dependentString }}</span>
@@ -121,7 +125,8 @@
 										<div *ngIf="componentItem.itemTypeId == 3 || componentItem.itemTypeId == 4 ">
 											<p>
 												<b
-													[ngClass]="{'disabled-title': componentItem.isDisabled , 'rejected-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)}">{{componentItem.optionsTitle}}</b>
+													[ngClass]="{'disabled-title': componentItem.isDisabled , 'rejected-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)=='rejected',
+												'completed-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)=='completed'}">{{componentItem.optionsTitle}}</b>
 											</p>
 											<custom-checkbox-input [isSingle]="componentItem.itemTypeId == 3"
 												[isDisable]="componentItem.isDisabled"
@@ -142,13 +147,15 @@
 									style="justify-content: center; flex:1">{{'NEW_EDIT_CHECKLIST.SIGNATURE' |
 									translate}}</mat-header-cell>
 								<mat-cell *matCellDef="let componentItem"
-									[ngClass]="{'rejected-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)}"
+									[ngClass]="{'rejected-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)=='rejected',
+												'completed-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)=='completed'}"
 									style="justify-content: end; flex:1;">
 									<div style="display: flex;">
 										<div class="flex"
 											*ngIf="getInitials(componentItem.itemVersionChecklistTemplateId)">
 											<div style="display: flex; flex-direction: row; justify-content: center;">
-												<div [ngClass]="{'disabled-title': componentItem.isDisabled , 'rejected-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)}"
+												<div [ngClass]="{'disabled-title': componentItem.isDisabled , 'rejected-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)=='rejected',
+												'completed-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)=='completed'}"
 													style="display: flex; flex-direction: column;  align-items: center; justify-content: center;">
 													<p style="margin: 0; padding: 0; font-size: 12px;">
 														{{
@@ -198,7 +205,8 @@
 									}}</p>
 							</div>
 							<div *ngIf="block.blocks[0].dependentBlockVersionChecklistTemplate" class="dependecy-list">
-								Dependencia:
+								<span>{{ 'NEW_EDIT_CHECKLIST.DEPENDENCY' | translate }} </span>
+								<span> : </span>
 								<div *ngFor="let dependent of block.blocks[0].dependentBlockVersionChecklistTemplate">
 									<span>{{ dependent.dependentString }}</span>
 								</div>
@@ -211,9 +219,13 @@
 									<ng-container matColumnDef="title">
 										<mat-header-cell *matHeaderCellDef style="flex: 2;"></mat-header-cell>
 										<mat-cell *matCellDef="let componentItem" style="flex: 2;"
-											[ngClass]="{'rejected-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)}">
+											[ngClass]="{'rejected-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)=='rejected',
+											'completed-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)=='completed'}">
 											<div class="item-title"
-												[ngClass]="{'disabled-title': componentItem.isDisabled , 'rejected-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)}">
+												[ngClass]="{'disabled-title': componentItem.isDisabled , 
+												'rejected-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)=='rejected',
+												'completed-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)=='completed'
+											}">
 
 												<!-- Título -->
 												<div>
@@ -222,7 +234,8 @@
 													</div>
 													<div *ngIf="componentItem.dependencyItemVersionChecklistTemplate"
 														class="dependecy-list">
-														Dependencia:
+														<span>{{ 'NEW_EDIT_CHECKLIST.DEPENDENCY' | translate }} </span>
+														<span> : </span>
 														<div
 															*ngFor="let dependent of componentItem.dependencyItemVersionChecklistTemplate">
 															<span>{{ dependent.dependentString }}</span>
@@ -234,7 +247,9 @@
 													*ngIf="componentItem.itemTypeId == 3 || componentItem.itemTypeId == 4 ">
 													<p>
 														<b
-															[ngClass]="{'disabled-title': componentItem.isDisabled , 'rejected-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)}">{{componentItem.optionsTitle}}</b>
+															[ngClass]="{'disabled-title': componentItem.isDisabled ,
+															 'rejected-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)=='rejected',
+															'completed-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)=='completed'}">{{componentItem.optionsTitle}}</b>
 													</p>
 													<custom-checkbox-input [isSingle]="componentItem.itemTypeId == 3"
 														[isDisable]="componentItem.isDisabled"
@@ -255,14 +270,16 @@
 											style="justify-content: center; flex:1">{{'NEW_EDIT_CHECKLIST.SIGNATURE' |
 											translate}}</mat-header-cell>
 										<mat-cell *matCellDef="let componentItem"
-											[ngClass]="{'rejected-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)}"
+											[ngClass]="{'rejected-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)=='rejected',
+												'completed-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)=='completed'}"
 											style="justify-content: end; flex:1;">
 											<div style="display: flex;">
 												<div class="flex"
 													*ngIf="getInitials(componentItem.itemVersionChecklistTemplateId)">
 													<div
 														style="display: flex; flex-direction: row; justify-content: center;">
-														<div [ngClass]="{'disabled-title': componentItem.isDisabled , 'rejected-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)}"
+														<div [ngClass]="{'disabled-title': componentItem.isDisabled , 'rejected-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)=='rejected',
+												'completed-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)=='completed'}"
 															style="display: flex; flex-direction: column;  align-items: center; justify-content: center;">
 															<p style="margin: 0; padding: 0; font-size: 12px;">
 																{{

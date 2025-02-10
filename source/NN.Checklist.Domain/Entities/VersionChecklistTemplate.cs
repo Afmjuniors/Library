@@ -259,10 +259,11 @@ namespace NN.Checklist.Domain.Entities
         {
             try
             {
+                var blocks = BlocksChecklistTemplate.ToList();
                 List<BlockVersionChecklistTemplate> lst = new List<BlockVersionChecklistTemplate>();
                 foreach (var block in BlocksChecklistTemplate)
                 {
-                    block.CheckAvailability(items, BlocksChecklistTemplate, keyValue, BlocksTree);
+                    block.CheckAvailability(items, BlocksChecklistTemplate, keyValue, blocks);
                     lst.Add(block);
                 }
                 _blocksChecklistTemplate = lst;
@@ -279,9 +280,10 @@ namespace NN.Checklist.Domain.Entities
         {
             try
             {
+                var _blocks = BlocksChecklistTemplate.ToList();
                 foreach (var block in BlocksChecklistTemplate)
                 {
-                    var flag = block.IsBlockCompleted(items, BlocksTree);
+                    var flag = block.IsBlockCompleted(items, _blocks);
                     if (!flag)
                     {
                         return false;

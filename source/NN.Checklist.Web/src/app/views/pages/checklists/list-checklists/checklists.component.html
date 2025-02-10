@@ -148,7 +148,7 @@
 
 				<ng-container matColumnDef="is_batch_released">
 					<mat-header-cell *matHeaderCellDef mat-sort-header>{{ "CHECKLISTS.IS_BATCH_RELEASED" | translate }}</mat-header-cell>
-					<mat-cell *matCellDef="let checklist">"is_Closed?"</mat-cell>
+					<mat-cell *matCellDef="let checklist">{{tranlateIfIsCompleted(checklist.isCompleted)}}</mat-cell>
 					<!-- <mat-cell *matCellDef="let alarm">{{alarm.areaName}}</mat-cell> -->
 
 				</ng-container>

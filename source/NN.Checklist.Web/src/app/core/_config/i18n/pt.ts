@@ -296,6 +296,8 @@ export const locale = {
 			LOADING:"Carregando",
 			KEY:"Chave",
 			KEY_TITLE:"Titulo da chave",
+			IS_COMPLETED:"Completo",
+			IS_NOT_COMPLETED:"Incompleto",
 			SIGNATURE:{
 				INITIALS:"Usuário",
 				DATE:"Data da assinatura",
@@ -314,6 +316,7 @@ export const locale = {
 			SIGN:"Assinar",
 			VERSION:"Versão",
 			SIGNATURE:"Assinatura",
+			DEPENDENCY:"Dependência",
 			VALIDATION:{
 				REQUIRED_FIELD:'Campo obrigatório',
 				FORMAT_INVALID:"O campo não é válido"

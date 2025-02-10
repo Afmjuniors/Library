@@ -22,26 +22,27 @@ using System.Threading.Tasks;
 
 namespace NN.Checklist.Domain.Entities
 {
-    public class CommentCheclist : DomainBase<CommentCheclist, ICommentCheclistRepository<CommentCheclist, System.Int64>, System.Int64>
+    public class CommentChecklist : DomainBase<CommentChecklist, ICommentChecklistRepository<CommentChecklist, System.Int64>, System.Int64>
     {
 
         #region Constructors
 
-        public CommentCheclist()
+        public CommentChecklist()
         {
 
         }
-        
-        public CommentCheclist(long? actionUserId, System.Int64 checklistId, System.String comments, System.Int64 creationTimestamp, System.Int64 creationUserId, System.String stamp)
+
+        public CommentChecklist(long? actionUserId, System.Int64 checklistId, System.String comments, System.DateTime creationTimestamp, System.Int64 creationUserId, System.String stamp, System.Int64? itemVersionchecklistTemplateId)
         {
 
             var auditTrail = ObjectFactory.GetSingleton<IAuditTrailService>();
 
-                        ChecklistId = checklistId; 
-            Comments = comments; 
-            CreationTimestamp = creationTimestamp; 
-            CreationUserId = creationUserId; 
-            Stamp = stamp; 
+            ChecklistId = checklistId;
+            Comments = comments;
+            CreationTimestamp = creationTimestamp;
+            CreationUserId = creationUserId;
+            Stamp = stamp;
+            ItemTemplateVersionId = itemVersionchecklistTemplateId;
 
 
             using (var tran = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -50,7 +51,7 @@ namespace NN.Checklist.Domain.Entities
                 {
                     Insert().Wait();
 
-                    auditTrail.AddRecord("AT_CommentCheclistInserted", CommentChecklistId, EnumSystemFunctionality.Checklists, actionUserId);
+                    auditTrail.AddRecord("AT_CommentChecklistInserted", CommentChecklistId, EnumSystemFunctionality.Checklists, actionUserId);
                 }
                 tran.Complete();
             }
@@ -63,19 +64,21 @@ namespace NN.Checklist.Domain.Entities
         [AttributeDescriptor("comment_checklist_id", true, EnumValueRanges.Positive)]
         public System.Int64 CommentChecklistId { get; internal set; }
 
-        [AttributeDescriptor("checklist_id", true)] 
+        [AttributeDescriptor("checklist_id", true)]
         public System.Int64 ChecklistId { get; set; }
 
-        [AttributeDescriptor("comments", true)] 
+        [AttributeDescriptor("comments", true)]
         public System.String Comments { get; set; }
 
-        [AttributeDescriptor("creation_timestamp", true)] 
-        public System.Int64 CreationTimestamp { get; set; }
+        [AttributeDescriptor("creation_timestamp", true)]
+        public DateTime CreationTimestamp { get; set; }
 
-        [AttributeDescriptor("creation_user_id", true)] 
+        [AttributeDescriptor("creation_user_id", true)]
         public System.Int64 CreationUserId { get; set; }
+        [AttributeDescriptor("item_template_version_id", false)]
+        public System.Int64? ItemTemplateVersionId { get; set; }
 
-        [AttributeDescriptor("stamp", true)] 
+        [AttributeDescriptor("stamp", true)]
         public System.String Stamp { get; set; }
 
         public Checklist Checklist { get => GetManyToOneData<Checklist>().Result; }
@@ -88,7 +91,7 @@ namespace NN.Checklist.Domain.Entities
 
         #region Validation
 
-        
+
         public async Task<bool> Validate(bool newRecord)
         {
             try
@@ -103,27 +106,27 @@ namespace NN.Checklist.Domain.Entities
                 }
                 else
                 {
-                                        if (String.IsNullOrEmpty(Comments))
+                    if (String.IsNullOrEmpty(Comments))
                     {
                         erros.Add(new DomainError("comments", "CommentsInvalid"));
                     }
-                    
+
                     if (Comments != null && Comments.Length > 5000)
                     {
                         erros.Add(new DomainError("comments", "CommentsInvalidSize"));
                     }
-                    
+
                     if (String.IsNullOrEmpty(Stamp))
                     {
                         erros.Add(new DomainError("stamp", "StampInvalid"));
                     }
-                    
+
                     if (Stamp != null && Stamp.Length > 500)
                     {
                         erros.Add(new DomainError("stamp", "StampInvalidSize"));
                     }
-                    
-                    
+
+
                 }
 
                 if (erros.Count > 0)
@@ -144,31 +147,31 @@ namespace NN.Checklist.Domain.Entities
 
         }
 
-        
+
         #endregion
 
         #region Save
-        
-        
-        public async Task Update(long? actionUserId, System.Int64 checklistId, System.String comments, System.Int64 creationTimestamp, System.Int64 creationUserId, System.String stamp)
+
+
+        public async Task Update(long? actionUserId, System.Int64 checklistId, System.String comments, System.DateTime creationTimestamp, System.Int64 creationUserId, System.String stamp)
         {
             try
             {
                 var auditTrail = ObjectFactory.GetSingleton<IAuditTrailService>();
-                            ChecklistId = checklistId; 
-            Comments = comments; 
-            CreationTimestamp = creationTimestamp; 
-            CreationUserId = creationUserId; 
-            Stamp = stamp; 
+                ChecklistId = checklistId;
+                Comments = comments;
+                CreationTimestamp = creationTimestamp;
+                CreationUserId = creationUserId;
+                Stamp = stamp;
 
 
                 using (var tran = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
-                { 
+                {
                     if (await Validate(false))
                     {
                         await Update();
 
-                        auditTrail.AddRecord("AT_CommentCheclistUpdated", CommentChecklistId, EnumSystemFunctionality.Checklists, actionUserId);
+                        auditTrail.AddRecord("AT_CommentChecklistUpdated", CommentChecklistId, EnumSystemFunctionality.Checklists, actionUserId);
                     }
                     tran.Complete();
                 }
@@ -179,15 +182,15 @@ namespace NN.Checklist.Domain.Entities
             }
             catch (Exception ex)
             {
-                throw new DomainException("CommentCheclistDataUpdateError", ex);
+                throw new DomainException("CommentChecklistDataUpdateError", ex);
             }
         }
 
         #endregion
 
         #region User Code
-                    
-        
+
+
 
         #endregion
     }

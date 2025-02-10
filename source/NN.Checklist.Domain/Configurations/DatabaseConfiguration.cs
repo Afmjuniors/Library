@@ -61,7 +61,7 @@ namespace NN.Checklist.Domain.Configurations
                 AddObject(CreateRepository("CancelledItemVersionChecklistTemplateRepository", "NN.Checklist.Domain.Repositories.CancelledItemVersionChecklistTemplateRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
                 AddObject(CreateRepository("ChecklistRepository", "NN.Checklist.Domain.Repositories.ChecklistRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
                 AddObject(CreateRepository("ChecklistTemplateRepository", "NN.Checklist.Domain.Repositories.ChecklistTemplateRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
-                AddObject(CreateRepository("CommentCheclistRepository", "NN.Checklist.Domain.Repositories.CommentCheclistRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
+                AddObject(CreateRepository("CommentChecklistRepository", "NN.Checklist.Domain.Repositories.CommentChecklistRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
                 AddObject(CreateRepository("DependencyBlockVersionChecklistTemplateRepository", "NN.Checklist.Domain.Repositories.DependencyBlockVersionChecklistTemplateRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
                 AddObject(CreateRepository("DependencyItemVersionChecklistTemplateRepository", "NN.Checklist.Domain.Repositories.DependencyItemVersionChecklistTemplateRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));
                 AddObject(CreateRepository("FieldChecklistRepository", "NN.Checklist.Domain.Repositories.FieldChecklistRepository, NN.Checklist.Domain.Repositories", conexaoBDSQLServer, logger));

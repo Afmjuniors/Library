@@ -228,7 +228,7 @@ export class UpdateCheklistForm implements OnInit {
       });
   }
 
-  checkIfLatsItemIsRejected(idItemVersionTemplate: number):boolean{
+  checkIfLatsItemIsRejected(idItemVersionTemplate: number):string{
     if (this.checklist.items) {
       const arr = this.checklist.items.sort((a, b) => {
         if (a.signature.dthSign < b.signature.dthSign) return 1; // a vem antes de b
@@ -239,11 +239,13 @@ export class UpdateCheklistForm implements OnInit {
       if (item) {
         if (item.isRejected) {
 
-          return true;
+          return "rejected";
+        }else{
+          return "completed";
         }
       }
     }
-    return false;
+    return "notSign";
 
   }
 

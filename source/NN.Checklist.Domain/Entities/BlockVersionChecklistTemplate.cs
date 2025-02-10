@@ -216,11 +216,11 @@ namespace NN.Checklist.Domain.Entities
 
         #region User Code
 
-        public void CheckAvailability(IList<ItemChecklist>? items, IList<BlockVersionChecklistTemplate> blocksChecklistTemplate, string keyValue, List<BlockVersionChecklistTemplateDTO> blocksTree)
+        public void CheckAvailability(IList<ItemChecklist>? items, IList<BlockVersionChecklistTemplate> blocksChecklistTemplate, string keyValue, List<BlockVersionChecklistTemplate> blocks)
         {
             try
             {
-                IsCompleted = IsBlockCompleted(items, blocksTree);
+                IsCompleted = IsBlockCompleted(items, blocks);
                 if (IsCompleted.Value)
                 {
                     return;
@@ -417,7 +417,7 @@ namespace NN.Checklist.Domain.Entities
             }
             return false;
         }
-        public bool IsBlockCompleted(IList<ItemChecklist>? items,List<BlockVersionChecklistTemplateDTO> _blocksTree)
+        public bool IsBlockCompleted(IList<ItemChecklist>? items, List<BlockVersionChecklistTemplate> blocks)
         {
             try
             {
@@ -431,19 +431,17 @@ namespace NN.Checklist.Domain.Entities
                 {
                     return true;
                 }
-                var blocksTree = _blocksTree.Where(x => x.BlockVersionChecklistTemplateId == BlockVersionChecklistTemplateId).FirstOrDefault();
-                
-                if (blocksTree?.Blocks != null)
+                var _block = blocks.Where(x => x.ParentBlockVersionChecklistTemplateId == BlockVersionChecklistTemplateId).FirstOrDefault();
+
+                if (_block != null)
                 {
-                    foreach (var blockDto in blocksTree.Blocks)
+                                        
+                    var isCompleted = _block.IsBlockCompleted(items, blocks);
+                    if (!isCompleted)
                     {
-                        var block = blockDto.Transform<BlockVersionChecklistTemplate>();
-                        block.IsBlockCompleted(items, _blocksTree);
-                        if (!block.IsCompleted.HasValue || !block.IsCompleted.Value)
-                        {
-                            return false;
-                        }
+                        return false;
                     }
+
                 }
                 if (items.Any())
                 {
