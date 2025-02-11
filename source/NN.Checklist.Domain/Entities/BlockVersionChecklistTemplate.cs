@@ -81,6 +81,8 @@ namespace NN.Checklist.Domain.Entities
         public bool? IsCompleted { get; set; }
         public bool IsDisabled { get; set; }
 
+        public int LastPosition { get; set; }
+
         public string AbsolutePositionString
         {
             get
@@ -120,9 +122,6 @@ namespace NN.Checklist.Domain.Entities
             }
         }
         public IList<BlockVersionChecklistTemplateDTO> Blocks { get; set; }
-
-
-
 
         #endregion
 
@@ -265,7 +264,6 @@ namespace NN.Checklist.Domain.Entities
 
 
         }
-
         private bool CheckItemDependency(IList<ItemChecklist>? items, string keyValue)
         {
             try
@@ -421,8 +419,6 @@ namespace NN.Checklist.Domain.Entities
         {
             try
             {
-
-
                 if (items == null)
                 {
                     return false;
@@ -434,36 +430,27 @@ namespace NN.Checklist.Domain.Entities
                 var _block = blocks.Where(x => x.ParentBlockVersionChecklistTemplateId == BlockVersionChecklistTemplateId).FirstOrDefault();
 
                 if (_block != null)
-                {
-                                        
+                {                          
                     var isCompleted = _block.IsBlockCompleted(items, blocks);
                     if (!isCompleted)
                     {
                         return false;
                     }
-
                 }
                 if (items.Any())
                 {
                     foreach (var item in ItemsChecklistsTemplate)
                     {
-
                         var signatures = items.Where(x => x.ItemVersionchecklistTemplate.ItemVersionChecklistTemplateId == item.ItemVersionChecklistTemplateId).OrderByDescending(x => x.CreationTimestamp).FirstOrDefault();
-
-
                         if (signatures == null || !signatures.IsRejected.HasValue || signatures.IsRejected.Value)
                         {
                             return false;
                         }
-
                     }
                     return true;
 
                 }
                 return false;
-
-
-
             }
             catch (Exception ex)
             {
@@ -471,6 +458,24 @@ namespace NN.Checklist.Domain.Entities
             }
         }
 
-        #endregion
+        public void SetLastPosition(IList<BlockVersionChecklistTemplateDTO> tree)
+        {
+            if (tree != null)
+            {
+                LastPosition = tree.OrderByDescending(x=> x.Blocks != null).First().Position;
+            }
+            if (ItemsChecklistsTemplate != null)
+            {
+                var lastItem = ItemsChecklistsTemplate.OrderByDescending(x => x.Position).First().Position;
+                if (lastItem > LastPosition)
+                {
+                    LastPosition = lastItem;
+                }
+            }
+
+        }
     }
+
+        #endregion
+    
 }

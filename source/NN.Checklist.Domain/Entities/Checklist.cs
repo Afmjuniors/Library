@@ -16,6 +16,7 @@ using NN.Checklist.Domain.DTO;
 using System.Linq;
 using iTextSharp.text;
 using static iTextSharp.text.pdf.AcroFields;
+using System.Globalization;
 
 #region Cabeçalho
 
@@ -123,6 +124,19 @@ namespace NN.Checklist.Domain.Entities
         public User CreationUser { get => GetManyToOneData<User>().Result; }
 
         public User UpdateUser { get => GetManyToOneData<User>().Result; }
+        public string FormattedDate { get {
+                var fieldDateKey = Fields.Where(x => x.FieldVersionChecklistTemplate.IsKey && x.FieldVersionChecklistTemplate.FieldDataTypeId == EnumFieldDataType.Date).FirstOrDefault();
+                if (fieldDateKey!=null)
+                {
+                    var dth = DateTime.Parse(fieldDateKey.Value);
+                    return dth.ToString("yyyy-MM-dd");
+                }
+                else
+                {
+                    return CreationTimestamp.ToString("yyyy-MM-dd");
+                }
+            
+            } }
 
         public VersionChecklistTemplate? _versionChecklistTemplate;
         public VersionChecklistTemplate? VersionChecklistTemplate
@@ -240,6 +254,7 @@ namespace NN.Checklist.Domain.Entities
                 }
 
                 VersionChecklistTemplate.CheckAvailability(Items, keyValue);
+                VersionChecklistTemplate.SetLastPosistionInBlocks();
                 CheckChecklistIsCompleted();
 
             }

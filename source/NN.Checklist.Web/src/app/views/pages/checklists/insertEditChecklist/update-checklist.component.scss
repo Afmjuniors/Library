@@ -14,14 +14,25 @@ $colorCompleteddBg:rgb(245, 255, 245);
     padding: 8px;
 	margin-bottom: 15px;
 }
-.item-title{
+
+.table-header{
     display: flex; 
-    gap: 8px; 
     align-items: center; 
     justify-content: space-between; 
-    width: 100%;
+    color:grey;
+    font-weight: 500;
+}
+
+.table-row{
+color:grey;
+}
+.item-title{
+    display: flex; 
+    align-items: center; 
+    justify-content: space-between; 
    
 }
+
 .disabled-title{
     color:$color;
 }

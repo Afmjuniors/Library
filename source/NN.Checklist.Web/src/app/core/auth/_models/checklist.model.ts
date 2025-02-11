@@ -17,6 +17,8 @@ export class ChecklistModel extends BaseModel {
     fields: FieldChecklist[];
     items: ItemChecklist[];
     dependentChecklistId:number;
+    formattedDate:Date;
+    isCompleted:boolean;
     versionChecklistTemplate:VersionChecklistTemplate;
 
 
@@ -33,9 +35,10 @@ export class ChecklistModel extends BaseModel {
         this.items = null;
         this.dependentChecklistId = 0;
         this.versionChecklistTemplate = null;
+        this.formattedDate=null;
+        this.isCompleted=null;
 
 
     }
 }
-
 

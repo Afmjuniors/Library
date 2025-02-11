@@ -95,7 +95,7 @@ namespace NN.Checklist.Domain.Services
         public async Task<VersionChecklistTemplateDTO> GetLatestCheckList(long checklistId)
         {
             var checklistTeplate = await VersionChecklistTemplate.Repository.GetLatestVersionFromChecklistId(checklistId);
-
+            checklistTeplate.SetLastPosistionInBlocks();
             var dto = checklistTeplate.Transform<VersionChecklistTemplateDTO>();
 
             return dto;
@@ -133,10 +133,10 @@ namespace NN.Checklist.Domain.Services
 
 
             var newChelist = await Entities.Checklist.Repository.Get((long)checklistId);
+            newChelist.VersionChecklistTemplate.SetLastPosistionInBlocks();
 
-
-            return newChelist.Transform<ChecklistDTO>();
-
+            var dto = newChelist.Transform<ChecklistDTO>();
+            return dto;
 
         }
 
@@ -338,6 +338,7 @@ namespace NN.Checklist.Domain.Services
                 {
                     var et = entity.Transform<Entities.Checklist>();
                     et.CheckAvailability();
+                    
                     var etDTO = et.Transform<ChecklistDTO>();
                     ckLst.Add(etDTO);
                 }

@@ -26,9 +26,8 @@ import { IdleService } from '../../../../core/_base/layout/services/idle.service
 import { ChecklistDataSource } from '../../../../core/auth/_data-sources/checklist.datasource';
 import { ChecklistTemplate } from '../../../../core/auth/_models/checklistTemplate.model';
 import { ChecklistFilter } from '../../../../core/auth/_models/checklistFilter.model';
-import { NewChecklistForm } from '../../../components/new-checklist-form/newChecklistForm.component';
 import { ChecklistModel } from '../../../../core/auth/_models/checklist.model';
-import { UpdateCheklistForm } from '../../../components/update-checklist-form/update-checklist.component';
+import { UpdateCheklistForm } from '../insertEditChecklist/update-checklist.component';
 import { VersionChecklistTemplate } from '../../../../core/auth/_models/versionChecklistTemplate.model';
 import { FieldChecklist } from '../../../../core/auth/_models/fieldChecklist.model';
 
@@ -222,6 +221,8 @@ tranlateIfIsCompleted(isCompleted:boolean){
 			});
 	}
 
+
+
 	loadChecklist(): void {
 		this.loading = true;
 		if (this.filter.versionChecklistTemplateId == 0) {
@@ -295,7 +296,7 @@ tranlateIfIsCompleted(isCompleted:boolean){
 
 
 	newChecklist() {
-		const dialogRef = this.dialog.open(NewChecklistForm, { width: '60%', data: { type: 1 } });
+		const dialogRef = this.dialog.open(UpdateCheklistForm, { width: '60%', data: { isNew: true } });
 		dialogRef.afterClosed().subscribe(res => {
 			this.loading = true;
 			this.loadChecklist();
