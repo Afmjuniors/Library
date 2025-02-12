@@ -317,6 +317,7 @@ export const locale = {
 			VERSION:"Versão",
 			SIGNATURE:"Assinatura",
 			DEPENDENCY:"Dependência",
+			NO_OPTION:"Nenhuma opção selecionada",
 			VALIDATION:{
 				REQUIRED_FIELD:'Campo obrigatório',
 				FORMAT_INVALID:"O campo não é válido"

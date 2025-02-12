@@ -238,10 +238,10 @@
 										<div class="item-title"
 											[ngClass]="{'disabled-title': block.itemsChecklistsTemplate[i].isDisabled , 'rejected-item':checkIfLatsItemIsRejected(block.itemsChecklistsTemplate[i].itemVersionChecklistTemplateId)=='rejected',
 												'completed-item':checkIfLatsItemIsRejected(block.itemsChecklistsTemplate[i].itemVersionChecklistTemplateId)=='completed'}">
-											<div>
+											<div  style="display:flex; gap:8px; justify-content: space-between; flex:3; margin-right: 8px;" >
 
 												<!-- Título -->
-												<div>
+												<div >
 													<div>
 														{{ block.itemsChecklistsTemplate[i].title }}
 													</div>
@@ -256,7 +256,7 @@
 
 													</div>
 												</div>
-												<div
+												<div style="margin-left: auto;"
 													*ngIf="block.itemsChecklistsTemplate[i].itemTypeId == 3 || block.itemsChecklistsTemplate[i].itemTypeId == 4 ">
 													<p>
 														<b
@@ -301,15 +301,16 @@
 												<div class="flex">
 													<button type="button" mat-raised-button color="primary"
 														[disabled]="checkBtnAvaliability(block.itemsChecklistsTemplate[i])"
-														(click)="sign(block.itemsChecklistsTemplate[i].itemVersionChecklistTemplateId, block.blockVersionChecklistTemplateId)">
+														(click)="sign(block.itemsChecklistsTemplate[i].itemVersionChecklistTemplateId, block.blockVersionChecklistTemplateId,block.itemsChecklistsTemplate[i].itemTypeId == 3 || block.itemsChecklistsTemplate[i].itemTypeId == 4)">
 														{{ 'NEW_EDIT_CHECKLIST.SIGN' | translate }}
 													</button>
+													<p *ngIf="viewErrorMessage(block.itemsChecklistsTemplate[i].itemVersionChecklistTemplateId,block.itemsChecklistsTemplate[i].itemTypeId == 3 || block.itemsChecklistsTemplate[i].itemTypeId == 4)" class="error-text">{{'NEW_EDIT_CHECKLIST.NO_OPTION' | translate}}</p>
 												</div>
 												<div class="flex btn-space"
 													*ngIf="block.itemsChecklistsTemplate[i].itemTypeId==2">
 													<button type="button" mat-raised-button color="primary"
 														[disabled]="checkBtnAvaliability(block.itemsChecklistsTemplate[i])"
-														(click)="sign(block.itemsChecklistsTemplate[i].itemVersionChecklistTemplateId, block.blockVersionChecklistTemplateId)">
+														(click)="sign(block.itemsChecklistsTemplate[i].itemVersionChecklistTemplateId, block.blockVersionChecklistTemplateId,block.itemsChecklistsTemplate[i].itemTypeId == 3 || block.itemsChecklistsTemplate[i].itemTypeId == 4)">
 														{{ 'NEW_EDIT_CHECKLIST.SIGN' | translate }}
 													</button>
 												</div>
@@ -331,7 +332,7 @@
 												<span>{{ dependent.dependentString }}</span>
 											</div>
 										</div>
-										<mat-table [dataSource]="loadDataSourceBlock(i+1).itemsChecklistsTemplate"
+										<mat-table [dataSource]="loadDataSourceBlock(i+1).itemsChecklistsTemplate" style="flex:3"
 											class="styled-table">
 											<!-- Column for Component Item Title -->
 											<ng-container matColumnDef="title">

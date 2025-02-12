@@ -215,7 +215,7 @@ namespace NN.Checklist.Domain.Entities
 
         #region User Code
 
-        public void CheckAvailability(IList<ItemChecklist>? items, IList<BlockVersionChecklistTemplate> blocksChecklistTemplate, string keyValue, List<BlockVersionChecklistTemplate> blocks)
+        public void CheckAvailability(IList<ItemChecklist>? items, IList<BlockVersionChecklistTemplate> blocksChecklistTemplate, string keyValue,EnumFieldDataType? keyType, List<BlockVersionChecklistTemplate> blocks)
         {
             try
             {
@@ -232,7 +232,7 @@ namespace NN.Checklist.Domain.Entities
                 }
                 if (DependentBlockVersionChecklistTemplate != null || hasParentDependency)
                 {
-                    IsDisabled = CheckBlockDependency(blocksChecklistTemplate, keyValue) || CheckItemDependency(items, keyValue);
+                    IsDisabled = CheckBlockDependency(blocksChecklistTemplate, keyValue, keyType) || CheckItemDependency(items, keyValue, keyType);
                 }
 
                 if (ItemsChecklistsTemplate != null)
@@ -247,7 +247,7 @@ namespace NN.Checklist.Domain.Entities
                         }
                         else
                         {
-                            item.CheckAvailability(items, blocksChecklistTemplate, keyValue);
+                            item.CheckAvailability(items, blocksChecklistTemplate, keyValue, keyType);
 
                         }
 
@@ -264,7 +264,7 @@ namespace NN.Checklist.Domain.Entities
 
 
         }
-        private bool CheckItemDependency(IList<ItemChecklist>? items, string keyValue)
+        private bool CheckItemDependency(IList<ItemChecklist>? items, string keyValue, EnumFieldDataType? keyType)
         {
             try
             {
@@ -305,7 +305,7 @@ namespace NN.Checklist.Domain.Entities
                             {
                                 return true;
                             }
-                            var checklist = Checklist.Repository.GetChecklistByKeyValue(keyValue, VersionChecklistTemplateId).Result;
+                            var checklist = Checklist.Repository.GetChecklistByKeyValue(keyValue, VersionChecklistTemplateId, keyType).Result;
 
                             if (checklist.Items == null)
                             {
@@ -333,7 +333,7 @@ namespace NN.Checklist.Domain.Entities
             }
 
         }
-        private bool CheckBlockDependency(IList<BlockVersionChecklistTemplate> blocksChecklistTemplate, string keyValue)
+        private bool CheckBlockDependency(IList<BlockVersionChecklistTemplate> blocksChecklistTemplate, string keyValue, EnumFieldDataType? keyType)
         {
             var blocksDependencies = new List<DependencyBlockVersionChecklistTemplate>();
             var listHasparent = blocksChecklistTemplate.Where(x => x.ParentBlockVersionChecklistTemplateId.HasValue);
@@ -391,8 +391,12 @@ namespace NN.Checklist.Domain.Entities
                         {
                             return true;
                         }
-                        var checklist = Checklist.Repository.GetChecklistByKeyValue(keyValue, (long)blockD.DependentVersionChecklistTemplateId).Result;
+                        var checklist = Checklist.Repository.GetChecklistByKeyValue(keyValue, (long)blockD.DependentVersionChecklistTemplateId, keyType).Result;
+                        if (checklist != null)
+                        {
                         checklist.CheckAvailability();
+
+                        }
 
 
                         var blockDiff = checklist.VersionChecklistTemplate.BlocksChecklistTemplate.Where(x => blockToCheck.DependentBlockVersionChecklistTemplate.Any(y => y.DependencyBlockVersionChecklistTemplateId == x.BlockVersionChecklistTemplateId)).FirstOrDefault();

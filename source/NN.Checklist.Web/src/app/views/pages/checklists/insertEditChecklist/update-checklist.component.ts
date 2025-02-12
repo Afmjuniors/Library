@@ -281,23 +281,14 @@ export class UpdateCheklistForm implements OnInit {
     }
     if (item.isDisabled) {
       return true;
-    } else {
-      if (item.optionItemsVersionChecklistTemplate) {
-
-        if (this.optionsDirtys[item.itemVersionChecklistTemplateId]) {
-
-          return false;
-        } else {
-          return true;
-        }
-      }
+    } else {      
       return false;
     }
 
 
   }
 
-  sign(idItemTemplate: number | null, blockTemplateId: number) {
+  sign(idItemTemplate: number | null, blockTemplateId: number, hasOption:boolean) {
     if (!idItemTemplate) {
       return;
     }
@@ -305,6 +296,14 @@ export class UpdateCheklistForm implements OnInit {
     if (!this.validate()) {
       return;
     }
+    if(hasOption){
+      this.optionsDirtys[idItemTemplate] = true;
+        if( this.selectedOptions[idItemTemplate]==undefined || this.selectedOptions[idItemTemplate].length ==0){
+          this.layoutUtilsService.showErrorNotification(this.translate.instant('MISSING_CHECK_VALUE'), MessageType.Create);
+          return;
+        }
+    }
+
 
     if (this.checklistVersion.checklistTemplateId <= 0) {
       this.layoutUtilsService.showErrorNotification(this.translate.instant('MISSING_TYPE_checklist_RECORD'), MessageType.Create);
@@ -403,7 +402,14 @@ export class UpdateCheklistForm implements OnInit {
         this.layoutUtilsService.showErrorNotification(error, MessageType.Create);
       });
   }
-
+viewErrorMessage(idItemTemplate:number){
+  if(this.optionsDirtys[idItemTemplate]){
+    if( this.selectedOptions[idItemTemplate]==undefined || this.selectedOptions[idItemTemplate].length ==0){
+      return true;;
+    }
+  }
+  return false;
+}
 
   viewSignatureHistory(itemTemplateId: number) {
     const dialogRef = this.dialog.open(SignatureHistoryComponent,

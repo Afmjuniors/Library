@@ -17,6 +17,7 @@ using System.Linq;
 using iTextSharp.text;
 using static iTextSharp.text.pdf.AcroFields;
 using System.Globalization;
+using RestSharp.Extensions;
 
 #region Cabeçalho
 
@@ -246,14 +247,13 @@ namespace NN.Checklist.Domain.Entities
         {
             try
             {
-                string keyValue = "";
+                FieldChecklist key = new FieldChecklist();
                 if (Fields != null)
                 {
-                    keyValue = Fields.Where(x => x.FieldVersionChecklistTemplate.IsKey).FirstOrDefault().Value;
-
+                    key = Fields.Where(x => x.FieldVersionChecklistTemplate.IsKey && x.FieldVersionChecklistTemplate.FieldDataTypeId != EnumFieldDataType.Date).FirstOrDefault();
                 }
 
-                VersionChecklistTemplate.CheckAvailability(Items, keyValue);
+                VersionChecklistTemplate.CheckAvailability(Items, key.Value, key.FieldVersionChecklistTemplate.FieldDataTypeId);
                 VersionChecklistTemplate.SetLastPosistionInBlocks();
                 CheckChecklistIsCompleted();
 
@@ -268,8 +268,6 @@ namespace NN.Checklist.Domain.Entities
             await CheckBlockDependencyRejection(blockVersionId, itemVersionId, null);
 
             await CheckItemDependencyRejection(blockVersionId, itemVersionId, null);
-
-
 
 
         }
@@ -378,13 +376,13 @@ namespace NN.Checklist.Domain.Entities
                     if (blockCheckList.VersionChecklistTemplateId != VersionChecklistTemplateId)
                     {
                         var a = 1;
-                        string keyValue = "";
+                        FieldChecklist keyValue = new FieldChecklist();
                         if (Fields != null)
                         {
-                            keyValue = Fields.Where(x => x.FieldVersionChecklistTemplate.IsKey).FirstOrDefault().Value;
+                            keyValue = Fields.Where(x => x.FieldVersionChecklistTemplate.IsKey).FirstOrDefault();
 
                         }
-                        var checklistOther = await Repository.GetChecklistByKeyValue(keyValue, blockCheckList.VersionChecklistTemplateId);
+                        var checklistOther = await Repository.GetChecklistByKeyValue(keyValue.Value, blockCheckList.VersionChecklistTemplateId, keyValue.FieldVersionChecklistTemplate.FieldDataTypeId);
                         if (checklistOther!=null && checklistOther.Items != null)
                         {
               

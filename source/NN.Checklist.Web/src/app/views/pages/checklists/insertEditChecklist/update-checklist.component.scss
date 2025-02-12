@@ -32,11 +32,25 @@ color:grey;
     justify-content: space-between; 
    
 }
+.item-row{
+    display: flex;
+    align-items: center; 
+    justify-content: space-between; 
+    flex-direction: row;
+    width: 84%;
+}
 
 .disabled-title{
     color:$color;
 }
+.error-text{
+    color:red;
+    font-size: 10px;
+    text-align: end;
+    margin: 0;
+    padding: 0;
 
+}
 
 .rejected-item{
 	background-color:$colorRejectedBg;
@@ -47,6 +61,7 @@ color:grey;
     flex-direction: row;
     justify-content: center;
     align-items: stretch;
+    flex: 1;
 }
 .sub-title{
     display: flex;

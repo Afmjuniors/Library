@@ -263,7 +263,7 @@ namespace NN.Checklist.Domain.Entities
             }
         }
 
-        public void CheckAvailability(IList<ItemChecklist>? items, string? keyValue)
+        public void CheckAvailability(IList<ItemChecklist>? items, string? keyValue, EnumFieldDataType? keyType)
         {
             try
             {
@@ -271,7 +271,7 @@ namespace NN.Checklist.Domain.Entities
                 List<BlockVersionChecklistTemplate> lst = new List<BlockVersionChecklistTemplate>();
                 foreach (var block in BlocksChecklistTemplate)
                 {
-                    block.CheckAvailability(items, BlocksChecklistTemplate, keyValue, blocks);
+                    block.CheckAvailability(items, BlocksChecklistTemplate, keyValue, keyType, blocks);
                     lst.Add(block);
                 }
                 _blocksChecklistTemplate = lst;

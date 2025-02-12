@@ -95,6 +95,7 @@ namespace NN.Checklist.Domain.Services
         public async Task<VersionChecklistTemplateDTO> GetLatestCheckList(long checklistId)
         {
             var checklistTeplate = await VersionChecklistTemplate.Repository.GetLatestVersionFromChecklistId(checklistId);
+            checklistTeplate.CheckAvailability(null, null, null);
             checklistTeplate.SetLastPosistionInBlocks();
             var dto = checklistTeplate.Transform<VersionChecklistTemplateDTO>();
 
@@ -140,6 +141,24 @@ namespace NN.Checklist.Domain.Services
 
         }
 
+        private async Task<bool> IsKeyValueUnique(List<FieldChecklistDTO> fields, long versionChecklistTemplateId)
+        {
+            var fieldkey = fields.Where(x => x.FieldVersionChecklistTemplate.IsKey);
+            if (fieldkey != null)
+            {
+                foreach (var item in fieldkey)
+                {
+
+                    var checklist = Entities.Checklist.Repository.GetChecklistByKeyValue(item.Value, versionChecklistTemplateId, item.FieldVersionChecklistTemplate.FieldDataTypeId);
+                    if (checklist != null)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+
+        }
         private async Task CreateItemChecklist(long actionUserId, long checklistId, List<ItemChecklistDTO> items)
         {
             if (items == null)
@@ -276,7 +295,7 @@ namespace NN.Checklist.Domain.Services
             if (!isNew)
             {
 
-             await   checklist.CheckBlockAndItemDependencyForRejection(newItem.ItemVersionchecklistTemplate.BlockVersionChecklistTemplateId, newItem.ItemVersionchecklistTemplateId);
+                await checklist.CheckBlockAndItemDependencyForRejection(newItem.ItemVersionchecklistTemplate.BlockVersionChecklistTemplateId, newItem.ItemVersionchecklistTemplateId);
 
             }
 
@@ -338,12 +357,12 @@ namespace NN.Checklist.Domain.Services
                 {
                     var et = entity.Transform<Entities.Checklist>();
                     et.CheckAvailability();
-                    
+
                     var etDTO = et.Transform<ChecklistDTO>();
                     ckLst.Add(etDTO);
                 }
 
-                    return ckLst;
+                return ckLst;
             }
             catch (Exception)
             {
@@ -352,7 +371,7 @@ namespace NN.Checklist.Domain.Services
             }
         }
 
-   
+
 
     }
 }
