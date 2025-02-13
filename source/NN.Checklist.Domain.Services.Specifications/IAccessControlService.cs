@@ -23,10 +23,7 @@ namespace NN.Checklist.Domain.Services.Specifications
         Task<SignApprovalDTO> ReadSignature(string value);
         Task<List<PermissionDTO>> ListPermissions();
         Task<List<AdGroupUserDTO>> ListAdGroupsByUser(long userId);
-        Task<PageMessage<UserDTO>> SearchUsers(UsersPageMessage data);
-        Task<List<UserPhoneDTO>> ListPhonesNumbersByUser(long userId);
-        Task<UserPhoneDTO> InsertUserPhone(AuthenticatedUserDTO user, int countryId, string number, long userId);
-        Task<bool> RemoveUserPhone(AuthenticatedUserDTO user, long userPhoneId);
+        Task<PageMessage<UserDTO>> SearchUsers(UsersPageMessage data);        
         Task ActivateUser(AuthenticatedUserDTO user, long userId, bool active);
         Task<AdGroupDTO> InsertAdGroup(AuthenticatedUserDTO user, string name, bool administrator, List<PermissionDTO> permissions, string comments);
         Task<bool> RemoveAdGroup(AuthenticatedUserDTO user, long adGroupId, string comments);

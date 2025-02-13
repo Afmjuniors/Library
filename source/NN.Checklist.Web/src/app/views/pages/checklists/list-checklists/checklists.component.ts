@@ -134,8 +134,8 @@ export class ChecklistComponent extends BasePageComponent implements OnInit {
 		public parameterService: ParameterService,
 		public idleService: IdleService,
 	) {
-		super(auth, store, translate, router, "CHECKLIST", ["CREATE_NEW_EDIT_CHECKLIST"], "CHECKLIST", parameterService, idleService)
-		this.createNewChecklist = this.readPermission("CREATE_NEW_EDIT_CHECKLIST");
+		super(auth, store, translate, router, "CHECKLISTS", ["CHECKLISTS"], "CHECKLIST", parameterService, idleService)
+		this.createNewChecklist = this.readPermission("CHECKLISTS");
 		this.unsubscribe = new Subject();
 	}
 

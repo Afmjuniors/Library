@@ -490,17 +490,7 @@ namespace NN.Checklist.Domain.Services
                     }
                 }
                 autdUserDTO.MemberOf = perm;
-                
-                var phones = await UserPhone.Repository.ListByUser(idUser);
-                if (phones != null && phones.Count > 0)
-                {
-                    foreach (var phone in phones)
-                    {
-                        phon.Add($"+{ phone.Country.PrefixNumber.ToString().Trim() }{phone.Number}");
-                    }
-                }
-                autdUserDTO.PhonesNumbers = phon;
-
+                                
                 autdUserDTO.Permissions = await ListAllPermissions(autdUserDTO);
                 autdUserDTO.AdGroups = groups;
                 autdUserDTO.AdGroupsUser = adGroups.TransformList<AdGroupUserDTO>().ToList();
@@ -550,95 +540,6 @@ namespace NN.Checklist.Domain.Services
                 throw ex;
             }
         }
-
-        /// <summary>
-        /// Name: "ListPhonesNumbersByUser" 
-        /// Description: method returns a list of the user's phones by "userId".
-        /// Created by: wazc Programa Novo 2022-09-08 .
-        /// </summary>
-        public async Task<List<UserPhoneDTO>> ListPhonesNumbersByUser(long userId)
-        {
-            try
-            {
-                var lstPhones = await UserPhone.Repository.ListByUser(userId);
-
-                if (lstPhones == null)
-                {
-                    return null;
-                }
-
-                return lstPhones.TransformList<UserPhoneDTO>().ToList();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-
-        /// <summary>
-        /// Name: "InsertUserPhone" 
-        /// Description: method inserts a phone to the user.
-        /// Created by: wazc Programa Novo 2022-09-08 .
-        /// </summary>
-        public async Task<UserPhoneDTO> InsertUserPhone(AuthenticatedUserDTO user, int countryId, string number, long userId)
-        {
-            try
-            {
-                var globalization = ObjectFactory.GetSingleton<IGlobalizationService>();
-                UserPhone objUserPhone = null;
-
-                var usersPhone = await UserPhone.Repository.ListByUser(userId);
-
-                if(usersPhone != null && usersPhone.Count > 0)
-                {
-                    foreach(var userPhone in usersPhone)
-                    {
-                        if(userPhone.CountryId == countryId && userPhone.Number == number)
-                        {
-                            throw new DomainException(await globalization.GetString(user.CultureInfo, "UserPhoneExists"));
-                        }
-                    }
-                }
-
-                objUserPhone = new UserPhone(user, countryId, number, userId);
-
-                return objUserPhone.Transform<UserPhoneDTO>();
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
-
-        /// <summary>
-        /// Name: "RemoveUserPhone" 
-        /// Description: remove o telefone do usuário.
-        /// Created by: wazc Programa Novo 2022-09-08 .
-        /// </summary>
-        public async Task<bool> RemoveUserPhone(AuthenticatedUserDTO user, long userPhoneId)
-        {
-            try
-            {
-                UserPhone objUserPhone = await UserPhone.Repository.Get(userPhoneId);
-
-                await objUserPhone.Delete();
-
-                var globalization = ObjectFactory.GetSingleton<IGlobalizationService>();
-                string lang = user.CultureInfo;
-
-                var msg = await globalization.GetString(globalization.DefaultLanguage, "RemovedUserPhone", new string[] { $"{objUserPhone.User.Initials} {objUserPhone.Country.PrefixNumber}{objUserPhone.Number}" });
-                new SystemRecord(msg, objUserPhone.UserPhoneId, EnumSystemFunctionality.Users, user.UserId);
-
-                return true;
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-            }
-        }
-
 
         /// <summary>
         /// Name: "ListAdGroupsByUser" 
