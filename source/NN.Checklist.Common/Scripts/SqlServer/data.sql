@@ -145,7 +145,7 @@ join checklists_templates c on v.checklist_template_id = c.checklist_template_id
 where c.description = 'Checklist A12 AP - ANP: Approval for next process'; 
  
 INSERT INTO BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id, position, title, parent_block_version_checklist_template_id)  
-select v.version_checklist_template_id, 3, 'Verificação', b.block_version_checklist_template_id  
+select v.version_checklist_template_id, 2, 'Verificação', b.block_version_checklist_template_id  
 from VERSIONS_CHECKLISTS_TEMPLATES v  
 join checklists_templates c on v.checklist_template_id = c.checklist_template_id  
 join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on b.version_checklist_template_id = v.version_checklist_template_id  

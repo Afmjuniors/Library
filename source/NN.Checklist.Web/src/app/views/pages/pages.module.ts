@@ -65,6 +65,7 @@ const maskConfig: Partial<IConfig> = {
         NgxMatDatetimePickerModule,
         NgxMatTimepickerModule,
         NgxMatMomentModule,
+        
     ],
     providers: []
 })

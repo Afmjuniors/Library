@@ -32,7 +32,7 @@ namespace NN.Checklist.Domain.Entities
 
         }
 
-        public CommentChecklist(long? actionUserId, System.Int64 checklistId, System.String comments, System.DateTime creationTimestamp, System.Int64 creationUserId, System.String stamp, System.Int64? itemVersionchecklistTemplateId)
+        public CommentChecklist(long? actionUserId, System.Int64 checklistId, System.String comments, System.DateTime creationTimestamp, System.Int64 creationUserId, System.String stamp)
         {
 
             var auditTrail = ObjectFactory.GetSingleton<IAuditTrailService>();
@@ -42,7 +42,6 @@ namespace NN.Checklist.Domain.Entities
             CreationTimestamp = creationTimestamp;
             CreationUserId = creationUserId;
             Stamp = stamp;
-            ItemTemplateVersionId = itemVersionchecklistTemplateId;
 
 
             using (var tran = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
@@ -75,8 +74,6 @@ namespace NN.Checklist.Domain.Entities
 
         [AttributeDescriptor("creation_user_id", true)]
         public System.Int64 CreationUserId { get; set; }
-        [AttributeDescriptor("item_template_version_id", false)]
-        public System.Int64? ItemTemplateVersionId { get; set; }
 
         [AttributeDescriptor("stamp", true)]
         public System.String Stamp { get; set; }

@@ -18,6 +18,7 @@ namespace NN.Checklist.Domain.DTO
         public bool? IsCompleted { get; set; }
         public bool IsDisabled { get; set; }
         public string AbsolutePositionString { get; set; }
+        public int LastPosition { get; set; }
         public List<DependencyBlockVersionChecklistTemplateDTO>? DependentBlockVersionChecklistTemplate { get; set; }
         public List<ItemVersionChecklistTemplateDTO>? ItemsChecklistsTemplate { get; set; }
         [Map("Blocks")]

@@ -6,6 +6,7 @@ using TDCore.Core;
 using TDCore.Data.Paging;
 using TDCore.Domain;
 using System.Collections.Generic;
+using NN.Checklist.Domain.Common;
 
 #region Cabeçalho
 
@@ -25,7 +26,7 @@ namespace NN.Checklist.Domain.Repositories.Specifications
         Task<PageMessage<ChecklistDTO>> Search(ChecklistPageMessage data);
 
         Task<IList<TEntity>> ListChecklistByVersion(long versionChecklistTemplateId);
-        Task<TEntity> GetChecklistByKeyValue(string value, long versionTemplateId);
+        Task<TEntity> GetChecklistByKeyValue(string value, long versionTemplateId , EnumFieldDataType? type);
 
         #endregion
 

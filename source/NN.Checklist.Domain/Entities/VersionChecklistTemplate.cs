@@ -135,7 +135,7 @@ namespace NN.Checklist.Domain.Entities
             }
         }
 
-        public List<FieldVersionChecklistTemplate> FieldsVersionChecklistsTemplate { get => GetOneToManyData<FieldVersionChecklistTemplate>().Result.OrderByDescending(x => x.IsKey).ToList(); set { } }
+        public List<FieldVersionChecklistTemplate> FieldsVersionChecklistsTemplate { get => GetOneToManyData<FieldVersionChecklistTemplate>().Result.OrderBy(x => x.Position).ToList(); set { } }
 
 
         public User CreationUser { get => GetManyToOneData<User>().Result; }
@@ -255,7 +255,15 @@ namespace NN.Checklist.Domain.Entities
 
         #region User Code
 
-        public void CheckAvailability(IList<ItemChecklist>? items, string? keyValue)
+        public void SetLastPosistionInBlocks()
+        {
+            foreach (var block in BlocksChecklistTemplate)
+            {
+                block.SetLastPosition(BlocksTree);
+            }
+        }
+
+        public void CheckAvailability(IList<ItemChecklist>? items, string? keyValue, EnumFieldDataType? keyType)
         {
             try
             {
@@ -263,7 +271,7 @@ namespace NN.Checklist.Domain.Entities
                 List<BlockVersionChecklistTemplate> lst = new List<BlockVersionChecklistTemplate>();
                 foreach (var block in BlocksChecklistTemplate)
                 {
-                    block.CheckAvailability(items, BlocksChecklistTemplate, keyValue, blocks);
+                    block.CheckAvailability(items, BlocksChecklistTemplate, keyValue, keyType, blocks);
                     lst.Add(block);
                 }
                 _blocksChecklistTemplate = lst;
@@ -321,10 +329,13 @@ namespace NN.Checklist.Domain.Entities
 
 
                         block.Blocks = BuildBlocksTree(block);
+                    
                         rootBlocks.Add(block);
+                        
                     }
                 }
             }
+
 
             return rootBlocks;
         }
@@ -339,7 +350,7 @@ namespace NN.Checklist.Domain.Entities
                 foreach (var childBlock in chlidrenBlocks)
                 {
               
-                        var children = BuildBlocksTree(childBlock);
+                        var children = BuildBlocksTree(childBlock);                        
                         childBlock.Blocks = children;
 
                     

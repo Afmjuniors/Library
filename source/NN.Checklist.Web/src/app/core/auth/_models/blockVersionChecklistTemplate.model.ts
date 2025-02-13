@@ -10,8 +10,13 @@ export class BlockVersionChecklistTemplate extends BaseModel {
     versionChecklistTemplateId: number;
     position: number;
     title: string;
+    isCompleted:boolean;
+    isDisabled:boolean;
+    absolutePositionString:string;
+    lastPosition:number;
     dependentBlockVersionChecklistTemplate: DependencyBlockVersionChecklistTemplate[];
     itemsChecklistsTemplate:ItemVersionChecklistTemplate[]
+    blocks:BlockVersionChecklistTemplate[]
 
 
     clear(): void {
@@ -22,6 +27,11 @@ export class BlockVersionChecklistTemplate extends BaseModel {
         this.title = "";
         this.dependentBlockVersionChecklistTemplate = null;
         this.itemsChecklistsTemplate = null;
+        this.isCompleted=null;
+        this.isDisabled=null;
+        this.absolutePositionString="";
+        this.lastPosition=0;
+        this.blocks=null;
 
     }
 }

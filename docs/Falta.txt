@@ -1,0 +1,15 @@
+⦁	Requisito 9 – R9
+Em um bloco de itens de verificação deve-se poder exigir o preenchimento de cada item por um QA diferente.
+
+
+⦁	Requisito 12 – R12
+Cada checklist somente pode ser acessado, para edição, por um usuário por vez.
+⦁	Requisito 14 – R14
+Deve ser possível configurar itens de verificação que somente tenham que ser preenchidos no caso de determinadas opções selecionadas no cabeçalho do Checklist.
+⦁	Requisito 21 – R21
+Um checklist já finalizado poderá ser editado, mas para isso, o QA responsável deverá preencher uma justificativa.
+
+⦁	Requisito de Qualidade 1 – RQ01
+Deve-se utilizar as bibliotecas TDCore.Globalization (no back-end) e i18n (no front-end) para tradução automática, inglês e português, de todos os textos e mensagens que forem utilizados no sistema.
+⦁	Requisitos de Qualidade 8 – RQ08
+Todas as telas desenvolvidas devem ser responsivas e preparadas para dispositivos móveis. 

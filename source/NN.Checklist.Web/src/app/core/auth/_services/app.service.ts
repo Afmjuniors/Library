@@ -274,7 +274,15 @@ export class AppService {
 		let header = new HttpHeaders({ 'Authorization': 'Bearer ' + userToken });
 		return this.http.post<any>(URL_BASE + '/Checklist/SignItemChecklist', data, { headers: header });
 	}
-
+	// reOpenChecklist(obj: any): Observable<any> {
+	// 	let data = {
+	// 		data: obj,
+			
+	// 	}
+	// 	const userToken = localStorage.getItem(environment.authTokenKey);
+	// 	let header = new HttpHeaders({ 'Authorization': 'Bearer ' + userToken });
+	// 	return this.http.post<any>(URL_BASE + '/Checklist/ReOpenChecklist', data, { headers: header });
+	// }
 
 
 

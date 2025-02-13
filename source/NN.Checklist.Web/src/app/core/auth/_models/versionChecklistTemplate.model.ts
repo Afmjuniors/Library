@@ -16,6 +16,7 @@ export class VersionChecklistTemplate extends BaseModel {
     fieldsVersionChecklistsTemplate:FieldVersionChecklistTemplate[];
     blocksChecklistTemplate:BlockVersionChecklistTemplate[];
     dependentVersionChecklistTemplate:VersionChecklistTemplate | null;
+    blocksTree:BlockVersionChecklistTemplate[];
 
 
 
@@ -33,11 +34,8 @@ export class VersionChecklistTemplate extends BaseModel {
         this.fieldsVersionChecklistsTemplate = null;
         this.blocksChecklistTemplate = null;
         this.dependentVersionChecklistTemplate = null;
+        this.blocksTree=null;
 
     }
 }
-
-
-
-
 

@@ -52,11 +52,7 @@ namespace NN.Checklist.Domain.Entities
                 if (Validate(true).Result)
                 {
                     Insert().Wait();
-                    if (!String.IsNullOrEmpty(Comments))
-                    {
-                   new CommentChecklist(actionUserId,checklistId,Comments,CreationTimestamp,actionUserId,Stamp,ItemVersionchecklistTemplateId);
 
-                    }
 
 
                     auditTrail.AddRecord("AT_ItemChecklistInserted", ItemChecklistId, EnumSystemFunctionality.Checklists, actionUserId, comments);
