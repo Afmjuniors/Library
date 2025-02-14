@@ -172,10 +172,13 @@ namespace NN.Checklist.Domain.Entities
                 {
                     lang = user.CultureInfo;
 
-                    foreach (var item in Permissions)
+                    if (Permissions != null && Permissions.Count > 0)
                     {
-                        permissionsBefore += and + item.Permission.Name;
-                        and = " | ";
+                        foreach (var item in Permissions)
+                        {
+                            permissionsBefore += and + item.Permission.Name;
+                            and = " | ";
+                        }
                     }
                 }
 
