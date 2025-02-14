@@ -12,6 +12,10 @@ using System.Collections.Generic;
 using System.Text;
 using System.Transactions;
 using System.Threading.Tasks;
+using NN.Checklist.Domain.DTO;
+using System.Linq;
+using Newtonsoft.Json.Linq;
+using System.Text.RegularExpressions;
 
 #region Cabeçalho
 
@@ -44,7 +48,8 @@ namespace NN.Checklist.Domain.Entities
             OptionFieldVersionChecklistTemplateId = optionFieldVersionChecklistTemplateId;
             UpdateTimestamp = updateTimestamp;
             UpdateUserId = updateUserId;
-            Value = value;
+
+            Value = NormalizateValue(value, fieldVersionChecklistTemplateId).Result;
 
             using (var tran = new TransactionScope(TransactionScopeAsyncFlowOption.Enabled))
             {
@@ -117,9 +122,17 @@ namespace NN.Checklist.Domain.Entities
                 {
                     erros.Add(new DomainError("field_checklist_id", "InvalidFieldChecklistIdIdentifier"));
                 }
-                else
+                if (!(await IsKeyValueUnique(Value, FieldVersionChecklistTemplate.FieldDataTypeId, FieldVersionChecklistTemplate.VersionChecklistTemplateId)))
                 {
-
+                    erros.Add(new DomainError("value", "FieldIsKeyNotUnique"));
+                }
+                if(!String.IsNullOrEmpty(FieldVersionChecklistTemplate.RegexValidation))
+                {
+                    var regex = new Regex(FieldVersionChecklistTemplate.RegexValidation);
+                    if (!regex.IsMatch(Value))
+                    {
+                        erros.Add(new DomainError("value", "FieldDosntMatchRegex"));
+                    }
                 }
 
                 if (erros.Count > 0)
@@ -186,8 +199,61 @@ namespace NN.Checklist.Domain.Entities
 
         #region User Code
 
+        public async Task<string> NormalizateValue(string value, long fieldVersionChecklistTemplateId)
+        {
+
+            try
+            {
+                var field = await Entities.FieldVersionChecklistTemplate.Repository.Get(fieldVersionChecklistTemplateId);
+
+                if (field.FieldDataTypeId == EnumFieldDataType.Text)
+                {
+                    return value.Trim();
+                }
+                else if (field.FieldDataTypeId == EnumFieldDataType.Number)
+                {
+                    long valueInt = long.Parse(value.Trim());
+                    return valueInt.ToString();
+
+                }
+                else if (field.FieldDataTypeId == EnumFieldDataType.Date)
+                {
+                    var dth = DateTime.Parse(value);
+                    return dth.ToString("yyyy-MM-dd");
+                }
+                else if (field.FieldDataTypeId == EnumFieldDataType.Options)
+                {
+                    int valueInt = int.Parse(value.Trim());
+                    return valueInt.ToString();
+                }
+                else
+                {
+                    return value.Trim();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new DomainException("ErrorWhileConvertValueToType", ex);
+            }
+        }
+
+        private async Task<bool> IsKeyValueUnique(string value, EnumFieldDataType type, long versionChecklistTemplateId)
+        {
+            if (FieldVersionChecklistTemplate.IsKey)
+            {
+                var checklist = await Entities.Checklist.Repository.GetChecklistByKeyValue(value, versionChecklistTemplateId, type);
+                if (checklist != null)
+                {
+                    return false;
+                }
+            }
+            return true;
+
+        }
 
 
+     
         #endregion
     }
+    
 }

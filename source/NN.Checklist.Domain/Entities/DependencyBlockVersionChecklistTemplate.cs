@@ -91,23 +91,10 @@ namespace NN.Checklist.Domain.Entities
 
             }
         }
-        public long? DependentVersionChecklistTemplateId
-        {
-            get
-            {
-                long? id = null;
-                if (DependentBlockVersionChecklistTemplate != null)
-                {
-                    id = DependentBlockVersionChecklistTemplate.VersionChecklistTemplateId;
-                }
-                else if (DependentItemVersionChecklistTemplate != null)
-                {
-                    id = DependentItemVersionChecklistTemplate.VersionChecklistTemplateId;
-                }
+        [AttributeDescriptor("dependent_version_checklist_template_id", false)]
+        public long? DependentVersionChecklistTemplateId { get; set; }
 
-                return id;
-            }
-        }
+        public VersionChecklistTemplate DependentVersionChecklistTemplate { get => GetManyToOneData<VersionChecklistTemplate>().Result; }
         public ItemVersionChecklistTemplate DependentItemVersionChecklistTemplate { get => GetManyToOneData<ItemVersionChecklistTemplate>().Result; }
         public BlockVersionChecklistTemplate DependentBlockVersionChecklistTemplate { get => GetManyToOneData<BlockVersionChecklistTemplate>().Result; }
 

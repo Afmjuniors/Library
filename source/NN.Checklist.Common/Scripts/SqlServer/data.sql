@@ -69,49 +69,55 @@ join users u on v.creation_user_id = u.user_id and initials = '_adm'
 where c.description = 'Checklist A12 AP - ANP: Approval for next process'; 
  
 INSERT INTO FIELDS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id, position, title, field_data_type_id, regex_validation, format, mandatory, is_key)  
-select v.version_checklist_template_id, 2, 'Item number',2, null, null, 1, 0  
+select v.version_checklist_template_id, 3, 'Item number',2, null, null, 1, 0  
 from VERSIONS_CHECKLISTS_TEMPLATES v  
 join checklists_templates c on v.checklist_template_id = c.checklist_template_id  
 cross join users u  
 where c.description = 'Checklist A12 AP - ANP: Approval for next process' and initials = '_adm'; 
  
 INSERT INTO FIELDS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id, position, title, field_data_type_id, regex_validation, format, mandatory, is_key)  
-select v.version_checklist_template_id, 3, 'Batch Number (Uninspected)',1, '', null, 1, 0  
+select v.version_checklist_template_id, 4, 'Batch Number (Uninspected)',1, '', null, 1, 0  
 from VERSIONS_CHECKLISTS_TEMPLATES v  
 join checklists_templates c on v.checklist_template_id = c.checklist_template_id  
 cross join users u  
 where c.description = 'Checklist A12 AP - ANP: Approval for next process' and initials = '_adm'; 
  
 INSERT INTO FIELDS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id, position, title, field_data_type_id, regex_validation, format, mandatory, is_key)  
-select v.version_checklist_template_id, 4, 'Item number',2, null, null, 1, 0  
+select v.version_checklist_template_id, 5, 'Item number',2, null, null, 1, 0  
 from VERSIONS_CHECKLISTS_TEMPLATES v  
 join checklists_templates c on v.checklist_template_id = c.checklist_template_id  
 cross join users u  
 where c.description = 'Checklist A12 AP - ANP: Approval for next process' and initials = '_adm'; 
  
 INSERT INTO FIELDS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id, position, title, field_data_type_id, regex_validation, format, mandatory, is_key)  
-select v.version_checklist_template_id, 5, 'Batch Number (Inspected)',1, '', null, 1, 0  
+select v.version_checklist_template_id, 6, 'Batch Number (Inspected)',1, '', null, 1, 0  
 from VERSIONS_CHECKLISTS_TEMPLATES v  
 join checklists_templates c on v.checklist_template_id = c.checklist_template_id  
 cross join users u  
 where c.description = 'Checklist A12 AP - ANP: Approval for next process' and initials = '_adm'; 
  
 INSERT INTO FIELDS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id, position, title, field_data_type_id, regex_validation, format, mandatory, is_key)  
-select v.version_checklist_template_id, 6, 'Item number',2, null, null, 1, 0  
+select v.version_checklist_template_id, 7, 'Item number',2, null, null, 1, 0  
 from VERSIONS_CHECKLISTS_TEMPLATES v  
 join checklists_templates c on v.checklist_template_id = c.checklist_template_id  
 cross join users u  
 where c.description = 'Checklist A12 AP - ANP: Approval for next process' and initials = '_adm'; 
  
 INSERT INTO FIELDS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id, position, title, field_data_type_id, regex_validation, format, mandatory, is_key)  
-select v.version_checklist_template_id, 7, 'Item name',1, null, null, 1, 0  
+select v.version_checklist_template_id, 8, 'Item name',1, null, null, 1, 0  
 from VERSIONS_CHECKLISTS_TEMPLATES v  
 join checklists_templates c on v.checklist_template_id = c.checklist_template_id  
 cross join users u  
 where c.description = 'Checklist A12 AP - ANP: Approval for next process' and initials = '_adm'; 
  
 INSERT INTO FIELDS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id, position, title, field_data_type_id, regex_validation, format, mandatory, is_key)  
-select v.version_checklist_template_id, 8, 'Production Type',4, null, null, 1, 0  
+select v.version_checklist_template_id, 9, 'Production Type',4, null, null, 1, 0  
+from VERSIONS_CHECKLISTS_TEMPLATES v  
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id  
+cross join users u  
+where c.description = 'Checklist A12 AP - ANP: Approval for next process' and initials = '_adm'; 
+INSERT INTO FIELDS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id, position, title, field_data_type_id, regex_validation, format, mandatory, is_key)  
+select v.version_checklist_template_id, 2, 'Date',3, null, null, 1, 0  
 from VERSIONS_CHECKLISTS_TEMPLATES v  
 join checklists_templates c on v.checklist_template_id = c.checklist_template_id  
 cross join users u  
@@ -122,14 +128,14 @@ select f.field_version_checklist_template_id, 'Exportação Direta', 1
 from VERSIONS_CHECKLISTS_TEMPLATES v  
 join checklists_templates c on v.checklist_template_id = c.checklist_template_id  
 join FIELDS_VERSIONS_CHECKLISTS_TEMPLATES f on v.version_checklist_template_id = f.version_checklist_template_id  
-where c.description = 'Checklist A12 AP - ANP: Approval for next process' and f.position = 8;  
+where c.description = 'Checklist A12 AP - ANP: Approval for next process' and f.position = 9;  
  
 INSERT INTO OPTIONS_FIELDS_VERSIONS_CHECKLISTS_TEMPLATES (field_version_checklist_template_id,title,value)  
 select f.field_version_checklist_template_id, 'Produção Contratada', 2  
 from VERSIONS_CHECKLISTS_TEMPLATES v  
 join checklists_templates c on v.checklist_template_id = c.checklist_template_id  
 join FIELDS_VERSIONS_CHECKLISTS_TEMPLATES f on v.version_checklist_template_id = f.version_checklist_template_id  
-where c.description = 'Checklist A12 AP - ANP: Approval for next process' and f.position = 8; 
+where c.description = 'Checklist A12 AP - ANP: Approval for next process' and f.position = 9; 
  
 INSERT INTO BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id, position, title)  
 select v.version_checklist_template_id, 1, 'Parte 1: Aprovação para o Próximo Processo'  
@@ -148,13 +154,32 @@ select v.version_checklist_template_id, 2, 'Verificação', b.block_version_chec
 from VERSIONS_CHECKLISTS_TEMPLATES v  
 join checklists_templates c on v.checklist_template_id = c.checklist_template_id  
 join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on b.version_checklist_template_id = v.version_checklist_template_id  
-where c.description = 'Checklist A12 AP - ANP: Approval for next process' and b.position = 2; 
+where c.description = 'Checklist A12 AP - ANP: Approval for next process' and b.position = 2  and b.parent_block_version_checklist_template_id is NULL; 
  
 INSERT INTO BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id, position, title)   
-select v.version_checklist_template_id, 4, 'Parte 2: ANP / Final Status Assignment'  
+select v.version_checklist_template_id, 3, 'Parte 2: ANP / Final Status Assignment'  
 from VERSIONS_CHECKLISTS_TEMPLATES v  
 join checklists_templates c on v.checklist_template_id = c.checklist_template_id  
 where c.description = 'Checklist A12 AP - ANP: Approval for next process'; 
+
+INSERT INTO BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id, position, title)  
+select v.version_checklist_template_id, 1, 'Passos' 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+where c.description = 'Checklist A12 AP - FSA: Bulk De STJ, CH e CL recebidos em MOC'; 
+ 
+INSERT INTO BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id, position, title)  
+select v.version_checklist_template_id, 2, 'Final Status assignment in SAP (considere as etapas anteriores para definição do status do lote)' 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+where c.description = 'Checklist A12 AP - FSA: Bulk De STJ, CH e CL recebidos em MOC'; 
+ 
+INSERT INTO BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id, position, title, parent_block_version_checklist_template_id)  
+select v.version_checklist_template_id, 2, 'Verificação', b.block_version_checklist_template_id 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on b.version_checklist_template_id = v.version_checklist_template_id 
+where c.description = 'Checklist A12 AP - FSA: Bulk De STJ, CH e CL recebidos em MOC' and b.position = 2 and b.parent_block_version_checklist_template_id is null; 
  
  
 INSERT INTO ITEMS_TYPES (item_type_id, description) VALUES (1, 'Check Item'); 
@@ -261,60 +286,60 @@ join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id =
 where c.description = 'Checklist A12 AP - ANP: Approval for next process' and b.position = 1; 
  
 INSERT INTO ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id,position,title,item_type_id,block_version_checklist_template_id,option_field_version_checklist_template_id)  
-select v.version_checklist_template_id, 15, 'Status assignment, ANP', 1, b.block_version_checklist_template_id, null  
+select v.version_checklist_template_id, 1, 'Status assignment, ANP', 1, b.block_version_checklist_template_id, null  
 from VERSIONS_CHECKLISTS_TEMPLATES v  
 join checklists_templates c on v.checklist_template_id = c.checklist_template_id  
 join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id  
-where c.description = 'Checklist A12 AP - ANP: Approval for next process' and b.position = 1; 
+where c.description = 'Checklist A12 AP - ANP: Approval for next process' and b.position = 2  and b.parent_block_version_checklist_template_id is NULL; 
  
 INSERT INTO ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id,position,title,item_type_id,block_version_checklist_template_id,option_field_version_checklist_template_id)  
 select v.version_checklist_template_id, 1, 'Status assignment correto no SAP', 1, b.block_version_checklist_template_id, null  
 from VERSIONS_CHECKLISTS_TEMPLATES v  
 join checklists_templates c on v.checklist_template_id = c.checklist_template_id  
 join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id  
-where c.description = 'Checklist A12 AP - ANP: Approval for next process' and b.position = 2; 
+where c.description = 'Checklist A12 AP - ANP: Approval for next process' and b.position = 2  and b.parent_block_version_checklist_template_id is NOT NULL; 
  
 INSERT INTO ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id,position,title,item_type_id,block_version_checklist_template_id,option_field_version_checklist_template_id)  
 select v.version_checklist_template_id, 2, 'Limitações corretas no notebook do SAP (NA se feito em um único fluxo)', 1, b.block_version_checklist_template_id, null  
 from VERSIONS_CHECKLISTS_TEMPLATES v  
 join checklists_templates c on v.checklist_template_id = c.checklist_template_id  
 join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id  
-where c.description = 'Checklist A12 AP - ANP: Approval for next process' and b.position = 2;  
+where c.description = 'Checklist A12 AP - ANP: Approval for next process' and b.position = 2  and b.parent_block_version_checklist_template_id is NOT NULL;  
  
 INSERT INTO ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id,position,title,item_type_id,block_version_checklist_template_id,option_field_version_checklist_template_id)  
 select v.version_checklist_template_id, 3, 'Desvios Maiores', 1, b.block_version_checklist_template_id, null  
 from VERSIONS_CHECKLISTS_TEMPLATES v  
 join checklists_templates c on v.checklist_template_id = c.checklist_template_id  
 join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id  
-where c.description = 'Checklist A12 AP - ANP: Approval for next process' and b.position = 2; 
+where c.description = 'Checklist A12 AP - ANP: Approval for next process' and b.position = 2  and b.parent_block_version_checklist_template_id is NOT NULL; 
  
 INSERT INTO ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id,position,title,item_type_id,block_version_checklist_template_id,option_field_version_checklist_template_id)  
 select v.version_checklist_template_id, 1, 'Versão do checklist (não aplicável em caso de liberação em único fluxo)', 1, b.block_version_checklist_template_id, null  
 from VERSIONS_CHECKLISTS_TEMPLATES v  
 join checklists_templates c on v.checklist_template_id = c.checklist_template_id  
 join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id  
-where c.description = 'Checklist A12 AP - ANP: Approval for next process' and b.position = 3; 
+where c.description = 'Checklist A12 AP - ANP: Approval for next process' and b.position = 3 and b.parent_block_version_checklist_template_id is  NULL; 
  
 INSERT INTO ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id,position,title,item_type_id,block_version_checklist_template_id,option_field_version_checklist_template_id)  
 select v.version_checklist_template_id, 2, 'WFI/vapor limpo', 1, b.block_version_checklist_template_id, null  
 from VERSIONS_CHECKLISTS_TEMPLATES v  
 join checklists_templates c on v.checklist_template_id = c.checklist_template_id  
 join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id  
-where c.description = 'Checklist A12 AP - ANP: Approval for next process' and b.position = 3; 
+where c.description = 'Checklist A12 AP - ANP: Approval for next process' and b.position = 3 and b.parent_block_version_checklist_template_id is  NULL;
  
 INSERT INTO ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id,position,title,item_type_id,block_version_checklist_template_id,option_field_version_checklist_template_id)  
 select v.version_checklist_template_id, 3, 'Monitoramento ambiental', 1, b.block_version_checklist_template_id, null  
 from VERSIONS_CHECKLISTS_TEMPLATES v  
 join checklists_templates c on v.checklist_template_id = c.checklist_template_id  
 join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id  
-where c.description = 'Checklist A12 AP - ANP: Approval for next process' and b.position = 3; 
+where c.description = 'Checklist A12 AP - ANP: Approval for next process' and b.position =  3 and b.parent_block_version_checklist_template_id is  NULL;
  
 INSERT INTO ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id,position,title,item_type_id,block_version_checklist_template_id,option_field_version_checklist_template_id)  
 select v.version_checklist_template_id, 4, 'Desvios Maiores de EM', 1, b.block_version_checklist_template_id, null  
 from VERSIONS_CHECKLISTS_TEMPLATES v  
 join checklists_templates c on v.checklist_template_id = c.checklist_template_id  
 join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id  
-where c.description = 'Checklist A12 AP - ANP: Approval for next process' and b.position = 3; 
+where c.description = 'Checklist A12 AP - ANP: Approval for next process' and b.position =  3 and b.parent_block_version_checklist_template_id is  NULL;
  
 INSERT INTO ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id,position,title,item_type_id,block_version_checklist_template_id,option_field_version_checklist_template_id)  
 select v.version_checklist_template_id, 5, 'Resultados do teste de esterilidade disponível (contract. manuf.)', 1, b.block_version_checklist_template_id, o.option_field_version_checklist_template_id  
@@ -323,7 +348,7 @@ join checklists_templates c on v.checklist_template_id = c.checklist_template_id
 join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id  
 join FIELDS_VERSIONS_CHECKLISTS_TEMPLATES f on v.version_checklist_template_id = f.version_checklist_template_id  
 join OPTIONS_FIELDS_VERSIONS_CHECKLISTS_TEMPLATES o on f.field_version_checklist_template_id = o.field_version_checklist_template_id  
-where c.description = 'Checklist A12 AP - ANP: Approval for next process' and b.position = 3 and f.position = 8 and value = 2; 
+where c.description = 'Checklist A12 AP - ANP: Approval for next process' and b.position =  3 and b.parent_block_version_checklist_template_id is NULL and f.position = 8 and value = 2; 
  
 INSERT INTO ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id,position,title,item_type_id,block_version_checklist_template_id,option_field_version_checklist_template_id)  
 select v.version_checklist_template_id, 6, 'Disposição no LIMS (exportação direta)', 1, b.block_version_checklist_template_id, o.option_field_version_checklist_template_id  
@@ -332,24 +357,7 @@ join checklists_templates c on v.checklist_template_id = c.checklist_template_id
 join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id  
 join FIELDS_VERSIONS_CHECKLISTS_TEMPLATES f on v.version_checklist_template_id = f.version_checklist_template_id  
 join OPTIONS_FIELDS_VERSIONS_CHECKLISTS_TEMPLATES o on f.field_version_checklist_template_id = o.field_version_checklist_template_id  
-where c.description = 'Checklist A12 AP - ANP: Approval for next process' and b.position = 3 and f.position = 8 and value = 1; 
- 
-INSERT INTO DEPENDENCIES_BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES (block_version_checklist_template_id,dependent_block_version_checklist_template_id,dependent_item_version_checklist_template_id)  
-select sum(t.a), null, sum(t.b)  
-from (  
-select b.block_version_checklist_template_id as a, 0 as b  
-from VERSIONS_CHECKLISTS_TEMPLATES v  
-join checklists_templates c on v.checklist_template_id = c.checklist_template_id  
-join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id  
-where c.description = 'Checklist A12 AP - ANP: Approval for next process' and b.position = 2  
-union   
-select 0 as a, b.item_version_checklist_template_id as b  
-from VERSIONS_CHECKLISTS_TEMPLATES v  
-join checklists_templates c on v.checklist_template_id = c.checklist_template_id  
-join ITEMS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id  
-where c.description = 'Checklist A12 AP - ANP: Approval for next process' and b.position = 15  
-) t; 
- 
+where c.description = 'Checklist A12 AP - ANP: Approval for next process' and b.position =  3 and b.parent_block_version_checklist_template_id is  NULL and f.position = 8 and value = 1; 
 
 INSERT INTO FIELDS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id, position, title, field_data_type_id, regex_validation, format, mandatory, is_key)  
 select v.version_checklist_template_id, 1, 'Batch Number (Formulation)',1, '', null, 1, 1  
@@ -442,39 +450,8 @@ join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id =
 where c.description = 'Checklist A12 AP - FSA usando DBR' and b.position = 1; 
  
  
-INSERT INTO DEPENDENCIES_BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES (block_version_checklist_template_id,dependent_block_version_checklist_template_id,dependent_item_version_checklist_template_id) 
-select sum(t.a), sum(t.b), null 
-from ( 
-select b.block_version_checklist_template_id as a, 0 as b 
-from VERSIONS_CHECKLISTS_TEMPLATES v 
-join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
-join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id 
-where c.description = 'Checklist A12 AP - FSA usando DBR' and b.position = 1 
-union  
-select 0 as a, b.block_version_checklist_template_id as b 
-from VERSIONS_CHECKLISTS_TEMPLATES v 
-join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
-join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id 
-where c.description = 'Checklist A12 AP - ANP: Approval for next process' and b.position = 1 
-) t; 
- 
-INSERT INTO DEPENDENCIES_BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES (block_version_checklist_template_id,dependent_block_version_checklist_template_id,dependent_item_version_checklist_template_id) 
-select sum(t.a), sum(t.b), null 
-from ( 
-select b.block_version_checklist_template_id as a, 0 as b 
-from VERSIONS_CHECKLISTS_TEMPLATES v 
-join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
-join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id 
-where c.description = 'Checklist A12 AP - FSA usando DBR' and b.position = 1 
-union  
-select 0 as a, b.block_version_checklist_template_id as b 
-from VERSIONS_CHECKLISTS_TEMPLATES v 
-join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
-join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id 
-where c.description = 'Checklist A12 AP - ANP: Approval for next process' and b.position = 2 
-) t; 
- 
- 
+
+
 INSERT INTO FIELDS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id, position, title, field_data_type_id, regex_validation, format, mandatory, is_key) 
 select v.version_checklist_template_id, 1, 'Batch Number',1, '', null, 1, 1 
 from VERSIONS_CHECKLISTS_TEMPLATES v 
@@ -496,24 +473,7 @@ join checklists_templates c on v.checklist_template_id = c.checklist_template_id
 cross join users u 
 where c.description = 'Checklist A12 AP - FSA: Bulk De STJ, CH e CL recebidos em MOC' and initials = '_adm'; 
  
-INSERT INTO BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id, position, title)  
-select v.version_checklist_template_id, 1, 'Passos' 
-from VERSIONS_CHECKLISTS_TEMPLATES v 
-join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
-where c.description = 'Checklist A12 AP - FSA: Bulk De STJ, CH e CL recebidos em MOC'; 
- 
-INSERT INTO BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id, position, title)  
-select v.version_checklist_template_id, 2, 'Final Status assignment in SAP (considere as etapas anteriores para definição do status do lote)' 
-from VERSIONS_CHECKLISTS_TEMPLATES v 
-join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
-where c.description = 'Checklist A12 AP - FSA: Bulk De STJ, CH e CL recebidos em MOC'; 
- 
-INSERT INTO BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id, position, title, parent_block_version_checklist_template_id)  
-select v.version_checklist_template_id, 1, 'Verificação', b.block_version_checklist_template_id 
-from VERSIONS_CHECKLISTS_TEMPLATES v 
-join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
-join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on b.version_checklist_template_id = v.version_checklist_template_id 
-where c.description = 'Checklist A12 AP - FSA: Bulk De STJ, CH e CL recebidos em MOC' and b.position = 2 and b.parent_block_version_checklist_template_id is null; 
+
  
 INSERT INTO ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id,position,title,item_type_id,block_version_checklist_template_id,option_field_version_checklist_template_id) 
 select v.version_checklist_template_id, 1, 'Versão do CheckList', 1, b.block_version_checklist_template_id, null 
@@ -679,11 +639,59 @@ select v.version_checklist_template_id, 1, 'Status assignment correto no SAP', 1
 from VERSIONS_CHECKLISTS_TEMPLATES v 
 join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
 join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id 
-where c.description = 'Checklist A12 AP - FSA: Bulk De STJ, CH e CL recebidos em MOC' and b.position = 1 and b.parent_block_version_checklist_template_id is not null; 
+where c.description = 'Checklist A12 AP - FSA: Bulk De STJ, CH e CL recebidos em MOC' and b.position = 2 and b.parent_block_version_checklist_template_id is not null; 
  
 INSERT INTO ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id,position,title,item_type_id,block_version_checklist_template_id,option_field_version_checklist_template_id) 
 select v.version_checklist_template_id, 2, 'Informações críticas no SAP (Se alteradas)', 1, b.block_version_checklist_template_id, null 
 from VERSIONS_CHECKLISTS_TEMPLATES v 
 join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
 join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id 
-where c.description = 'Checklist A12 AP - FSA: Bulk De STJ, CH e CL recebidos em MOC' and b.position = 1 and b.parent_block_version_checklist_template_id is not null;  
+where c.description = 'Checklist A12 AP - FSA: Bulk De STJ, CH e CL recebidos em MOC' and b.position = 2 and b.parent_block_version_checklist_template_id is not null;  
+
+INSERT INTO DEPENDENCIES_ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (item_version_checklist_template_id,dependent_block_version_checklist_template_id,dependent_item_version_checklist_template_id,dependent_version_checklist_template_id)  
+select sum(t.a), null,null,  sum(t.b) 
+from (  
+select b.item_version_checklist_template_id as a, 0 as b  
+from VERSIONS_CHECKLISTS_TEMPLATES v  
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id  
+join ITEMS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id  
+where c.description = 'Checklist A12 AP - FSA usando DBR' and b.position = 2 
+union   
+select 0 as a, v.version_checklist_template_id as b  
+from VERSIONS_CHECKLISTS_TEMPLATES v  
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id  
+where c.description = 'Checklist A12 AP - ANP: Approval for next process' 
+) t; 
+ 
+INSERT INTO DEPENDENCIES_ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (item_version_checklist_template_id,dependent_block_version_checklist_template_id,dependent_item_version_checklist_template_id,dependent_version_checklist_template_id)  
+select sum(t.a),  sum(t.b) , null,null 
+from (  
+select b.block_version_checklist_template_id as a, 0 as b  
+from VERSIONS_CHECKLISTS_TEMPLATES v  
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id  
+join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id  
+where c.description = 'Checklist A12 AP - ANP: Approval for next process' and (b.position = 2 and b.parent_block_version_checklist_template_id is NULL) 
+union   
+select 0 as a, b.block_version_checklist_template_id as b 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id 
+where c.description = 'Checklist A12 AP - ANP: Approval for next process' and (b.position = 1 and b.parent_block_version_checklist_template_id is NULL)
+) t; 
+ 
+INSERT INTO DEPENDENCIES_BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES (block_version_checklist_template_id,dependent_block_version_checklist_template_id,dependent_item_version_checklist_template_id, dependent_version_checklist_template_id) 
+select sum(t.a), null, sum(t.b), null 
+from ( 
+select b.block_version_checklist_template_id as a, 0 as b 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id 
+where c.description = 'Checklist A12 AP - ANP: Approval for next process' and b.position = 2 and b.parent_block_version_checklist_template_id is NOT NULL 
+union  
+select 0 as a, b.item_version_checklist_template_id as b  
+from VERSIONS_CHECKLISTS_TEMPLATES v  
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id  
+join ITEMS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id  
+where c.description = 'Checklist A12 AP - ANP: Approval for next process' and b.position = 14  
+) t; 
+ 

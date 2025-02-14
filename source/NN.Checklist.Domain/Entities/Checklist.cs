@@ -18,6 +18,7 @@ using iTextSharp.text;
 using static iTextSharp.text.pdf.AcroFields;
 using System.Globalization;
 using RestSharp.Extensions;
+using Newtonsoft.Json.Linq;
 
 #region Cabeçalho
 
@@ -37,14 +38,12 @@ namespace NN.Checklist.Domain.Entities
         {
 
         }
-        public Checklist(long actionUserId, long versionChecklistTemplateId)
+        public Checklist(long actionUserId, long versionChecklistTemplateId, List<FieldChecklistDTO> fields)
         {
-
             try
             {
                 var auditTrail = ObjectFactory.GetSingleton<IAuditTrailService>();
                 var globalization = ObjectFactory.GetSingleton<IGlobalizationService>();
-
 
                 CreationTimestamp = DateTime.Now;
                 CreationUserId = actionUserId;
@@ -54,6 +53,7 @@ namespace NN.Checklist.Domain.Entities
                     if (Validate(true).Result)
                     {
                         Insert().Wait();
+                        CreateFieldChecklist(actionUserId, ChecklistId, fields).Wait();
                         auditTrail.AddRecord("AT_ChecklistInserted", ChecklistId, EnumSystemFunctionality.Checklists, actionUserId);
                     }
                     tran.Complete();
@@ -67,12 +67,6 @@ namespace NN.Checklist.Domain.Entities
             {
                 throw new DomainException("EX_ChecklistNotCreated", ex);
             }
-
-
-
-
-
-
         }
 
         public Checklist(long? actionUserId, System.DateTime creationTimestamp, System.Int64 creationUserId, System.DateTime? updateTimestamp, System.Int64? updateUserId, System.Int64 versionChecklistTemplateId)
@@ -126,6 +120,10 @@ namespace NN.Checklist.Domain.Entities
 
         public User UpdateUser { get => GetManyToOneData<User>().Result; }
         public string FormattedDate { get {
+                if(Fields == null)
+                {
+                    return CreationTimestamp.ToString("yyyy-MM-dd");
+                }
                 var fieldDateKey = Fields.Where(x => x.FieldVersionChecklistTemplate.IsKey && x.FieldVersionChecklistTemplate.FieldDataTypeId == EnumFieldDataType.Date).FirstOrDefault();
                 if (fieldDateKey!=null)
                 {
@@ -165,29 +163,21 @@ namespace NN.Checklist.Domain.Entities
 
         #region Validation
 
-
         public async Task<bool> Validate(bool newRecord)
         {
             try
             {
                 base.Validate(newRecord);
-
                 List<DomainError> erros = new List<DomainError>();
 
                 if (!newRecord && ChecklistId <= 0)
                 {
                     erros.Add(new DomainError("checklist_id", "InvalidChecklistIdIdentifier"));
                 }
-                else
-                {
-
-                }
-
                 if (erros.Count > 0)
                 {
                     throw new DomainException("DataConsistencyError", erros);
                 }
-
                 return true;
             }
             catch (DomainException ex)
@@ -198,7 +188,6 @@ namespace NN.Checklist.Domain.Entities
             {
                 throw ex;
             }
-
         }
 
 
@@ -410,6 +399,32 @@ namespace NN.Checklist.Domain.Entities
                 }
             }
             IsCompleted = true;
+        }
+
+        private async Task CreateFieldChecklist(long actionUserId, long checklistId, List<FieldChecklistDTO> fields)
+        {
+            if (fields == null)
+            {
+                return;
+            }
+            foreach (var item in fields)
+            {
+                if (!item.FieldChecklistId.HasValue)
+                {
+
+                    var field = new FieldChecklist(actionUserId, (long)checklistId, DateTime.Now, actionUserId, item.FieldVersionChecklistTemplateId, item.OptionFieldVersionChecklistTemplateId, null, null, item.Value);
+                }
+                else
+                {
+                    throw new Exception("ErrorWhileInsertingFieldInCheckList");
+                }
+            }
+        }
+
+        public async Task<ItemChecklist> AddItem(long actionUserId, ItemChecklistDTO item )
+        {
+            var itemChecklist = new ItemChecklist(actionUserId, ChecklistId, item.Comments, item.ItemVersionChecklistTemplateId, item.Stamp);
+            return itemChecklist;
         }
     }
 

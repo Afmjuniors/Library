@@ -38,15 +38,11 @@ namespace NN.Checklist.Domain.Services
 
             return dto;
 
-
         }
         public async Task<List<ChecklistResponseDTO>> ListChecklist(long versionChecklistId)
         {
             try
             {
-
-
-
                 var listChecklist = await Entities.Checklist.Repository.ListChecklistByVersion(versionChecklistId);
 
                 List<ChecklistResponseDTO> lst = new List<ChecklistResponseDTO>();
@@ -122,44 +118,30 @@ namespace NN.Checklist.Domain.Services
         {
             long actionUserId = user.UserId;
             long? checklistId = obj.ChecklistId;
+            Entities.Checklist checklist = new Entities.Checklist();
             if (!checklistId.HasValue)
             {
-                var checklist = new Entities.Checklist(actionUserId, obj.VersionChecklistTemplateId);
+                checklist = new Entities.Checklist(actionUserId, obj.VersionChecklistTemplateId, obj.Fields);
                 checklistId = checklist.ChecklistId;
 
             }
+            else
+            {
+                checklist = await Entities.Checklist.Repository.Get(checklistId.Value);
+            }
 
-            await CreateFieldChecklist(actionUserId, (long)checklistId, obj.Fields);
-            await CreateItemChecklist(actionUserId, (long)checklistId, obj.Items);
+            await CreateItemChecklist(actionUserId, checklist, obj.Items);
 
 
-            var newChelist = await Entities.Checklist.Repository.Get((long)checklistId);
-            newChelist.VersionChecklistTemplate.SetLastPosistionInBlocks();
+            checklist.VersionChecklistTemplate.SetLastPosistionInBlocks();
 
-            var dto = newChelist.Transform<ChecklistDTO>();
+            var dto = checklist.Transform<ChecklistDTO>();
             return dto;
 
         }
 
-        private async Task<bool> IsKeyValueUnique(List<FieldChecklistDTO> fields, long versionChecklistTemplateId)
-        {
-            var fieldkey = fields.Where(x => x.FieldVersionChecklistTemplate.IsKey);
-            if (fieldkey != null)
-            {
-                foreach (var item in fieldkey)
-                {
 
-                    var checklist = Entities.Checklist.Repository.GetChecklistByKeyValue(item.Value, versionChecklistTemplateId, item.FieldVersionChecklistTemplate.FieldDataTypeId);
-                    if (checklist != null)
-                    {
-                        return false;
-                    }
-                }
-            }
-            return true;
-
-        }
-        private async Task CreateItemChecklist(long actionUserId, long checklistId, List<ItemChecklistDTO> items)
+        private async Task CreateItemChecklist(long actionUserId, Entities.Checklist checklist, List<ItemChecklistDTO> items)
         {
             if (items == null)
             {
@@ -169,39 +151,11 @@ namespace NN.Checklist.Domain.Services
             {
                 if (!item.ItemChecklistId.HasValue)
                 {
-                    //TODO: Verificar os Comments
-                    var itemChecklist = new ItemChecklist(actionUserId, checklistId, item.Comments, item.ItemVersionChecklistTemplateId, item.Stamp);
+                    await checklist.AddItem(actionUserId, item);
 
                 }
-                else
-                {
-                    var itemFound = await ItemChecklist.Repository.Get((long)item.ItemChecklistId);
-                    await itemFound.Update(actionUserId, item.ChecklistId, item.Comments, item.CreationTimestamp, item.CreationUserId, item.ItemVersionChecklistTemplateId, item.Stamp);
-                }
 
-            }
-        }
-        private async Task CreateFieldChecklist(long actionUserId, long checklistId, List<FieldChecklistDTO> fields)
-        {
-            if (fields == null)
-            {
-                return;
-            }
-            foreach (var item in fields)
-            {
-                if (!item.FieldChecklistId.HasValue)
-                {
 
-                    var field = new FieldChecklist(actionUserId, (long)checklistId, DateTime.Now, actionUserId, item.FieldVersionChecklistTemplateId, item.OptionFieldVersionChecklistTemplateId, null, null, item.Value);
-                }
-                else
-                {
-                    var fieldFound = await FieldChecklist.Repository.Get((long)item.FieldChecklistId);
-                    if (fieldFound.Value != item.Value)
-                    {
-                        await fieldFound.Update(actionUserId, item.ChecklistId, item.CreationTimestamp, item.CreationUserId, item.FieldVersionChecklistTemplateId, item.OptionFieldVersionChecklistTemplateId, DateTime.Now, actionUserId, item.Value);
-                    }
-                }
             }
         }
 
@@ -214,10 +168,8 @@ namespace NN.Checklist.Domain.Services
                 var res = await Entities.Checklist.Repository.Search(pageMessage);
                 var accessControlService = ObjectFactory.GetSingleton<IAccessControlService>();
 
-
                 if (res.Entities == null)
                 {
-
                     return res;
                 }
 
@@ -242,7 +194,7 @@ namespace NN.Checklist.Domain.Services
             }
             catch (Exception ex)
             {
-                throw ex;
+                 throw ex;
             }
         }
 
@@ -258,47 +210,22 @@ namespace NN.Checklist.Domain.Services
             }
             else
             {
-                checklist = new Entities.Checklist(auth.UserId, (long)item.VersionChecklistTemplateId);
+                throw new Exception("ChecklistNotFound");
             }
             if (checklist.Items != null)
             {
                 isNew = !checklist.Items.Any(x => x.ItemVersionchecklistTemplateId == item.ItemVersionChecklistTemplateId);
             }
 
-            var newItem = new ItemChecklist(auth.UserId, checklist.ChecklistId, item.Comments, DateTime.Now, auth.UserId, item.ItemVersionChecklistTemplateId, item.Stamp);
-            if (item.OptionsItemsChecklist != null)
-            {
-                foreach (var optionItem in item.OptionsItemsChecklist)
-                {
-                    var option = new OptionItemChecklist(auth.UserId, DateTime.Now, auth.UserId, newItem.ItemChecklistId, optionItem.OptionItemVersionChecklistTemplateId);
-                    if (optionItem.CancelledItemsVersionChecklistTemplate != null)
-                    {
-                        foreach (var cancelledItem in optionItem.CancelledItemsVersionChecklistTemplate)
-                        {
-                            if (checklist.Items != null)
-                            {
-                                var itemToReject = checklist.Items
-                                    .Where(x => x.ItemVersionchecklistTemplateId == cancelledItem.TargetItemVersionChecklistTemplateId)
-                                    .OrderByDescending(x => x.CreationTimestamp)
-                                    .FirstOrDefault();
-                                if (itemToReject != null)
-                                {
-                                    await itemToReject.RejectItem();
+            var newItem = await checklist.AddItem(auth.UserId, item);
 
-                                }
-
-                            }
-                        }
-                    }
-                }
-            }
+           
             if (!isNew)
             {
 
                 await checklist.CheckBlockAndItemDependencyForRejection(newItem.ItemVersionchecklistTemplate.BlockVersionChecklistTemplateId, newItem.ItemVersionchecklistTemplateId);
 
             }
-
 
             checklist.CheckAvailability();
             var dto = checklist.Transform<ChecklistDTO>();
@@ -310,14 +237,10 @@ namespace NN.Checklist.Domain.Services
             return dto;
         }
 
-
-
         public async Task<List<HistorySignatureDTO>> ListAllSignuture(AuthenticatedUserDTO auth, long checklistId, long itemTemplateId)
         {
             try
             {
-
-
                 var accessControlService = ObjectFactory.GetSingleton<IAccessControlService>();
                 var res = await ItemChecklist.Repository.ListAllItensByChecklistIdAndIdTemplate(checklistId, itemTemplateId);
                 List<HistorySignatureDTO> lst = new List<HistorySignatureDTO>();
@@ -333,13 +256,11 @@ namespace NN.Checklist.Domain.Services
                         OptionsAvalible = item.ItemVersionchecklistTemplate.OptionItemsVersionChecklistTemplate != null ? item.ItemVersionchecklistTemplate.OptionItemsVersionChecklistTemplate.TransformList<OptionItemVersionChecklistTemplateDTO>().ToList() : []
                     };
                     lst.Add(history);
-
                 }
                 return lst;
             }
             catch (Exception)
             {
-
                 throw;
             }
 
@@ -349,9 +270,6 @@ namespace NN.Checklist.Domain.Services
         {
             try
             {
-
-
-
                 List<ChecklistDTO> ckLst = new List<ChecklistDTO>();
                 foreach (var entity in entities)
                 {

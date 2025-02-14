@@ -133,38 +133,46 @@ namespace NN.Checklist.Domain.Repositories
 
         public async Task<Entities.Checklist> GetChecklistByKeyValue(string value, long versionTemplateId, EnumFieldDataType? type)
         {
-            var pars = new List<SqlParameter>();
-
-            var sqlSelect = @"SELECT c.*";
-
-            var sqlFrom = @" FROM CHECKLISTS c with (nolock) " +
-                "join VERSIONS_CHECKLISTS_TEMPLATES vct on c.version_checklist_template_id =  vct.version_checklist_template_id " +
-                "join FIELDS_CHECKLISTS fc on fc.checklist_id = c.checklist_id " +
-                "join FIELDS_VERSIONS_CHECKLISTS_TEMPLATES fvct on fvct.version_checklist_template_id = c.version_checklist_template_id";
-            var sqlWhere = "where vct.version_checklist_template_id = @pVersionChecklistTemplateId";
-            string and = "and ";
-
-            SqlParameter param = new SqlParameter("pVersionChecklistTemplateId", System.Data.SqlDbType.BigInt);
-            param.Value = versionTemplateId;
-            pars.Add(param);
-            if (!string.IsNullOrEmpty(value))
+            try
             {
-                sqlWhere += and + " fc.value = @pValue and fvct.is_key = 1 ";
-                SqlParameter param2 = new SqlParameter("pValue", System.Data.SqlDbType.VarChar);
-                param2.Value = value;
-                pars.Add(param2);
+
+                var pars = new List<SqlParameter>();
+
+                var sqlSelect = @"SELECT c.*";
+
+                var sqlFrom = @" FROM CHECKLISTS c with (nolock) " +
+                    "join VERSIONS_CHECKLISTS_TEMPLATES vct on c.version_checklist_template_id =  vct.version_checklist_template_id " +
+                    "join FIELDS_CHECKLISTS fc on fc.checklist_id = c.checklist_id " +
+                    "join FIELDS_VERSIONS_CHECKLISTS_TEMPLATES fvct on fvct.version_checklist_template_id = c.version_checklist_template_id ";
+                var sqlWhere = "where vct.version_checklist_template_id = @pVersionChecklistTemplateId ";
+                string and = " and ";
+
+                SqlParameter param = new SqlParameter("pVersionChecklistTemplateId", System.Data.SqlDbType.BigInt);
+                param.Value = versionTemplateId;
+                pars.Add(param);
+                if (!string.IsNullOrEmpty(value))
+                {
+                    sqlWhere += and + " lower(fc.value) = @pValue and fvct.is_key = 1 ";
+                    SqlParameter param2 = new SqlParameter("pValue", System.Data.SqlDbType.VarChar);
+                    param2.Value = value.ToLower();
+                    pars.Add(param2);
+                }
+                if (type.HasValue)
+                {
+                    sqlWhere += and + " fvct.field_data_type_id = @pType ";
+
+                    SqlParameter param3 = new SqlParameter("pType", System.Data.SqlDbType.Int);
+                    param3.Value = type.Value;
+                    pars.Add(param3);
+                }
+
+                var sql = sqlSelect + sqlFrom + sqlWhere;
+                return await Get<Entities.Checklist>(sql, pars);
             }
-            if (type.HasValue)
+            catch (Exception ex)
             {
-                 sqlWhere += and +" fvct.field_data_type_id = @pType ";
-
-                SqlParameter param3 = new SqlParameter("pType", System.Data.SqlDbType.Int);
-                param.Value = type;
-                pars.Add(param3);
+                throw new Exception("ErroGetChecklistByValue");
             }
-
-            var sql = sqlSelect + sqlFrom + sqlWhere ;
-            return await Get<Entities.Checklist>(sql, pars);
         }
 
         #endregion

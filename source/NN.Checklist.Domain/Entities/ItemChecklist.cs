@@ -14,6 +14,9 @@ using System.Transactions;
 using System.Threading.Tasks;
 using System.Collections;
 using System.Xml.Linq;
+using static iTextSharp.text.pdf.AcroFields;
+using NN.Checklist.Domain.DTO;
+using System.Linq;
 
 #region Cabeçalho
 
@@ -254,6 +257,35 @@ namespace NN.Checklist.Domain.Entities
 
         }
 
+        private async Task InsertOptions(long actionUserId, ItemChecklistDTO item)
+        {
+            if (item.OptionsItemsChecklist != null)
+            {
+                foreach (var optionItem in item.OptionsItemsChecklist)
+                {
+                    var option = new OptionItemChecklist(actionUserId, DateTime.Now, actionUserId, ItemChecklistId, optionItem.OptionItemVersionChecklistTemplateId);
+                    if (optionItem.CancelledItemsVersionChecklistTemplate != null)
+                    {
+                        foreach (var cancelledItem in optionItem.CancelledItemsVersionChecklistTemplate)
+                        {
+                            if (Checklist.Items != null)
+                            {
+                                var itemToReject = Checklist.Items.ToList()
+                                    .Where(x => x.ItemVersionchecklistTemplateId == cancelledItem.TargetItemVersionChecklistTemplateId)
+                                    .OrderByDescending(x => x.CreationTimestamp)
+                                    .FirstOrDefault();
+                                if (itemToReject != null)
+                                {
+                                    await itemToReject.RejectItem();
+
+                                }
+
+                            }
+                        }
+                    }
+                }
+            }
+        }
 
         #endregion
     }
