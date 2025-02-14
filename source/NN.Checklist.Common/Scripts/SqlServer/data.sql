@@ -665,7 +665,7 @@ where c.description = 'Checklist A12 AP - ANP: Approval for next process'
 ) t; 
  
 INSERT INTO DEPENDENCIES_ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (item_version_checklist_template_id,dependent_block_version_checklist_template_id,dependent_item_version_checklist_template_id,dependent_version_checklist_template_id)  
-select sum(t.a),  sum(t.b) , null,null 
+select sum(t.a),  null , sum(t.b),null 
 from (  
 select b.block_version_checklist_template_id as a, 0 as b  
 from VERSIONS_CHECKLISTS_TEMPLATES v  
@@ -673,15 +673,16 @@ join checklists_templates c on v.checklist_template_id = c.checklist_template_id
 join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id  
 where c.description = 'Checklist A12 AP - ANP: Approval for next process' and (b.position = 2 and b.parent_block_version_checklist_template_id is NULL) 
 union   
-select 0 as a, b.block_version_checklist_template_id as b 
+select 0 as a, i.item_version_checklist_template_id as b 
 from VERSIONS_CHECKLISTS_TEMPLATES v 
 join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
-join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id 
-where c.description = 'Checklist A12 AP - ANP: Approval for next process' and (b.position = 1 and b.parent_block_version_checklist_template_id is NULL)
+join ITEMS_VERSIONS_CHECKLISTS_TEMPLATES i on v.version_checklist_template_id = i.version_checklist_template_id 
+join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on i.block_version_checklist_template_id = b.block_version_checklist_template_id  
+where c.description = 'Checklist A12 AP - ANP: Approval for next process' and b.position = 1  and i.position=1
 ) t; 
  
 INSERT INTO DEPENDENCIES_BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES (block_version_checklist_template_id,dependent_block_version_checklist_template_id,dependent_item_version_checklist_template_id, dependent_version_checklist_template_id) 
-select sum(t.a), null, sum(t.b), null 
+select sum(t.a), sum(t.b), null, null 
 from ( 
 select b.block_version_checklist_template_id as a, 0 as b 
 from VERSIONS_CHECKLISTS_TEMPLATES v 
@@ -689,10 +690,295 @@ join checklists_templates c on v.checklist_template_id = c.checklist_template_id
 join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id 
 where c.description = 'Checklist A12 AP - ANP: Approval for next process' and b.position = 2 and b.parent_block_version_checklist_template_id is NOT NULL 
 union  
-select 0 as a, b.item_version_checklist_template_id as b  
+select 0 as a, b.block_version_checklist_template_id as b  
 from VERSIONS_CHECKLISTS_TEMPLATES v  
 join checklists_templates c on v.checklist_template_id = c.checklist_template_id  
-join ITEMS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id  
-where c.description = 'Checklist A12 AP - ANP: Approval for next process' and b.position = 14  
+join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id  
+where c.description = 'Checklist A12 AP - ANP: Approval for next process' and b.position = 1  
 ) t; 
  
+
+
+ INSERT INTO BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id, position, title)  
+select v.version_checklist_template_id, 1, 'Final Status assignment' 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+where c.description = 'Checklist A12 Bulk'; 
+
+INSERT INTO BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id, position, title, parent_block_version_checklist_template_id)  
+select v.version_checklist_template_id, 17, 'Verificação', b.block_version_checklist_template_id  
+from VERSIONS_CHECKLISTS_TEMPLATES v  
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id  
+join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on b.version_checklist_template_id = v.version_checklist_template_id  
+where c.description = 'Checklist A12 Bulk' and b.position = 1  and b.parent_block_version_checklist_template_id is NULL; 
+
+INSERT INTO FIELDS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id, position, title, field_data_type_id, regex_validation, format, mandatory, is_key) 
+select v.version_checklist_template_id, 1, 'Batch Number',1, '', null, 1, 1 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id  
+join users u on v.creation_user_id = u.user_id and initials = '_adm' 
+where c.description =  'Checklist A12 Bulk'; 
+ 
+INSERT INTO FIELDS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id, position, title, field_data_type_id, regex_validation, format, mandatory, is_key) 
+select v.version_checklist_template_id, 2, 'Item number',2, null, null, 1, 0 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+cross join users u 
+where c.description =  'Checklist A12 Bulk' and initials = '_adm'; 
+ 
+INSERT INTO FIELDS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id, position, title, field_data_type_id, regex_validation, format, mandatory, is_key) 
+select v.version_checklist_template_id, 3, 'Item name',1, null, null, 1, 0 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+cross join users u 
+where c.description =  'Checklist A12 Bulk' and initials = '_adm'; 
+ 
+ INSERT INTO ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id,position,title,item_type_id,block_version_checklist_template_id,option_field_version_checklist_template_id) 
+select v.version_checklist_template_id, 1, 'Versão do CheckList', 1, b.block_version_checklist_template_id, null 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id 
+where c.description = 'Checklist A12 Bulk' and b.position = 1 and b.parent_block_version_checklist_template_id is null; 
+ 
+INSERT INTO ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id,position,title,item_type_id,block_version_checklist_template_id,option_field_version_checklist_template_id) 
+select v.version_checklist_template_id, 2, 'Consistência entre sistema e checklist', 1, b.block_version_checklist_template_id, null 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id 
+where c.description = 'Checklist A12 Bulk'and b.position = 1 and b.parent_block_version_checklist_template_id is null; 
+INSERT INTO ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id,position,title,item_type_id,block_version_checklist_template_id,option_field_version_checklist_template_id) 
+select v.version_checklist_template_id, 3, 'SAP', 1, b.block_version_checklist_template_id, null 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id 
+where c.description = 'Checklist A12 Bulk'and b.position = 1 and b.parent_block_version_checklist_template_id is null; 
+
+INSERT INTO ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id, position, title, item_type_id, block_version_checklist_template_id, option_field_version_checklist_template_id, options_title) 
+select v.version_checklist_template_id, 4, 'Produção contratada', 3, b.block_version_checklist_template_id, null, '' 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id 
+where c.description = 'Checklist A12 Bulk' and b.position = 1 and b.parent_block_version_checklist_template_id is null; 
+ 
+INSERT INTO OPTIONS_ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (item_version_checklist_template_id, title, value) 
+select i.item_version_checklist_template_id, 'Sim', 1 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+join ITEMS_VERSIONS_CHECKLISTS_TEMPLATES i on v.version_checklist_template_id = i.version_checklist_template_id 
+where c.description = 'Checklist A12 Bulk' and i.position = 4; 
+ 
+INSERT INTO OPTIONS_ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (item_version_checklist_template_id, title, value) 
+select i.item_version_checklist_template_id, 'Não', 2 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+join ITEMS_VERSIONS_CHECKLISTS_TEMPLATES i on v.version_checklist_template_id = i.version_checklist_template_id 
+where c.description = 'Checklist A12 Bulk' and i.position = 4; 
+
+INSERT INTO ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id,position,title,item_type_id,block_version_checklist_template_id,option_field_version_checklist_template_id) 
+select v.version_checklist_template_id, 5, 'BPR', 1, b.block_version_checklist_template_id, null 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id 
+where c.description = 'Checklist A12 Bulk'and b.position = 1 and b.parent_block_version_checklist_template_id is null; 
+
+INSERT INTO ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id,position,title,item_type_id,block_version_checklist_template_id,option_field_version_checklist_template_id) 
+select v.version_checklist_template_id, 6, 'FMS', 1, b.block_version_checklist_template_id, null 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id 
+where c.description = 'Checklist A12 Bulk'and b.position = 1 and b.parent_block_version_checklist_template_id is null; 
+
+INSERT INTO ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id,position,title,item_type_id,block_version_checklist_template_id,option_field_version_checklist_template_id) 
+select v.version_checklist_template_id, 7, 'NNTZW', 1, b.block_version_checklist_template_id, null 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id 
+where c.description = 'Checklist A12 Bulk'and b.position = 1 and b.parent_block_version_checklist_template_id is null; 
+
+INSERT INTO ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id, position, title, item_type_id, block_version_checklist_template_id, option_field_version_checklist_template_id, options_title) 
+select v.version_checklist_template_id, 8, 'Formulário que contém informação com impacto em liberação de lote', 3, b.block_version_checklist_template_id, null, 'Contém Limitação?' 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id 
+where c.description = 'Checklist A12 Bulk' and b.position = 1 and b.parent_block_version_checklist_template_id is null; 
+ 
+INSERT INTO OPTIONS_ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (item_version_checklist_template_id, title, value) 
+select i.item_version_checklist_template_id, 'Sim', 1 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+join ITEMS_VERSIONS_CHECKLISTS_TEMPLATES i on v.version_checklist_template_id = i.version_checklist_template_id 
+where c.description = 'Checklist A12 Bulk' and i.position = 8; 
+ 
+INSERT INTO OPTIONS_ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (item_version_checklist_template_id, title, value) 
+select i.item_version_checklist_template_id, 'Não', 2 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+join ITEMS_VERSIONS_CHECKLISTS_TEMPLATES i on v.version_checklist_template_id = i.version_checklist_template_id 
+where c.description = 'Checklist A12 Bulk' and i.position = 8; 
+
+INSERT INTO ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id, position, title, item_type_id, block_version_checklist_template_id, option_field_version_checklist_template_id, options_title) 
+select v.version_checklist_template_id, 9, 'CR no novoGloW', 3, b.block_version_checklist_template_id, null, 'Contém Limitação?' 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id 
+where c.description = 'Checklist A12 Bulk' and b.position = 1 and b.parent_block_version_checklist_template_id is null; 
+ 
+INSERT INTO OPTIONS_ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (item_version_checklist_template_id, title, value) 
+select i.item_version_checklist_template_id, 'Sim', 1 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+join ITEMS_VERSIONS_CHECKLISTS_TEMPLATES i on v.version_checklist_template_id = i.version_checklist_template_id 
+where c.description = 'Checklist A12 Bulk' and i.position = 9; 
+ 
+INSERT INTO OPTIONS_ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (item_version_checklist_template_id, title, value) 
+select i.item_version_checklist_template_id, 'Não', 2 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+join ITEMS_VERSIONS_CHECKLISTS_TEMPLATES i on v.version_checklist_template_id = i.version_checklist_template_id 
+where c.description = 'Checklist A12 Bulk' and i.position = 9; 
+
+INSERT INTO ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id, position, title, item_type_id, block_version_checklist_template_id, option_field_version_checklist_template_id, options_title) 
+select v.version_checklist_template_id, 10, 'Desvio Maior', 3, b.block_version_checklist_template_id, null, 'Contém Limitação?' 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id 
+where c.description = 'Checklist A12 Bulk' and b.position = 1 and b.parent_block_version_checklist_template_id is null; 
+ 
+INSERT INTO OPTIONS_ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (item_version_checklist_template_id, title, value) 
+select i.item_version_checklist_template_id, 'Sim', 1 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+join ITEMS_VERSIONS_CHECKLISTS_TEMPLATES i on v.version_checklist_template_id = i.version_checklist_template_id 
+where c.description = 'Checklist A12 Bulk' and i.position = 10; 
+ 
+INSERT INTO OPTIONS_ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (item_version_checklist_template_id, title, value) 
+select i.item_version_checklist_template_id, 'Não', 2 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+join ITEMS_VERSIONS_CHECKLISTS_TEMPLATES i on v.version_checklist_template_id = i.version_checklist_template_id 
+where c.description = 'Checklist A12 Bulk' and i.position = 10; 
+
+INSERT INTO ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id,position,title,item_type_id,block_version_checklist_template_id,option_field_version_checklist_template_id) 
+select v.version_checklist_template_id, 11, 'Desvios abertos', 1, b.block_version_checklist_template_id, null 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id 
+where c.description = 'Checklist A12 Bulk'and b.position = 1 and b.parent_block_version_checklist_template_id is null; 
+
+INSERT INTO ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id, position, title, item_type_id, block_version_checklist_template_id, option_field_version_checklist_template_id, options_title) 
+select v.version_checklist_template_id, 12, 'Limitações no SAP', 3, b.block_version_checklist_template_id, null, 'Contém Limitação?' 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id 
+where c.description = 'Checklist A12 Bulk' and b.position = 1 and b.parent_block_version_checklist_template_id is null; 
+ 
+INSERT INTO OPTIONS_ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (item_version_checklist_template_id, title, value) 
+select i.item_version_checklist_template_id, 'Sim', 1 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+join ITEMS_VERSIONS_CHECKLISTS_TEMPLATES i on v.version_checklist_template_id = i.version_checklist_template_id 
+where c.description = 'Checklist A12 Bulk' and i.position = 12; 
+ 
+INSERT INTO OPTIONS_ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (item_version_checklist_template_id, title, value) 
+select i.item_version_checklist_template_id, 'Não', 2 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+join ITEMS_VERSIONS_CHECKLISTS_TEMPLATES i on v.version_checklist_template_id = i.version_checklist_template_id 
+where c.description = 'Checklist A12 Bulk' and i.position = 12; 
+
+INSERT INTO ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id,position,title,item_type_id,block_version_checklist_template_id,option_field_version_checklist_template_id) 
+select v.version_checklist_template_id, 13, 'Transferência de estoque', 1, b.block_version_checklist_template_id, null 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id 
+where c.description = 'Checklist A12 Bulk'and b.position = 1 and b.parent_block_version_checklist_template_id is null; 
+
+INSERT INTO ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id,position,title,item_type_id,block_version_checklist_template_id,option_field_version_checklist_template_id) 
+select v.version_checklist_template_id, 14, 'Número de Penfill®', 1, b.block_version_checklist_template_id, null 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id 
+where c.description = 'Checklist A12 Bulk'and b.position = 1 and b.parent_block_version_checklist_template_id is null; 
+
+INSERT INTO ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id,position,title,item_type_id,block_version_checklist_template_id,option_field_version_checklist_template_id) 
+select v.version_checklist_template_id, 15, 'PAS-X', 1, b.block_version_checklist_template_id, null 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id 
+where c.description = 'Checklist A12 Bulk'and b.position = 1 and b.parent_block_version_checklist_template_id is null; 
+
+
+
+
+
+
+
+
+
+INSERT INTO ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id, position, title, item_type_id, block_version_checklist_template_id, option_field_version_checklist_template_id, options_title) 
+select v.version_checklist_template_id, 16, 'Final Status Assignment in SAP', 3, b.block_version_checklist_template_id, null, '"I hereby confirm that the manufacture and control of the batch have been carried out in full compliance with the GMP requirements of the EU and local Regulatory Authority and with the requirements of the Marketing Authorisation".' 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id 
+where c.description = 'Checklist A12 Bulk' and b.position = 1 and b.parent_block_version_checklist_template_id is null; 
+ 
+INSERT INTO OPTIONS_ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (item_version_checklist_template_id, title, value) 
+select i.item_version_checklist_template_id, 'A,approved', 1 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id 
+join ITEMS_VERSIONS_CHECKLISTS_TEMPLATES i on v.version_checklist_template_id = i.version_checklist_template_id and i.block_version_checklist_template_id = b.block_version_checklist_template_id 
+where c.description = 'Checklist A12 Bulk' and i.position = 16 and b.position = 1 and b.parent_block_version_checklist_template_id is null; 
+ 
+INSERT INTO OPTIONS_ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (item_version_checklist_template_id, title, value) 
+select i.item_version_checklist_template_id, 'L,limited', 2 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id 
+join ITEMS_VERSIONS_CHECKLISTS_TEMPLATES i on v.version_checklist_template_id = i.version_checklist_template_id and i.block_version_checklist_template_id = b.block_version_checklist_template_id 
+where c.description = 'Checklist A12 Bulk' and i.position = 16 and b.position = 1 and b.parent_block_version_checklist_template_id is null; 
+ 
+INSERT INTO OPTIONS_ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (item_version_checklist_template_id, title, value) 
+select i.item_version_checklist_template_id, 'R,rejected', 3 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id 
+join ITEMS_VERSIONS_CHECKLISTS_TEMPLATES i on v.version_checklist_template_id = i.version_checklist_template_id and i.block_version_checklist_template_id = b.block_version_checklist_template_id 
+where c.description = 'Checklist A12 Bulk' and i.position = 16 and b.position = 1 and b.parent_block_version_checklist_template_id is null; 
+ 
+INSERT INTO OPTIONS_ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (item_version_checklist_template_id, title, value) 
+select i.item_version_checklist_template_id, 'T,technical', 4 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id 
+join ITEMS_VERSIONS_CHECKLISTS_TEMPLATES i on v.version_checklist_template_id = i.version_checklist_template_id and i.block_version_checklist_template_id = b.block_version_checklist_template_id 
+where c.description = 'Checklist A12 Bulk' and i.position = 16 and b.position = 1 and b.parent_block_version_checklist_template_id is null; 
+
+
+INSERT INTO ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id,position,title,item_type_id,block_version_checklist_template_id,option_field_version_checklist_template_id) 
+select v.version_checklist_template_id, 1, 'Status Assignment correto no SAP', 1, b.block_version_checklist_template_id, null 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id 
+where c.description = 'Checklist A12 Bulk'and b.position = 17; 
+
+INSERT INTO ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id,position,title,item_type_id,block_version_checklist_template_id,option_field_version_checklist_template_id) 
+select v.version_checklist_template_id, 2, 'Verificar Desvio Maior', 1, b.block_version_checklist_template_id, null 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id 
+where c.description = 'Checklist A12 Bulk'and b.position = 17; 
+
+INSERT INTO ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id,position,title,item_type_id,block_version_checklist_template_id,option_field_version_checklist_template_id) 
+select v.version_checklist_template_id, 3, 'Limitações corretas no SAP', 1, b.block_version_checklist_template_id, null 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id 
+where c.description = 'Checklist A12 Bulk'and b.position = 17; 
+
+INSERT INTO ITEMS_VERSIONS_CHECKLISTS_TEMPLATES (version_checklist_template_id,position,title,item_type_id,block_version_checklist_template_id,option_field_version_checklist_template_id) 
+select v.version_checklist_template_id, 4, 'CoA (direct export)', 1, b.block_version_checklist_template_id, null 
+from VERSIONS_CHECKLISTS_TEMPLATES v 
+join checklists_templates c on v.checklist_template_id = c.checklist_template_id 
+join BLOCKS_VERSIONS_CHECKLISTS_TEMPLATES b on v.version_checklist_template_id = b.version_checklist_template_id 
+where c.description = 'Checklist A12 Bulk'and b.position = 17; 

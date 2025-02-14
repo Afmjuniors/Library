@@ -282,7 +282,7 @@ namespace NN.Checklist.Domain.Services
 
                 return ckLst;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
                 throw;

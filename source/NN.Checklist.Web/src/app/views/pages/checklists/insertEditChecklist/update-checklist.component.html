@@ -76,378 +76,381 @@
 						</div>
 					</div>
 				</div>
-<div *ngIf="isNew">
-				<div class="col-md-6">
-					<mat-form-field class="full-width">
-						<mat-select placeholder="{{ 'NEW_EDIT_CHECKLIST.VERSION' | translate }}"
-							[(ngModel)]="filter.checklistTemplateId" class="full-width"
-							(selectionChange)="onChecklistChange($event)" [disabled]="checklistLoaded">
-							<mat-option value="0">{{ 'NEW_EDIT_CHECKLIST.NONE_SELECTED' | translate }}</mat-option>
-							<mat-option *ngFor="let itemCl of checklists" [value]="itemCl.checklistTemplateId">
-								{{itemCl.description}}
-							</mat-option>
-						</mat-select>
-					</mat-form-field>
-				</div>
-				<div *ngIf=" filter.checklistTemplateId>0 && !loading" class="form-group kt-form__group d-block">
-					<h2>{{ checklistVersion.checklistTemplateDescription + " - " + checklistVersion.version  }}</h2>
+				<div *ngIf="isNew">
+					<div class="col-md-6">
+						<mat-form-field class="full-width">
+							<mat-select placeholder="{{ 'NEW_EDIT_CHECKLIST.VERSION' | translate }}"
+								[(ngModel)]="filter.checklistTemplateId" class="full-width"
+								(selectionChange)="onChecklistChange($event)" [disabled]="checklistLoaded">
+								<mat-option value="0">{{ 'NEW_EDIT_CHECKLIST.NONE_SELECTED' | translate }}</mat-option>
+								<mat-option *ngFor="let itemCl of checklists" [value]="itemCl.checklistTemplateId">
+									{{itemCl.description}}
+								</mat-option>
+							</mat-select>
+						</mat-form-field>
+					</div>
+					<div *ngIf=" filter.checklistTemplateId>0 && !loading" class="form-group kt-form__group d-block">
+						<h2>{{ checklistVersion.checklistTemplateDescription + " - " + checklistVersion.version }}</h2>
 
-					<form [formGroup]="fieldForm" autocomplete="off">
+						<form [formGroup]="fieldForm" autocomplete="off">
 
-						<div class="card">
-							<h3>{{'NEW_EDIT_CHECKLIST.HEADER' | translate }}</h3>
-							<div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 16px;">
+							<div class="card">
+								<h3>{{'NEW_EDIT_CHECKLIST.HEADER' | translate }}</h3>
+								<div style="display: flex; flex-wrap: wrap; align-items: baseline; gap: 16px;">
 
-								<div *ngFor="let field of checklistVersion.fieldsVersionChecklistsTemplate"
-									class="combo-container">
-									<div *ngIf=" field.fieldDataTypeId == 1">
-										<div class="text-input full-width">
-											<mat-form-field [appearance]="field.isKey ? 'outline' : 'legacy'"
-												style="width: 200px;">
-												<mat-label>{{ field.title }} </mat-label>
-												<input matInput type="text" [placeholder]="field.placeholder"
-													[mask]="field.format" [name]="field.fieldVersionChecklistTemplateId"
-													[id]="field.fieldVersionChecklistTemplateId" autocomplete="off"
-													[formControlName]="'name'+field.fieldVersionChecklistTemplateId"
-													[required]="field.mandatory" />
-												<mat-error
-													*ngIf="isControlHasError(field.fieldVersionChecklistTemplateId,'required')">
-													<strong>{{ 'NEW_EDIT_CHECKLIST.VALIDATION.REQUIRED_FIELD' |
-														translate
-														}}</strong>
-												</mat-error>
-												<mat-error
-													*ngIf="isControlHasError(field.fieldVersionChecklistTemplateId,'pattern')">
-													<strong>{{ 'NEW_EDIT_CHECKLIST.VALIDATION.FORMAT_INVALID' |
-														translate
-														}}</strong>
-												</mat-error>
-											</mat-form-field>
-										</div>
-									</div>
-									<div *ngIf=" field.fieldDataTypeId == 2">
-										<div class="number-input">
-											<mat-form-field class="example-full-width"
-												[appearance]="field.isKey ? 'outline' : 'legacy'">
-												<mat-label>{{ field.title }} </mat-label>
-												<input matInput type="number" [placeholder]="field.placeholder"
-													[mask]="field.format" [name]="field.fieldVersionChecklistTemplateId"
-													[id]="field.fieldVersionChecklistTemplateId" autocomplete="off"
-													[formControlName]="'name'+field.fieldVersionChecklistTemplateId"
-													[required]="field.mandatory" />
-
-											</mat-form-field>
-
-										</div>
-									</div>
-									<div *ngIf=" field.fieldDataTypeId == 3">
-										<div class="number-input">
-											<div class="datePicker-input">
-												<mat-form-field class="example-full-width"
-													[appearance]="field.isKey ? 'outline' : 'legacy'">
-													<mat-label>{{ field.title }} </mat-label>
-													<input matInput [ngxMatDatetimePicker]="picker"
-														[placeholder]="field.placeholder"
+									<div *ngFor="let field of checklistVersion.fieldsVersionChecklistsTemplate"
+										class="combo-container">
+										<div *ngIf=" field.fieldDataTypeId == 1">
+											<div class="text-input full-width">
+												<mat-form-field [appearance]="field.isKey ? 'outline' : 'legacy'"
+													style="width: 200px;">
+													<mat-label> {{ field.title }} </mat-label>
+													<input matInput type="text" [placeholder]="field.placeholder"
+														[mask]="field.format"
+														[name]="field.fieldVersionChecklistTemplateId"
+														[id]="field.fieldVersionChecklistTemplateId" autocomplete="off"
 														[formControlName]="'name'+field.fieldVersionChecklistTemplateId"
-														[required]="field.mandatory" [disabled]="checklistLoaded" />
-													<mat-datepicker-toggle matSuffix
-														[for]="picker"></mat-datepicker-toggle>
-													<ngx-mat-datetime-picker #picker [showSpinners]="true"
-														[showSeconds]="false" [stepHour]="1" [stepMinute]="1"
-														[stepSecond]="1" [touchUi]="false" [enableMeridian]="false">
-													</ngx-mat-datetime-picker>
+														[required]="field.mandatory" />
+													<mat-error
+														*ngIf="isControlHasError(field.fieldVersionChecklistTemplateId,'required')">
+														<strong>{{ 'NEW_EDIT_CHECKLIST.VALIDATION.REQUIRED_FIELD' |
+															translate
+															}}</strong>
+													</mat-error>
+													<mat-error
+														*ngIf="isControlHasError(field.fieldVersionChecklistTemplateId,'pattern')">
+														<strong>{{ 'NEW_EDIT_CHECKLIST.VALIDATION.FORMAT_INVALID' |
+															translate
+															}}</strong>
+													</mat-error>
 												</mat-form-field>
 											</div>
 										</div>
-									</div>
-									<div *ngIf=" field.fieldDataTypeId == 4">
-										<!-- TODO:Mudar a cor do select -->
-										<div class="col-md-3">
-											<mat-form-field class="full-width"
-												[appearance]="field.isKey ? 'outline' : 'legacy'">
-												<mat-select
-													[placeholder]="'NEW_EDIT_CHECKLIST.NONE_SELECTED' | translate"
-													autocomplete="off"
-													[formControlName]="'name'+field.fieldVersionChecklistTemplateId"
-													[required]="field.mandatory">
-													<mat-option
-														*ngFor="let option of field.optionFieldVersionChecklistTemplate"
-														[value]="option.value">
-														{{ option.title }}
-													</mat-option>
-												</mat-select>
-											</mat-form-field>
+										<div *ngIf=" field.fieldDataTypeId == 2">
+											<div class="number-input">
+												<mat-form-field class="example-full-width"
+													[appearance]="field.isKey ? 'outline' : 'legacy'">
+													<mat-label>{{ field.title }} </mat-label>
+													<input matInput type="number" [placeholder]="field.placeholder"
+														[mask]="field.format"
+														[name]="field.fieldVersionChecklistTemplateId"
+														[id]="field.fieldVersionChecklistTemplateId" autocomplete="off"
+														[formControlName]="'name'+field.fieldVersionChecklistTemplateId"
+														[required]="field.mandatory" />
+
+												</mat-form-field>
+
+											</div>
 										</div>
+										<div *ngIf=" field.fieldDataTypeId == 3">
+											<div class="number-input">
+												<div class="datePicker-input">
+													<mat-form-field class="example-full-width"
+														[appearance]="field.isKey ? 'outline' : 'legacy'">
+														<mat-label>{{ field.title }} </mat-label>
+														<input matInput [ngxMatDatetimePicker]="picker"
+															[placeholder]="field.placeholder"
+															[formControlName]="'name'+field.fieldVersionChecklistTemplateId"
+															[required]="field.mandatory" [disabled]="checklistLoaded" />
+														<mat-datepicker-toggle matSuffix
+															[for]="picker"></mat-datepicker-toggle>
+														<ngx-mat-datetime-picker #picker [showSpinners]="true"
+															[showSeconds]="false" [stepHour]="1" [stepMinute]="1"
+															[stepSecond]="1" [touchUi]="false" [enableMeridian]="false">
+														</ngx-mat-datetime-picker>
+													</mat-form-field>
+												</div>
+											</div>
+										</div>
+										<div *ngIf=" field.fieldDataTypeId == 4">
+											<!-- TODO:Mudar a cor do select -->
+											<div class="col-md-3">
+												<mat-form-field class="full-width"
+													[appearance]="field.isKey ? 'outline' : 'legacy'">
+													<mat-select
+														[placeholder]="'NEW_EDIT_CHECKLIST.NONE_SELECTED' | translate"
+														autocomplete="off"
+														[formControlName]="'name'+field.fieldVersionChecklistTemplateId"
+														[required]="field.mandatory">
+														<mat-option
+															*ngFor="let option of field.optionFieldVersionChecklistTemplate"
+															[value]="option.value">
+															{{ option.title }}
+														</mat-option>
+													</mat-select>
+												</mat-form-field>
+											</div>
+										</div>
+
+
 									</div>
 
+								</div>
+
+
+								<div style="display: flex; justify-content: end; padding-bottom: 16px;">
+									<button [disabled]="checklistLoaded" (click)="submit()"
+										[ngClass]="{'kt-spinner kt-spinner--right kt-spinner--md kt-spinner--light': loading}"
+										id="kt_login_signin_submit"
+										class="btn btn-primary btn-elevate kt-login__btn-primary">{{
+										'NEW_EDIT_CHECKLIST.SAVE' | translate }}</button>
 
 								</div>
 
 							</div>
 
 
-							<div style="display: flex; justify-content: end; padding-bottom: 16px;">
-								<button [disabled]="checklistLoaded" (click)="submit()"
-									[ngClass]="{'kt-spinner kt-spinner--right kt-spinner--md kt-spinner--light': loading}"
-									id="kt_login_signin_submit"
-									class="btn btn-primary btn-elevate kt-login__btn-primary">{{
-									'NEW_EDIT_CHECKLIST.SAVE' | translate }}</button>
-
-							</div>
-
-						</div>
-
-
-					</form>
+						</form>
+					</div>
 				</div>
-			</div>
-			<div *ngIf="checklistLoaded || !isNew">
+				<div *ngIf="checklistLoaded || !isNew">
+					<div *ngFor="let block of checklistVersion.blocksTree" class="component-wrapper">
+						<div class="card">
+							<table class="table">
+								<tr class="table-header-row">
+									<th class="table-header">
+										<div class="sub-title-table">
+											<div>
+												{{block.absolutePositionString + " - " +  block.title }}
 
-				<div *ngFor="let block of checklistVersion.blocksTree" class="component-wrapper">
+											</div>
+											<div *ngIf="block.dependentBlockVersionChecklistTemplate"
+												class="dependecy-list">
 
-					<div class="card">
-						<table class="table">
-							<tr class="table-header-row">
-								<th class="table-header">
-									<div class="flex">
+												<div
+													*ngFor="let dependent of block.dependentBlockVersionChecklistTemplate">
+													<span>{{ dependent.dependentString }}</span>
+												</div>
+
+											</div>
+										</div>
 										<div>
-											{{ block.title }}
+											{{'NEW_EDIT_CHECKLIST.SIGNATURE' |
+											translate}}
 										</div>
-										<div *ngIf="block.dependentBlockVersionChecklistTemplate"
-											class="dependecy-list">
-											<span>{{ 'NEW_EDIT_CHECKLIST.DEPENDENCY' | translate }} </span>
-											<span> : </span>
-											<div *ngFor="let dependent of block.dependentBlockVersionChecklistTemplate">
-												<span>{{ dependent.dependentString }}</span>
-											</div>
+									</th>
 
-										</div>
-									</div>
-									<div>
-										{{'NEW_EDIT_CHECKLIST.SIGNATURE' |
-										translate}}
-									</div>
-								</th>
-
-							</tr>
-							<tbody>
-								<tr class="table-row"
-									*ngFor="let itemC of [].constructor(block.lastPosition); let i = index">
-									<td class="table-row"
-										*ngIf=" block.itemsChecklistsTemplate[i] && block.itemsChecklistsTemplate[i].position == i + 1">
-										<div class="item-title"
-											[ngClass]="{'disabled-title': block.itemsChecklistsTemplate[i].isDisabled , 'rejected-item':checkIfLatsItemIsRejected(block.itemsChecklistsTemplate[i].itemVersionChecklistTemplateId)=='rejected',
+								</tr>
+								<tbody>
+									<tr class="table-row"
+										*ngFor="let itemC of [].constructor(block.lastPosition); let i = index">
+										<td class="table-row"
+											*ngIf=" block.itemsChecklistsTemplate[i] && block.itemsChecklistsTemplate[i].position == i + 1">
+											<div class="item-title"
+												[ngClass]="{'disabled-title': block.itemsChecklistsTemplate[i].isDisabled , 'rejected-item':checkIfLatsItemIsRejected(block.itemsChecklistsTemplate[i].itemVersionChecklistTemplateId)=='rejected',
 												'completed-item':checkIfLatsItemIsRejected(block.itemsChecklistsTemplate[i].itemVersionChecklistTemplateId)=='completed'}">
-											<div  style="display:flex; gap:8px; justify-content: space-between; flex:3; margin-right: 8px;" >
+												<div
+													style="display:flex; gap:8px; justify-content: space-between; flex:3; margin-right: 8px;">
 
-												<!-- Título -->
-												<div >
+													<!-- Título -->
 													<div>
-														{{ block.itemsChecklistsTemplate[i].title }}
-													</div>
-													<div *ngIf="block.itemsChecklistsTemplate[i].dependencyItemVersionChecklistTemplate"
-														class="dependecy-list">
-														<span>{{ 'NEW_EDIT_CHECKLIST.DEPENDENCY' | translate }} </span>
-														<span> : </span>
-														<div
-															*ngFor="let dependent of block.itemsChecklistsTemplate[i].dependencyItemVersionChecklistTemplate">
-															<span>{{ dependent.dependentString }}</span>
+														<div>
+															{{block.itemsChecklistsTemplate[i].absolutePositionString +" - " +block.itemsChecklistsTemplate[i].title }}
 														</div>
+														<div *ngIf="block.itemsChecklistsTemplate[i].dependencyItemVersionChecklistTemplate"
+															class="dependecy-list">
+															<div
+																*ngFor="let dependent of block.itemsChecklistsTemplate[i].dependencyItemVersionChecklistTemplate">
+																<span>{{ dependent.dependentString }}</span>
+															</div>
 
+														</div>
 													</div>
-												</div>
-												<div style="margin-left: auto;"
-													*ngIf="block.itemsChecklistsTemplate[i].itemTypeId == 3 || block.itemsChecklistsTemplate[i].itemTypeId == 4 ">
-													<p>
-														<b
-															[ngClass]="{'disabled-title': block.itemsChecklistsTemplate[i].isDisabled , 'rejected-item':checkIfLatsItemIsRejected(block.itemsChecklistsTemplate[i].itemVersionChecklistTemplateId)=='rejected',
+													<div style="margin-left: auto;"
+														*ngIf="block.itemsChecklistsTemplate[i].itemTypeId == 3 || block.itemsChecklistsTemplate[i].itemTypeId == 4 ">
+														<p>
+															<b
+																[ngClass]="{'disabled-title': block.itemsChecklistsTemplate[i].isDisabled , 'rejected-item':checkIfLatsItemIsRejected(block.itemsChecklistsTemplate[i].itemVersionChecklistTemplateId)=='rejected',
 												'completed-item':checkIfLatsItemIsRejected(block.itemsChecklistsTemplate[i].itemVersionChecklistTemplateId)=='completed'}">{{block.itemsChecklistsTemplate[i].optionsTitle}}</b>
-													</p>
-													<custom-checkbox-input
-														[isSingle]="block.itemsChecklistsTemplate[i].itemTypeId == 3"
-														[isDisable]="block.itemsChecklistsTemplate[i].isDisabled"
-														[optionsItems]="block.itemsChecklistsTemplate[i].optionItemsVersionChecklistTemplate"
-														[items]="checklist.items"
-														(valueChange)="onCheckboxValueChange($event,block.itemsChecklistsTemplate[i].itemVersionChecklistTemplateId)"></custom-checkbox-input>
+														</p>
+														<custom-checkbox-input
+															[isSingle]="block.itemsChecklistsTemplate[i].itemTypeId == 3"
+															[isDisable]="block.itemsChecklistsTemplate[i].isDisabled"
+															[optionsItems]="block.itemsChecklistsTemplate[i].optionItemsVersionChecklistTemplate"
+															[items]="checklist.items"
+															(valueChange)="onCheckboxValueChange($event,block.itemsChecklistsTemplate[i].itemVersionChecklistTemplateId)"></custom-checkbox-input>
+													</div>
+
+
+													<!-- Checkboxes -->
+
 												</div>
-
-
-												<!-- Checkboxes -->
-
-											</div>
-											<div style="display: flex;">
-												<div class="flex"
-													*ngIf="getInitials(block.itemsChecklistsTemplate[i].itemVersionChecklistTemplateId)">
-													<div
-														style="display: flex; flex-direction: row; justify-content: center;">
-														<div [ngClass]="{'disabled-title': block.itemsChecklistsTemplate[i].isDisabled , 'rejected-item':checkIfLatsItemIsRejected(block.itemsChecklistsTemplate[i].itemVersionChecklistTemplateId)=='rejected',
+												<div style="display: flex;">
+													<div class="flex"
+														*ngIf="getInitials(block.itemsChecklistsTemplate[i].itemVersionChecklistTemplateId)">
+														<div
+															style="display: flex; flex-direction: row; justify-content: center;">
+															<div [ngClass]="{'disabled-title': block.itemsChecklistsTemplate[i].isDisabled , 'rejected-item':checkIfLatsItemIsRejected(block.itemsChecklistsTemplate[i].itemVersionChecklistTemplateId)=='rejected',
 												'completed-item':checkIfLatsItemIsRejected(block.itemsChecklistsTemplate[i].itemVersionChecklistTemplateId)=='completed'}"
-															style="display: flex; flex-direction: column;  align-items: center; justify-content: center;">
-															<p style="margin: 0; padding: 0; font-size: 12px;">
-																{{
-																getDateSignature(block.itemsChecklistsTemplate[i].itemVersionChecklistTemplateId)}}
-															</p>
-															<p style="margin: 0; padding: 0; font-size: 12px;">
-																{{getInitials(block.itemsChecklistsTemplate[i].itemVersionChecklistTemplateId)}}
-															</p>
+																style="display: flex; flex-direction: column;  align-items: center; justify-content: center;">
+																<p style="margin: 0; padding: 0; font-size: 12px;">
+																	{{
+																	getDateSignature(block.itemsChecklistsTemplate[i].itemVersionChecklistTemplateId)}}
+																</p>
+																<p style="margin: 0; padding: 0; font-size: 12px;">
+																	{{getInitials(block.itemsChecklistsTemplate[i].itemVersionChecklistTemplateId)}}
+																</p>
 
+															</div>
+															<button mat-icon-button color="primary"
+																(click)="viewSignatureHistory(block.itemsChecklistsTemplate[i].itemVersionChecklistTemplateId)">
+																<mat-icon matTooltip="">visibility</mat-icon>
+															</button>
 														</div>
-														<button mat-icon-button color="primary"
-															(click)="viewSignatureHistory(block.itemsChecklistsTemplate[i].itemVersionChecklistTemplateId)">
-															<mat-icon matTooltip="">visibility</mat-icon>
+													</div>
+													<div class="flex">
+														<button type="button" mat-raised-button color="primary"
+															[disabled]="checkBtnAvaliability(block.itemsChecklistsTemplate[i])"
+															(click)="sign(block.itemsChecklistsTemplate[i].itemVersionChecklistTemplateId, block.blockVersionChecklistTemplateId,block.itemsChecklistsTemplate[i].itemTypeId == 3 || block.itemsChecklistsTemplate[i].itemTypeId == 4)">
+															{{ 'NEW_EDIT_CHECKLIST.SIGN' | translate }}
+														</button>
+														<p *ngIf="viewErrorMessage(block.itemsChecklistsTemplate[i].itemVersionChecklistTemplateId,block.itemsChecklistsTemplate[i].itemTypeId == 3 || block.itemsChecklistsTemplate[i].itemTypeId == 4)"
+															class="error-text">{{'NEW_EDIT_CHECKLIST.NO_OPTION' |
+															translate}}</p>
+													</div>
+													<div class="flex btn-space"
+														*ngIf="block.itemsChecklistsTemplate[i].itemTypeId==2">
+														<button type="button" mat-raised-button color="primary"
+															[disabled]="checkBtnAvaliability(block.itemsChecklistsTemplate[i])"
+															(click)="sign(block.itemsChecklistsTemplate[i].itemVersionChecklistTemplateId, block.blockVersionChecklistTemplateId,block.itemsChecklistsTemplate[i].itemTypeId == 3 || block.itemsChecklistsTemplate[i].itemTypeId == 4)">
+															{{ 'NEW_EDIT_CHECKLIST.SIGN' | translate }}
 														</button>
 													</div>
 												</div>
-												<div class="flex">
-													<button type="button" mat-raised-button color="primary"
-														[disabled]="checkBtnAvaliability(block.itemsChecklistsTemplate[i])"
-														(click)="sign(block.itemsChecklistsTemplate[i].itemVersionChecklistTemplateId, block.blockVersionChecklistTemplateId,block.itemsChecklistsTemplate[i].itemTypeId == 3 || block.itemsChecklistsTemplate[i].itemTypeId == 4)">
-														{{ 'NEW_EDIT_CHECKLIST.SIGN' | translate }}
-													</button>
-													<p *ngIf="viewErrorMessage(block.itemsChecklistsTemplate[i].itemVersionChecklistTemplateId,block.itemsChecklistsTemplate[i].itemTypeId == 3 || block.itemsChecklistsTemplate[i].itemTypeId == 4)" class="error-text">{{'NEW_EDIT_CHECKLIST.NO_OPTION' | translate}}</p>
-												</div>
-												<div class="flex btn-space"
-													*ngIf="block.itemsChecklistsTemplate[i].itemTypeId==2">
-													<button type="button" mat-raised-button color="primary"
-														[disabled]="checkBtnAvaliability(block.itemsChecklistsTemplate[i])"
-														(click)="sign(block.itemsChecklistsTemplate[i].itemVersionChecklistTemplateId, block.blockVersionChecklistTemplateId,block.itemsChecklistsTemplate[i].itemTypeId == 3 || block.itemsChecklistsTemplate[i].itemTypeId == 4)">
-														{{ 'NEW_EDIT_CHECKLIST.SIGN' | translate }}
-													</button>
+											</div>
+										</td>
+										<td class="sub-table"
+											*ngIf="block.blocks!= undefined && loadDataSourceBlock(i+1).itemsChecklistsTemplate?.length > 0">
+											<div class="sub-title" style="flex:1">
+												<p style="margin: 0;">{{ loadDataSourceBlock(i+1).absolutePositionString + " - " + loadDataSourceBlock(i+1).title
+													}}</p>
+												<div *ngIf="block.blocks[0].dependentBlockVersionChecklistTemplate"
+													class="dependecy-list">
+													<div
+														*ngFor="let dependent of block.blocks[0].dependentBlockVersionChecklistTemplate">
+														<span>{{ dependent.dependentString }}</span>
+													</div>
 												</div>
 											</div>
-										</div>
-									</td>
-									<td class="sub-table"
-										*ngIf="block.blocks!= undefined && loadDataSourceBlock(i+1).itemsChecklistsTemplate?.length > 0">
-										<div class="sub-title" style="flex:1">
-											<p>{{ loadDataSourceBlock(i+1).title
-												}}</p>
-										</div>
-										<div *ngIf="block.blocks[0].dependentBlockVersionChecklistTemplate"
-											class="dependecy-list">
-											<span>{{ 'NEW_EDIT_CHECKLIST.DEPENDENCY' | translate }} </span>
-											<span> : </span>
-											<div
-												*ngFor="let dependent of block.blocks[0].dependentBlockVersionChecklistTemplate">
-												<span>{{ dependent.dependentString }}</span>
-											</div>
-										</div>
-										<mat-table [dataSource]="loadDataSourceBlock(i+1).itemsChecklistsTemplate" style="flex:3"
-											class="styled-table">
-											<!-- Column for Component Item Title -->
-											<ng-container matColumnDef="title">
-												<mat-header-cell *matHeaderCellDef style="flex: 2;"></mat-header-cell>
-												<mat-cell *matCellDef="let componentItem" style="flex: 2;" [ngClass]="{'rejected-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)=='rejected',
+
+											<mat-table [dataSource]="loadDataSourceBlock(i+1).itemsChecklistsTemplate"
+												style="flex:3" class="styled-table">
+												<!-- Column for Component Item Title -->
+												<ng-container matColumnDef="title">
+													<mat-header-cell *matHeaderCellDef
+														style="flex: 2;"></mat-header-cell>
+													<mat-cell *matCellDef="let componentItem" style="flex: 2;"
+														[ngClass]="{'rejected-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)=='rejected',
 													'completed-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)=='completed'}">
-													<div class="item-title" [ngClass]="{'disabled-title': componentItem.isDisabled , 
+														<div class="item-title" [ngClass]="{'disabled-title': componentItem.isDisabled , 
 														'rejected-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)=='rejected',
 														'completed-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)=='completed'
 													}">
 
-														<!-- Título -->
-														<div>
+															<!-- Título -->
 															<div>
-																{{ componentItem.title }}
-															</div>
-															<div *ngIf="componentItem.dependencyItemVersionChecklistTemplate"
-																class="dependecy-list">
-																<span>{{ 'NEW_EDIT_CHECKLIST.DEPENDENCY' | translate }}
-																</span>
-																<span> : </span>
-																<div
-																	*ngFor="let dependent of componentItem.dependencyItemVersionChecklistTemplate">
-																	<span>{{ dependent.dependentString }}</span>
+																<div>
+																	{{componentItem.absolutePositionString +" - " + componentItem.title }}
 																</div>
+																<div *ngIf="componentItem.dependencyItemVersionChecklistTemplate"
+																	class="dependecy-list">
+																	<div
+																		*ngFor="let dependent of componentItem.dependencyItemVersionChecklistTemplate">
+																		<span>{{ dependent.dependentString }}</span>
+																	</div>
 
+																</div>
 															</div>
-														</div>
-														<div
-															*ngIf="componentItem.itemTypeId == 3 || componentItem.itemTypeId == 4 ">
-															<p>
-																<b
-																	[ngClass]="{'disabled-title': componentItem.isDisabled ,
+															<div
+																*ngIf="componentItem.itemTypeId == 3 || componentItem.itemTypeId == 4 ">
+																<p>
+																	<b
+																		[ngClass]="{'disabled-title': componentItem.isDisabled ,
 																	 'rejected-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)=='rejected',
 																	'completed-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)=='completed'}">{{componentItem.optionsTitle}}</b>
-															</p>
-															<custom-checkbox-input
-																[isSingle]="componentItem.itemTypeId == 3"
-																[isDisable]="componentItem.isDisabled"
-																[optionsItems]="componentItem.optionItemsVersionChecklistTemplate"
-																[items]="checklist.items"
-																(valueChange)="onCheckboxValueChange($event,componentItem.itemVersionChecklistTemplateId)"></custom-checkbox-input>
+																</p>
+																<custom-checkbox-input
+																	[isSingle]="componentItem.itemTypeId == 3"
+																	[isDisable]="componentItem.isDisabled"
+																	[optionsItems]="componentItem.optionItemsVersionChecklistTemplate"
+																	[items]="checklist.items"
+																	(valueChange)="onCheckboxValueChange($event,componentItem.itemVersionChecklistTemplateId)"></custom-checkbox-input>
+															</div>
+
+
+															<!-- Checkboxes -->
+
 														</div>
-
-
-														<!-- Checkboxes -->
-
-													</div>
-												</mat-cell>
-											</ng-container>
-											<!-- Column for Signature -->
-											<ng-container matColumnDef="signature" style="justify-content: end;">
-												<mat-header-cell *matHeaderCellDef
-													style="justify-content: center; flex:1">{{'NEW_EDIT_CHECKLIST.SIGNATURE'
-													|
-													translate}}</mat-header-cell>
-												<mat-cell *matCellDef="let componentItem" [ngClass]="{'rejected-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)=='rejected',
+													</mat-cell>
+												</ng-container>
+												<!-- Column for Signature -->
+												<ng-container matColumnDef="signature" style="justify-content: end;">
+													<mat-header-cell *matHeaderCellDef
+														style="justify-content: center; flex:1">{{'NEW_EDIT_CHECKLIST.SIGNATURE'
+														|
+														translate}}</mat-header-cell>
+													<mat-cell *matCellDef="let componentItem" [ngClass]="{'rejected-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)=='rejected',
 														'completed-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)=='completed'}"
-													style="justify-content: end; flex:1;">
-													<div style="display: flex;">
-														<div class="flex"
-															*ngIf="getInitials(componentItem.itemVersionChecklistTemplateId)">
-															<div
-																style="display: flex; flex-direction: row; justify-content: center;">
-																<div [ngClass]="{'disabled-title': componentItem.isDisabled , 'rejected-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)=='rejected',
+														style="justify-content: end; flex:1;">
+														<div style="display: flex;">
+															<div class="flex"
+																*ngIf="getInitials(componentItem.itemVersionChecklistTemplateId)">
+																<div
+																	style="display: flex; flex-direction: row; justify-content: center;">
+																	<div [ngClass]="{'disabled-title': componentItem.isDisabled , 'rejected-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)=='rejected',
 														'completed-item':checkIfLatsItemIsRejected(componentItem.itemVersionChecklistTemplateId)=='completed'}"
-																	style="display: flex; flex-direction: column;  align-items: center; justify-content: center;">
-																	<p style="margin: 0; padding: 0; font-size: 12px;">
-																		{{
-																		getDateSignature(componentItem.itemVersionChecklistTemplateId)}}
-																	</p>
-																	<p style="margin: 0; padding: 0; font-size: 12px;">
-																		{{getInitials(componentItem.itemVersionChecklistTemplateId)}}
-																	</p>
+																		style="display: flex; flex-direction: column;  align-items: center; justify-content: center;">
+																		<p
+																			style="margin: 0; padding: 0; font-size: 12px;">
+																			{{
+																			getDateSignature(componentItem.itemVersionChecklistTemplateId)}}
+																		</p>
+																		<p
+																			style="margin: 0; padding: 0; font-size: 12px;">
+																			{{getInitials(componentItem.itemVersionChecklistTemplateId)}}
+																		</p>
 
+																	</div>
+																	<button mat-icon-button color="primary"
+																		(click)="viewSignatureHistory(componentItem.itemVersionChecklistTemplateId)">
+																		<mat-icon matTooltip="">visibility</mat-icon>
+																	</button>
 																</div>
-																<button mat-icon-button color="primary"
-																	(click)="viewSignatureHistory(componentItem.itemVersionChecklistTemplateId)">
-																	<mat-icon matTooltip="">visibility</mat-icon>
+															</div>
+															<div class="flex">
+																<button type="button" mat-raised-button color="primary"
+																	[disabled]="checkBtnAvaliability(componentItem)"
+																	(click)="sign(componentItem.itemVersionChecklistTemplateId, block.blockVersionChecklistTemplateId)">
+																	{{ 'NEW_EDIT_CHECKLIST.SIGN' | translate }}
+																</button>
+															</div>
+															<div class="flex btn-space"
+																*ngIf="componentItem.itemTypeId==2">
+																<button type="button" mat-raised-button color="primary"
+																	[disabled]="checkBtnAvaliability(componentItem)"
+																	(click)="sign(componentItem.itemVersionChecklistTemplateId, block.blockVersionChecklistTemplateId)">
+																	{{ 'NEW_EDIT_CHECKLIST.SIGN' | translate }}
 																</button>
 															</div>
 														</div>
-														<div class="flex">
-															<button type="button" mat-raised-button color="primary"
-																[disabled]="checkBtnAvaliability(componentItem)"
-																(click)="sign(componentItem.itemVersionChecklistTemplateId, block.blockVersionChecklistTemplateId)">
-																{{ 'NEW_EDIT_CHECKLIST.SIGN' | translate }}
-															</button>
-														</div>
-														<div class="flex btn-space" *ngIf="componentItem.itemTypeId==2">
-															<button type="button" mat-raised-button color="primary"
-																[disabled]="checkBtnAvaliability(componentItem)"
-																(click)="sign(componentItem.itemVersionChecklistTemplateId, block.blockVersionChecklistTemplateId)">
-																{{ 'NEW_EDIT_CHECKLIST.SIGN' | translate }}
-															</button>
-														</div>
-													</div>
-												</mat-cell>
-											</ng-container>
+													</mat-cell>
+												</ng-container>
 
 
 
-											<!-- Header Row -->
-											<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-											<!-- Data Row -->
-											<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+												<!-- Header Row -->
+												<mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+												<!-- Data Row -->
+												<mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
 
-										</mat-table>
-									</td>
-								</tr>
-							</tbody>
-						</table>
+											</mat-table>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
 					</div>
 				</div>
-			</div>
 			</div>
 		</div>
 		<div class="kt-portlet__foot kt-portlet__foot--fit kt-portlet__no-border">

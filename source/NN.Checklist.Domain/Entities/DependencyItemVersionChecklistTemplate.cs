@@ -72,23 +72,6 @@ namespace NN.Checklist.Domain.Entities
 
         [AttributeDescriptor("item_version_checklist_template_id", true)]
         public System.Int64 ItemVersionChecklistTemplateId { get; set; }
-        public long? DependentVersionChecklistTemplateId
-        {
-            get
-            {
-                long? id = null;
-                if (DependentBlockVersionChecklistTemplate != null)
-                {
-                    id = DependentBlockVersionChecklistTemplate.VersionChecklistTemplateId;
-                }
-                else if (DependentItemVersionChecklistTemplate != null)
-                {
-                    id = DependentItemVersionChecklistTemplate.VersionChecklistTemplateId;
-                }
-
-                return id;
-            }
-        }
 
         public string DependentString { get {
 
@@ -102,10 +85,19 @@ namespace NN.Checklist.Domain.Entities
                 {
                     dependentString = DependentBlockVersionChecklistTemplate.AbsolutePositionString;
                 }
+                else if (DependentVersionChecklistTemplate != null)
+                {
+                    dependentString = DependentVersionChecklistTemplate.ChecklistTemplate.Description +" - " +DependentVersionChecklistTemplate.Version;
+                }
 
                 return dependentString;
             
             } }
+
+        [AttributeDescriptor("dependent_version_checklist_template_id", false)]
+        public long? DependentVersionChecklistTemplateId { get; set; }
+
+        public VersionChecklistTemplate DependentVersionChecklistTemplate { get => GetManyToOneData<VersionChecklistTemplate>().Result; }
 
         public ItemVersionChecklistTemplate DependentItemVersionChecklistTemplate { get => GetManyToOneData<ItemVersionChecklistTemplate>().Result; }
         public BlockVersionChecklistTemplate DependentBlockVersionChecklistTemplate { get => GetManyToOneData<BlockVersionChecklistTemplate>().Result; }

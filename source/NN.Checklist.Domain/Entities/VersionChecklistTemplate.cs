@@ -271,6 +271,7 @@ namespace NN.Checklist.Domain.Entities
                 List<BlockVersionChecklistTemplate> lst = new List<BlockVersionChecklistTemplate>();
                 foreach (var block in BlocksChecklistTemplate)
                 {
+                    
                     block.CheckAvailability(items, BlocksChecklistTemplate, keyValue, keyType, blocks);
                     lst.Add(block);
                 }

@@ -215,11 +215,16 @@ namespace NN.Checklist.Domain.Entities
 
         #region User Code
 
-        public void CheckAvailability(IList<ItemChecklist>? items, IList<BlockVersionChecklistTemplate> blocksChecklistTemplate, string keyValue,EnumFieldDataType? keyType, List<BlockVersionChecklistTemplate> blocks)
+        public void CheckAvailability(IList<ItemChecklist>? items, IList<BlockVersionChecklistTemplate> blocksChecklistTemplate, string keyValue, EnumFieldDataType? keyType, List<BlockVersionChecklistTemplate> blocks)
         {
             try
             {
                 IsCompleted = IsBlockCompleted(items, blocks);
+                if(VersionChecklistTemplateId == 1)
+                {
+                    var a = "a";
+                }
+
                 if (IsCompleted.Value)
                 {
                     return;
@@ -232,7 +237,7 @@ namespace NN.Checklist.Domain.Entities
                 }
                 if (DependentBlockVersionChecklistTemplate != null || hasParentDependency)
                 {
-                    IsDisabled = CheckBlockDependency(blocksChecklistTemplate, keyValue, keyType) || CheckItemDependency(items, keyValue, keyType);
+                    IsDisabled = CheckChecklistDependecy(keyValue,  keyType) || CheckBlockDependency(blocksChecklistTemplate, keyValue, keyType) || CheckItemDependency(items, keyValue, keyType);
                 }
 
                 if (ItemsChecklistsTemplate != null)
@@ -247,6 +252,7 @@ namespace NN.Checklist.Domain.Entities
                         }
                         else
                         {
+         
                             item.CheckAvailability(items, blocksChecklistTemplate, keyValue, keyType);
 
                         }
@@ -262,6 +268,53 @@ namespace NN.Checklist.Domain.Entities
                 throw ex;
             }
 
+
+        }
+
+        private bool CheckChecklistDependecy(string keyValue, EnumFieldDataType? keyType)
+        {
+            try
+            {
+                var checklistDependecies = new List<DependencyBlockVersionChecklistTemplate>();
+                if (DependentBlockVersionChecklistTemplate != null)
+                {
+                    checklistDependecies.AddRange(DependentBlockVersionChecklistTemplate.ToList().Where(x => x.DependentVersionChecklistTemplateId.HasValue));
+
+                }
+                if (ParentBlock != null && ParentBlock.DependentBlockVersionChecklistTemplate != null)
+                {
+                    checklistDependecies.AddRange(ParentBlock.DependentBlockVersionChecklistTemplate.ToList().Where(x => x.DependentVersionChecklistTemplateId.HasValue));
+                }
+                if (checklistDependecies.Any())
+                {
+                    foreach (var checklistDependecy in checklistDependecies)
+                    {
+
+                            if (string.IsNullOrEmpty(keyValue))
+                            {
+                                return true;
+                            }
+                        var checklist = Checklist.Repository.GetChecklistByKeyValue(keyValue, (long)checklistDependecy.DependentVersionChecklistTemplateId, keyType).Result;
+                        checklist.CheckAvailability();
+
+                        if (!checklist.IsCompleted)
+                        {
+                            return true;
+                        }
+                    }
+                }
+
+
+
+                return false;
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
 
         }
         private bool CheckItemDependency(IList<ItemChecklist>? items, string keyValue, EnumFieldDataType? keyType)
@@ -357,19 +410,19 @@ namespace NN.Checklist.Domain.Entities
 
                         if (x.ParentBlockVersionChecklistTemplateId.HasValue)
                         {
-                            return x.BlockVersionChecklistTemplateId == blockD.BlockVersionChecklistTemplateId || x.ParentBlock.BlockVersionChecklistTemplateId == blockD.BlockVersionChecklistTemplateId;
+                            return x.BlockVersionChecklistTemplateId == blockD.DependentBlockVersionChecklistTemplateId || x.ParentBlock.BlockVersionChecklistTemplateId == blockD.BlockVersionChecklistTemplateId;
 
                         }
                         else
                         {
-                            return x.BlockVersionChecklistTemplateId == blockD.BlockVersionChecklistTemplateId;
+                            return x.BlockVersionChecklistTemplateId == blockD.DependentBlockVersionChecklistTemplateId;
                         }
                     }).FirstOrDefault();
                     if (blockToCheck == null)
                     {
                         return false;
                     }
-                    if (blockD.DependentVersionChecklistTemplateId == VersionChecklistTemplateId)
+                    if (blockD.DependentBlockVersionChecklistTemplate.VersionChecklistTemplateId !=null && blockD.DependentBlockVersionChecklistTemplate.VersionChecklistTemplateId == VersionChecklistTemplateId)
                     {
                         if (blockToCheck != null)
                         {
@@ -391,10 +444,10 @@ namespace NN.Checklist.Domain.Entities
                         {
                             return true;
                         }
-                        var checklist = Checklist.Repository.GetChecklistByKeyValue(keyValue, (long)blockD.DependentVersionChecklistTemplateId, keyType).Result;
+                        var checklist = Checklist.Repository.GetChecklistByKeyValue(keyValue, (long)blockD.DependentBlockVersionChecklistTemplate.VersionChecklistTemplateId, keyType).Result;
                         if (checklist != null)
                         {
-                        checklist.CheckAvailability();
+                            checklist.CheckAvailability();
 
                         }
 
@@ -434,7 +487,7 @@ namespace NN.Checklist.Domain.Entities
                 var _block = blocks.Where(x => x.ParentBlockVersionChecklistTemplateId == BlockVersionChecklistTemplateId).FirstOrDefault();
 
                 if (_block != null)
-                {                          
+                {
                     var isCompleted = _block.IsBlockCompleted(items, blocks);
                     if (!isCompleted)
                     {
@@ -466,7 +519,13 @@ namespace NN.Checklist.Domain.Entities
         {
             if (tree != null)
             {
-                LastPosition = tree.OrderByDescending(x=> x.Blocks != null).First().Position;
+                var blocks = tree.Where(x => x.Blocks != null && x.BlockVersionChecklistTemplateId == BlockVersionChecklistTemplateId).FirstOrDefault();
+                
+                if (blocks != null)
+                {
+                    LastPosition = blocks.Blocks.OrderByDescending(x => x.Position).FirstOrDefault().Position;
+
+                }
             }
             if (ItemsChecklistsTemplate != null)
             {
@@ -480,6 +539,6 @@ namespace NN.Checklist.Domain.Entities
         }
     }
 
-        #endregion
-    
+    #endregion
+
 }

@@ -229,7 +229,6 @@ export class UpdateCheklistForm implements OnInit {
 
 
   saveInformation() {
-    console.log(this.fieldForm.controls);
     console.log(this.checklistVersion);
   }
 

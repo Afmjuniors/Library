@@ -236,6 +236,11 @@ namespace NN.Checklist.Domain.Entities
         {
             try
             {
+                if(ChecklistId == 1)
+                {
+                    var a = 'a';
+                }
+                
                 FieldChecklist key = new FieldChecklist();
                 if (Fields != null)
                 {
@@ -387,7 +392,7 @@ namespace NN.Checklist.Domain.Entities
 
         }
 
-        private  void CheckChecklistIsCompleted()
+        public  void CheckChecklistIsCompleted()
         {
             var blocks = VersionChecklistTemplate.BlocksTree;
             foreach (var block in blocks)

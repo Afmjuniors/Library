@@ -213,7 +213,7 @@ namespace NN.Checklist.Domain.Entities
             try
             {
 
-                IsDisabled = CheckBlockDependency(blocksChecklistTemplate, keyValue, keyType) || CheckItemDependency(items, keyValue, keyType);
+                IsDisabled = CheckChecklistDependecy(keyValue,  keyType) || CheckBlockDependency(blocksChecklistTemplate, keyValue, keyType) || CheckItemDependency(items, keyValue, keyType);
 
             }
             catch (Exception ex)
@@ -222,6 +222,49 @@ namespace NN.Checklist.Domain.Entities
             }
 
 
+
+        }
+        private bool CheckChecklistDependecy(string keyValue, EnumFieldDataType? keyType)
+        {
+            try
+            {
+                var checklistDependecies = new List<DependencyItemVersionChecklistTemplate>();
+                if (DependencyItemVersionChecklistTemplate != null)
+                {
+                    checklistDependecies.AddRange(DependencyItemVersionChecklistTemplate.ToList().Where(x => x.DependentVersionChecklistTemplateId.HasValue));
+
+                }
+                
+                if (checklistDependecies.Any())
+                {
+                    foreach (var checklistDependecy in checklistDependecies)
+                    {
+
+                        if (string.IsNullOrEmpty(keyValue))
+                        {
+                            return true;
+                        }
+                        var checklist = Checklist.Repository.GetChecklistByKeyValue(keyValue, (long)checklistDependecy.DependentVersionChecklistTemplateId, keyType).Result;
+                        checklist.CheckAvailability();
+
+                        if (!checklist.IsCompleted)
+                        {
+                            return true;
+                        }
+                    }
+                }
+
+
+
+                return false;
+
+
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
 
         }
 

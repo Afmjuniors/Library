@@ -63,11 +63,16 @@ color:grey;
     align-items: stretch;
     flex: 1;
 }
+.sub-title-table{
+    display: flex;
+    flex-direction: column;
+}
 .sub-title{
     display: flex;
     justify-content: center;
     align-items: center;
     border-right:solid 1px rgb(212, 209, 209);
+    flex-direction: column;
 }
 .dependecy-list{
     display: flex;
