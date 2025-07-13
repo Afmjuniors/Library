@@ -1,0 +1,28 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Library.Domain.Common\Library.Domain.Common.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="TDCore.Core">
+      <HintPath>..\..\binaries\TDCore.Core\Release\net8.0\TDCore.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="TDCore.Data">
+      <HintPath>..\..\binaries\TDCore.Data\Release\net8.0\TDCore.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="TDCore.Domain">
+      <HintPath>..\..\binaries\TDCore.Domain\Release\net8.0\TDCore.Domain.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
+

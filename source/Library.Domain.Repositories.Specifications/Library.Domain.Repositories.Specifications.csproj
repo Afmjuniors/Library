@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Library.Domain.DTO\Library.Domain.DTO.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="TDCore.Core">
+      <HintPath>..\..\binaries\TDCore.Core\Release\net8.0\TDCore.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="TDCore.Data">
+      <HintPath>..\..\binaries\TDCore.Data\Release\net8.0\TDCore.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="TDCore.Domain">
+      <HintPath>..\..\binaries\TDCore.Domain\Release\net8.0\TDCore.Domain.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
+

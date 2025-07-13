@@ -1,0 +1,59 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+	<PackageReference Include="iTextSharp" Version="5.5.13.4" />
+	<PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Binder" Version="8.0.2" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.1" />
+    <PackageReference Include="Microsoft.IdentityModel.Logging" Version="6.15.1" />
+    <PackageReference Include="RestSharp" Version="106.12.0" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="8.0.1" />
+    <PackageReference Include="System.Drawing.Common" Version="6.0.0" />
+  </ItemGroup>
+	
+  <ItemGroup>
+    <ProjectReference Include="..\Library.Domain.Common\Library.Domain.Common.csproj" />
+    <ProjectReference Include="..\Library.Domain.DTO\Library.Domain.DTO.csproj" />
+    <ProjectReference Include="..\Library.Domain.Repositories.Specifications\Library.Domain.Repositories.Specifications.csproj" />
+    <ProjectReference Include="..\Library.Domain.Services.Specifications\Library.Domain.Services.Specifications.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="TDCore.Core">
+      <HintPath>..\..\binaries\TDCore.Core\Release\net8.0\TDCore.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="TDCore.Data">
+      <HintPath>..\..\binaries\TDCore.Data\Release\net8.0\TDCore.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="TDCore.Data.SqlServer">
+      <HintPath>..\..\binaries\TDCore.Data.SqlServer\Release\net8.0\TDCore.Data.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="TDCore.Data.TextFile">
+      <HintPath>..\..\binaries\TDCore.Data.TextFile\Release\net8.0\TDCore.Data.TextFile.dll</HintPath>
+    </Reference>
+    <Reference Include="TDCore.Data.TextFileCollection">
+      <HintPath>..\..\binaries\TDCore.Data.TextFileCollection\Release\net8.0\TDCore.Data.TextFileCollection.dll</HintPath>
+    </Reference>
+    <Reference Include="TDCore.DependencyInjection">
+      <HintPath>..\..\binaries\TDCore.DependencyInjection\Release\net8.0\TDCore.DependencyInjection.dll</HintPath>
+    </Reference>
+    <Reference Include="TDCore.Domain">
+      <HintPath>..\..\binaries\TDCore.Domain\Release\net8.0\TDCore.Domain.dll</HintPath>
+    </Reference>
+    <Reference Include="TDCore.Globalization">
+      <HintPath>..\..\binaries\TDCore.Globalization\Release\net8.0\TDCore.Globalization.dll</HintPath>
+    </Reference>
+    <Reference Include="TDCore.Logging">
+      <HintPath>..\..\binaries\TDCore.Logging\Release\net8.0\TDCore.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="TDCore.Windows">
+      <HintPath>..\..\binaries\TDCore.Windows\Release\net8.0\TDCore.Windows.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>
