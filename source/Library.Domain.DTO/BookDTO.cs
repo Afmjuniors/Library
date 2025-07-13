@@ -12,15 +12,12 @@ namespace Library.Domain.DTO
     {
 
         public System.Int64 BookId { get; internal set; }
-
         public System.DateTime CreatedAt { get; set; }
-
         public EnumBookStatus BookStatusId { get; set; }
         public string Name { get; set; }
         public long OwnerId { get; set; }
         public EnumGenre? Genre { get; set; }
         public string Description { get; set; }
-
         public string Url { get; set; }
         public string Image { get; set; }
         public DateTime? UpdatedAt { get; set; }

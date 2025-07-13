@@ -20,6 +20,9 @@ namespace Library.Domain.DTO
         public System.String AdditionalInfo { get; set; }
         public System.String Password { get; set; }
         public System.String Image { get; set; }
-        public EnumUserStatus UserStatusId { get; set; }
+
+        public string Token { get; set; }
+        public int LanguageId { get; set; }
+        public EnumUserStatus? UserStatusId { get; set; }
     }
 }

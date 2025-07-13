@@ -8,6 +8,7 @@ using System.Numerics;
 using System.Threading.Tasks;
 using TDCore.Data.Paging;
 using TDCore.Data.SqlServer;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 #region Cabeçalho
 
@@ -48,7 +49,19 @@ namespace Library.Domain.Repositories
 
         #region User Code
 
+        public async Task<User> GetUserByEmail(string email)
+        {
 
+            List<SqlParameter> parameters = new List<SqlParameter>();
+            var sql = "SELECT * from USERS  u where u.email = @email";
+
+            SqlParameter param = new SqlParameter("email", System.Data.SqlDbType.VarChar);
+            param.Value = email;
+            parameters.Add(param);
+
+            var res = await Get<User>(sql, parameters);
+            return res;
+        }
 
         #endregion
     }

@@ -20,6 +20,6 @@ namespace Library.Domain.Repositories.Specifications
     public interface IUserRepository<TEntity, TKey> : IRepositoryBase<TEntity, TKey> where TEntity : class
     {
 
-      
+        Task<TEntity> GetUserByEmail(string email);
     }
 }

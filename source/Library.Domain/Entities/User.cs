@@ -3,14 +3,17 @@ using Library.Domain.DTO.Response;
 using Library.Domain.Entities.Bases;
 using Library.Domain.Repositories.Specifications;
 using Library.Domain.Services.Specifications;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System.Transactions;
+using TDCore.Core;
 using TDCore.DependencyInjection;
 using TDCore.Domain;
 using TDCore.Domain.Exceptions;
 using TDCore.Globalization;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 #region Cabeçalho
 
@@ -41,9 +44,9 @@ namespace Library.Domain.Entities
         /// Description: Constructor method that receives as parameter datetimeDeactivate, deactivated, initials, languageId and does a validation, if true, is inserted into the database.
         /// Created by: wazc Programa Novo 2022-09-08 
         /// </summary>
-        public User(long languageId, DateTime birthday, string email, string name, string phone, string adress, string adcionalInfo, string password, string image)
+        public User(int languageId, DateTime? birthday, string email, string name, string phone, string adress, string adcionalInfo, string password, string image)
         {
-
+            var cryptoService = ObjectFactory.GetSingleton<ICryptoService>();
             LanguageId = languageId;
             CreatedAt = DateTime.Now;
             BirthDay = birthday;
@@ -52,7 +55,7 @@ namespace Library.Domain.Entities
             Phone = phone;
             Address = adress;
             AdditionalInfo = adcionalInfo;
-            Password = password;
+            Password = cryptoService.Encrypt(password);
             Image = image;
             UserStatusId = EnumUserStatus.Active;
 
@@ -71,7 +74,7 @@ namespace Library.Domain.Entities
 
         [AttributeDescriptor("Created_at", true)]
         public System.DateTime? CreatedAt { get; set; }
-        [AttributeDescriptor("BirthDay", true)]
+        [AttributeDescriptor("BirthDay", false)]
         public System.DateTime? BirthDay { get; set; }
 
         [AttributeDescriptor("Email", true)]
@@ -86,7 +89,7 @@ namespace Library.Domain.Entities
         [AttributeDescriptor("AdditionalInfo", false)]
         public System.String AdditionalInfo { get; set; }
         [AttributeDescriptor("LanguageId", false)]
-        public long LanguageId { get; set; }
+        public int LanguageId { get; set; }
         [AttributeDescriptor("Password", true)]
         public System.String Password { get; set; }
         [AttributeDescriptor("Image", false)]
@@ -115,16 +118,8 @@ namespace Library.Domain.Entities
                 base.Validate(newRecord);
 
                 var globalization = ObjectFactory.GetSingleton<Services.Specifications.IGlobalizationService>();
-                string lang = null;
+                string lang = globalization.DefaultLanguage;
 
-                if (Language != null)
-                {
-                    lang = Language.Code;
-                }
-                else
-                {
-                    lang = globalization.DefaultLanguage;
-                }
 
                 List<DomainError> errors = new List<DomainError>();
 
@@ -148,6 +143,29 @@ namespace Library.Domain.Entities
             {
                 throw ex;
             }
+        }
+
+
+        public bool AuthenticatePassword(string password)
+        {
+            try
+            {
+                var cryptoService = ObjectFactory.GetSingleton<ICryptoService>();
+
+                var passDecode = cryptoService.Decrypt(Password);
+
+                passDecode = JsonConvert.DeserializeObject<string>(passDecode);
+                if (passDecode == password)
+                {
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
         }
 
 

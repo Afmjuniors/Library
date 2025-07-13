@@ -7,7 +7,6 @@ using Library.Domain.DTO;
 using Library.Domain.DTO.Paging;
 using Library.Domain.DTO.Request;
 using Library.Domain.DTO.Response;
-using Library.Domain.DTO.Response.User;
 using Library.Domain.Services.Specifications;
 using System;
 using System.Collections.Generic;
@@ -54,6 +53,32 @@ namespace Library.Api.Controllers
                 return CreateError(ex);
             }
         }
+        /// <summary>
+        /// Name: "Authenticate" 
+        /// Description: method authenticates the user with the private key by loading the menu.
+        /// Created by: wazc Programa Novo 2022-09-08 
+        /// </summary>
+        [HttpPost("CreateUser")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<AuthenticatedUserDTO>> CreateUser([FromBody] UserDTO user)
+        {
+            try
+            {
+                IAccessControlService _service = ObjectFactory.GetSingleton<IAccessControlService>();
+
+                var privateKey = Configuration.GetSection("Security")["Token"];
+
+                var aut = await _service.CreateUser(user);
+
+                return Ok(aut);
+            }
+            catch (Exception ex)
+            {
+                return CreateError(ex);
+            }
+        }
+
 
         /// <summary>
         /// Name: GetUserByToken

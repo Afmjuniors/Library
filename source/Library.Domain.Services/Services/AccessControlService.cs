@@ -1,4 +1,5 @@
-﻿using Library.Domain.DTO.Request;
+﻿using Library.Domain.DTO;
+using Library.Domain.DTO.Request;
 using Library.Domain.DTO.Response;
 using Library.Domain.Entities;
 using Library.Domain.Services.Specifications;
@@ -8,6 +9,7 @@ using RestSharp;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using TDCore.Core;
 using TDCore.Core.Logging;
@@ -41,20 +43,27 @@ namespace Library.Domain.Services
                     User userDb = null;
                     string language = null;
 
+                    userDb = await User.Repository.GetUserByEmail(user.Username);
 
+                    var authenticated = userDb.AuthenticatePassword(user.Password);
+                    if (authenticated)
+                    {
+                        AutdUserDTO = userDb.Transform<AuthenticatedUserDTO>();
+                        try
+                        {
+                            var objSecurity = TDCore.DependencyInjection.ObjectFactory.GetSingleton<ISecurityService>();
+                            AutdUserDTO.Token = objSecurity.GenerateToken(AutdUserDTO.UserId, AutdUserDTO.Name, AutdUserDTO.Email, null);
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Log(LogType.Error, ex);
 
+                            throw new Exception(await globalization.GetString("LoginTokenGenerateFail"), ex);
+                        }
+                        return AutdUserDTO;
+                    }
 
-
-#if DEBUG
-
-
-#else
-                    
-
-#endif
-
-                    return default;
-
+                    throw new HttpRequestException("Unauthorized", null, System.Net.HttpStatusCode.Unauthorized);
 
                 }
                 catch (Exception ex)
@@ -88,6 +97,42 @@ namespace Library.Domain.Services
 
 
             return null;
+        }
+
+        public async Task<AuthenticatedUserDTO> CreateUser(UserDTO user)
+        {
+            try
+            {
+
+
+                AuthenticatedUserDTO AutdUserDTO = new AuthenticatedUserDTO();
+
+                var globalization = ObjectFactory.GetSingleton<IGlobalizationService>();
+
+                var newUser = new User(user.LanguageId, user.BirthDay, user.Email, user.Name, user.Phone, user.Address, user.AdditionalInfo, user.Password, user.Image);
+                if (newUser != null)
+                {
+                    AutdUserDTO = newUser.Transform<AuthenticatedUserDTO>();
+                }
+                try
+                {
+                    var objSecurity = TDCore.DependencyInjection.ObjectFactory.GetSingleton<ISecurityService>();
+                    AutdUserDTO.Token = objSecurity.GenerateToken(AutdUserDTO.UserId, AutdUserDTO.Name, AutdUserDTO.Email, null);
+                }
+                catch (Exception ex)
+                {
+                    Logger.Log(LogType.Error, ex);
+
+                    throw new Exception(await globalization.GetString("LoginTokenGenerateFail"), ex);
+                }
+                return AutdUserDTO;
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
         }
 
 
@@ -151,8 +196,7 @@ namespace Library.Domain.Services
             AuthenticatedUserDTO autdUserDTO = new AuthenticatedUserDTO();
             if (idUser == 1)
             {
-                autdUserDTO.FirstName = "Administrador";
-                autdUserDTO.LastName = "do Sistema";
+                autdUserDTO.Name = "Administrador do Sistema";
                 autdUserDTO.CultureInfo = "en-US";
                 autdUserDTO.UserId = 1;
 

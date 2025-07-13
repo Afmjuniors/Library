@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [USERS] (
   [user_id] bigint PRIMARY KEY IDENTITY(1, 1),
-  [email] varchar(255) NOT NULL,
+  [email] varchar(255) NOT NULL UNIQUE,
   [name] varchar(255) NOT NULL,
   [phone] varchar(255) NULL,
   [address] varchar(255) null,
