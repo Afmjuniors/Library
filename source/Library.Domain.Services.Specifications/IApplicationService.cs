@@ -21,6 +21,18 @@ namespace Library.Domain.Services.Specifications
         #region User
         #endregion
 
+        #region Books
+
+        Task<bool> InsertBook(AuthenticatedUserDTO user, BookDTO book);
+        
+        Task<bool> UpdateBook(AuthenticatedUserDTO user, BookDTO book);
+        Task<BookDTO> GetBook(AuthenticatedUserDTO user, long bookId);
+
+        Task<PageMessage<BookDTO>> SearchBooks(AuthenticatedUserDTO user, BookPageMessage queryParams);
+        Task<bool> DeleteBook(AuthenticatedUserDTO user, long bookId);
+
+        #endregion
+
 
     }
 }

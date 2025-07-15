@@ -44,11 +44,12 @@ namespace Library.Domain.Entities
         /// Description: Constructor method that receives as parameter datetimeDeactivate, deactivated, initials, languageId and does a validation, if true, is inserted into the database.
         /// Created by: wazc Programa Novo 2022-09-08 
         /// </summary>
-        public Book(AuthenticatedUserDTO user, string name, string description, EnumGenre? genre, string utl, string image)
+        public Book(AuthenticatedUserDTO user, string name, string description,string author, EnumGenre? genre, string utl, string image)
         {
             OwnerId = user.UserId;
             Name = name;
             Description = description;
+            Author = author;
             Genre = genre;
             Url = utl;
             Image = image;
@@ -81,6 +82,8 @@ namespace Library.Domain.Entities
         public EnumGenre? Genre { get; set; }
         [AttributeDescriptor("description", false)]
         public string Description { get; set; }
+        [AttributeDescriptor("Author", false)]
+        public string Author { get; set; }
 
         [AttributeDescriptor("Url", false)]
         public string Url { get; set; }
@@ -97,7 +100,68 @@ namespace Library.Domain.Entities
 
         #region User Code
 
+        public async Task Update(string name, EnumGenre? genre,string author, string description, EnumBookStatus? bookStatus, string url, string image)
+        {
+            try
+            {
+                var edited = string.Empty;
+                if (bookStatus.HasValue && bookStatus != BookStatusId)
+                {
+                    edited += $"Book Status: {BookStatusId} - {bookStatus.Value}";
+                    BookStatusId = bookStatus.Value;
 
+                }
+                if (!string.IsNullOrEmpty(name) && name != Name)
+                {
+                    edited += $"Name: {Name} - {name}";
+                    Name = name;
+
+                }
+                if (!string.IsNullOrEmpty(description) && name != Description)
+                {
+                    edited += $"Description: {Description} - {description}";
+                    Description = description;
+
+                }
+                if (!string.IsNullOrEmpty(image) && image != Image)
+                {
+                    edited += $"Image changed";
+                    Image = image;
+
+                }
+                if (!string.IsNullOrEmpty(url) && url != Url)
+                {
+                    edited += $"Url: {Url} - {url}";
+                    Url = url;
+
+                }
+                if (!string.IsNullOrEmpty(author) && author != Author)
+                {
+                    edited += $"Author: {Author} - {author}";
+                    Author = author;
+
+                }
+                if (genre.HasValue && genre!=Genre)
+                {
+                    edited += $"Genre: {Genre} - {genre}";
+                    Genre = genre;
+
+                }
+                if (!string.IsNullOrEmpty(edited))
+                {
+                    UpdatedAt = DateTime.Now;
+                    await Update();
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("BookNotUpdated", ex);
+            }
+
+
+        }
 
 
         /// <summary>

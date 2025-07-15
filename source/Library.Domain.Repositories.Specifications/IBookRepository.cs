@@ -1,11 +1,13 @@
 
+using Library.Domain.DTO;
+using Library.Domain.DTO.Paging;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using TDCore.Core;
 using TDCore.Data;
 using TDCore.Data.Paging;
 using TDCore.Domain;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 #region Cabeçalho
 
@@ -21,8 +23,8 @@ namespace Library.Domain.Repositories.Specifications
     {
 
         #region User Code
-      
-       
+        Task<PageMessage<BookDTO>> Search(BookPageMessage queryParams);
+
     #endregion
     }
 }

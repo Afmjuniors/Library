@@ -1,6 +1,7 @@
 ﻿using Library.Domain.DTO;
 using Library.Domain.DTO.Paging;
 using Library.Domain.DTO.Response;
+using Library.Domain.Entities;
 using Library.Domain.Services.Specifications;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -48,9 +49,68 @@ namespace Library.Api.Controllers
 
                 var service = ObjectFactory.GetSingleton<IApplicationService>();
 
-                //var areas = await service.SearchAreas(pageMessage);
+                var user = await GetUserFromToken();
 
-                return Ok();
+
+                var books = await service.SearchBooks(user,queryParams);
+
+                return Ok(books);
+            }
+            catch (Exception ex)
+            {
+                return CreateError(ex);
+            }
+        }
+
+
+        /// <summary>
+        /// Name: "GetBook" 
+        /// Description: method returns the areas that are in the "pageMessage" parameter
+        /// Created by: wazc Programa Novo 2022-09-08 .
+        /// </summary>
+        [HttpPost("Books")]
+        [Authorize()]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<ActionResult<bool>> InsertBook([FromBody] BookDTO book)
+        {
+            try
+            {
+
+                var service = ObjectFactory.GetSingleton<IApplicationService>();
+                var user = await GetUserFromToken();
+
+                var res = await service.InsertBook(user, book);
+
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                return CreateError(ex);
+            }
+        }
+        /// <summary>
+        /// Name: "GetBook" 
+        /// Description: method returns the areas that are in the "pageMessage" parameter
+        /// Created by: wazc Programa Novo 2022-09-08 .
+        /// </summary>
+        [HttpPut("Books")]
+        [Authorize()]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        public async Task<ActionResult<bool>> UpdateBook([FromBody] BookDTO book)
+        {
+            try
+            {
+
+                var service = ObjectFactory.GetSingleton<IApplicationService>();
+                var user = await GetUserFromToken();
+
+                var res = await service.UpdateBook(user, book);
+
+                return Ok(res);
             }
             catch (Exception ex)
             {
@@ -74,42 +134,20 @@ namespace Library.Api.Controllers
             {
 
                 var service = ObjectFactory.GetSingleton<IApplicationService>();
+                var user = await GetUserFromToken();
 
 
 
-                //var areas = await service.GetBook(bookId);
+                var areas = await service.GetBook(user, bookId);
 
-                return Ok();
+                return Ok(areas);
             }
             catch (Exception ex)
             {
                 return CreateError(ex);
             }
         }
-        /// </summary>
-        [HttpPost("Books")]
-        [Authorize()]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status403Forbidden)]
-        public async Task<ActionResult<BookDTO>> SaveBook([FromBody] BookDTO bookId)
-        {
-            try
-            {
-
-                var service = ObjectFactory.GetSingleton<IApplicationService>();
-
-
-
-                //var areas = await service.SaveBook(bookId);
-
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                return CreateError(ex);
-            }
-        }
+        
         [HttpDelete("Books")]
         [Authorize()]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -121,12 +159,11 @@ namespace Library.Api.Controllers
             {
 
                 var service = ObjectFactory.GetSingleton<IApplicationService>();
+                var user = await GetUserFromToken();
 
+                var areas = await service.DeleteBook(user,bookId);
 
-
-                //var areas = await service.DeleteBook(bookId);
-
-                return Ok();
+                return Ok(areas);
             }
             catch (Exception ex)
             {
