@@ -16,7 +16,7 @@ using TDCore.DependencyInjection;
 namespace Library.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("api/v1/[controller]")]
     public class AccessControlController : BaseController<AccessControlController>
     {
         /// <summary>

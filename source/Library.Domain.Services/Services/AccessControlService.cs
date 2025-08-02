@@ -44,6 +44,8 @@ namespace Library.Domain.Services
                     string language = null;
 
                     userDb = await User.Repository.GetUserByEmail(user.Username);
+                    if (userDb == null)
+                        throw new Exception("AcessDenied");
 
                     var authenticated = userDb.AuthenticatePassword(user.Password);
                     if (authenticated)
@@ -69,7 +71,7 @@ namespace Library.Domain.Services
                 catch (Exception ex)
                 {
                     Logger.Log(LogType.Error, ex);
-                    throw ex;
+                    throw;
                 }
             }
             catch (Exception)
