@@ -43,7 +43,7 @@ namespace Library.Domain.Services
                     User userDb = null;
                     string language = null;
 
-                    userDb = await User.Repository.GetUserByEmail(user.Username);
+                    userDb = await User.Repository.GetUserByEmail(user.Email);
                     if (userDb == null)
                         throw new Exception("AcessDenied");
 
@@ -80,6 +80,8 @@ namespace Library.Domain.Services
                 throw;
             }
         }
+
+
 
         /// <summary>
         /// Name: "AuthenticateAdmin" 

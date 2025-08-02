@@ -21,6 +21,7 @@ export const login = createAsyncThunk(
   'auth/login',
   async (credentials: LoginRequest, { rejectWithValue }) => {
     try {
+      console.log(credentials);
       const response = await apiService.auth.login(credentials.email, credentials.password);
       if (response.success && response.data) {
         return response.data;

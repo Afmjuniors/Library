@@ -20,8 +20,8 @@ import { ProfileHeader } from '../components/ProfileHeader';
 import { OrganizationsSection } from '../components/OrganizationsSection';
 import { MyBooksSection } from '../components/MyBooksSection';
 import { LoanHistorySection } from '../components/LoanHistorySection';
-import { BookDetailScreen } from '../components/BookDetailScreen';
-import { UserProfileScreen } from '../components/UserProfileScreen';
+import { BookDetailScreen } from './BookDetailScreen';
+import { UserProfileScreen } from './UserProfileScreen';
 import { BookVisibilityModal } from '../components/BookVisibilityModal';
 import { AdvancedFilters } from '../components/AdvancedFilters';
 import { OrganizationRulesForm } from '../components/OrganizationRulesForm';
@@ -33,7 +33,7 @@ interface MainScreenProps {
 }
 
 export const MainScreen: React.FC<MainScreenProps> = ({ user, onLogout }) => {
-  const [activeTab, setActiveTab] = useState('profile');
+  const [activeTab, setActiveTab] = useState('books');
   const [myBooks, setMyBooks] = useState<Book[]>([]);
   const [allBooks, setAllBooks] = useState<Book[]>([]);
   const [showAddBookForm, setShowAddBookForm] = useState(false);

@@ -12,7 +12,7 @@ import { COLORS, SPACING, FONT_SIZES, FONT_WEIGHTS, BORDER_RADIUS, SHADOWS } fro
 import { validation } from '../utils/validation';
 
 interface LoginFormProps {
-  onLogin: (email: string, password: string) => Promise<void>;
+  onLogin: (email: string, password: string) => Promise<any>;
   isLoading: boolean;
 }
 
@@ -35,6 +35,8 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLogin, isLoading }) => {
   };
 
   const handleLogin = async () => {
+    console.log('🚀 LoginForm: handleLogin iniciado');
+    
     // Limpar erros anteriores
     setEmailError('');
     setPasswordError('');
@@ -44,10 +46,17 @@ export const LoginForm: React.FC<LoginFormProps> = ({ onLogin, isLoading }) => {
     const isPasswordValid = validatePassword(password);
 
     if (!isEmailValid || !isPasswordValid) {
+      console.log('❌ LoginForm: Validação falhou');
       return;
     }
 
-    await onLogin(email.trim(), password);
+    console.log('✅ LoginForm: Validação passou, chamando onLogin...');
+    try {
+      await onLogin(email.trim(), password);
+      console.log('✅ LoginForm: onLogin executado com sucesso');
+    } catch (error) {
+      console.error('❌ LoginForm: Erro no onLogin:', error);
+    }
   };
 
   const handleEmailChange = (text: string) => {

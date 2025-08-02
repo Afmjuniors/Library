@@ -86,7 +86,7 @@ namespace Library.Api.Controllers
         /// Created by: wazc Programa Novo 2022-09-08
         /// </summary>
 
-        [HttpGet("GetUserByToken")]
+        [HttpGet("Me")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<AuthenticatedUserDTO>> GetUserByToken()
