@@ -44,7 +44,7 @@ namespace Library.Domain.Entities
         /// Description: Constructor method that receives as parameter datetimeDeactivate, deactivated, initials, languageId and does a validation, if true, is inserted into the database.
         /// Created by: wazc Programa Novo 2022-09-08 
         /// </summary>
-        public Book(AuthenticatedUserDTO user, string name, string description,string author, EnumGenre? genre, string utl, string image)
+        public Book(AuthenticatedUserDTO user, string name, string description, string author, EnumGenre? genre, string utl, string image)
         {
             OwnerId = user.UserId;
             Name = name;
@@ -55,10 +55,18 @@ namespace Library.Domain.Entities
             Image = image;
             CreatedAt = DateTime.Now;
             BookStatusId = EnumBookStatus.Available;
-
-            if (Validate(user, true).Result)
+            try
             {
-                Insert().Wait();
+
+                if (Validate(user, true).Result)
+                {
+                    Insert().Wait();
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
 
@@ -91,7 +99,7 @@ namespace Library.Domain.Entities
         public string Image { get; set; }
         [AttributeDescriptor("updated_at", false)]
         public DateTime? UpdatedAt { get; set; }
-        public User Owner { get => GetManyToOneData<User>().Result; }
+        public User? Owner { get => GetManyToOneData<User>().Result; }
 
 
 
@@ -100,7 +108,7 @@ namespace Library.Domain.Entities
 
         #region User Code
 
-        public async Task Update(string name, EnumGenre? genre,string author, string description, EnumBookStatus? bookStatus, string url, string image)
+        public async Task Update(string name, EnumGenre? genre, string author, string description, EnumBookStatus? bookStatus, string url, string image)
         {
             try
             {
@@ -141,7 +149,7 @@ namespace Library.Domain.Entities
                     Author = author;
 
                 }
-                if (genre.HasValue && genre!=Genre)
+                if (genre.HasValue && genre != Genre)
                 {
                     edited += $"Genre: {Genre} - {genre}";
                     Genre = genre;

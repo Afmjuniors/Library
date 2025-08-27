@@ -39,18 +39,19 @@ namespace LibraryLibrary.Domain.Configurations
                 AddObject(conexaoBDSQLServer);
 
                 //Repositórios
-                AddObject(CreateRepository("AdGroupPermissionRepository", "Library.Domain.Repositories.AdGroupPermissionRepository, Library.Domain.Repositories", conexaoBDSQLServer, logger));
-                AddObject(CreateRepository("AdGroupRepository", "Library.Domain.Repositories.AdGroupRepository, Library.Domain.Repositories", conexaoBDSQLServer, logger));
-                AddObject(CreateRepository("AdGroupUserRepository", "Library.Domain.Repositories.AdGroupUserRepository, Library.Domain.Repositories", conexaoBDSQLServer, logger));
-                AddObject(CreateRepository("AreaRepository", "Library.Domain.Repositories.AreaRepository, Library.Domain.Repositories", conexaoBDSQLServer, logger));
+                AddObject(CreateRepository("BookRepository", "Library.Domain.Repositories.BookRepository, Library.Domain.Repositories", conexaoBDSQLServer, logger));
                 AddObject(CreateRepository("CountryRepository", "Library.Domain.Repositories.CountryRepository, Library.Domain.Repositories", conexaoBDSQLServer, logger));
-                AddObject(CreateRepository("DatatypeRepository", "Library.Domain.Repositories.DatatypeRepository, Library.Domain.Repositories", conexaoBDSQLServer, logger));
+
                 AddObject(CreateRepository("LanguageRepository", "Library.Domain.Repositories.LanguageRepository, Library.Domain.Repositories", conexaoBDSQLServer, logger));
-                AddObject(CreateRepository("PermissionRepository", "Library.Domain.Repositories.PermissionRepository, Library.Domain.Repositories", conexaoBDSQLServer, logger));
-                AddObject(CreateRepository("ProcessRepository", "Library.Domain.Repositories.ProcessRepository, Library.Domain.Repositories", conexaoBDSQLServer, logger));
-                AddObject(CreateRepository("SystemRecordRepository", "Library.Domain.Repositories.SystemRecordRepository, Library.Domain.Repositories", conexaoBDSQLServer, logger));
-                AddObject(CreateRepository("UserPhoneRepository", "Library.Domain.Repositories.UserPhoneRepository, Library.Domain.Repositories", conexaoBDSQLServer, logger));
+
+                AddObject(CreateRepository("LoanQueueRepository", "Library.Domain.Repositories.LoanQueueRepository, Library.Domain.Repositories", conexaoBDSQLServer, logger));
+                AddObject(CreateRepository("LoanRepository", "Library.Domain.Repositories.LoanRepository, Library.Domain.Repositories", conexaoBDSQLServer, logger));
+                AddObject(CreateRepository("OrganizationRepository", "Library.Domain.Repositories.OrganizationRepository, Library.Domain.Repositories", conexaoBDSQLServer, logger));
+                AddObject(CreateRepository("RatingRepository", "Library.Domain.Repositories.RatingRepository, Library.Domain.Repositories", conexaoBDSQLServer, logger));
+                AddObject(CreateRepository("RegulationRepository", "Library.Domain.Repositories.RegulationRepository, Library.Domain.Repositories", conexaoBDSQLServer, logger));
+
                 AddObject(CreateRepository("UserRepository", "Library.Domain.Repositories.UserRepository, Library.Domain.Repositories", conexaoBDSQLServer, logger));
+                AddObject(CreateRepository("OrganizationUserRepository", "Library.Domain.Repositories.OrganizationUserRepository, Library.Domain.Repositories", conexaoBDSQLServer, logger));
 
             }
             catch (Exception ex)

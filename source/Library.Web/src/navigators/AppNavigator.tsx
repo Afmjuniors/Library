@@ -1,83 +1,126 @@
-import React from 'react';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
+import React, { useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, SafeAreaView } from 'react-native';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState, AppDispatch } from '../store';
+import { logout } from '../store/slices/authSlice';
+import { MainScreen } from '../screens/MainScreen';
+import { COLORS, SPACING, FONT_SIZES, FONT_WEIGHTS, SHADOWS } from '../constants';
 
-export type AppTabParamList = {
-  Home: undefined;
-  Books: undefined;
-  Notifications: undefined;
-  Organizations: undefined;
-  Profile: undefined;
+// Wrapper para MainScreen que fornece as props necessárias
+const MainScreenWrapper: React.FC<{ activeTab: string }> = ({ activeTab }) => {
+  const user = useSelector((state: RootState) => state.auth.user);
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleLogout = async () => {
+    await dispatch(logout());
+  };
+
+  if (!user) {
+    return null;
+  }
+
+  return <MainScreen user={user.user} onLogout={handleLogout} activeTab={activeTab} />;
 };
 
-export type BookStackParamList = {
-  BookList: undefined;
-  BookDetail: { bookId: number };
-  BookEdit: { bookId: number };
-};
+// Componente principal que renderiza o MainScreen com o menu customizado
+const MainScreenWithCustomTabBar: React.FC = () => {
+  const [activeTab, setActiveTab] = useState('books');
 
-const Tab = createBottomTabNavigator<AppTabParamList>();
-const Stack = createStackNavigator<BookStackParamList>();
-
-// Placeholder components para evitar erros de navegação
-const PlaceholderScreen: React.FC = () => {
-  return null;
-};
-
-const BookStack: React.FC = () => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="BookList" component={PlaceholderScreen} />
-      <Stack.Screen name="BookDetail" component={PlaceholderScreen} />
-      {/* Adicionar BookEditScreen quando implementado */}
-    </Stack.Navigator>
+    <View style={styles.container}>
+      <View style={styles.content}>
+        <MainScreenWrapper activeTab={activeTab} />
+      </View>
+
+      <View style={styles.tabBar}>
+        <TouchableOpacity
+          style={[styles.tabButton, activeTab === 'books' && styles.activeTabButton]}
+          onPress={() => setActiveTab('books')}
+        >
+          <Text style={[styles.tabButtonText, activeTab === 'books' && styles.activeTabButtonText]}>
+            📚
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.tabButton, activeTab === 'quick' && styles.activeTabButton]}
+          onPress={() => setActiveTab('quick')}
+        >
+          <Text style={[styles.tabButtonText, activeTab === 'quick' && styles.activeTabButtonText]}>
+            ⚡
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.tabButton, activeTab === 'organization' && styles.activeTabButton]}
+          onPress={() => setActiveTab('organization')}
+        >
+          <Text style={[styles.tabButtonText, activeTab === 'organization' && styles.activeTabButtonText]}>
+            🏢
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.tabButton, activeTab === 'notifications' && styles.activeTabButton]}
+          onPress={() => setActiveTab('notifications')}
+        >
+          <Text style={[styles.tabButtonText, activeTab === 'notifications' && styles.activeTabButtonText]}>
+            🔔
+          </Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          style={[styles.tabButton, activeTab === 'profile' && styles.activeTabButton]}
+          onPress={() => setActiveTab('profile')}
+        >
+          <Text style={[styles.tabButtonText, activeTab === 'profile' && styles.activeTabButtonText]}>
+            👤
+          </Text>
+        </TouchableOpacity>
+      </View>
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: COLORS.background,
+    position: 'relative',
+  },
+  content: {
+    flex: 1,
+    paddingBottom: 60, // Espaço para o menu
+  },
+  tabBar: {
+    flexDirection: 'row',
+    backgroundColor: COLORS.white,
+    borderTopWidth: 1,
+    borderTopColor: COLORS.gray[200],
+    position: 'fixed',
+    bottom: 0,
+    left: 0,
+    right: 0,
+    paddingBottom: 5,
+    paddingTop: 5,
+    zIndex: 1000,
+    elevation: 10,
+  },
+  tabButton: {
+    flex: 1,
+    alignItems: 'center',
+    paddingVertical: SPACING.sm,
+  },
+  activeTabButton: {
+    backgroundColor: COLORS.gray[50],
+  },
+  tabButtonText: {
+    fontSize: FONT_SIZES.xl,
+    color: COLORS.text.secondary,
+    textAlign: 'center',
+  },
+  activeTabButtonText: {
+    color: COLORS.primary,
+    fontWeight: FONT_WEIGHTS.semibold,
+  },
+});
 
 export const AppNavigator: React.FC = () => {
-  return (
-    <Tab.Navigator
-      screenOptions={{
-        headerShown: false,
-        tabBarStyle: {
-          backgroundColor: '#fff',
-          borderTopWidth: 1,
-          borderTopColor: '#e0e0e0',
-        },
-      }}
-    >
-      <Tab.Screen 
-        name="Home" 
-        component={PlaceholderScreen}
-        options={{
-          tabBarLabel: '📚 Livros',
-          tabBarIcon: () => null,
-        }}
-      />
-      <Tab.Screen 
-        name="Notifications" 
-        component={PlaceholderScreen}
-        options={{
-          tabBarLabel: '🔔 Notificações',
-          tabBarIcon: () => null,
-        }}
-      />
-      <Tab.Screen 
-        name="Organizations" 
-        component={PlaceholderScreen}
-        options={{
-          tabBarLabel: '🏢 Org',
-          tabBarIcon: () => null,
-        }}
-      />
-      <Tab.Screen 
-        name="Profile" 
-        component={PlaceholderScreen}
-        options={{
-          tabBarLabel: '👤 Perfil',
-          tabBarIcon: () => null,
-        }}
-      />
-    </Tab.Navigator>
-  );
+  return <MainScreenWithCustomTabBar />;
 }; 

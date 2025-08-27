@@ -1,7 +1,9 @@
+import { Platform } from 'react-native';
+
 // Configurações da API
 export const API_CONFIG = {
   BASE_URL: 'https://localhost:53735/api/v1',
-  TIMEOUT: 10000, // 10 segundos
+  TIMEOUT: 30000, // 30 segundos - aumentado para evitar timeout
 } as const;
 
 // Chaves de armazenamento
@@ -98,9 +100,11 @@ export const BORDER_RADIUS = {
   round: 50,
 } as const;
 
-// Sombras
+// Sombras com suporte para web
 export const SHADOWS = {
-  small: {
+  small: Platform.OS === 'web' ? {
+    boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)',
+  } : {
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -110,7 +114,9 @@ export const SHADOWS = {
     shadowRadius: 4,
     elevation: 3,
   },
-  medium: {
+  medium: Platform.OS === 'web' ? {
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.15)',
+  } : {
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -120,7 +126,9 @@ export const SHADOWS = {
     shadowRadius: 8,
     elevation: 5,
   },
-  large: {
+  large: Platform.OS === 'web' ? {
+    boxShadow: '0 8px 16px rgba(0, 0, 0, 0.2)',
+  } : {
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

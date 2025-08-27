@@ -175,3 +175,18 @@ ALTER TABLE [ORGANIZATIONS_USERS] ADD FOREIGN KEY ([organization_id]) REFERENCES
 ALTER TABLE [REGULATIONS] ADD FOREIGN KEY ([organization_id]) REFERENCES [ORGANIZATIONS] ([organization_id]);
 
 ALTER TABLE [REGULATIONS] ADD FOREIGN KEY ([rule_id]) REFERENCES [RULES] ([rule_id]);
+
+
+CREATE TABLE "ORGANIZATIONS_RULES" (
+  [organization_rule_id] bigint PRIMARY KEY IDENTITY(1, 1),
+  [organization_id] bigint NOT NULL,
+  [loan_duration_days] int NOT NULL,
+  [MeetingFrequency] int NOT NULL,
+  [MeetingDay] int  null,
+  [HasNextWeekMeeting] bit NOT null,
+  [NextMeetingDate] datetime NOT null,
+  [RenewLoanTimes] int NOT NULL,
+  [created_at] datetime NOT NULL,
+  [updated_at] datetime null
+);
+

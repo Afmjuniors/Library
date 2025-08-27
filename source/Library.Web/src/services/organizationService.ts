@@ -1,4 +1,4 @@
-import api from '../config/api';
+import { apiClient } from './api';
 import { Organization, ExtendedOrganization, OrganizationRules } from '../types';
 
 export interface CreateOrganizationRequest {
@@ -14,41 +14,36 @@ export interface UpdateOrganizationRequest extends Partial<CreateOrganizationReq
 
 class OrganizationService {
   async getOrganizations(): Promise<ExtendedOrganization[]> {
-    const response = await api.get<ExtendedOrganization[]>('/organizations');
-    return response.data;
+    return await apiClient.get<ExtendedOrganization[]>('/organizations');
   }
 
   async getOrganizationById(organizationId: number): Promise<ExtendedOrganization> {
-    const response = await api.get<ExtendedOrganization>(`/organizations/${organizationId}`);
-    return response.data;
+    return await apiClient.get<ExtendedOrganization>(`/organizations/${organizationId}`);
   }
 
   async createOrganization(orgData: CreateOrganizationRequest): Promise<ExtendedOrganization> {
-    const response = await api.post<ExtendedOrganization>('/organizations', orgData);
-    return response.data;
+    return await apiClient.post<ExtendedOrganization>('/organizations', orgData);
   }
 
   async updateOrganization(orgData: UpdateOrganizationRequest): Promise<ExtendedOrganization> {
     const { organizationId, ...data } = orgData;
-    const response = await api.put<ExtendedOrganization>(`/organizations/${organizationId}`, data);
-    return response.data;
+    return await apiClient.put<ExtendedOrganization>(`/organizations/${organizationId}`, data);
   }
 
   async deleteOrganization(organizationId: number): Promise<void> {
-    await api.delete(`/organizations/${organizationId}`);
+    await apiClient.delete(`/organizations/${organizationId}`);
   }
 
   async joinOrganization(organizationId: number): Promise<void> {
-    await api.post(`/organizations/${organizationId}/join`);
+    await apiClient.post(`/organizations/${organizationId}`);
   }
 
   async leaveOrganization(organizationId: number): Promise<void> {
-    await api.post(`/organizations/${organizationId}/leave`);
+    await apiClient.post(`/organizations/${organizationId}`);
   }
 
   async getOrganizationMembers(organizationId: number): Promise<any[]> {
-    const response = await api.get(`/organizations/${organizationId}/members`);
-    return response.data;
+    return await apiClient.get(`/organizations/${organizationId}/members`);
   }
 }
 

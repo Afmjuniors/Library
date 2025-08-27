@@ -24,6 +24,7 @@ namespace Library.Domain.Repositories.Specifications
 
         #region User Code
         Task<PageMessage<BookDTO>> Search(BookPageMessage queryParams);
+        Task<IList<BookDTO>> ListBooksByUser(long userId);
 
     #endregion
     }

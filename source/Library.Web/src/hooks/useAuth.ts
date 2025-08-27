@@ -1,120 +1,80 @@
-import { useState, useEffect } from 'react';
-import authService from '../services/authService';
-import { User } from '../types';
+import { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState, AppDispatch } from '../store';
+import { login, logout, signup } from '../store/slices/authSlice';
+import * as SecureStore from 'expo-secure-store';
 
 export const useAuth = () => {
-  const [user, setUser] = useState<User | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+  const dispatch = useDispatch<AppDispatch>();
+  const { user, isAuthenticated, isLoading, error } = useSelector(
+    (state: RootState) => state.auth
+  );
 
   useEffect(() => {
-    checkAuth();
-  }, []);
+    // Verificar se há um token salvo no SecureStore
+    const checkStoredAuth = async () => {
+      try {
+        const token = await SecureStore.getItemAsync('authToken');
+        if (token && !isAuthenticated) {
+          // Se há token mas não está autenticado, pode tentar recuperar o usuário
+          console.log('🔑 Token encontrado no SecureStore, mas usuário não autenticado');
+        }
+      } catch (error) {
+        console.error('❌ Erro ao verificar token armazenado:', error);
+      }
+    };
 
-  const checkAuth = async () => {
+    checkStoredAuth();
+  }, [isAuthenticated]);
+
+  const handleLogin = async (email: string, password: string) => {
     try {
-      console.log('🔍 Verificando autenticação...');
-      const token = typeof window !== 'undefined' ? localStorage.getItem('authToken') : null;
-      console.log('🔑 Token encontrado:', !!token);
-      if (token) {
-        const currentUser = await authService.getCurrentUser();
-        console.log('👤 Usuário atual recuperado:', currentUser);
-        // O backend retorna os dados do usuário diretamente
-        setUser(currentUser);
+      const result = await dispatch(login({ email, password })).unwrap();
+      if (result && result.user && result.token) {
+        await SecureStore.setItemAsync('authToken', result.token);
       }
-    } catch (err) {
-      console.error('❌ Auth check failed:', err);
-      if (typeof window !== 'undefined') {
-        localStorage.removeItem('authToken');
-      }
-    } finally {
-      setLoading(false);
+      return result;
+    } catch (error) {
+      console.error('❌ Erro no login:', error);
+      throw error;
     }
   };
 
-  const login = async (email: string, password: string) => {
+  const handleSignup = async (userData: any) => {
     try {
-      setError(null);
-      console.log('🔐 Iniciando login...');
-      const response = await authService.login({ email, password });
-      console.log('✅ Login bem-sucedido:', response);
-      console.log('🔍 Estrutura da resposta:', {
-        hasUser: !!response.user,
-        hasToken: !!response.token,
-        responseKeys: Object.keys(response),
-        userData: response.user || response
-      });
-      
-      if (typeof window !== 'undefined' && response.token) {
-        localStorage.setItem('authToken', response.token);
-        console.log('🔑 Token salvo:', response.token.substring(0, 20) + '...');
-      } else {
-        console.warn('⚠️ Nenhum token encontrado na resposta');
+      const result = await dispatch(signup(userData)).unwrap();
+      if (result && result.user && result.token) {
+        await SecureStore.setItemAsync('authToken', result.token);
       }
-      
-      // O backend retorna os dados do usuário diretamente, não em response.user
-      const userData = response.user || response;
-      setUser(userData);
-      console.log('👤 Usuário definido:', userData);
-      return response;
-    } catch (err: any) {
-      console.error('❌ Erro no login:', err);
-      setError(err.response?.data?.message || 'Login failed');
-      throw err;
+      return result;
+    } catch (error) {
+      console.error('❌ Erro no signup:', error);
+      throw error;
     }
   };
 
-  const signup = async (name: string, email: string, password: string) => {
+  const handleLogout = async () => {
     try {
-      setError(null);
-      const response = await authService.signup({ name, email, password });
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('authToken', response.token);
+      await dispatch(logout()).unwrap();
+      await SecureStore.deleteItemAsync('authToken');
+    } catch (error) {
+      console.error('❌ Erro no logout:', error);
+      // Mesmo com erro, limpar o SecureStore
+      try {
+        await SecureStore.deleteItemAsync('authToken');
+      } catch (deleteError) {
+        console.error('❌ Erro ao limpar token:', deleteError);
       }
-      
-      // O backend retorna os dados do usuário diretamente, não em response.user
-      const userData = response.user || response;
-      setUser(userData);
-      return response;
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Signup failed');
-      throw err;
-    }
-  };
-
-  const logout = async () => {
-    try {
-      await authService.logout();
-    } catch (err) {
-      console.error('Logout error:', err);
-    } finally {
-      if (typeof window !== 'undefined') {
-        localStorage.removeItem('authToken');
-      }
-      setUser(null);
-    }
-  };
-
-  const updateProfile = async (userData: Partial<User>) => {
-    try {
-      setError(null);
-      const updatedUser = await authService.updateProfile(userData);
-      setUser(updatedUser);
-      return updatedUser;
-    } catch (err: any) {
-      setError(err.response?.data?.message || 'Profile update failed');
-      throw err;
     }
   };
 
   return {
-    user,
-    loading,
+    user: user?.user || null,
+    loading: isLoading,
     error,
-    login,
-    signup,
-    logout,
-    updateProfile,
-    isAuthenticated: !!user,
+    login: handleLogin,
+    signup: handleSignup,
+    logout: handleLogout,
+    isAuthenticated,
   };
 }; 

@@ -1,9 +1,10 @@
-﻿using TDCore.DependencyInjection;
+﻿using iTextSharp.text.pdf;
+using Library.Domain.Services.Specifications;
 using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Configuration;
-using Newtonsoft.Json.Linq;
-using iTextSharp.text.pdf;
+using TDCore.DependencyInjection;
 
 namespace Library.Domain.Configurations
 {
@@ -34,7 +35,16 @@ namespace Library.Domain.Configurations
                 AddObject("ApplicationService", true, "Library.Domain.Services.ApplicationService, Library.Domain.Services");
                 AddObject("MailService", true, "Library.Domain.Services.MailService, Library.Domain.Services");
                 AddObject("CryptoService", true, "Library.Domain.Services.CryptoService, Library.Domain.Services");
-                AddObject("CollectorService", true, "Library.Domain.Services.CollectorService, Library.Domain.Services");
+                AddObject("BookService", true, "Library.Domain.Services.BookService, Library.Domain.Services");
+                AddObject("OrganizationService", true, "Library.Domain.Services.OrganizationService, Library.Domain.Services");
+
+
+
+
+
+                
+
+
 
                 var globalizationService = new TDCore.DependencyInjection.Object();
                 globalizationService.ObjectID = "GlobalizationService";

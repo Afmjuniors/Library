@@ -1,4 +1,5 @@
 
+using iTextSharp.text;
 using Library.Domain.Common;
 using Library.Domain.DTO;
 using Library.Domain.DTO.Response;
@@ -12,6 +13,7 @@ using System.Threading.Tasks;
 using System.Transactions;
 using TDCore.Core;
 using TDCore.Data;
+using TDCore.Data.SqlServer;
 using TDCore.DependencyInjection;
 using TDCore.Domain;
 using TDCore.Domain.Exceptions;
@@ -86,7 +88,8 @@ namespace Library.Domain.Entities
         [AttributeDescriptor("Image", false)]
         public System.String Image { get; set; }
 
-
+        public IList<UserDTO> Members { get => Repository.ListAllUsersFromOrganization(OrganizationId).Result; }
+        public IList<OrganizationRule> OrganizationRules { get => GetOneToManyData<OrganizationRule>().Result; }
 
 
 
@@ -95,8 +98,56 @@ namespace Library.Domain.Entities
 
         #region User Code
 
+        public async Task Update(AuthenticatedUserDTO user, string name, string description, string image)
+        {
+            try
+            {
+                var edited = string.Empty;
+
+                if (!string.IsNullOrEmpty(name) && name != Name)
+                {
+                    edited += $"Name: {Name} - {name}";
+                    Name = name;
+
+                }
+                if (!string.IsNullOrEmpty(description) && name != Description)
+                {
+                    edited += $"Description: {Description} - {description}";
+                    Description = description;
+
+                }
+                if (image != Image)
+                {
+                    edited += $"Image changed";
+                    Image = image;
+
+                }
+
+                if (!string.IsNullOrEmpty(edited))
+                {
+                    if (await Validate(user, false))
+                    {
+                        UpdatedAt = DateTime.Now;
+                        UpdatedBy = user.UserId;
+                        await Update();
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception("BookNotUpdated", ex);
+            }
 
 
+        }
+
+
+        //public async Task CreateRule(List<>)
+        //{
+
+        //}
 
         /// <summary>
         /// Name: Validate

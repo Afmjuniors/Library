@@ -103,7 +103,7 @@ namespace Library.Domain.Services
             return null;
         }
 
-        public async Task<AuthenticatedUserDTO> CreateUser(UserDTO user)
+        public async Task<AuthenticatedUserDTO> CreateUser(SignUpUserDTO user)
         {
             try
             {
@@ -113,7 +113,7 @@ namespace Library.Domain.Services
 
                 var globalization = ObjectFactory.GetSingleton<IGlobalizationService>();
 
-                var newUser = new User(user.LanguageId, user.BirthDay, user.Email, user.Name, user.Phone, user.Address, user.AdditionalInfo, user.Password, user.Image);
+                var newUser = new User(user.Email, user.Name, user.Password);
                 if (newUser != null)
                 {
                     AutdUserDTO = newUser.Transform<AuthenticatedUserDTO>();

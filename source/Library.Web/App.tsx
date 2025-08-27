@@ -1,11 +1,22 @@
 import React from 'react';
-import { LoginForm } from './src/components/LoginForm';
-import { MainScreen } from './src/screens/MainScreen';
-import { LoadingScreen } from './src/components/LoadingScreen';
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
+import { Provider } from 'react-redux';
+import { store } from './src/store';
+import { AuthNavigator } from './src/navigators/AuthNavigator';
+import { AppNavigator } from './src/navigators/AppNavigator';
 import { useAuth } from './src/hooks/useAuth';
+import { LoadingScreen } from './src/components/LoadingScreen';
 
-export default function App() {
-  const { user, loading, isAuthenticated, login, logout } = useAuth();
+export type RootStackParamList = {
+  Auth: undefined;
+  Main: undefined;
+};
+
+const Stack = createStackNavigator<RootStackParamList>();
+
+const AppContent: React.FC = () => {
+  const { user, loading, isAuthenticated } = useAuth();
 
   console.log('🔄 App render - user:', user, 'isAuthenticated:', isAuthenticated, 'loading:', loading);
 
@@ -15,13 +26,23 @@ export default function App() {
     return <LoadingScreen message="Verificando autenticação..." />;
   }
 
-  // Mostrar tela de login se não estiver logado
-  if (!isAuthenticated) {
-    console.log('🔐 Mostrando tela de login...');
-    return <LoginForm onLogin={login} isLoading={loading} />;
-  }
+  return (
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        {!isAuthenticated ? (
+          <Stack.Screen name="Auth" component={AuthNavigator} />
+        ) : (
+          <Stack.Screen name="Main" component={AppNavigator} />
+        )}
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
 
-  // Mostrar tela principal se estiver logado
-  console.log('🏠 Mostrando tela principal...');
-  return <MainScreen user={user!} onLogout={logout} />;
+export default function App() {
+  return (
+    <Provider store={store}>
+      <AppContent />
+    </Provider>
+  );
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import LoginScreen from '../screens/LoginScreen';
+import SignupScreen from '../screens/SignupScreen';
 
 export type AuthStackParamList = {
   Login: undefined;
@@ -17,7 +18,7 @@ export const AuthNavigator: React.FC = () => {
       }}
     >
       <Stack.Screen name="Login" component={LoginScreen} />
-      {/* Adicionar SignupScreen quando implementado */}
+      <Stack.Screen name="Signup" component={SignupScreen} />
     </Stack.Navigator>
   );
 }; 

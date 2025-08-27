@@ -19,6 +19,6 @@ namespace Library.Domain.Services.Specifications
         Task<AuthenticatedUserDTO> GetUser(long idUser);
         //Task<PageMessage<UserDTO>> SearchUsers(UsersPageMessage data);
         Task UpdateUserLanguage(long actionUserId, long userId, string language);
-        Task<AuthenticatedUserDTO> CreateUser(UserDTO user);
+        Task<AuthenticatedUserDTO> CreateUser(SignUpUserDTO user);
     }
 }

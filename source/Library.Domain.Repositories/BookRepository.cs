@@ -45,7 +45,7 @@ namespace Library.Domain.Repositories
             MapColumn("Author", "author");
 
 
-            MapRelationshipManyToOne("Owner", "owner_id", "USERS", "user_id");
+            MapRelationshipManyToOne("Owner", "OwnerId", "USERS", "user_id");
 
 
         }
@@ -119,6 +119,31 @@ namespace Library.Domain.Repositories
             }
         }
 
+
+        public async Task<IList<BookDTO>> ListBooksByUser(long userId)
+        {
+            try
+            {
+
+
+                var pars = new List<SqlParameter>();
+
+                var sql = "SELECT * FROM BOOKS b where b.owner_id = @userId " +
+                    "order by b.created_at desc";
+                var par = new SqlParameter("userId", System.Data.SqlDbType.BigInt);
+                par.Value = userId;
+                pars.Add(par);
+
+                return await List<BookDTO>(sql, pars);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
 
         #endregion
     }

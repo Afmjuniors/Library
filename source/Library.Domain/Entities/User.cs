@@ -38,7 +38,26 @@ namespace Library.Domain.Entities
         {
 
         }
+        /// <summary>
+        /// Name: User
+        /// Description: Empty constructor method.
+        /// Created by: wazc Programa Novo 2022-09-08 
+        /// </summary>
+        public User(string email, string name, string password)
+        {
+            var cryptoService = ObjectFactory.GetSingleton<ICryptoService>();
+            LanguageId = 1;
+            CreatedAt = DateTime.Now;
+            Email = email;
+            Name = name;
+            Password = cryptoService.Encrypt(password);
+            UserStatusId = EnumUserStatus.Active;
 
+            if (Validate(true).Result)
+            {
+                Insert().Wait();
+            }
+        }
         /// <summary>
         /// Name: User
         /// Description: Constructor method that receives as parameter datetimeDeactivate, deactivated, initials, languageId and does a validation, if true, is inserted into the database.

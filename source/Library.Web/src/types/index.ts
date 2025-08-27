@@ -19,7 +19,7 @@ export interface OrganizationRules {
   meetingDay?: 'monday' | 'tuesday' | 'wednesday' | 'thursday' | 'friday' | 'saturday' | 'sunday'; // Dia da semana
   meetingWeek?: 1 | 2 | 3 | 4; // Semana do mês (para reuniões mensais)
   meetingTime?: string; // Horário da reunião (ex: "19:00")
-  requireCompleteUserInfo: boolean; // Se os usuários devem ter informações completas
+  nextWeekMeeting?: boolean; // Se a próxima semana terá encontro (para quinzenal)
 }
 
 // Tipo para organizações com dados estendidos (usado no MainScreen)
@@ -122,8 +122,6 @@ export interface SignupRequest {
   name: string;
   email: string;
   password: string;
-  phone?: string;
-  address?: string;
 }
 
 export interface AuthenticatedUser {

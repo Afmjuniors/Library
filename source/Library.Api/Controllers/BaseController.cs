@@ -22,7 +22,7 @@ namespace Library.Api.Controllers
 
     public abstract class BaseController<TController> : ControllerBase
     {
-       private readonly ILogger<TController> _logger;
+        private readonly ILogger<TController> _logger;
         private IConfigurationRoot _configuration = null;
 
 
@@ -162,15 +162,11 @@ namespace Library.Api.Controllers
                 var security = ObjectFactory.GetSingleton<ISecurityService>();
                 var accessControl = ObjectFactory.GetSingleton<IAccessControlService>();
                 (long id, string name, long idDomain) userToken;
-                try
-                {
-                    userToken = security.ValidateToken(token);
-                }
-                catch (Exception)
-                {
-                    userToken = new(1, "admin", 1);
-                }
-                
+
+                userToken = security.ValidateToken(token);
+
+
+
                 var authenticatedUser = new AuthenticatedUserDTO();
                 authenticatedUser.UserId = userToken.id;
 

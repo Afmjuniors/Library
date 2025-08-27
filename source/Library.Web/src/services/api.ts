@@ -1,5 +1,7 @@
-import { User, LoginResult } from '../types';
-import { API_CONFIG } from '../constants';
+import { User, LoginResult, Book } from '../types';
+import { API_CONFIG, STORAGE_KEYS } from '../constants';
+import * as SecureStore from 'expo-secure-store';
+import { Platform } from 'react-native';
 
 // Interface para resposta da API de autenticação
 interface AuthApiResponse {
@@ -16,10 +18,74 @@ interface AuthApiResponse {
   token?: string;
 }
 
-// Headers padrão
+// Serviço de autenticação com fallback para web
+const authTokenService = {
+  async getToken(): Promise<string | null> {
+    try {
+      let token: string | null = null;
+      
+      if (Platform.OS === 'web') {
+        // Fallback para web usando localStorage
+        token = localStorage.getItem(STORAGE_KEYS.TOKEN);
+        console.log('🌐 Token obtido do localStorage:', token ? token.substring(0, 20) + '...' : 'null');
+      } else {
+        // Mobile usando SecureStore
+        token = await SecureStore.getItemAsync(STORAGE_KEYS.TOKEN);
+        console.log('📱 Token obtido do SecureStore:', token ? token.substring(0, 20) + '...' : 'null');
+      }
+      
+      return token;
+    } catch (error) {
+      console.error('❌ Erro ao obter token:', error);
+      return null;
+    }
+  },
+
+  async setToken(token: string): Promise<void> {
+    try {
+      if (Platform.OS === 'web') {
+        // Fallback para web usando localStorage
+        localStorage.setItem(STORAGE_KEYS.TOKEN, token);
+        console.log('🌐 Token salvo no localStorage:', token.substring(0, 20) + '...');
+      } else {
+        // Mobile usando SecureStore
+        await SecureStore.setItemAsync(STORAGE_KEYS.TOKEN, token);
+        console.log('📱 Token salvo no SecureStore:', token.substring(0, 20) + '...');
+      }
+    } catch (error) {
+      console.error('❌ Erro ao salvar token:', error);
+    }
+  },
+
+  async removeToken(): Promise<void> {
+    try {
+      if (Platform.OS === 'web') {
+        // Fallback para web usando localStorage
+        localStorage.removeItem(STORAGE_KEYS.TOKEN);
+      } else {
+        // Mobile usando SecureStore
+        await SecureStore.deleteItemAsync(STORAGE_KEYS.TOKEN);
+      }
+    } catch (error) {
+      console.error('Erro ao remover token:', error);
+    }
+  },
+};
+
+// Headers padrão sempre com Content-Type
 const getDefaultHeaders = () => ({
   'Content-Type': 'application/json',
 });
+
+// Função para adicionar token aos headers
+const addTokenToHeaders = async (headers: Record<string, string>) => {
+  const token = await authTokenService.getToken();
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+    console.log('🔐 Token adicionado:', `Bearer ${token.substring(0, 20)}...`);
+  }
+  return headers;
+};
 
 // Cliente HTTP customizado
 class ApiClient {
@@ -35,17 +101,29 @@ class ApiClient {
   ): Promise<T> {
     const url = `${this.baseURL}${endpoint}`;
     
+    // Headers padrão sempre com Content-Type
+    const headers = getDefaultHeaders();
+    
+    // Adicionar token se disponível
+    await addTokenToHeaders(headers);
+    
+    // Mesclar com headers customizados
+    const finalHeaders = {
+      ...headers,
+      ...options.headers,
+    };
+
     const config: RequestInit = {
-      headers: {
-        ...getDefaultHeaders(),
-        ...options.headers,
-      },
       ...options,
+      headers: finalHeaders,
     };
 
     try {
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), API_CONFIG.TIMEOUT);
+
+      console.log('🌐 Fazendo requisição para:', url);
+      console.log('📤 Headers finais:', finalHeaders);
 
       const response = await fetch(url, {
         ...config,
@@ -117,7 +195,7 @@ export const authService = {
         password,
       });
 
-      console.log('📦 Dados da resposta:', data);
+      console.log('📦 Dados da resposta:', JSON.stringify(data, null, 2));
 
       if (data && data.userId && data.name && data.email) {
         const userData: User = {
@@ -132,6 +210,14 @@ export const authService = {
           createdAt: data.createdAt,
           cultureInfo: data.cultureInfo,
         };
+
+        // Salvar token se disponível
+        if (data.token) {
+          await authTokenService.setToken(data.token);
+          console.log('🔐 Token salvo com sucesso:', data.token.substring(0, 20) + '...');
+        } else {
+          console.log('⚠️ Nenhum token recebido da API');
+        }
 
         return {
           success: true,
@@ -158,7 +244,9 @@ export const authService = {
 
   async signup(userData: any): Promise<LoginResult> {
     try {
-      const data = await apiClient.post<AuthApiResponse>('/AccessControl/Register', userData);
+      console.log('🔗 Iniciando chamada para API...');
+      console.log('📦 Dados do usuário:', userData);
+      const data = await apiClient.post<AuthApiResponse>('/AccessControl/CreateUser', userData);
       
       if (data && data.userId && data.name && data.email) {
         const user: User = {
@@ -173,6 +261,12 @@ export const authService = {
           createdAt: data.createdAt,
           cultureInfo: data.cultureInfo,
         };
+
+        // Salvar token se disponível
+        if (data.token) {
+          await authTokenService.setToken(data.token);
+          console.log('🔐 Token salvo com sucesso (signup)');
+        }
 
         return {
           success: true,
@@ -196,18 +290,67 @@ export const authService = {
   },
 
   async logout(): Promise<void> {
-    // Implementar logout se necessário
-    console.log('Logout realizado');
+    try {
+      await authTokenService.removeToken();
+      console.log('🔐 Token removido com sucesso');
+    } catch (error) {
+      console.error('❌ Erro ao remover token:', error);
+    }
   },
 };
 
+// Interfaces para a API de livros
+interface SearchBookParamsDTO {
+  keyWord?: string;
+  userId?: number;
+  ownerId?: number;
+  organizationId?: number;
+  userName?: string;
+  author?: string;
+  genre?: number;
+  bookStatus?: number;
+  loanStatus?: number;
+}
+
+interface BookPageMessage {
+  actualPage: number;
+  startIndex: number;
+  pageSize: number;
+  rowsCount: number;
+  totalPages: number;
+  order: Record<string, string>;
+  filter?: SearchBookParamsDTO;
+}
+
+interface BookSearchResponse {
+  data: Book[];
+  actualPage: number;
+  pageSize: number;
+  rowsCount: number;
+  totalPages: number;
+}
+
 export const bookService = {
-  async getBooks() {
-    return apiClient.get('/books');
+  async searchBooks(searchParams: SearchBookParamsDTO = {}, page = 1, pageSize = 20): Promise<BookSearchResponse> {
+    const bookPageMessage: BookPageMessage = {
+      actualPage: page,
+      startIndex: (page - 1) * pageSize,
+      pageSize,
+      rowsCount: 0,
+      totalPages: 0,
+      order: { name: 'asc' }, // Ordenação padrão
+      filter: searchParams,
+    };
+
+    return apiClient.post<BookSearchResponse>('/books/Search', bookPageMessage);
   },
 
-  async getMyBooks(userId: number) {
-    return apiClient.get(`/books/user/${userId}`);
+  async getUserBooks(userId: number): Promise<Book[]> {
+    return apiClient.get<Book[]>(`/books/User/${userId}`);
+  },
+
+  async getAllBooks(page = 1, pageSize = 20): Promise<BookSearchResponse> {
+    return this.searchBooks({}, page, pageSize);
   },
 
   async addBook(bookData: any) {
@@ -242,4 +385,5 @@ export const apiService = {
   books: bookService,
   users: userService,
   client: apiClient,
+  token: authTokenService,
 }; 

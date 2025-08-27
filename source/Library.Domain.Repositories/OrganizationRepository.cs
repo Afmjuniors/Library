@@ -1,4 +1,5 @@
 
+using Library.Domain.DTO;
 using Library.Domain.Entities;
 using Library.Domain.Repositories.Specifications;
 using System;
@@ -37,6 +38,7 @@ namespace Library.Domain.Repositories
             MapColumn("Description", "description");
             MapColumn("Image", "image");
 
+            MapRelationshipOneToMany("OrganizationRules", "ORGANIZATIONS_RULES", "organization_id");
 
         }
 
@@ -45,8 +47,50 @@ namespace Library.Domain.Repositories
 
         #region User Code
 
+        public async Task<IList<UserDTO>> ListAllUsersFromOrganization(long organizationId)
+        {
+            var pars = new List<SqlParameter>();
+
+            var sql = "SELECT u.* from ORGANIZATIONS o " +
+                "left join ORGANIZATIONS_USERS ou on ou.organization_id = o.organization_id " +
+                "left join USERS u on u.user_id = ou.user_id " +
+                "where o.organization_id = @organizationId " +
+                "order by uo.organization_user_id desc";
+
+            var par = new SqlParameter("organizationId", System.Data.SqlDbType.BigInt);
+            par.Value = organizationId;
+            pars.Add(par);
+
+            var res =  await List<UserDTO>(sql, pars);
+
+            return res;
+
+        }
+
+
+        public async Task<IList<OrganizationDTO>> ListAllOrganizationOfUser(long userId)
+        {
+            var pars = new List<SqlParameter>();
+
+            var sql = "SELECT o.* from ORGANIZATIONS o " +
+                "left join ORGANIZATIONS_USERS ou on ou.organization_id = o.organization_id " +
+                "left join USERS u on u.user_id = ou.user_id " +
+                "where ou.user_id = @userId " +
+                "order by uo.organization_user_id desc";
+
+            var par = new SqlParameter("userId", System.Data.SqlDbType.BigInt);
+            par.Value = userId;
+            pars.Add(par);
+
+            var res = await List<OrganizationDTO>(sql, pars);
+
+            return res;
+
+        }
+
+
+        #endregion
 
     }
 
-    #endregion
 }

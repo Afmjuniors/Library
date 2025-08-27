@@ -61,7 +61,7 @@ namespace Library.Api.Controllers
         [HttpPost("CreateUser")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<AuthenticatedUserDTO>> CreateUser([FromBody] UserDTO user)
+        public async Task<ActionResult<AuthenticatedUserDTO>> CreateUser([FromBody] SignUpUserDTO user)
         {
             try
             {

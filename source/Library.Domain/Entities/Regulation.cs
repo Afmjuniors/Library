@@ -45,6 +45,18 @@ namespace Library.Domain.Entities
 
         }
 
+        public Regulation(AuthenticatedUserDTO user, EnumRules rule, string value, long organizationId )
+        {
+            OrganizationId = organizationId;
+            RuleId = rule;
+            Value = value;
+            if (Validate(user,true).Result)
+            {
+                Insert().Wait();
+            }
+
+        }
+
 
 
         #endregion
@@ -58,7 +70,7 @@ namespace Library.Domain.Entities
         public System.DateTime? UpdatedAt { get; set; }
 
         [AttributeDescriptor("OrganizationId", true)]
-        public System.String OrganizationId { get; set; }
+        public long OrganizationId { get; set; }
         [AttributeDescriptor("RuleId", true)]
         public EnumRules RuleId { get; set; }
         [AttributeDescriptor("Value", false)]
